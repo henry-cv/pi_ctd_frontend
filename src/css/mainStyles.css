@@ -1,16 +1,35 @@
 :root {
   /*Fuentes  */
-  --family1: "Archivo";
-  --family2: "Outfit";
-  --family3: "Berlin Sans FB Demi";
+  --font_Archivo: "Archivo";
+  --font_Outfit: "Outfit";
+  --font_Berlin: "Berlin Sans FB Demi";
+  /*Para títulos: */
   /* Para h1 */
-  --h1-size: 4rem;
+  --h1-size: 2.5rem;
+
   /*Para h2 */
-  --h4-size: 2.4rem;
+  --h2-size: 2rem;
+
+  /*Para h3 */
+  --h3-size: 1.75rem;
+
+  /*Para h4 */
+  --h4-size: 1.5rem;
   --h4-weight: 500;
-  --h4-font: "font family";
+
+  /*Para h5 */
+  --h5-size: 1.25rem;
+
+  /*Para h6 */
+  --h6-size: 1rem;
 }
-html{
-  /* font-size:10px; */
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/* Aún por probar, se puede borrar */
+/* html{
+  font-size:10px;
   font-size: 62.5%;
-}
+} */
