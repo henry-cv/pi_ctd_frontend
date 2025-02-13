@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+
 :root {
   /*Fuentes  */
-  --font_Archivo: "Archivo";
-  --font_Outfit: "Outfit";
+  --font_Archivo: 'Archivo', sans-serif;
+  --font_Outfit: 'Outfit',sans-serif;
   --font_Berlin: "Berlin Sans FB Demi";
+  /* Berlin aún pendiente*/
+
   /*Para títulos: */
   /* Para h1 */
   --h1-size: 2.5rem;
@@ -22,6 +27,42 @@
 
   /*Para h6 */
   --h6-size: 1rem;
+
+  /* Tonalidades de Blue-500 */
+  --blue-10:"#bfaff3";
+  --blue-20:"#9f88ed";
+  --blue-30:"#7e60e6";
+  --blue-40:"#5e38e0";
+  /* blue-base es el blue-500 */
+  --blue-base:"#3e10da";
+  --blue-60:"#340db6";
+  --blue-70:"#5e38e0";
+  --blue-80: "#1f086d";
+  --blue-90:"#150549";
+
+  /* Tonalidades de Yellow */
+  --yellow-10: "#faebaf";
+  --yellow-20: "#f8e287";
+  --yellow-30: "#f6d85f";
+  --yellow-40: "#f3ce37";
+  /* yellow-base es el yellow-500 */
+  --yellow-base: "#f1c40f";
+  --yellow-60: "#c9a30d";
+  --yellow-70: "#a1830a";
+  --yellow-80: "#796208";
+  --yellow-90: "#504105";
+
+  /* Tonalidades de Black */
+  --black-10:"#afb2b7";
+  --black-20:"#888c94";
+  --black-30:"#606570";
+  --black-40:"#383f4c";
+  /* yellow-base es el yellow-500 */
+  --black-base:"#101828";
+  --black-60:"#0d1421";
+  --black-70:"#0b101b";
+  --black-80:"#080c14";
+  --black-90:"#05080d";
 }
 *{
   box-sizing: border-box;
