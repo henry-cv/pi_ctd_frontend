@@ -1,0 +1,16 @@
+:root {
+  /*Fuentes  */
+  --family1: "Archivo";
+  --family2: "Outfit";
+  --family3: "Berlin Sans FB Demi";
+  /* Para h1 */
+  --h1-size: 4rem;
+  /*Para h2 */
+  --h4-size: 2.4rem;
+  --h4-weight: 500;
+  --h4-font: "font family";
+}
+html{
+  /* font-size:10px; */
+  font-size: 62.5%;
+}
