@@ -74,3 +74,18 @@
   font-size:10px;
   font-size: 62.5%;
 } */
+
+/* Sección para mediaqueries */
+/* XXL query >= 1320px */
+@media (min-width: 1320px) {
+  /* fijar reglas */
+}
+@media (min-width:1200px){
+  /* fijar reglas */
+}
+@media (min-width:1200px){
+  /* fijar reglas */
+}
+@media (max-width:390px){
+  /* fijar reglas */
+}
