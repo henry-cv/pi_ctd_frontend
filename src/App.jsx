@@ -1,7 +1,10 @@
+import './css/mainStyles.css';
+import PanelTest from "./components/PanelTest";
+
 function App() {
   return (
     <>
-      <h1>App Frontend recién iniciada</h1>
+      <PanelTest />
     </>
   );
 }
