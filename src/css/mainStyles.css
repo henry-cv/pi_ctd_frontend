@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
 
 :root {
   /*Fuentes  */
-  --font_Archivo: 'Archivo', sans-serif;
-  --font_Outfit: 'Outfit',sans-serif;
+  --font_Archivo: "Archivo", sans-serif;
+  --font_Outfit: "Outfit", sans-serif;
   --font_Berlin: "Berlin Sans FB Demi";
   /* Berlin aún pendiente*/
 
@@ -28,17 +28,22 @@
   /*Para h6 */
   --h6-size: 1rem;
 
+  /* Colores BG para botones */
+  --color-error: "#D61B1B";
+  --color-sucess: "#12C618";
+  --color-white: "#FFFFFF";
+
   /* Tonalidades de Blue-500 */
-  --blue-10:"#bfaff3";
-  --blue-20:"#9f88ed";
-  --blue-30:"#7e60e6";
-  --blue-40:"#5e38e0";
+  --blue-10: "#bfaff3";
+  --blue-20: "#9f88ed";
+  --blue-30: "#7e60e6";
+  --blue-40: "#5e38e0";
   /* blue-base es el blue-500 */
-  --blue-base:"#3e10da";
-  --blue-60:"#340db6";
-  --blue-70:"#5e38e0";
+  --blue-base: "#3e10da";
+  --blue-60: "#340db6";
+  --blue-70: "#5e38e0";
   --blue-80: "#1f086d";
-  --blue-90:"#150549";
+  --blue-90: "#150549";
 
   /* Tonalidades de Yellow */
   --yellow-10: "#faebaf";
@@ -53,22 +58,24 @@
   --yellow-90: "#504105";
 
   /* Tonalidades de Black */
-  --black-10:"#afb2b7";
-  --black-20:"#888c94";
-  --black-30:"#606570";
-  --black-40:"#383f4c";
-  /* yellow-base es el yellow-500 */
-  --black-base:"#101828";
-  --black-60:"#0d1421";
-  --black-70:"#0b101b";
-  --black-80:"#080c14";
-  --black-90:"#05080d";
+  --black-10: "#afb2b7";
+  --black-20: "#888c94";
+  --black-30: "#606570";
+  --black-40: "#383f4c";
+  /* black-base es el black-500 */
+  --black-base: "#101828";
+  --black-60: "#0d1421";
+  --black-70: "#0b101b";
+  --black-80: "#080c14";
+  --black-90: "#05080d";
 }
-*{
+
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 /* Aún por probar, se puede borrar */
 /* html{
   font-size:10px;
@@ -78,14 +85,47 @@
 /* Sección para mediaqueries */
 /* XXL query >= 1320px */
 @media (min-width: 1320px) {
+
   /* fijar reglas */
+  .panel-components {
+    & h1 {
+      margin: 20px auto;
+    }
+
+    height: 304.63px;
+    margin: 0 auto;
+    max-width: 1320px;
+  }
 }
-@media (min-width:1200px){
+
+@media (min-width: 1200px) {
+
   /* fijar reglas */
+  .panel-components {
+    height: 304.63px;
+    margin: 0 auto;
+    max-width: 1140px;
+  }
 }
-@media (min-width:1200px){
+
+@media (min-width: 768px) {
+
   /* fijar reglas */
+  .panel-components {
+    height: 314.37px;
+    margin: 0 auto;
+    max-width: 720px;
+    width: 100%;
+  }
 }
-@media (max-width:390px){
+
+@media (max-width: 390px) {
+
   /* fijar reglas */
+  .panel-components {
+    height: 412.15px;
+    margin: 0 auto;
+    max-width: 390px;
+    width: 100%;
+  }
 }
