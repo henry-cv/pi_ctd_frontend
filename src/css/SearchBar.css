@@ -92,6 +92,53 @@
   display: none !important;
 }
 
+/* Estilos para el menú desplegable */
+.MuiMenu-paper {
+  position: fixed !important;
+  border-radius: 12px !important;
+  margin-top: 8px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+/* Scroll personalizado */
+.MuiMenu-paper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.MuiMenu-paper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.MuiMenu-paper::-webkit-scrollbar-thumb {
+  background-color: #AFB2B7;
+  border-radius: 20px;
+}
+
+/* Estilos para los items del menú */
+.MuiMenuItem-root {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: 16px !important;
+  color: #101828 !important;
+  padding: 12px 16px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.MuiMenuItem-root:hover {
+  background-color: #F8F9FC !important;
+}
+
+/* Ajustar el select para que coincida con el diseño */
+.select-custom .MuiSelect-select {
+  padding: 8px 0 !important;
+}
+
+/* Eliminar el ícono por defecto del select */
+.MuiSelect-icon {
+  display: none !important;
+}
+
 /* Botón de búsqueda */
 .search-button {
   position: absolute;
@@ -127,12 +174,20 @@
     width: 721px;
     height: 109px;
   }
+
+  .MuiMenu-paper {
+    width: 721px !important;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1199px) {
   .search-bar-wrapper {
     width: 624px;
     height: 108px;
+  }
+
+  .MuiMenu-paper {
+    width: 624px !important;
   }
 }
 
@@ -148,5 +203,9 @@
 
   .divider {
     display: none;
+  }
+
+  .MuiMenu-paper {
+    width: 392px !important;
   }
 }

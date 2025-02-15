@@ -13,6 +13,26 @@ const SearchBar = () => {
   const [categoria, setCategoria] = useState('');
   const [fecha, setFecha] = useState('');
 
+  const menuProps = {
+    PaperProps: {
+      sx: {
+        marginTop: '8px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+        left: '50% !important',
+        transform: 'translateX(-50%) !important',
+      }
+    },
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'center',
+    },
+    transformOrigin: {
+      vertical: 'top',
+      horizontal: 'center',
+    }
+  };
+
   return (
     <div className="search-bar-container">
       <div className="search-bar-wrapper">
@@ -30,14 +50,7 @@ const SearchBar = () => {
                 className="select-custom"
                 variant="outlined"
                 disableUnderline
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      marginTop: '8px',
-                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                    }
-                  }
-                }}
+                MenuProps={menuProps}
               >
                 <MenuItem value="" disabled>
                   <span className="placeholder-text">Buscar por lugar</span>
@@ -62,6 +75,7 @@ const SearchBar = () => {
                 onChange={(e) => setCategoria(e.target.value)}
                 displayEmpty
                 className="select-custom"
+                MenuProps={menuProps}
               >
                 <MenuItem value="" disabled>
                   <span className="placeholder-text">Todos</span>
@@ -86,6 +100,7 @@ const SearchBar = () => {
                 onChange={(e) => setFecha(e.target.value)}
                 displayEmpty
                 className="select-custom"
+                MenuProps={menuProps}
               >
                 <MenuItem value="" disabled>
                   <span className="placeholder-text">Seleccionar fecha</span>
