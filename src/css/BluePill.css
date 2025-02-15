@@ -1,4 +1,4 @@
-.boton-blue {
+.button-blue {
   background-color: var(
     --blue-base
   ); /* color azul similar al de Tailwind blue-500 */
@@ -13,11 +13,11 @@
   transition: background-color 300ms ease;
 }
 
-.boton-blue:hover {
+.button-blue:hover {
   background-color: var(--blue-70);
 }
 
-.boton-blue:focus {
+.button-blue:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
