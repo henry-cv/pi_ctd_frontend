@@ -1,5 +1,6 @@
 import Carousel from '../components/Carousel';
 import SearchBox from '../components/SearchBox';
+import '../css/Home.css'; // Importar los estilos
 
 const Home = () => {
   const images = [
@@ -11,11 +12,11 @@ const Home = () => {
   return (
     <div className="min-h-screen w-full relative">
       <Carousel images={images} />
-      <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 text-center z-10">
-        <h1 className="font-['Archivo'] text-[40px] text-white font-bold mb-4 whitespace-nowrap">
+      <div className="hero-content">
+        <h1 className="hero-title">
           Descubre, reserva y vive nuevas experiencias
         </h1>
-        <h6 className="font-['Archivo'] text-base text-white">
+        <h6 className="hero-subtitle">
           Conéctate con la emoción de viajar, descubrir y disfrutar
         </h6>
       </div>
