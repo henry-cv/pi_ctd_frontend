@@ -1,3 +1,8 @@
+button,
+.button {
+  border: none;
+  cursor: pointer;
+}
 .button {
   font-size: var(--h6-size);
   font-weight: var(--h6-weight);
@@ -5,7 +10,6 @@
   width: 91px;
   border-radius: 72px;
   border: none;
-  cursor: pointer;
   transition: background-color 300ms ease, color 300ms ease;
 }
 
@@ -25,4 +29,7 @@
 
 .button-transparent {
   background-color: transparent;
+}
+button.light i {
+  cursor: pointer;
 }
