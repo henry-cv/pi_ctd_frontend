@@ -75,12 +75,13 @@
   margin: 0;
   padding: 0;
 }
-
-/* Aún por probar, se puede borrar */
-/* html{
-  font-size:10px;
-  font-size: 62.5%;
-} */
+.navigation {
+  /* Estilos comunes para el componente navegación */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
 
 /* Sección para mediaqueries */
 /* XXL query >= 1320px */
