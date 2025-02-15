@@ -1,16 +1,17 @@
-.button-blue {
-  background-color: var(
-    --blue-base
-  ); /* color azul similar al de Tailwind blue-500 */
-  color: white;
+.button {
   font-size: var(--h6-size);
-  font-weight: bold;
+  font-weight: var(--h6-weight);
   height: 43px;
   width: 91px;
   border-radius: 72px;
   border: none;
   cursor: pointer;
-  transition: background-color 300ms ease;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+.button-blue {
+  background-color: var(--blue-base);
+  color: white;
 }
 
 .button-blue:hover {
@@ -20,4 +21,8 @@
 .button-blue:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.button-transparent {
+  background-color: transparent;
 }

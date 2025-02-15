@@ -1,16 +1,19 @@
 import '../css/BluePill.css';
 import PropTypes from 'prop-types';
 
-const ButtonBluePill = ({ text = "Button" }) => {
+const ButtonBluePill = ({ text = "Button", className = "button-blue" }) => {
   return (
     <button
-      className='button-blue'
+      className={`button ${className}`}
     >
       {text}
     </button>
   )
 }
+
 ButtonBluePill.propTypes = {
-  text: PropTypes.string.isRequired
+  text: PropTypes.string,
+  className: PropTypes.string
 };
-export default ButtonBluePill
+
+export default ButtonBluePill;

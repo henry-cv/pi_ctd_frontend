@@ -29,7 +29,7 @@ const Navbar = () => {
         <button className={theme}>
           <FaGlobe />
         </button>
-        <button>Registro</button>
+        <ButtonBluePill className="button-transparent" text="Registro" />
         <ButtonBluePill text="Acceso" />
       </div>
     </nav>
