@@ -1,7 +1,7 @@
 /* Contenedor principal */
 .search-bar-container {
   position: absolute;
-  top: 85%;
+  top: 75%; /* Cambiado de 85% a 75% para subir el componente */
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
@@ -96,7 +96,7 @@
 .MuiMenu-paper {
   position: fixed !important;
   border-radius: 12px !important;
-  margin-top: 8px !important;
+  margin-top: 16px !important; /* Aumentado el margen superior para dar más separación */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
   max-height: 300px !important;
   overflow-y: auto !important;
