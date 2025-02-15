@@ -1,11 +1,16 @@
 import './css/mainStyles.css';
-import PanelTest from "./components/PanelTest";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from "./pages/home";
 
 function App() {
   return (
-    <>
-      <PanelTest />
-    </>
+    <BrowserRouter>
+      <div className="bg-white min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

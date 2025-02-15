@@ -1,0 +1,164 @@
+.swiper {
+  width: 100vw;
+  height: 70vh;
+  margin: 0;
+  padding: 0;
+}
+
+.mySwiper {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-swiper {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@property --slide-transform {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateX(calc(var(--slide-transform) * 100%));
+  transition: transform 1000ms linear;
+  /* Optimizaciones para pantallas de alta frecuencia */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  object-position: center;
+  display: block;
+  transition: opacity 1000ms ease-in-out; /* Añadimos transición suave para la opacidad */
+  /* Optimizaciones para pantallas de alta frecuencia */
+  image-rendering: high-quality;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Estilos responsive */
+@media (min-width: 1320px) {
+  .swiper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1319px) and (min-width: 768px) {
+  .swiper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 440px) {
+  .swiper {
+    width: 100%;
+  }
+}
+
+/* Ajustes responsive */
+@media screen and (min-width: 1440px) {
+  .mySwiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 1439px) and (min-width: 1080px) {
+  .mySwiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 1079px) and (min-width: 720px) {
+  .mySwiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 719px) and (min-width: 480px) {
+  .mySwiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .mySwiper {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 1440px) {
+  .swiper {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 1024px) {
+  .swiper {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .swiper {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .swiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (min-width: 1320px) {
+  .carousel-swiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 1319px) {
+  .carousel-swiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .carousel-swiper {
+    height: 70vh;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .carousel-swiper {
+    height: 70vh;
+  }
+}
+
+/* Ajustamos la animación de entrada/salida */
+.swiper-slide-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.swiper-slide-prev,
+.swiper-slide-next {
+  opacity: 0.8;
+  transform: scale(0.95);
+}
