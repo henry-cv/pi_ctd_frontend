@@ -1,0 +1,40 @@
+.hero-content {
+  text-align: center;
+  position: absolute;
+  top: 45%; /* Cambiamos de 25% a 45% para bajar el contenido */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-family: 'Archivo', sans-serif;
+  font-size: 40px;
+  color: #FFFFFF;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5),
+               0 0 20px rgba(0, 0, 0, 0.3),
+               -1px -1px 0 #000,  /* Contorno negro */
+                1px -1px 0 #000,
+               -1px 1px 0 #000,
+                1px 1px 0 #000;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-family: 'Archivo', sans-serif;
+  font-size: 16px;
+  color: #FFFFFF;
+  font-weight: 300;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5),
+               0 0 10px rgba(0, 0, 0, 0.3),
+               -1px -1px 0 #000,  /* Contorno negro */
+                1px -1px 0 #000,
+               -1px 1px 0 #000,
+                1px 1px 0 #000;
+  line-height: 1.5;
+}

@@ -1,0 +1,220 @@
+/* Contenedor principal */
+.search-box-container {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 721px;
+  z-index: 10;
+}
+
+/* Wrapper del searchbox */
+.search-box-wrapper {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  position: relative;
+  width: 100%;
+  height: 109px;
+}
+
+/* Contenedor de campos */
+.search-fields {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+}
+
+/* Campo individual */
+.search-field {
+  flex: 1;
+  min-width: 0;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Título del campo */
+.field-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.field-title span {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #101828;
+}
+
+/* Separador vertical */
+.divider {
+  width: 1px;
+  height: 40px; /* Reducir altura */
+  background-color: rgba(16, 24, 40, 0.1); /* Hacer más sutil */
+  margin: 0 1rem; /* Añadir margen horizontal */
+}
+
+/* Estilos de React Select */
+.react-select-container {
+  width: 100%;
+}
+
+.react-select__control {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  min-height: 32px !important;
+}
+
+.react-select__indicators {
+  display: none !important; /* Ocultar las flechas */
+}
+
+.react-select__value-container {
+  padding: 0 !important;
+}
+
+.react-select__input {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.react-select__placeholder {
+  color: #101828 !important;
+  font-family: 'Archivo', sans-serif !important;
+  font-size: 16px !important;
+}
+
+.react-select__menu {
+  margin-top: 8px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+.react-select__option {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: 16px !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+  background-color: white !important;
+  color: #101828 !important;
+}
+
+.react-select__option--is-focused {
+  background-color: #f5f5f5 !important;
+}
+
+/* Estilos del DatePicker */
+.datepicker-container {
+  width: 100%;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.react-datepicker-input {
+  width: 100%;
+  font-family: 'Archivo', sans-serif;
+  font-size: 16px;
+  color: #101828;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.react-datepicker-input:focus {
+  outline: none;
+}
+
+.react-datepicker-popper {
+  z-index: 1001 !important;
+}
+
+.react-datepicker {
+  font-family: 'Archivo', sans-serif !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 12px !important;
+}
+
+.react-datepicker__triangle {
+  display: none !important;
+}
+
+/* Botón de búsqueda */
+.search-button {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46.87px;
+  height: 44.52px;
+  background-color: #3E10DA;
+  border-radius: 84.36px;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.search-button:hover {
+  background-color: #3109B0;
+}
+
+/* Media queries */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .search-box-container {
+    max-width: 624px;
+  }
+  
+  .search-box-wrapper {
+    height: 108px;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-box-container {
+    max-width: 382px;
+  }
+  
+  .search-box-wrapper {
+    height: auto;
+    padding: 1.5rem;
+  }
+  
+  .search-fields {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .search-field {
+    padding: 0;
+  }
+  
+  .divider {
+    display: none;
+  }
+  
+  .field-title span {
+    font-size: 18px;
+  }
+}
