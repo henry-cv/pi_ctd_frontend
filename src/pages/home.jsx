@@ -1,4 +1,5 @@
 import Carousel from '../components/Carousel';
+import SearchBar from '../components/SearchBar';
 
 const Home = () => {
   const images = [
@@ -8,10 +9,12 @@ const Home = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen">
+    <div className="min-h-screen w-full relative">
       <Carousel images={images} />
-      
-      <div className="w-full mt-[70vh]">
+      <div className="relative z-10">
+        <SearchBar />
+      </div>
+      <div className="relative z-10 w-full">
         {/* Contenido que irá debajo del carousel */}
       </div>
     </div>

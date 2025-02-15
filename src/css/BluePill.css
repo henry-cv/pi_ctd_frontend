@@ -1,5 +1,5 @@
 .boton-blue {
-  background-color: #3b82f6; /* color azul similar al de Tailwind blue-500 */
+  background-color: #3E10DA; /* Nuevo color principal */
   color: white;
   font-weight: bold;
   padding: 8px 16px;
@@ -10,10 +10,10 @@
 }
 
 .boton-blue:hover {
-  background-color: #1d4ed8; /* color azul más oscuro similar al blue-700 */
+  background-color: #3109B0; /* Versión más oscura del color principal */
 }
 
 .boton-blue:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 0 3px rgba(62, 16, 218, 0.5); /* Ajustado al nuevo color */
 }

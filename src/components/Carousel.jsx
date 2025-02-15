@@ -7,7 +7,7 @@ import '../css/carousel.css';
 
 const Carousel = ({ images }) => {
   return (
-    <div className="w-full h-[70vh] absolute top-0 left-0">
+    <div className="carousel-container">
       <Swiper
         modules={[Autoplay]}
         spaceBetween={0}
@@ -27,7 +27,7 @@ const Carousel = ({ images }) => {
             <img
               src={image}
               alt={`Slide ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="carousel-image"
               loading={index === 0 ? "eager" : "lazy"}
             />
           </SwiperSlide>

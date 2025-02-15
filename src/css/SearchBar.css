@@ -1,0 +1,176 @@
+.search-bar-container {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.search-bar-wrapper {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  position: relative;
+}
+
+.search-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0 1rem;
+  min-height: unset !important;
+}
+
+.search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: none !important;
+}
+
+.field-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #101828;
+}
+
+.input-icon {
+  color: #101828;
+}
+
+.divider {
+  width: 1px;
+  height: 53px;
+  background-color: #AFB2B7;
+  margin: 0 1rem;
+}
+
+/* Personalización de los selects de Material-UI */
+.select-custom {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: 16px !important;
+  color: #101828 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.select-custom .MuiSelect-select {
+  padding: 0 !important;
+  min-height: unset !important;
+  border: none !important;
+  background: none !important;
+}
+
+.select-custom .MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}
+
+.select-custom:hover .MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}
+
+.select-custom.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.MuiSelect-icon {
+  display: none !important;
+}
+
+.MuiMenuItem-root {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: 16px !important;
+  color: #101828 !important;
+  padding: 8px 16px !important;
+}
+
+.placeholder-text {
+  font-family: 'Archivo', sans-serif;
+  font-size: 16px;
+  color: #101828;
+}
+
+.search-button {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.search-button-round {
+  width: 46.87px;
+  height: 44.52px;
+  border-radius: 84.36px;
+  background-color: #3E10DA; /* blue-500 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button-round:hover {
+  background-color: #3109B0;
+}
+
+.search-button-round svg {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-inputs {
+    flex-direction: column;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+}
+
+/* Media Queries para los diferentes tamaños */
+/* XXL y XL - Pantallas grandes (≥1200px) */
+@media screen and (min-width: 1200px) {
+  .search-bar-wrapper {
+    width: 721px;
+    height: 109px;
+  }
+}
+
+/* MD - Pantallas medianas (768px - 1199px) */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+  .search-bar-wrapper {
+    width: 624px;
+    height: 108px;
+  }
+}
+
+/* SM - Pantallas pequeñas (<768px) */
+@media screen and (max-width: 767px) {
+  .search-bar-wrapper {
+    width: 392px;
+    height: 161px;
+  }
+
+  .search-inputs {
+    flex-direction: column;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+}
