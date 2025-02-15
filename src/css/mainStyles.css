@@ -3,8 +3,8 @@
 
 :root {
   /*Fuentes  */
-  --font_Archivo: "Archivo", sans-serif;
-  --font_Outfit: "Outfit", sans-serif;
+  --font_Archivo: "Archivo";
+  --font_Outfit: "Outfit";
   --font_Berlin: "Berlin Sans FB Demi";
   /* Berlin aún pendiente*/
 
@@ -75,28 +75,49 @@
   margin: 0;
   padding: 0;
 }
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font_Outfit);
+  font-size: var(--h6-size);
+  justify-content: center;
+}
 .navigation {
   /* Estilos comunes para el componente navegación */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: var(--font_Outfit);
+  font-size: var(--h6-size);
   padding: 1rem;
+  height: 76px;
+}
+button {
+  border-radius: 72px;
+  border: none;
+}
+.leftContainer,
+.rightContainer {
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  column-gap: 10px;
 }
 
 /* Sección para mediaqueries */
 /* XXL query >= 1320px */
-@media (min-width: 1320px) {
+@media screen and (min-width: 1320px) {
   /* fijar reglas */
   h1 {
     margin: 20px auto;
   }
   .panel-components {
     margin: 0 auto;
-    width: 1320px;
+    width: 1300px;
   }
 }
 
-@media (min-width: 1200px) {
+@media screen and (min-width: 1200px) {
   /* fijar reglas */
   .panel-components {
     margin: 0 auto;
@@ -104,7 +125,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   /* fijar reglas */
   .panel-components {
     margin: 0 auto;
@@ -112,7 +133,7 @@
   }
 }
 
-@media (max-width: 390px) {
+@media screen and (max-width: 390px) {
   /* fijar reglas */
   .panel-components {
     margin: 0 auto;

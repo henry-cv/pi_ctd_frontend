@@ -1,16 +1,20 @@
 .boton-blue {
-  background-color: #3b82f6; /* color azul similar al de Tailwind blue-500 */
+  background-color: var(
+    --blue-base
+  ); /* color azul similar al de Tailwind blue-500 */
   color: white;
+  font-size: var(--h6-size);
   font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 4px;
+  height: 43px;
+  width: 91px;
+  border-radius: 72px;
   border: none;
   cursor: pointer;
   transition: background-color 300ms ease;
 }
 
 .boton-blue:hover {
-  background-color: #1d4ed8; /* color azul más oscuro similar al blue-700 */
+  background-color: var(--blue-70);
 }
 
 .boton-blue:focus {

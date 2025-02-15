@@ -9,6 +9,7 @@ const PanelTest = () => {
       <h4>Botón Acceso (Blue Pill)</h4>
       <ButtonBluePill text="Acceso" />
       <hr />
+      <h4>NavBar</h4>
       <Navbar />
     </main>
   );
