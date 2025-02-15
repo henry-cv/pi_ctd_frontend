@@ -2,6 +2,7 @@ button,
 .button {
   border: none;
   cursor: pointer;
+  font-family: var(--font_Outfit);
 }
 .button {
   font-size: var(--h6-size);
