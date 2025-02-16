@@ -113,6 +113,7 @@ body {
   top: 36px;
   left: 68px;
 }
+
 .accordion {
   margin: 1rem 0;
 }
@@ -132,6 +133,7 @@ body {
   padding: 1rem;
   border-top: 1px solid #ddd;
 }
+
 /* Estilos para el menú desplegable */
 .dropdown {
   position: relative;
@@ -166,6 +168,7 @@ body {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
 /* */
 .list-categories {
   align-items: flex-start;
@@ -173,10 +176,12 @@ body {
   flex-direction: column;
   padding-left: 0;
 }
+
 .list-categories li {
   list-style-type: none;
   text-align: left;
-  padding: 10px 0; /* Añade un poco de espacio entre los elementos */
+  padding: 10px 0;
+  /* Añade un poco de espacio entre los elementos */
 }
 
 .leftContainer,
@@ -192,6 +197,7 @@ body {
 
 /* XXL Media querie >= 1320px */
 @media screen and (min-width: 1320px) {
+
   /* fijar reglas */
   h1 {
     margin: 20px auto;
@@ -205,6 +211,7 @@ body {
 
 /* XL Media Querie >= 1200px */
 @media screen and (min-width: 1200px) {
+
   /* fijar reglas */
   .panel-components {
     margin: 0 auto;
@@ -214,6 +221,7 @@ body {
 
 /* Medium Media Querie >= 768px */
 @media screen and (min-width: 768px) {
+
   /* fijar reglas */
   .panel-components {
     margin: 0 auto;
@@ -223,6 +231,7 @@ body {
 
 /* IPhone 16 Pro max Querie <= 390px */
 @media screen and (max-width: 390px) {
+
   /* fijar reglas */
   .panel-components {
     margin: 0 auto;

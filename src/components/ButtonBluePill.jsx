@@ -11,7 +11,6 @@ const ButtonBluePill = ({ text = "Button", className = "button-blue" }) => {
   )
 }
 
-
 ButtonBluePill.propTypes = {
   text: PropTypes.string,
   className: PropTypes.string
