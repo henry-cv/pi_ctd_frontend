@@ -1,0 +1,84 @@
+/* Contenedor principal del carousel */
+.carousel-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+}
+
+/* Estilos base del Swiper */
+.carousel-swiper {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Estilos para los slides */
+.swiper-slide {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Estilos para las imágenes */
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Media Queries estándar */
+/* XXL - Pantallas extra grandes (≥1320px) */
+@media screen and (min-width: 1320px) {
+  .carousel-container,
+  .carousel-swiper,
+  .swiper-slide {
+    height: 100vh;
+  }
+}
+
+/* XL - Pantallas grandes (≥1200px) */
+@media screen and (min-width: 1200px) and (max-width: 1319px) {
+  .carousel-container,
+  .carousel-swiper,
+  .swiper-slide {
+    height: 100vh;
+  }
+}
+
+/* LG - Pantallas medianas grandes (≥992px) */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .carousel-container,
+  .carousel-swiper,
+  .swiper-slide {
+    height: 100vh;
+  }
+}
+
+/* MD - Pantallas medianas (≥768px) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .carousel-container,
+  .carousel-swiper,
+  .swiper-slide {
+    height: 100vh;
+  }
+}
+
+/* SM - Pantallas pequeñas (≥440px) */
+@media screen and (min-width: 440px) and (max-width: 767px) {
+  .carousel-container,
+  .carousel-swiper,
+  .swiper-slide {
+    height: 100vh;
+  }
+}
+
+/* XS - Pantallas muy pequeñas (<440px) */
+@media screen and (max-width: 439px) {
+  .carousel-container,
+  .carousel-swiper,
+  .swiper-slide {
+    height: 100vh;
+  }
+}
