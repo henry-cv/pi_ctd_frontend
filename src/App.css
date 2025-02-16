@@ -1,3 +1,6 @@
+@import "./css/mainStyles.css";
+@import "./css/BluePill.css";
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

@@ -1,19 +1,38 @@
-.boton-blue {
-  background-color: #3E10DA; /* Nuevo color principal */
-  color: white;
-  font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 4px;
+button,
+.button {
   border: none;
   cursor: pointer;
-  transition: background-color 300ms ease;
+  font-family: var(--font_Outfit);
 }
 
-.boton-blue:hover {
-  background-color: #3109B0; /* Versión más oscura del color principal */
+.button {
+  font-size: var(--h6-size);
+  font-weight: var(--h6-weight);
+  height: 43px;
+  width: 91px;
+  border-radius: 72px;
+  border: none;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
-.boton-blue:focus {
+.button-blue {
+  background-color: var(--blue-base);
+  color: white;
+}
+
+.button-blue:hover {
+  background-color: var(--blue-70);
+}
+
+.button-blue:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(62, 16, 218, 0.5); /* Ajustado al nuevo color */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.button-transparent {
+  background-color: transparent;
+}
+
+button.light i {
+  cursor: pointer;
 }
