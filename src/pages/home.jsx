@@ -4,9 +4,9 @@ import '../css/Home.css'; // Importar los estilos
 
 const Home = () => {
   const images = [
-    '/img_bckg_home1.jpg',
-    '/img_bckg_home2.jpg',
-    '/img_bckg_home3.jpg'
+    '/bkgd_slider1.jpg',
+    '/bkgd_slider2.jpg',
+    '/bkgd_slider3.jpg',
   ];
 
   return (
