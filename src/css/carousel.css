@@ -1,31 +1,37 @@
-/* Contenedor principal del carousel */
+/* Contenedor principal */
 .carousel-container {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: 0;
+  overflow: hidden;
 }
 
-/* Estilos base del Swiper */
+/* Swiper base */
 .carousel-swiper {
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 
-/* Estilos para los slides */
-.swiper-slide {
-  width: 100%;
-  height: 100vh;
-}
-
-/* Estilos para las imágenes */
+/* Imágenes */
 .carousel-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+/* Estilos para los slides */
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilos para controles de Swiper si los necesitamos */
+.swiper-button-prev,
+.swiper-button-next {
+  color: white;
 }
 
 /* Media Queries estándar */

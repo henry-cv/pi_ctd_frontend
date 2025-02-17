@@ -6,22 +6,24 @@ button,
 }
 
 .button {
-  font-size: var(--h6-size);
-  font-weight: var(--h6-weight);
+  font-family: var(--font-outfit);
+  font-size: 16px;
+  font-weight: 500;
   height: 43px;
-  width: 91px;
+  padding: 12px 24px;
   border-radius: 72px;
   border: none;
-  transition: background-color 300ms ease, color 300ms ease;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .button-blue {
   background-color: var(--blue-base);
-  color: white;
+  color: var(--white);
 }
 
 .button-blue:hover {
-  background-color: var(--blue-70);
+  background-color: var(--blue-hover);
 }
 
 .button-blue:focus {
@@ -31,8 +33,11 @@ button,
 
 .button-transparent {
   background-color: transparent;
+  color: var(--black);
 }
 
 button.light i {
   cursor: pointer;
 }
+
+/* Las media queries se manejan desde variables.css */

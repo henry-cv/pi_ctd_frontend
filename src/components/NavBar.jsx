@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { FaGlobe } from "react-icons/fa";
-import ButtonBluePill from "./ButtonBluePill";
 import Activities from "./Activities";
+import ButtonBluePill from "./ButtonBluePill";
+import '../css/NavBar.css';
 
 const Navbar = () => {
   const [theme, setTheme] = useState("light");
@@ -11,23 +12,27 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`navigation ${theme}`}>
+    <nav className="navigation">
       <div className="leftContainer">
         <img src="/Property 1=BlackV1.svg" alt="Logo" className="logo" />
-        <Activities />
-        <p>Crea tu Actividad</p>
+        <div className="hide-sm">
+          <Activities />
+        </div>
+        <a href="#" className="nav-link hide-sm">Crea tu Actividad</a>
       </div>
       <div className="rightContainer">
-        <button onClick={toggleTheme} className={theme}>
-          <i
-            className={`fa-regular ${theme === "light" ? "fa-moon" : "fa-sun"}`}
-          ></i>
+        <button onClick={toggleTheme} className="icon-button">
+          <i className={`fa-regular ${theme === "light" ? "fa-moon" : "fa-sun"}`}></i>
         </button>
-        <button className={theme}>
+        <button className="icon-button">
           <FaGlobe />
         </button>
-        <ButtonBluePill className="button-transparent" text="Registro" />
-        <ButtonBluePill text="Acceso" />
+          <div className="hide-md">
+          <ButtonBluePill text="Registro" className="button-transparent" />
+        </div>
+        <div className="hide-sm">
+          <ButtonBluePill text="Acceso" />
+        </div>
       </div>
     </nav>
   );

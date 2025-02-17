@@ -1,6 +1,7 @@
 import Carousel from '../components/Carousel';
 import SearchBox from '../components/SearchBox';
-import '../css/Home.css'; // Importar los estilos
+import Navbar from '../components/NavBar';
+import '../css/Home.css';
 
 const Home = () => {
   const images = [
@@ -10,18 +11,25 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen w-full relative">
+    <div className="home-container">
+      <header className="header-container">
+        <div className="content-wrapper">
+          <Navbar />
+        </div>
+      </header>
       <Carousel images={images} />
-      <div className="hero-content">
-        <h1 className="hero-title">
-          Descubre, reserva y vive nuevas experiencias
-        </h1>
-        <h6 className="hero-subtitle">
-          Conéctate con la emoción de viajar, descubrir y disfrutar
-        </h6>
+      <div className="content-wrapper">
+        <div className="hero-content">
+          <h1 className="hero-title">
+            Descubre, reserva y vive nuevas experiencias
+          </h1>
+          <h6 className="hero-subtitle">
+            Conéctate con la emoción de viajar, descubrir y disfrutar
+          </h6>
+        </div>
+        <SearchBox />
       </div>
-      <SearchBox />
-      <div className="relative z-10 w-full">
+      <div className="content-below-carousel">
         {/* Contenido que irá debajo del carousel */}
       </div>
     </div>

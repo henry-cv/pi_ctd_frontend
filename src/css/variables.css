@@ -1,0 +1,106 @@
+:root {
+  /* Colores principales */
+  --blue-base: #3E10DA;
+  --blue-hover: #3209c0;
+  --white: #FFFFFF;
+  --black: #101828;
+  
+  /* Fuentes */
+  --font-outfit: 'Outfit', sans-serif;
+  --font-archivo: 'Archivo', sans-serif;
+  
+  /* Tamaños de contenedores */
+  --container-xl: 1142px;
+  --container-md: 782px;
+  --container-sm: 420px;
+
+  /* Tamaños específicos SearchBox */
+  --searchbox-xl: 721px;
+  --searchbox-md: 624px;
+  --searchbox-sm: 382px;
+  
+  /* Alturas */
+  --nav-height-xl: 73px;
+  --nav-height-md: 73px;
+  --nav-height-sm: 68px;
+  --searchbox-height-xl: 109px;
+  --searchbox-height-md: 108px;
+  --searchbox-height-sm: 161px;
+  
+  /* Bordes */
+  --border-radius-xl: 60px;
+  --border-radius-md: 60px;
+  --border-radius-sm: 40px;
+  
+  /* Espaciados */
+  --padding-xl: 45px;
+  --padding-md: 32px;
+  --padding-sm: 24px;
+  --gap-xl: 32px;
+  --gap-md: 24px;
+  --gap-sm: 16px;
+
+  /* Sombras */
+  --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Media Queries Globales */
+@media screen and (max-width: 1200px) {
+  :root {
+    /* Actualización de variables para MD */
+    --container-width: var(--container-md);
+    --searchbox-width: var(--searchbox-md);
+    --padding-container: var(--padding-md);
+    --gap-container: var(--gap-md);
+  }
+
+  /* Clases de utilidad */
+  .hide-md {
+    display: none !important;
+  }
+
+  .navigation {
+    max-width: var(--container-md);
+    padding: 0 var(--padding-md);
+    top: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    /* Actualización de variables para SM */
+    --container-width: var(--container-sm);
+    --searchbox-width: var(--searchbox-sm);
+    --padding-container: var(--padding-sm);
+    --gap-container: var(--gap-sm);
+  }
+
+  /* Clases de utilidad */
+  .hide-sm {
+    display: none !important;
+  }
+
+  .flex-column-sm {
+    flex-direction: column !important;
+  }
+
+  .no-divider-sm {
+    display: none !important;
+  }
+
+  .navigation {
+    max-width: var(--container-sm);
+    height: var(--nav-height-sm);
+    padding: 0 var(--padding-sm);
+    border-radius: var(--border-radius-sm);
+    top: 16px;
+  }
+
+  .logo {
+    height: 32px;
+  }
+
+  .icon-button {
+    font-size: 18px;
+  }
+}

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import Categories from "../Routes/Categories"; // Asegúrate de que la ruta sea correcta
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import Categories from "../Routes/Categories";
 
 const Activities = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,9 +14,13 @@ const Activities = () => {
     <div className="dropdown">
       <button
         onClick={toggleDropdown}
-        className="dropdown-button button-transparent"
+        className="dropdown-button"
       >
-        Actividades <span className="dropdown-arrow">&#9662;</span>
+        Actividades
+        <FontAwesomeIcon 
+          icon={faAngleDown} 
+          className={`dropdown-arrow ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
       {isOpen && (
         <div className="dropdown-content">

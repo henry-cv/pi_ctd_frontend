@@ -13,7 +13,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import "react-datepicker/dist/react-datepicker.css";
 import '../css/SearchBox.css';
 
-// Configura tu token de Mapbox
+// Configura el token de Mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoicGVkcm9wdiIsImEiOiJjbTc2b2FqdHQwOXB6MmlweTNuaDRlemk1In0.YjdUDMdea-myXaqGBwh1Zg';
 
 const SearchBox = () => {
@@ -79,46 +79,6 @@ const SearchBox = () => {
     setValues(prev => ({ ...prev, [field]: value }));
   };
 
-  const customSelectStyles = {
-    control: (provided) => ({
-      ...provided,
-      border: 'none',
-      boxShadow: 'none',
-      background: 'transparent',
-      minHeight: '32px',
-      cursor: 'pointer',
-      fontFamily: 'Archivo, sans-serif',
-      fontSize: '16px',
-      color: '#101828',
-    }),
-    menu: (provided) => ({
-      ...provided,
-      marginTop: '8px',
-      borderRadius: '12px',
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-      overflow: 'hidden'
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? '#f5f5f5' : 'white',
-      color: '#101828',
-      fontFamily: 'Archivo, sans-serif',
-      fontSize: '16px',
-      cursor: 'pointer',
-      padding: '8px 16px'
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: '#101828',
-      fontFamily: 'Archivo, sans-serif'
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: '#101828',
-      fontFamily: 'Archivo, sans-serif'
-    })
-  };
-
   return (
     <div className="search-box-container">
       <div className="search-box-wrapper">
@@ -135,7 +95,6 @@ const SearchBox = () => {
               onInputChange={handleDestinationInputChange}
               options={suggestions}
               placeholder="¿A dónde vamos?"
-              styles={customSelectStyles}
               className="react-select-container"
               classNamePrefix="react-select"
               isSearchable={true}
@@ -148,7 +107,7 @@ const SearchBox = () => {
 
           <div className="divider" />
 
-          {/* Actualizar el campo de Categoría */}
+          {/* Campo de Categoría */}
           <div className="search-field">
             <div className="field-title">
               <FontAwesomeIcon icon={faTicket} rotation={90} />
@@ -159,7 +118,6 @@ const SearchBox = () => {
               onChange={(value) => handleChange('categoria', value)}
               options={categorias}
               placeholder="Seleccionar categoría"
-              styles={customSelectStyles}
               className="react-select-container"
               classNamePrefix="react-select"
             />

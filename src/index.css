@@ -53,7 +53,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Eliminar o modificar esta media query para mantener el fondo blanco */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
