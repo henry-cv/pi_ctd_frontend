@@ -1,14 +1,90 @@
+/* Importación de las dos fuentes a utilizar */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+
 :root {
   /* Colores principales */
   --blue-base: #3E10DA;
   --blue-hover: #3209c0;
   --white: #FFFFFF;
   --black: #101828;
-  
+
+  /* Colores BG para botones */
+  --color-error: #d61b1b;
+  --color-sucess: #12c618;
+
+  /* --> reemplazar uso de white en los otros archivos <-- */
+
+  /* Paleta de colores para los 3 colores base */
+  /* Tonalidades de Blue-500 */
+  --blue-100: #bfaff3;
+  --blue-200: #9f88ed;
+  --blue-300: #7e60e6;
+  --blue-400: #5e38e0;
+  /* blue-base es el blue-500 */
+  --blue-600: #340db6;
+  --blue-700: #5e38e0;
+  --blue-800: #1f086d;
+  --blue-900: #150549;
+
+  /* Tonalidades de Yellow */
+  --yellow-100: #faebaf;
+  --yellow-200: #f8e287;
+  --yellow-300: #f6d85f;
+  --yellow-400: #f3ce37;
+  /* yellow-base es el yellow-500 */
+  --yellow-base: #f1c40f;
+  --yellow-600: #c9a30d;
+  --yellow-700: #a1830a;
+  --yellow-800: #796208;
+  --yellow-900: #504105;
+
+  /* Tonalidades de Black */
+  --black-100: #afb2b7;
+  --black-200: #888c94;
+  --black-300: #606570;
+  --black-400: #383f4c;
+  /* black es el black-500 */
+  --black-600: #0d1421;
+  --black-700: #0b101b;
+  --black-800: #080c14;
+  --black-900: #05080d;
+
+  /* Variables para títulos: */
+  /* Para h1 */
+  --h1-size: 2.5rem;
+  --h1-weight: 700;
+  /* Peso de la fuente para h1 */
+
+  /* Para h2 */
+  --h2-size: 2rem;
+  --h2-weight: 600;
+  /* Peso de la fuente para h2 */
+
+  /* Para h3 */
+  --h3-size: 1.75rem;
+  --h3-weight: 500;
+  /* Peso de la fuente para h3 */
+
+  /* Para h4 */
+  --h4-size: 1.5rem;
+  --h4-weight: 500;
+  /* Peso de la fuente para h4 */
+
+  /* Para h5 */
+  --h5-size: 1.25rem;
+  --h5-weight: 400;
+  /* Peso de la fuente para h5 */
+
+  /* Para h6 */
+  --h6-size: 1rem;
+  --h6-weight: 700;
+  /* Peso de la fuente para h6 */
+
   /* Fuentes */
   --font-outfit: 'Outfit', sans-serif;
   --font-archivo: 'Archivo', sans-serif;
-  
+
   /* Tamaños de contenedores */
   --container-xl: 1142px;
   --container-md: 782px;
@@ -18,7 +94,7 @@
   --searchbox-xl: 721px;
   --searchbox-md: 624px;
   --searchbox-sm: 382px;
-  
+
   /* Alturas */
   --nav-height-xl: 73px;
   --nav-height-md: 73px;
@@ -26,12 +102,12 @@
   --searchbox-height-xl: 109px;
   --searchbox-height-md: 108px;
   --searchbox-height-sm: 161px;
-  
+
   /* Bordes */
   --border-radius-xl: 60px;
   --border-radius-md: 60px;
   --border-radius-sm: 40px;
-  
+
   /* Espaciados */
   --padding-xl: 45px;
   --padding-md: 32px;
@@ -42,6 +118,22 @@
 
   /* Sombras */
   --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Reglas para el body, revisar si se van a usar */
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font_Outfit);
+  font-size: var(--h6-size);
+  justify-content: center;
 }
 
 /* Media Queries Globales */
