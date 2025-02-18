@@ -1,0 +1,89 @@
+/* Estilos comunes para los formularios */
+.form-base {
+  background-color: var(--color-white);
+  border-color: var(--black-100);
+  border-style: dashed;
+  color: var(--blue-600);
+  border-radius: 45px;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font_Archivo);
+  row-gap: 20px;
+  padding: 61px 69px 100px 69px;
+  width: 834px;
+}
+
+.form-base>div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 696px;
+}
+
+.form-base>div>label,
+.rates label {
+  color: var(--black-base);
+  font-family: var(--font_Archivo);
+  font-size: var(--h4-size);
+}
+
+/* Espaciados inicio */
+
+/* espaciadods fin*/
+
+.form-base>div>input,
+.form-base>div>textarea,
+.form-base>div select,
+.form-base>div input {
+  border-radius: 10px;
+  border-color: var(--black-300);
+  color: var(--black-300);
+  font-family: var(--font_Outfit);
+  font-size: var(--h5-size);
+  padding: 1rem;
+}
+
+.form-base>div>textarea {
+  font-size: var(--h5-size);
+}
+
+.form-base>div.rates {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.rates>div {
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.extra-fields {
+  margin-top: 20px;
+}
+
+.extra-fields>div {
+  margin-bottom: 10px;
+}
+
+.save-rate-button {
+  background-color: var(--blue-600);
+  color: var(--color-white);
+  border: none;
+  border-radius: 5px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 140px;
+}
