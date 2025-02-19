@@ -1,66 +1,41 @@
-/* Estilos base de la navegación */
+/* Contenedor principal */
 .navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--white);
-  border-radius: var(--border-radius-xl);
+  border-radius: 60px;
   box-shadow: var(--shadow-md);
-  height: var(--nav-height-xl);
-  width: 100%;
-  max-width: var(--container-xl);
-  padding: 0 var(--padding-xl);
-  font-family: var(--font-outfit);
+  width: min(90%, 1142px);
+  height: 73px;
+  padding: 0 24px;
+  margin: 16px auto;
   position: relative;
-  top: 36px;
-  box-sizing: border-box;
 }
 
-/* Contenedores */
+/* Contenedores laterales */
 .leftContainer,
 .rightContainer {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .leftContainer {
-  gap: var(--gap-xl);
+  gap: 20px;
 }
 
 .rightContainer {
-  gap: 24px;
+  gap: 16px;
 }
 
 /* Logo */
 .logo {
-  height: 40px;
+  height: 24px;
   width: auto;
 }
 
-/* Link de navegación */
-.nav-link {
-  color: var(--black);
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-/* Botones de iconos */
-.icon-button {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--black);
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-/* Dropdown */
+/* Dropdown de Actividades */
 .dropdown {
   position: relative;
 }
@@ -69,37 +44,173 @@
   background: none;
   border: none;
   padding: 8px 12px;
-  font-family: var(--font-outfit);
+  font-size: 14px;
   color: var(--black);
-  cursor: pointer;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.dropdown-arrow.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .dropdown-content {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
-  margin-top: 8px;
   background-color: var(--white);
-  min-width: 200px;
-  border-radius: var(--border-radius-sm);
+  min-width: 180px;
+  border-radius: 12px;
   box-shadow: var(--shadow-md);
-  padding: var(--padding-sm);
+  padding: 12px;
   z-index: 1000;
+}
+
+/* Estilos para la lista de categorías */
+.list-categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-categories li {
+  padding: 8px 12px;
+  color: var(--black);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+}
+
+.list-categories li:hover {
+  background-color: var(--gray-200);
+}
+
+/* Link de navegación */
+.nav-link {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+/* Botones de iconos */
+.icon-button {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.icon-button svg {
+  font-size: 16px;
+}
+
+/* Botón de menú hamburguesa */
+.show-sm {
+  display: none;
+}
+
+.mobile-menu-button {
+  padding: 8px !important;
+  height: 36px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Estados hover */
 .nav-link:hover,
 .icon-button:hover,
-.button-transparent:hover {
+.dropdown-button:hover {
   opacity: 0.8;
 }
 
-/* Utilitarios */
-.button-transparent {
-  background: none;
-  border: none;
-  box-shadow: none;
+/* Media Queries */
+@media screen and (max-width: 1200px) {
+  .navigation {
+    width: min(95%, 782px);
+    height: 60px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation {
+    width: calc(100% - 3rem); /* Aplicamos el mismo margen que en pantallas pequeñas */
+    height: 48px; /* Aumentamos el grosor */
+    border-radius: 40px;
+    padding: 0 16px;
+    margin: 16px auto; /* Centramos con auto */
+  }
+  
+  .hide-sm {
+    display: none;
+  }
+  
+  .show-sm {
+    display: flex;
+  }
+
+  .rightContainer {
+    gap: 12px; /* Reducimos el espacio entre botones */
+  }
+
+  .icon-button {
+    width: 24px; /* Aumentamos un poco el tamaño de los iconos */
+    height: 24px;
+  }
+
+  .icon-button svg {
+    font-size: 16px;
+  }
+
+  .logo {
+    height: 22px;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media screen and (max-width: 375px) {
+  .navigation {
+    height: 44px;
+    padding: 0 12px;
+  }
+
+  .rightContainer {
+    gap: 8px; /* Aún menos espacio en pantallas muy pequeñas */
+  }
+}
+
+/* Utilidades */
+.hide-sm {
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  .show-sm {
+    display: none;
+  }
+  
+  .hide-sm {
+    display: flex;
+  }
 }

@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import '../css/SearchBox.css';
 
 // Configura el token de Mapbox
-mapboxgl.accessToken = 'pk.eyJ1IjoicGVkcm9wdiIsImEiOiJjbTc2b2FqdHQwOXB6MmlweTNuaDRlemk1In0.YjdUDMdea-myXaqGBwh1Zg';
+mapboxgl.accessToken = 'pk.eyJ1IjoicGVkcm9wOXB6MmlweTNuaDRlemk1In0.YjdUDMdea-myXaqGBwh1Zg';
 
 const SearchBox = () => {
   const [values, setValues] = useState({
@@ -83,7 +83,7 @@ const SearchBox = () => {
     <div className="search-box-container">
       <div className="search-box-wrapper">
         <div className="search-fields">
-          {/* Campo de Destino con Mapbox */}
+          {/* Campo de Destino */}
           <div className="search-field">
             <div className="field-title">
               <FontAwesomeIcon icon={faLocationDot} />
@@ -105,8 +105,6 @@ const SearchBox = () => {
             />
           </div>
 
-          <div className="divider" />
-
           {/* Campo de Categoría */}
           <div className="search-field">
             <div className="field-title">
@@ -122,8 +120,6 @@ const SearchBox = () => {
               classNamePrefix="react-select"
             />
           </div>
-
-          <div className="divider" />
           
           {/* Campo de Fecha */}
           <div className="search-field">

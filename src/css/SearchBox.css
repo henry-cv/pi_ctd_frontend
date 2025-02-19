@@ -1,70 +1,63 @@
 /* Contenedor principal */
 .search-box-container {
   position: absolute;
-  top: 85%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: var(--searchbox-xl);
-  padding: 0 1rem;
+  transform: translateX(-50%);
+  width: min(90%, 800px);
+  bottom: 10%;
   z-index: 10;
 }
 
-/* Wrapper del searchbox */
+/* Wrapper principal */
 .search-box-wrapper {
   background-color: var(--white);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  position: relative;
+  box-shadow: var(--shadow-md);
   width: 100%;
-  height: var(--searchbox-height-xl);
-}
-
-/* Contenedor de campos */
-.search-fields {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-xl);
-  height: 100%;
-}
-
-/* Campo individual */
-.search-field {
-  flex: 1;
-  min-width: 0;
-  padding: 0 1rem;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  padding: 1.5rem;
 }
 
-/* Título del campo */
+/* Grid de campos */
+.search-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Contenedor individual de cada campo */
+.search-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+/* Encabezado de cada campo */
 .field-title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  color: #4B5563;
+  gap: 0.5rem;
+}
+
+.field-title svg {
+  color: var(--gray-400);
+  font-size: 1rem;
 }
 
 .field-title span {
   font-family: var(--font-archivo);
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 1rem;
   color: var(--black);
 }
 
-/* Separador vertical */
-.divider {
-  height: 32px;
-  width: 1px;
-  background-color: #E5E7EB;
-  margin: 0 1rem;
-}
-
-/* Estilos de React Select */
-.react-select-container {
+/* Estilos de los inputs */
+.react-select-container,
+.datepicker-container {
   width: 100%;
 }
 
@@ -72,48 +65,14 @@
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
-  min-height: 32px !important;
-  cursor: pointer !important;
+  min-height: unset !important;
 }
 
-.react-select__indicators {
-  display: none !important;
-}
-
-.react-select__placeholder {
-  color: var(--black) !important;
-  font-family: var(--font-archivo) !important;
-  font-size: 16px !important;
-}
-
-.react-select__menu {
-  margin-top: 8px !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  border: none !important;
-}
-
-/* Estilos del DatePicker */
+.react-select__placeholder,
 .react-datepicker-input {
-  width: 100%;
   font-family: var(--font-archivo);
-  font-size: 16px;
+  font-size: 0.875rem;
   color: var(--black);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-
-.react-datepicker-input:focus {
-  outline: none;
-}
-
-.react-datepicker {
-  font-family: var(--font-archivo) !important;
-  border: none !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 12px !important;
 }
 
 /* Botón de búsqueda */
@@ -123,14 +82,15 @@
   bottom: 0;
   transform: translate(-50%, 50%);
   background-color: var(--blue-base);
-  color: var(--white);
-  width: 46.87px;
-  height: 46.87px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
+  border: none;
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
   transition: background-color 0.2s;
 }
 
@@ -138,3 +98,74 @@
   background-color: var(--blue-hover);
 }
 
+/* Tablet */
+@media (max-width: 1024px) {
+  .search-box-wrapper {
+    padding: 1.25rem;
+  }
+
+  .search-fields {
+    gap: 1rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .search-box-container {
+    bottom: 5%;
+    width: min(92%, 440px);
+  }
+
+  .search-box-wrapper {
+    padding: 1rem;
+  }
+
+  .search-fields {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+      "destino categoria"
+      "fecha fecha";
+    gap: 0.75rem;
+  }
+
+  .search-field:nth-child(1) { grid-area: destino; }
+  .search-field:nth-child(2) { grid-area: categoria; }
+  .search-field:nth-child(3) { grid-area: fecha; }
+
+  .field-title span {
+    font-size: 0.875rem;
+  }
+
+  .search-button {
+    left: auto;
+    right: 1rem;
+    bottom: 50%;
+    transform: translateY(50%);
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 375px) {
+  .search-box-container {
+    width: calc(100% - 2rem);
+  }
+
+  .search-box-wrapper {
+    padding: 0.75rem;
+  }
+
+  .search-fields {
+    gap: 0.5rem;
+  }
+
+  .field-title span {
+    font-size: 0.813rem;
+  }
+
+  .search-button {
+    width: 32px;
+    height: 32px;
+  }
+}

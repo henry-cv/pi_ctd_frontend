@@ -77,14 +77,23 @@
   }
   
   .hero-content {
-    max-width: 420px;
+    max-width: 90%;
+    padding: 0 var(--padding-sm);
+    top: 45%; /* Ajustamos posición para dar más espacio al SearchBox */
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
   }
 
   .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem;
   }
 }

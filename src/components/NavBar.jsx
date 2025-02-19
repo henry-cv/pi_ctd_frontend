@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { FaGlobe } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faBars,
+  faGlobe, 
+  faMoon, 
+  faSun 
+} from '@fortawesome/free-solid-svg-icons';
 import Activities from "./Activities";
 import ButtonBluePill from "./ButtonBluePill";
 import '../css/NavBar.css';
@@ -22,16 +28,20 @@ const Navbar = () => {
       </div>
       <div className="rightContainer">
         <button onClick={toggleTheme} className="icon-button">
-          <i className={`fa-regular ${theme === "light" ? "fa-moon" : "fa-sun"}`}></i>
+          <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} />
         </button>
         <button className="icon-button">
-          <FaGlobe />
+          <FontAwesomeIcon icon={faGlobe} />
         </button>
-          <div className="hide-md">
-          <ButtonBluePill text="Registro" className="button-transparent" />
-        </div>
         <div className="hide-sm">
           <ButtonBluePill text="Acceso" />
+        </div>
+        {/* Botón hamburguesa en mobile con estilo de ButtonBluePill */}
+        <div className="show-sm">
+          <ButtonBluePill 
+            text={<FontAwesomeIcon icon={faBars} />}
+            className="button-blue mobile-menu-button"
+          />
         </div>
       </div>
     </nav>
