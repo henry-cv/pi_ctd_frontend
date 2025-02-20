@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -47,7 +47,7 @@ const DashActividades = () => {
             </button>
           </div>
           {/* 🔗 Corregir la ruta a la creación de actividades */}
-          <Link to="crear-actividad">
+          <Link to="crearactividad">
             <ButtonGral
               text={"Agregar actividad"}
               color="yellow"
