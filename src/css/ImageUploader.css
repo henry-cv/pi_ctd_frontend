@@ -1,3 +1,8 @@
+:root {
+  --black-100: #afb2b7;
+  --black-300: #606570;
+  --black-600: #0d1421;
+}
 .image-previews {
   display: flex;
   flex-wrap: wrap;
