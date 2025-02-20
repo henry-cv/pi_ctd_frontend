@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -9,6 +9,32 @@ import ActivitieRow from "./ActivitieRow";
 import { Link } from "react-router-dom";
 
 const DashActividades = () => {
+
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 📡 Cargar actividades desde el backend
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await fetch("/api/producto/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener actividades: ${response.status}`);
+        }
+        const data = await response.json();
+        setActivities(data);
+      } catch (error) {
+        console.error("Error cargando actividades:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
   return (
     <div className="activities_container">
       <div className="header_activities">
@@ -20,7 +46,8 @@ const DashActividades = () => {
               <LuListFilter size={"2rem"} />
             </button>
           </div>
-          <Link to={"crear actividad"}>
+          {/* 🔗 Corregir la ruta a la creación de actividades */}
+          <Link to="crear-actividad">
             <ButtonGral
               text={"Agregar actividad"}
               color="yellow"
@@ -42,26 +69,33 @@ const DashActividades = () => {
         </div>
       </div>
 
-      {/* Componente registro */}
-      <ActivitieRow
-        imagen={"../activitie.jpg"}
-        titulo={"Cena 4 tiempos"}
-        reservas="25"
-      />
-      <ActivitieRow
-        imagen={"../activitie.jpg"}
-        titulo={"Cata de vino"}
-        reservas="25"
-      />
+      {/* 🛠 Mostrar mensaje de carga */}
+      {loading && <p>Cargando actividades...</p>}
 
-      {/* <div className="activities_info_img">
-        <p>
-          Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera
-          actividad!
-        </p>
-        <img src="../activitiesImg.png" alt="Sin actividades" />
-      </div> */}
-      
+      {/* 🚨 Mostrar error si hay problemas con la carga */}
+      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+
+      {/* 🔥 Renderizar actividades si existen */}
+      {!loading && !error && activities.length > 0 ? (
+        activities.map((activity) => (
+          <ActivitieRow
+            key={activity.id}
+            imagen={activity.imagenes?.[0] || "/default.jpg"} // 🖼 Imagen por defecto si no hay imagen
+            titulo={activity.nombre}
+            reservas={activity.reservas || "0"} // 📌 Asegurar un número de reservas
+          />
+        ))
+      ) : (
+        // 📌 Mostrar mensaje si no hay actividades creadas
+        !loading && !error && (
+          <div className="activities_info_img">
+            <p>
+              Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera actividad!
+            </p>
+            <img src="/activitiesImg.png" alt="Sin actividades" />
+          </div>
+        )
+      )}
     </div>
   );
 };
