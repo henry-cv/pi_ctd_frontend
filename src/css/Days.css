@@ -1,3 +1,6 @@
+:root {
+  --black-300: #606570;
+}
 .container-days {
   display: flex;
   flex-direction: column;

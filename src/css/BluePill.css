@@ -1,8 +1,28 @@
+/* Importación de las dos fuentes a utilizar */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+
+:root {
+  /* Colores principales */
+  --blue-base: #3e10da;
+  --blue-hover: #3209c0;
+  --white: #ffffff;
+  --black: #101828;
+  --blue-700: #5e38e0;
+  --yellow-base: #f1c40f;
+  --yellow-700: #a1830a;
+
+  /* Fuentes */
+  --font-outfit: "Outfit", sans-serif;
+  --font-archivo: "Archivo", sans-serif;
+  /* Tamaños de fuentes */
+  --h6-size: 1rem;
+}
 button,
 .button {
   border: none;
   cursor: pointer;
-  font-family: var(--font_Outfit);
+  font-family: var(--font-outfit);
 }
 
 .button {
@@ -11,12 +31,12 @@ button,
   width: 91px;
   border-radius: 72px;
   padding: 10px 20px;
-  transition: background-color 300ms ease, color 300ms ease;
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 .button-blue {
   background-color: var(--blue-base);
-  color: var(--color-white);
+  color: var(--white);
 }
 
 .button-blue:hover {
@@ -30,7 +50,7 @@ button,
 
 .button-transparent {
   background-color: transparent;
-  color: var(--black)
+  color: var(--black);
 }
 
 button.light i {
@@ -39,10 +59,12 @@ button.light i {
 
 .button-yellow {
   background-color: var(--yellow-base);
-  color: var(--black-base);
+  color: var(--black);
   padding: 9px 20px;
 }
-
+.button-yellow:hover {
+  background-color: var(--yellow-700);
+}
 .btn-preview,
 .btn-save {
   padding: 9px 20px;

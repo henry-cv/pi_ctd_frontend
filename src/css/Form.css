@@ -1,59 +1,78 @@
 /* Estilos comunes para los formularios */
-:root{
-  --color-error:var(--color-error)
+/* Importación de las dos fuentes a utilizar */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
 
+:root {
+  /* Fuentes */
+  --font-outfit: "Outfit", sans-serif;
+  --font-archivo: "Archivo", sans-serif;
+
+  /* Colores principales */
+  --blue-base: #3e10da;
+  --blue-hover: #3209c0;
+  --white: #ffffff;
+  --black: #101828;
+
+  /* Colores BG para botones */
+  --color-error: #d61b1b;
+  --color-sucess: #12c618;
+
+  /* Tonalidades de Black */
+  --black-100: #afb2b7;
+  --black-300: #606570;
+
+  /* Tamaños de letra, no para encabezados
+  no confundir con h1, h2, h3, h4, h5, h6
+  que se aplican así h5 { font-size: 22px }
+  */
+  --h4-size: 1.5rem;
+  --h5-size: 1.25rem;
 }
 .form-base {
-  background-color: var(--color-white);
-  border-color: var(--black-100);
-  /* se debe eliminar el border-color solo l o uso como guía */
-  border-style: dashed;
-  color: var(--black-base);
+  background-color: var(--white);
+  color: var(--black);
   border-radius: 45px;
   display: flex;
   flex-direction: column;
-  font-family: var(--font_Archivo);
+  font-family: var(--font-archivo);
   row-gap: 20px;
   padding: 61px 69px 100px 69px;
   width: 834px;
 }
 
-.form-base>div {
+.form-base > div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   width: 696px;
 }
 
-.form-base>div>label,
+.form-base > div > label,
 .rates label,
 label {
-  color: var(--black-base);
-  font-family: var(--font_Archivo);
+  color: var(--black);
+  font-family: var(--font-archivo);
   font-size: var(--h4-size);
 }
 
-/* Espaciados inicio */
-
-/* espaciadods fin*/
-
-.form-base>div>input,
-.form-base>div>textarea,
-.form-base>div select,
-.form-base>div input {
+.form-base > div > input,
+.form-base > div > textarea,
+.form-base > div select,
+.form-base > div input {
   border-radius: 10px;
   border-color: var(--black-300);
   color: var(--black-300);
-  font-family: var(--font_Outfit);
+  font-family: var(--font-outfit);
   font-size: var(--h5-size);
   padding: 1rem;
 }
 
-.form-base>div>textarea {
+.form-base > div > textarea {
   font-size: var(--h5-size);
 }
 
-.form-base>div.extra-fields {
+.form-base > div.extra-fields {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
@@ -61,20 +80,20 @@ label {
   margin-top: 20px;
 }
 
-.form-base>div.extra-fields>div {
+.form-base > div.extra-fields > div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
 }
 
-.form-base>div.rates {
+.form-base > div.rates {
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.rates>div {
+.rates > div {
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -89,28 +108,16 @@ label {
   background: none;
   /* border: none; */
   cursor: pointer;
-  font-family: "geologica", var(--font_Outfit);
+  font-family: "geologica", var(--font-outfit);
   font-size: var(--h4-size);
   margin-top: 10px;
 }
 
-.extra-fields>div {
+.extra-fields > div {
   align-self: center;
   margin-bottom: 10px;
 }
 
-/* .save-rate-button {
-  color: var(--color-white);
-  border: none;
-  border-radius: 5px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-} */
 .save-rate-button {
   background: none;
   border: none;
@@ -119,7 +126,7 @@ label {
   justify-content: center;
   align-items: center;
   color: var(--black-300);
-  font-size: 1.5rem;
+  font-size: var(--h4-size);
 }
 
 .centered-button {
@@ -135,7 +142,7 @@ label {
   justify-content: center;
   align-items: center;
   color: var(--black-300);
-  font-size: 1.5rem;
+  font-size: var(--h4-size);
 }
 
 div.container-categories {
@@ -148,19 +155,18 @@ div.container-categories {
   column-gap: 10px;
 }
 
-
 div.div-p-preview {
   align-self: center;
   margin: 20px auto;
   width: 498px;
 }
 
-.form-base>div>p {
-  font-family: var(--font_Outfit);
+.form-base > div > p {
+  font-family: var(--font-outfit);
   text-align: center;
 }
 
-.form-base>div.div-submit {
+.form-base > div.div-submit {
   column-gap: 40px;
   display: flex;
   flex-direction: row;
@@ -168,7 +174,7 @@ div.div-p-preview {
   margin-top: 20px;
 }
 
-.form-base>div.div-submit button {
+.form-base > div.div-submit button {
   border-radius: 72px;
   font-size: var(--h5-size);
 }
