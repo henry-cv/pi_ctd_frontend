@@ -144,7 +144,7 @@ const handleHoraFinChange = (e) => {
     console.log("Enviando datos al backend:", JSON.stringify(formData, null, 2));
 
     try {
-      const response = await fetch("http://44.195.185.220:8080/producto/registrar", {
+      const response = await fetch("/api/producto/registrar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

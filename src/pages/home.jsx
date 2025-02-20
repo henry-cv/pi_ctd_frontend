@@ -133,7 +133,7 @@ const Home = () => {
   
   const fetchActivities= async()=>{
     try {
-      const response = await fetch("http://44.195.185.220:8080/producto/listaAleatoria");
+      const response = await fetch("/api/producto/listaAleatoria");
       if (!response.ok) {
         throw new Error("Error al obtener las actividades");
       }
