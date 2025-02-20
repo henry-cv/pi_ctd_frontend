@@ -6,24 +6,21 @@ button,
 }
 
 .button {
-  font-family: var(--font-outfit);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: var(--h6-size);
   height: 43px;
-  padding: 12px 24px;
+  width: 91px;
   border-radius: 72px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  padding: 10px 20px;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 .button-blue {
   background-color: var(--blue-base);
-  color: var(--white);
+  color: var(--color-white);
 }
 
 .button-blue:hover {
-  background-color: var(--blue-hover);
+  background-color: var(--blue-700);
 }
 
 .button-blue:focus {
@@ -33,11 +30,22 @@ button,
 
 .button-transparent {
   background-color: transparent;
-  color: var(--black);
+  color: var(--black)
 }
 
 button.light i {
   cursor: pointer;
 }
 
-/* Las media queries se manejan desde variables.css */
+.button-yellow {
+  background-color: var(--yellow-base);
+  color: var(--black-base);
+  padding: 9px 20px;
+}
+
+.btn-preview,
+.btn-save {
+  padding: 9px 20px;
+  height: 43px;
+  width: 197px;
+}
