@@ -84,93 +84,100 @@ const FormBasis = () => {
     setSelectedImages(files);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Validaciones
-    if (tipoTarifa === "") {
-      alert("Debe seleccionar un tipo de tarifa");
-      return;
-    }
+  // En la función handleSubmit dentro de FormBasis.jsx
 
-    if (isNaN(valorTarifa) || valorTarifa <= 0) {
-      alert("El valor de la tarifa debe ser un número positivo");
-      return;
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // Validaciones
+  if (errorTitulo || errorDescripcion) {
+    alert("Por favor, corrige los errores en el formulario antes de enviar.");
+    return;
+  }
 
-    if (selectedImages.length === 0) {
-      alert("Debe seleccionar al menos una imagen");
-      return;
-    }
+  if (tipoTarifa === "") {
+    alert("Debe seleccionar un tipo de tarifa");
+    return;
+  }
 
-    // Prevenir múltiples envíos
-    setIsSubmitting(true);
+  if (isNaN(valorTarifa) || valorTarifa <= 0) {
+    alert("El valor de la tarifa debe ser un número positivo");
+    return;
+  }
 
-    // Crear FormData para enviar archivos y datos
-    const formData = new FormData();
-    
-    // Datos del producto
-    const productoData = {
-      nombre: titulo,
-      descripcion,
-      valorTarifa: parseFloat(valorTarifa),
-      tipoTarifa,
-      idioma,
-      horaInicio: `${horaInicio}:00`,
-      horaFin: `${horaFin}:00`,
-      tipoEvento: eventType,
-      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      // Las imágenes se envían como archivos, así que enviamos un array vacío
-      imagenes: []
-    };
-    
-    // Agregar el producto como JSON
-    formData.append("producto", new Blob([JSON.stringify(productoData)], { type: 'application/json' }));
-    
-    // Agregar las imágenes
-    selectedImages.forEach(file => {
-      formData.append("imagenes", file);
-    });
-    
-    console.log("Enviando datos al backend...");
+  if (selectedImages.length === 0) {
+    alert("Debe seleccionar al menos una imagen");
+    return;
+  }
 
-    try {
-      const response = await fetch("http://34.192.152.81:8080/producto/registrar", {
-        method: "POST",
-        body: formData,
-        // No establecer Content-Type, FormData lo hará automáticamente
-      });
+  // Prevenir múltiples envíos
+  setIsSubmitting(true);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error en la solicitud: ${response.status} - ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log("Respuesta del servidor:", data);
-      alert("Producto creado correctamente");
-      
-      // Limpiar formulario después de un envío exitoso
-      setTitulo("");
-      setDescripcion("");
-      setValorTarifa("");
-      setTipoTarifa("");
-      setIdioma("");
-      setHoraInicio("");
-      setHoraFin("");
-      setEventType("");
-      setDiasDisponible([]);
-      setFechaEvento("");
-      setSelectedImages([]);
-      
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert(`Error al enviar los datos: ${error.message}`);
-    } finally {
-      setIsSubmitting(false);
-    }
+  // Crear FormData para enviar archivos y datos
+  const formData = new FormData();
+  
+  // Datos del producto como JSON string
+  const productoData = {
+    nombre: titulo,
+    descripcion,
+    valorTarifa: parseFloat(valorTarifa),
+    tipoTarifa,
+    idioma,
+    horaInicio: `${horaInicio}:00`,
+    horaFin: `${horaFin}:00`,
+    tipoEvento: eventType,
+    diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
+    fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
+    // No incluir imágenes aquí, ya que se enviará como archivos separados
+    imagenes: []
   };
+  
+  // Agregar el objeto producto como una parte JSON
+  formData.append("producto", new Blob([JSON.stringify(productoData)], { type: 'application/json' }));
+  
+  // Agregar cada imagen como una parte separada
+  selectedImages.forEach(file => {
+    formData.append("imagenes", file);
+  });
+  
+  console.log("Enviando datos al backend...");
+
+  try {
+    const response = await fetch("http://34.192.152.81:8080/producto/registrar", {
+      method: "POST",
+      body: formData,
+      // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error en la solicitud: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log("Respuesta del servidor:", data);
+    alert("Producto creado correctamente");
+    
+    // Limpiar formulario después de un envío exitoso
+    setTitulo("");
+    setDescripcion("");
+    setValorTarifa("");
+    setTipoTarifa("");
+    setIdioma("");
+    setHoraInicio("");
+    setHoraFin("");
+    setEventType("");
+    setDiasDisponible([]);
+    setFechaEvento("");
+    setSelectedImages([]);
+    
+  } catch (error) {
+    console.error("Error:", error.message);
+    alert(`Error al enviar los datos: ${error.message}`);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <form className="form-base" onSubmit={handleSubmit}>

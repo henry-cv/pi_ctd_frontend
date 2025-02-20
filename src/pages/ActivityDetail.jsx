@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faLocationDot, 
   faStar as faStarSolid,
- // faSearch,
+  faSearch,
   faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
@@ -14,36 +14,18 @@ import '../css/ActivityDetail.css';
 import ImageViewer from '../components/ImageViewer';
 
 const ActivityDetail = () => {
-  // const [expandedDescription, setExpandedDescription] = useState(false);
-  // const [showImageViewer, setShowImageViewer] = useState(false);
-  const { id } = useParams(); // ⬅ Capturar el ID del producto desde la URL
+  const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [expandedDescription, setExpandedDescription] = useState(false);
+  const [showImageViewer, setShowImageViewer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Datos estáticos de ejemplo
-  // const activity = {
-  //   id: 1,
-  //   title: "Taller de Arte Urbano",
-  //   city: "Buenos Aires",
-  //   country: "Argentina",
-  //   rating: 4.8,
-  //   reviews: 15,
-  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  //   price: 55,
-  //   images: [
-  //     "/activity1-main.jpg",
-  //     "/activity1-1.jpg",
-  //     "/activity1-2.jpg",
-  //     "/activity1-3.jpg",
-  //   ]
-  // };
-
   useEffect(() => {
     const fetchActivityDetails = async () => {
       try {
-        const response = await fetch(`/api/producto/${id}`);
+        setLoading(true);
+        const response = await fetch(`http://34.192.152.81:8080/producto/${id}`);
 
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
@@ -61,16 +43,7 @@ const ActivityDetail = () => {
     };
 
     fetchActivityDetails();
-  }, [id]); // ⬅ Se ejecuta cada vez que cambia el ID
-  // ⬇ Si está cargando, mostrar mensaje de carga
-  if (loading) return <p>Cargando detalles...</p>;
-
-  // ⬇ Si hubo un error, mostrar mensaje de error
-  if (error) return <p>Error: {error}</p>;
-
-  // ⬇ Si aún no hay datos, evitar errores
-  if (!activity) return <p>No se encontraron detalles para esta actividad.</p>;
-
+  }, [id]);
 
   const renderRatingStars = (rating) => {
     const stars = [];
@@ -85,150 +58,166 @@ const ActivityDetail = () => {
     }
     return stars;
   };
+  
+  // Imagen por defecto en caso de error
+  const defaultImage = '/default-activity.jpg';
+  
+  // Manejar errores de carga de imágenes
+  const handleImageError = (e) => {
+    e.target.src = defaultImage;
+  };
+
+  if (loading) return <p className="loading-message">Cargando detalles...</p>;
+  if (error) return <p className="error-message">Error: {error}</p>;
+  if (!activity) return <p className="not-found-message">No se encontraron detalles para esta actividad.</p>;
 
   return (
-    // <div className="activity-detail">
-    //   <div className="detail-container">
-    //     <BasicBreadcrumbs />
-        
-    //     <div className="images-section">
-    //       <div className="main-image">
-    //         <img src={activity.images[0]} alt={activity.title} />
-    //       </div>
-    //       <div className="side-images">
-    //         {activity.images.slice(1).map((image, index) => (
-    //           <div key={index} className={`side-image ${index === 2 ? 'with-overlay' : ''}`}>
-    //             <img src={image} alt={`${activity.title} ${index + 1}`} />
-    //             {index === 2 && (
-    //               <div 
-    //                 className="view-more-overlay"
-    //                 onClick={() => setShowImageViewer(true)}
-    //               >
-    //                 <span className="view-more-text">
-    //                   Ver más
-    //                   <FontAwesomeIcon icon={faSearch} />
-    //                 </span>
-    //               </div>
-    //             )}
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </div>
-
-    //     <div className="content-section">
-    //       <div className="detail-content">
-    //         <h1 className="detail-title">
-    //           {`${activity.title}, ${activity.city}`}
-    //         </h1>
-            
-    //         <div className="location">
-    //           <FontAwesomeIcon icon={faLocationDot} />
-    //           <span>{`${activity.city}, ${activity.country}`}</span>
-    //         </div>
-
-    //         <div className="rating-section">
-    //           <div className="stars">
-    //             {renderRatingStars(activity.rating)}
-    //             <span className="rating-number">{activity.rating}/5</span>
-    //           </div>
-    //           <a href="#reviews" className="reviews-link">
-    //             {`${activity.reviews} reseñas`}
-    //           </a>
-    //         </div>
-
-    //         <div className="description">
-    //           <p className={expandedDescription ? 'expanded' : ''}>
-    //             {activity.description}
-    //           </p>
-    //           <button 
-    //             className="expand-button"
-    //             onClick={() => setExpandedDescription(!expandedDescription)}
-    //           >
-    //             Ver más
-    //             <FontAwesomeIcon icon={faChevronDown} />
-    //           </button>
-    //         </div>
-    //       </div>
-
-    //       <div className="booking-card">
-    //         <div className="price-info">
-    //           <span className="price">${activity.price}</span>
-    //           <span className="per-person">por persona</span>
-    //           <p className="tax-info">
-    //             El precio incluye impuestos y tarifas de reservación
-    //           </p>
-    //         </div>
-    //         <ButtonGral
-    //           text="Ver disponibilidad"
-    //           color="blue"
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    //   {showImageViewer && (
-    //     <ImageViewer 
-    //       images={activity.images}
-    //       onClose={() => setShowImageViewer(false)}
-    //     />
-    //   )}
-    // </div>
     <div className="activity-detail">
       <div className="detail-container">
         <BasicBreadcrumbs />
-
-        {/* 🔹 Evitamos errores verificando que 'activity' no sea null */}
-        {activity ? (
-          <div className="content-section">
-            <div className="detail-content">
-              <h1 className="detail-title">{activity.nombre}</h1>
-
-              {/* 🔹 Campo comentado porque no lo traemos en el fetch */}
-              {/* <div className="location">
-                <FontAwesomeIcon icon={faLocationDot} />
-                <span>{activity.direccion || "Ubicación no disponible"}</span>
-              </div> */}
-
-              {/* 🔹 Campo comentado porque no hay ratings aún */}
-              {/* <div className="rating-section">
-                <div className="stars">
-                  {renderRatingStars(4.5)}
-                  <span className="rating-number">4.5/5</span>
-                </div>
-              </div> */}
-
-              <div className="description">
-                <p className={expandedDescription ? "expanded" : ""}>
-                  {activity.descripcion}
-                </p>
-                <button
-                  className="expand-button"
-                  onClick={() => setExpandedDescription(!expandedDescription)}
-                >
-                  Ver más
-                  <FontAwesomeIcon icon={faChevronDown} />
-                </button>
-              </div>
+        
+        {/* Sección de imágenes */}
+        {activity.imagenes && activity.imagenes.length > 0 ? (
+          <div className="images-section">
+            <div className="main-image">
+              <img 
+                src={activity.imagenes[0].rutaImagen} 
+                alt={activity.nombre}
+                onError={handleImageError}
+              />
             </div>
-
-            <div className="booking-card">
-              <div className="price-info">
-                <span className="price">${activity.valorTarifa}</span>
-                <span className="per-person">
-                  por {activity.tipoTarifa.replace("_", " ").toLowerCase()}
-                </span>
-                <p className="tax-info">
-                  El precio incluye impuestos y tarifas de reservación
-                </p>
-              </div>
-              <ButtonGral text="Ver disponibilidad" color="blue" />
+            <div className="side-images">
+              {activity.imagenes.slice(1, 4).map((imagen, index) => (
+                <div 
+                  key={index} 
+                  className={`side-image ${index === 2 && activity.imagenes.length > 4 ? 'with-overlay' : ''}`}
+                >
+                  <img 
+                    src={imagen.rutaImagen} 
+                    alt={`${activity.nombre} ${index + 1}`}
+                    onError={handleImageError}
+                  />
+                  {index === 2 && activity.imagenes.length > 4 && (
+                    <div 
+                      className="view-more-overlay"
+                      onClick={() => setShowImageViewer(true)}
+                    >
+                      <span className="view-more-text">
+                        Ver más (+{activity.imagenes.length - 4})
+                        <FontAwesomeIcon icon={faSearch} />
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         ) : (
-          <p>No se encontraron detalles para esta actividad.</p>
+          <div className="images-section">
+            <div className="main-image">
+              <img src={defaultImage} alt={activity.nombre} />
+            </div>
+          </div>
         )}
-      </div>
-    </div>
 
+        <div className="content-section">
+          <div className="detail-content">
+            <h1 className="detail-title">{activity.nombre}</h1>
+            
+            <div className="activity-meta">
+              {/* Si tienes información de ubicación */}
+              {activity.direccion && (
+                <div className="location">
+                  <FontAwesomeIcon icon={faLocationDot} />
+                  <span>{activity.direccion}</span>
+                </div>
+              )}
+              
+              {/* Información de horario */}
+              <div className="schedule-info">
+                <span>Horario: {activity.horaInicio} - {activity.horaFin}</span>
+              </div>
+              
+              {/* Información de tipo de evento */}
+              <div className="event-type">
+                <span>Tipo: {activity.tipoEvento === 'FECHA_UNICA' ? 'Fecha única' : 'Recurrente'}</span>
+              </div>
+              
+              {/* Fechas específicas o días disponibles */}
+              {activity.tipoEvento === 'FECHA_UNICA' && activity.fechaEvento && (
+                <div className="event-date">
+                  <span>Fecha: {new Date(activity.fechaEvento).toLocaleDateString()}</span>
+                </div>
+              )}
+              
+              {activity.tipoEvento === 'RECURRENTE' && activity.diasDisponible && activity.diasDisponible.length > 0 && (
+                <div className="available-days">
+                  <span>Días disponibles: {activity.diasDisponible.join(', ')}</span>
+                </div>
+              )}
+              
+              {/* Idioma */}
+              <div className="language">
+                <span>Idioma: {activity.idioma}</span>
+              </div>
+            </div>
+
+            {/* Calificación estática por ahora - puede ser implementada más adelante */}
+            <div className="rating-section">
+              <div className="stars">
+                {renderRatingStars(4.5)}
+                <span className="rating-number">4.5/5</span>
+              </div>
+            </div>
+
+            <div className="description">
+              <p className={expandedDescription ? 'expanded' : ''}>
+                {activity.descripcion}
+              </p>
+              {activity.descripcion.length > 150 && (
+                <button 
+                  className="expand-button"
+                  onClick={() => setExpandedDescription(!expandedDescription)}
+                >
+                  {expandedDescription ? 'Ver menos' : 'Ver más'}
+                  <FontAwesomeIcon 
+                    icon={faChevronDown} 
+                    className={expandedDescription ? 'rotated' : ''}
+                  />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="booking-card">
+            <div className="price-info">
+              <span className="price">${activity.valorTarifa}</span>
+              <span className="per-person">
+                {activity.tipoTarifa === 'POR_PERSONA' ? 'por persona' : 
+                  activity.tipoTarifa === 'POR_PAREJA' ? 'por pareja' :
+                  activity.tipoTarifa === 'POR_GRUPO_6' ? 'por grupo (6 personas)' :
+                  activity.tipoTarifa === 'POR_GRUPO_10' ? 'por grupo (10 personas)' : ''}
+              </span>
+              <p className="tax-info">
+                El precio incluye impuestos y tarifas de reservación
+              </p>
+            </div>
+            <ButtonGral
+              text="Ver disponibilidad"
+              color="blue"
+            />
+          </div>
+        </div>
+      </div>
+      
+      {/* Visor de imágenes en pantalla completa */}
+      {showImageViewer && activity.imagenes && (
+        <ImageViewer 
+          images={activity.imagenes.map(img => img.rutaImagen)}
+          onClose={() => setShowImageViewer(false)}
+        />
+      )}
+    </div>
   );
 };
 

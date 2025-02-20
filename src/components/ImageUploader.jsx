@@ -4,6 +4,7 @@ import { FaUpload, FaTrash } from "react-icons/fa";
 
 const ImageUploader = ({ onImagesSelected }) => {
   const [images, setImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -57,6 +58,7 @@ const ImageUploader = ({ onImagesSelected }) => {
           accept="image/jpeg,image/png,image/gif,image/svg+xml"
           multiple
           onChange={handleImageChange}
+          disabled={uploading}
         />
       </label>
 
@@ -69,9 +71,11 @@ const ImageUploader = ({ onImagesSelected }) => {
                 type="button" 
                 className="remove-button"
                 onClick={() => handleRemoveImage(index)}
+                disabled={uploading}
               >
                 <FaTrash />
               </button>
+              <div className="file-name">{image.file.name.length > 15 ? image.file.name.substring(0, 15) + '...' : image.file.name}</div>
             </div>
           ))}
         </div>
