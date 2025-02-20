@@ -1,3 +1,9 @@
+:root {
+  /* Para h6 */
+  --h6-size: 1rem;
+  --h6-weight: 700;
+  /* Peso de la fuente para h6 */
+}
 button,
 .button {
   border: none;
@@ -30,7 +36,7 @@ button,
 
 .button-transparent {
   background-color: transparent;
-  color: var(--black)
+  color: var(--black);
 }
 
 button.light i {
