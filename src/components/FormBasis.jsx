@@ -136,7 +136,7 @@ const FormBasis = () => {
     console.log("Enviando datos al backend...");
 
     try {
-      const response = await fetch("/api/producto/registrar", {
+      const response = await fetch("http://34.192.152.81:8080/producto/registrar", {
         method: "POST",
         body: formData,
         // No establecer Content-Type, FormData lo hará automáticamente
