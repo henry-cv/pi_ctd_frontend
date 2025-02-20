@@ -143,7 +143,7 @@ const handleSubmit = async (e) => {
   console.log("Enviando datos al backend...");
 
   try {
-    const response = await fetch("http://34.192.152.81:8080/producto/registrar", {
+    const response = await fetch("/api/producto/registrar", {
       method: "POST",
       body: formData,
       // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data

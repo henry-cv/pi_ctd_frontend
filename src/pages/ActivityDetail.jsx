@@ -25,7 +25,7 @@ const ActivityDetail = () => {
     const fetchActivityDetails = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://34.192.152.81:8080/producto/${id}`);
+        const response = await fetch(`/api/producto/${id}`);
 
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
