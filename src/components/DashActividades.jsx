@@ -80,7 +80,7 @@ const DashActividades = () => {
         activities.map((activity) => (
           <ActivitieRow
             key={activity.id}
-            imagen={activity.imagenes?.[0] || "/default.jpg"} // 🖼 Imagen por defecto si no hay imagen
+            imagen={activity.imagenes?.[0] || "/activitie.jpg"} // 🖼 Imagen por defecto si no hay imagen
             titulo={activity.nombre}
             reservas={activity.reservas || "0"} // 📌 Asegurar un número de reservas
           />
