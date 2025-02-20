@@ -1,7 +1,8 @@
 /* Estilos comunes para los formularios */
-:root{
-  --color-error:var(--color-error)
-
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+:root {
+  --color-error: #d61b1b;
+  --font-outfit: "Outfit", sans-serif;
 }
 .form-base {
   background-color: var(--color-white);
@@ -18,14 +19,14 @@
   width: 834px;
 }
 
-.form-base>div {
+.form-base > div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   width: 696px;
 }
 
-.form-base>div>label,
+.form-base > div > label,
 .rates label,
 label {
   color: var(--black-base);
@@ -37,10 +38,10 @@ label {
 
 /* espaciadods fin*/
 
-.form-base>div>input,
-.form-base>div>textarea,
-.form-base>div select,
-.form-base>div input {
+.form-base > div > input,
+.form-base > div > textarea,
+.form-base > div select,
+.form-base > div input {
   border-radius: 10px;
   border-color: var(--black-300);
   color: var(--black-300);
@@ -49,11 +50,11 @@ label {
   padding: 1rem;
 }
 
-.form-base>div>textarea {
+.form-base > div > textarea {
   font-size: var(--h5-size);
 }
 
-.form-base>div.extra-fields {
+.form-base > div.extra-fields {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
@@ -61,20 +62,20 @@ label {
   margin-top: 20px;
 }
 
-.form-base>div.extra-fields>div {
+.form-base > div.extra-fields > div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
 }
 
-.form-base>div.rates {
+.form-base > div.rates {
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.rates>div {
+.rates > div {
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -94,7 +95,7 @@ label {
   margin-top: 10px;
 }
 
-.extra-fields>div {
+.extra-fields > div {
   align-self: center;
   margin-bottom: 10px;
 }
@@ -148,19 +149,18 @@ div.container-categories {
   column-gap: 10px;
 }
 
-
 div.div-p-preview {
   align-self: center;
   margin: 20px auto;
   width: 498px;
 }
 
-.form-base>div>p {
+.form-base > div > p {
   font-family: var(--font_Outfit);
   text-align: center;
 }
 
-.form-base>div.div-submit {
+.form-base > div.div-submit {
   column-gap: 40px;
   display: flex;
   flex-direction: row;
@@ -168,7 +168,7 @@ div.div-p-preview {
   margin-top: 20px;
 }
 
-.form-base>div.div-submit button {
+.form-base > div.div-submit button {
   border-radius: 72px;
   font-size: var(--h5-size);
 }
