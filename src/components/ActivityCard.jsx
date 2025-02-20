@@ -65,7 +65,7 @@ ActivityCard.propTypes = {
 };
 
 ActivityCard.defaultProps = {
-  image: '/default-activity.jpg'
+  image: '/activitie.jpg'
 };
 
 export default ActivityCard;
