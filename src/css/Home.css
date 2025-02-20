@@ -10,10 +10,32 @@
   position: relative;
   height: 100vh;
   width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
+/* Header - Eliminamos el background y ajustamos para que sea transparente */
+.header-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background: transparent;
+}
+
+/* Contenedor general */
+.content-wrapper {
+  max-width: var(--container-xl);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--padding-sm);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hero Overlay */
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -23,32 +45,8 @@
   background: rgba(0, 0, 0, 0.4);
   z-index: 1;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-}
-
-/* Contenedor general */
-.content-wrapper {
-  max-width: var(--container-xl);
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 var(--padding-sm);
-  position: relative;  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Header */
-.header-container {
-  position: fixed; /* Cambiamos de sticky a fixed */
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  padding: 1rem 0;
-  background: transparent;
 }
 
 /* Hero Content */

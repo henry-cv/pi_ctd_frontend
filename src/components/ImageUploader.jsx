@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../css/ImageUploader.css";
 import { FaUpload } from "react-icons/fa"; // Importa el ícono de subida
 
@@ -28,7 +28,7 @@ const ImageUploader = () => {
     });
   };
 
-  const fakeUpload = (file) => {
+  const fakeUpload = () => {
     return {
       on: (event, callback) => {
         if (event === "state_changed") {

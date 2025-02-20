@@ -1,4 +1,3 @@
-import React from "react";
 import { FaSearch } from "react-icons/fa"; // Ícono de ejemplo
 import PropTypes from "prop-types";
 import "../css/dashboard.css";
