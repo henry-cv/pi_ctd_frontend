@@ -1,18 +1,16 @@
-/* Container principal */
+/* Container principal y Hero */
 .home-container {
   width: 100%;
   min-height: 100vh;
   position: relative;
 }
 
-/* Sección Hero */
 .hero-section {
   position: relative;
   height: 100vh;
   width: 100%;
 }
 
-/* Header - Eliminamos el background y ajustamos para que sea transparente */
 .header-container {
   position: absolute;
   top: 0;
@@ -35,13 +33,10 @@
   align-items: center;
 }
 
-/* Hero Overlay */
+/* Hero Content */
 .hero-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 1;
   display: flex;
@@ -49,14 +44,13 @@
   justify-content: center;
 }
 
-/* Hero Content */
 .hero-content {
   text-align: center;
   color: var(--white);
-  margin-bottom: 4rem; /* Aumentamos el margen inferior */
+  margin-bottom: 4rem;
   max-width: 800px;
   position: relative;
-  top: -5%; /* Ajustamos la posición hacia arriba */
+  top: -5%;
 }
 
 .hero-title {
@@ -70,7 +64,6 @@
 .hero-subtitle {
   font-family: var(--font-archivo);
   font-size: 1.5rem;
-  font-weight: normal;
 }
 
 /* Main Content */
@@ -78,73 +71,173 @@
   background-color: var(--white);
   position: relative;
   z-index: 2;
-  margin-top: -2rem; /* Para crear un efecto de superposición */
-  border-radius: 2rem 2rem 0 0; /* Bordes redondeados superiores */
+  margin-top: -2rem;
+  border-radius: 2rem 2rem 0 0;
 }
 
-/* Info Blocks */
-.info-blocks {
+/* Sección Things To Do */
+.things-to-do {
   padding: 4rem 0;
   background-color: var(--white);
 }
 
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+.things-to-do .content-wrapper {
+  max-width: 50%;
+  margin: 0 auto;
 }
 
-.info-block {
-  padding: 2rem;
-  border-radius: 16px;
+.things-to-do .section-title {
   text-align: center;
-}
-
-.info-block h3 {
-  font-family: var(--font-archivo);
-  font-size: 1.5rem;
-  font-weight: 600;
   margin-bottom: 1rem;
 }
 
-.info-block p {
+.things-to-do .section-title .highlight {
+  color: #3E10DA;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--black);
+  font-family: var(--font-outfit);
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+}
+
+.feature-card {
+  padding: 2rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 200px;
+}
+
+.feature-card.blue {
+  background-color: #3E10DA;
+  color: var(--white);
+}
+
+.feature-card.yellow {
+  background-color: #EEC52D;
+  color: var(--black);
+}
+
+.feature-title {
+  font-family: var(--font-archivo);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.feature-description {
+  font-family: var(--font-outfit);
   font-size: 1rem;
   line-height: 1.5;
+  margin: 0;
 }
 
-.info-block.purple {
-  background-color: var(--purple-light);
-  color: var(--purple-dark);
-}
-
-.info-block.yellow {
-  background-color: var(--yellow-light);
-  color: var(--yellow-dark);
-}
-
-/* Categories & Products Sections */
+/* Secciones de Categorías y Actividades */
 .categories-section,
-.products-section {
+.activities-section {
   padding: 4rem 0;
-  background-color: var(--gray-50);
+  background-color: var(--white);
 }
 
-.section-title {
+.categories-section .content-wrapper,
+.activities-section .content-wrapper {
+  width: 90%;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.categories-section .section-title,
+.activities-section .section-title {
   font-family: var(--font-archivo);
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 600;
   color: var(--black);
   margin-bottom: 2rem;
+  text-align: left;
+  width: 100%;
 }
 
+/* Grids scrollables */
 .categories-grid,
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+.activities-grid {
+  display: flex;
   gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.categories-grid::-webkit-scrollbar,
+.activities-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cards */
+.category-card {
+  flex: 0 0 150px;
+  height: 150px;
+  scroll-snap-align: start;
+}
+
+.activity-card {
+  flex: 0 0 240px;
+  scroll-snap-align: start;
+}
+
+/* Popular Activities Section */
+.popular-section {
+  padding-top: 0; /* Reducimos el padding superior ya que viene después de otra sección de actividades */
+}
+
+.popular-section .activities-grid {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.popular-section .activities-grid::-webkit-scrollbar {
+  display: none;
 }
 
 /* Media Queries */
+@media (max-width: 1024px) {
+  .things-to-do .content-wrapper {
+    max-width: 70%;
+  }
+
+  .features-grid {
+    gap: 1.5rem;
+  }
+
+  .categories-section .content-wrapper,
+  .activities-section .content-wrapper {
+    padding: 0 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
@@ -158,28 +251,32 @@
     margin-bottom: 1.5rem;
   }
 
-  .info-grid {
+  .features-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
-  .info-block {
-    padding: 1.5rem;
-  }
-
-  .info-block h3 {
-    font-size: 1.25rem;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+  .things-to-do .content-wrapper {
+    max-width: 90%;
   }
 
   .categories-grid,
-  .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  .activities-grid {
     gap: 1rem;
+    padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .popular-section .activities-grid {
+    gap: 1rem;
+    padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
 }
 
@@ -188,20 +285,22 @@
     font-size: 1.75rem;
   }
 
-  .hero-content {
-    margin-bottom: 1rem;
-  }
-
-  .info-block {
-    padding: 1rem;
-  }
-
-  .info-block h3 {
-    font-size: 1.125rem;
+  .things-to-do .content-wrapper {
+    max-width: 95%;
   }
 
   .section-title {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-size: 1.75rem;
+  }
+
+  .categories-section .content-wrapper,
+  .activities-section .content-wrapper {
+    width: 90%;
+    padding: 0 1rem;
+  }
+  
+  .popular-section .content-wrapper {
+    width: 90%;
+    padding: 0 1rem;
   }
 }

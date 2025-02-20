@@ -1,15 +1,20 @@
 import '../css/CategoryCard.css';
+import PropTypes from 'prop-types';
 
-const CategoryCard = () => {
+const CategoryCard = ({ title, image }) => {
   return (
     <div className="category-card">
-      <img src="/categoria_ejemplo.jpg" alt="Categoría" className="category-image" />
+      <img src={image} alt={title} className="category-image" />
       <div className="category-content">
-        <h3 className="category-title">Nombre Categoría</h3>
-        <p className="category-count">20 actividades</p>
+        <h3 className="category-title">{title}</h3>
       </div>
     </div>
   );
+};
+
+CategoryCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired
 };
 
 export default CategoryCard;
