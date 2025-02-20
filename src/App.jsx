@@ -7,6 +7,7 @@ import DashActividades from "./components/DashActividades";
 import DashCategorias from "./components/DashCategorias";
 import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
+import ActivityDetail from "./pages/ActivityDetail";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
             <Route path="categorias" element={<DashCategorias />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
-
+          <Route path="/actividad/:id" element={<ActivityDetail />} />
         </Routes>
       </div>
     </BrowserRouter>

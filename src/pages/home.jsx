@@ -2,20 +2,29 @@ import Carousel from '../components/Carousel';
 import SearchBox from '../components/SearchBox';
 import CategoryCard from '../components/CategoryCard';
 import NavDash from '../components/NavDash';
-import '../css/Home.css';
-import { useState, useEffect } from 'react';
 import ActivityCard from '../components/ActivityCard';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import '../css/Home.css';
 
 const Home = () => {
-  const images = [
+  const [isLoggedIn] = useState(false);
+  const [randomActivities, setRandomActivities] = useState([]);
+  const [randomPopularActivities, setRandomPopularActivities] = useState([]);
+
+  const carouselImages = [
     '/bkgd_slider1.jpg',
     '/bkgd_slider2.jpg',
     '/bkgd_slider3.jpg',
   ];
 
-  const [isLoggedIn] = useState(false);
+  const categories = [
+    { image: "/cultural-category.png", title: "Cultural" },
+    { image: "/food-category.png", title: "Gastronomía" },
+    { image: "/outdoor-category.png", title: "Aire libre" },
+    { image: "/wellness-category.png", title: "Bienestar" }
+  ];
 
-  // Array de actividades cercanas
   const activities = [
     {
       id: 1,
@@ -55,7 +64,6 @@ const Home = () => {
     }
   ];
 
-  // Array de actividades populares
   const popularActivities = [
     {
       id: 1,
@@ -122,14 +130,7 @@ const Home = () => {
     }
   ];
 
-  // Estado para las actividades cercanas aleatorias
-  const [randomActivities, setRandomActivities] = useState([]);
-
-  // Estado para las actividades populares aleatorias
-  const [randomPopularActivities, setRandomPopularActivities] = useState([]);
-
-  // Función para mezclar array
-  const shuffleArray = (array) => {
+  const shuffleArray = array => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -138,26 +139,39 @@ const Home = () => {
     return shuffled;
   };
 
-  // Efecto para mezclar actividades al cargar
   useEffect(() => {
     setRandomActivities(shuffleArray(activities));
-  }, []);
-
-  // Efecto para mezclar actividades populares al cargar
-  useEffect(() => {
     setRandomPopularActivities(shuffleArray(popularActivities));
   }, []);
 
+  const renderFeatureCard = (title, description, color) => (
+    <div className={`feature-card ${color}`}>
+      <h3 className="feature-title">{title}</h3>
+      <p className="feature-description">{description}</p>
+    </div>
+  );
+
+  const renderActivityCards = (activities) => (
+    activities.map(activity => (
+      <Link 
+        key={activity.id} 
+        to={`/actividad/${activity.id}`}
+        className="activity-link"
+      >
+        <ActivityCard {...activity} />
+      </Link>
+    ))
+  );
+
   return (
     <div className="home-container">
-      {/* Header Section */}
       <section className="hero-section">
         <header className="header-container">
           <div className="content-wrapper">
             <NavDash variant="home" isLoggedIn={isLoggedIn} />
           </div>
         </header>
-        <Carousel images={images} />
+        <Carousel images={carouselImages} />
         <div className="hero-overlay">
           <div className="content-wrapper">
             <div className="hero-content">
@@ -173,9 +187,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Main Content */}
       <main className="main-content">
-        {/* Seccion Cosas que debe hacer */}
         <section className="things-to-do">
           <div className="content-wrapper">
             <h2 className="section-title">
@@ -185,90 +197,57 @@ const Home = () => {
               Nos aseguramos de que se embarque en unas vacaciones perfectamente planificadas y seguras a un precio asequible.
             </p>
             <div className="features-grid">
-              <div className="feature-card blue">
-                <h3 className="feature-title">Momentos de relajación</h3>
-                <p className="feature-description">
-                  Descansa en lugares de ensueño, y recarga energías para tu próxima gran aventura.
-                </p>
-              </div>
-              <div className="feature-card yellow">
-                <h3 className="feature-title">Viajes apasionantes</h3>
-                <p className="feature-description">
-                  Comience y explore una amplia gama de emocionantes experiencias de viaje.
-                </p>
-              </div>
-              <div className="feature-card blue">
-                <h3 className="feature-title">Escapadas culturales</h3>
-                <p className="feature-description">
-                  Descubre la esencia de cada destino a través de su historia, arte y gastronomía.
-                </p>
-              </div>
+              {renderFeatureCard(
+                "Momentos de relajación",
+                "Descansa en lugares de ensueño, y recarga energías para tu próxima gran aventura.",
+                "blue"
+              )}
+              {renderFeatureCard(
+                "Viajes apasionantes",
+                "Comience y explore una amplia gama de emocionantes experiencias de viaje.",
+                "yellow"
+              )}
+              {renderFeatureCard(
+                "Escapadas culturales",
+                "Descubre la esencia de cada destino a través de su historia, arte y gastronomía.",
+                "blue"
+              )}
             </div>
           </div>
         </section>
 
-        {/* seccion categorias */}
         <section className="categories-section">
           <div className="content-wrapper">
             <h2 className="section-title">Categorías</h2>
             <div className="categories-grid">
-              <CategoryCard  
-                image="/cultural-category.png" 
-              />
-              <CategoryCard  
-                image="/food-category.png" 
-              />
-              <CategoryCard  
-                image="/outdoor-category.png" 
-              />
-              <CategoryCard  
-                image="/wellness-category.png" 
-              />
+              {categories.map((category, index) => (
+                <CategoryCard
+                  key={index}
+                  {...category}
+                />
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Seccion actividades cercanas */}
         <section className="activities-section">
           <div className="content-wrapper">
             <h2 className="section-title">Actividades cercanas</h2>
             <div className="activities-grid">
-              {randomActivities.map((activity) => (
-                <ActivityCard
-                  key={activity.id}
-                  image={activity.image}
-                  title={activity.title}
-                  location={activity.location}
-                  duration={activity.duration}
-                  price={activity.price}
-                  rating={activity.rating}
-                />
-              ))}
+              {renderActivityCards(randomActivities)}
             </div>
           </div>
         </section>
 
-        {/* seccion Actividades Populares */}
         <section className="activities-section popular-section">
           <div className="content-wrapper">
             <h2 className="section-title">Los más populares</h2>
             <div className="activities-grid">
-              {randomPopularActivities.map((activity) => (
-                <ActivityCard
-                  key={activity.id}
-                  image={activity.image}
-                  title={activity.title}
-                  location={activity.location}
-                  duration={activity.duration}
-                  price={activity.price}
-                  rating={activity.rating}
-                />
-              ))}
+              {renderActivityCards(randomPopularActivities)}
             </div>
           </div>
         </section>
 
-        {/* Products Section */}
         <section className="products-section">
           <div className="content-wrapper">
             <h2 className="section-title">Experiencias recomendadas</h2>

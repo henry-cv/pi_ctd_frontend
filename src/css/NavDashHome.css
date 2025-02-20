@@ -251,3 +251,7 @@
   align-items: center;
   gap: 1rem;
 }
+
+.auth-buttons a {
+  text-decoration: none;
+}

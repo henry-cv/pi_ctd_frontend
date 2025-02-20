@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom'; // Añadimos import de Link
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faGlobe, 
@@ -59,7 +60,9 @@ const NavDash = ({ variant = "home" }) => {
           <div className="hide-tablet">
             <ButtonGral text="Registrar" color="transparent" />
           </div>
-          <ButtonGral text="Acceso" color="blue" />
+          <Link to="/administrador"> {/* Añadimos Link al botón de acceso */}
+            <ButtonGral text="Acceso" color="blue" />
+          </Link>
         </div>
         <div className="show-mobile">
           <button className="icon-button menu-button">
