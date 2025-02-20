@@ -47,7 +47,7 @@ const DashActividades = () => {
             </button>
           </div>
           {/* 🔗 Corregir la ruta a la creación de actividades */}
-          <Link to="crear actividad">
+          <Link to="crear-actividad">
             <ButtonGral
               text={"Agregar actividad"}
               color="yellow"
