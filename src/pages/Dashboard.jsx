@@ -5,7 +5,7 @@ import Navbar from "../components/NavBar";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { FaAngleRight } from "react-icons/fa";
-import { ListSidebar } from "../constantes/ListSidebar";
+import { ListSidebar } from "../constants/ListSidebar";
 import NavDash from "../components/NavDash";
 
 const Dashboard = () => {
@@ -25,7 +25,7 @@ const Dashboard = () => {
               />
             </Link>
           </div>
-          
+
           <div className="list_sidebar">
             {ListSidebar.map(({ label, icon, to, id }) => (
               <NavLink
