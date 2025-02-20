@@ -1,39 +1,64 @@
+/* Container principal */
 .home-container {
-  position: relative;
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
+/* Sección Hero */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor general */
 .content-wrapper {
   max-width: var(--container-xl);
   width: 100%;
   margin: 0 auto;
   padding: 0 var(--padding-sm);
+  position: relative;  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Header */
 .header-container {
-  position: fixed;
+  position: fixed; /* Cambiamos de sticky a fixed */
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
   z-index: 1000;
-  display: flex;
-  justify-content: center;
   padding: 1rem 0;
   background: transparent;
 }
 
+/* Hero Content */
 .hero-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
   color: var(--white);
-  z-index: 2;
-  width: 100%;
-  max-width: var(--container-xl);
-  padding: 0 var(--padding-sm);
+  margin-bottom: 4rem; /* Aumentamos el margen inferior */
+  max-width: 800px;
+  position: relative;
+  top: -5%; /* Ajustamos la posición hacia arriba */
 }
 
 .hero-title {
@@ -42,58 +67,143 @@
   font-weight: bold;
   margin-bottom: 1rem;
   line-height: 1.2;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
   font-family: var(--font-archivo);
   font-size: 1.5rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: normal;
 }
 
-/* Overlay para contraste */
-.home-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1;
+/* Main Content */
+.main-content {
+  background-color: var(--white);
+  position: relative;
+  z-index: 2;
+  margin-top: -2rem; /* Para crear un efecto de superposición */
+  border-radius: 2rem 2rem 0 0; /* Bordes redondeados superiores */
 }
 
-/* Ajustamos los tamaños para cada breakpoint */
-@media (max-width: 1200px) {
-  .content-wrapper {
-    max-width: 782px;
-  }
-  
-  .hero-content {
-    max-width: 782px;
-  }
+/* Info Blocks */
+.info-blocks {
+  padding: 4rem 0;
+  background-color: var(--white);
 }
 
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.info-block {
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.info-block h3 {
+  font-family: var(--font-archivo);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.info-block p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.info-block.purple {
+  background-color: var(--purple-light);
+  color: var(--purple-dark);
+}
+
+.info-block.yellow {
+  background-color: var(--yellow-light);
+  color: var(--yellow-dark);
+}
+
+/* Categories & Products Sections */
+.categories-section,
+.products-section {
+  padding: 4rem 0;
+  background-color: var(--gray-50);
+}
+
+.section-title {
+  font-family: var(--font-archivo);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 2rem;
+}
+
+.categories-grid,
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
-  .content-wrapper {
-    max-width: 420px;
-  }
-  
-  .hero-content {
-    max-width: 90%;
-    padding: 0 var(--padding-sm);
-    top: 45%; /* Ajustamos posición para dar más espacio al SearchBox */
-  }
-
   .hero-title {
     font-size: 2rem;
-    margin-bottom: 0.5rem;
   }
 
   .hero-subtitle {
     font-size: 1rem;
+  }
+
+  .hero-content {
+    margin-bottom: 1.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .info-block {
+    padding: 1.5rem;
+  }
+
+  .info-block h3 {
+    font-size: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .categories-grid,
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero-title {
     font-size: 1.75rem;
+  }
+
+  .hero-content {
+    margin-bottom: 1rem;
+  }
+
+  .info-block {
+    padding: 1rem;
+  }
+
+  .info-block h3 {
+    font-size: 1.125rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
   }
 }
