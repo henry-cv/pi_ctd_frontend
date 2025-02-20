@@ -21,7 +21,7 @@ function App() {
             <Route path="panel" element={<PanelControl />} />
             <Route path="actividades" element={<DashActividades />} />
             <Route
-              path="actividades/crear actividad"
+              path="actividades/crear-actividad"
               element={<AddActivitie />}
             />
             <Route path="categorias" element={<DashCategorias />} />
