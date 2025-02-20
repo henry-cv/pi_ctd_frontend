@@ -324,7 +324,7 @@ const handleHoraFinChange = (e) => {
       {eventType === "RECURRENTE" && (
         <div className="container-days">
           <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
-          <Horas onChange={handleHoursChange} />
+          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange}/>
         </div>
       )}
 
