@@ -11,7 +11,6 @@ import Days from "./Days";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
 
-
 const FormBasis = () => {
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
@@ -19,11 +18,6 @@ const FormBasis = () => {
   const [errorTitulo, setErrorTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
-  //const [direccion, setDireccion] = useState("");
-  //const [errorDireccion, setErrorDireccion] = useState("");
-  //const [nombreTarifa, setNombreTarifa] = useState("");
-  //const [errorNombreTarifa, setErrorNombreTarifa] = useState("");
-
   const [valorTarifa, setValorTarifa] = useState("");
   const [tipoTarifa, setTipoTarifa] = useState("");
   const [idioma, setIdioma] = useState("");
@@ -31,9 +25,8 @@ const FormBasis = () => {
   const [horaFin, setHoraFin] = useState("");
   const [diasDisponible, setDiasDisponible] = useState([]);
   const [fechaEvento, setFechaEvento] = useState("");
-  //const [categoriasNombres, setCategoriasNombres] = useState(new Set());
-  //const [imagenes, setImagenes] = useState([]);
-
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
@@ -69,65 +62,55 @@ const FormBasis = () => {
     }
     setDescripcion(texto);
   };
-  const handleAddressBlur = (e) => {
-    const maximo = 60;
-    const texto = e.target.value;
-    if (!validarAreaTexto(texto, maximo)) {
-      setErrorDireccion(`La dirección debe tener entre 4 y máximo ${maximo} caracteres`);
-    } else {
-      setErrorDireccion("");
-    }
-    setDireccion(texto);
-  };
-  const handleRateNameBlur = (e) => {
-    const maximo = 50;
-    const texto = e.target.value;
-    if (!validarTexto(texto, maximo)) {
-      setErrorNombreTarifa(
-        `Nombre de tarifa debe tener entre 4 y máximo ${maximo}, sin números o caracteres especiales`
-      );
-    } else {
-      setErrorNombreTarifa("");
-    }
-  };
 
-  // const handleDateChange = (date) => {
-  //   setFechaEvento(date);
-  // };
-
-  // const handleHoursChange = (start, end) => {
-  //   setHoraInicio(start);
-  //   setHoraFin(end);
-  // };
   const handleDateChange = (e) => {
-    setFechaEvento(e.target.value);  // ✅ Captura correctamente la fecha seleccionada
-};
+    setFechaEvento(e.target.value);
+  };
 
-const handleHoraInicioChange = (e) => {
-    setHoraInicio(e.target.value);  // ✅ Captura correctamente la hora de inicio
-};
+  const handleHoraInicioChange = (e) => {
+    setHoraInicio(e.target.value);
+  };
 
-const handleHoraFinChange = (e) => {
-    setHoraFin(e.target.value);  // ✅ Captura correctamente la hora de fin
-};
+  const handleHoraFinChange = (e) => {
+    setHoraFin(e.target.value);
+  };
 
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
 
-  const handleSubmit = async(e) =>{
+  // Nueva función para manejar las imágenes seleccionadas
+  const handleImagesSelected = (files) => {
+    setSelectedImages(files);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validaciones
     if (tipoTarifa === "") {
       alert("Debe seleccionar un tipo de tarifa");
       return;
-  }
+    }
 
-  if (isNaN(valorTarifa) || valorTarifa <= 0) {
+    if (isNaN(valorTarifa) || valorTarifa <= 0) {
       alert("El valor de la tarifa debe ser un número positivo");
       return;
-  }
+    }
 
-    const formData = {
+    if (selectedImages.length === 0) {
+      alert("Debe seleccionar al menos una imagen");
+      return;
+    }
+
+    // Prevenir múltiples envíos
+    setIsSubmitting(true);
+
+    // Crear FormData para enviar archivos y datos
+    const formData = new FormData();
+    
+    // Datos del producto
+    const productoData = {
       nombre: titulo,
       descripcion,
       valorTarifa: parseFloat(valorTarifa),
@@ -138,18 +121,25 @@ const handleHoraFinChange = (e) => {
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      //categoriasNombres: Array.from(categoriasNombres),
-      //imagenes,
-    }
-    console.log("Enviando datos al backend:", JSON.stringify(formData, null, 2));
+      // Las imágenes se envían como archivos, así que enviamos un array vacío
+      imagenes: []
+    };
+    
+    // Agregar el producto como JSON
+    formData.append("producto", new Blob([JSON.stringify(productoData)], { type: 'application/json' }));
+    
+    // Agregar las imágenes
+    selectedImages.forEach(file => {
+      formData.append("imagenes", file);
+    });
+    
+    console.log("Enviando datos al backend...");
 
     try {
       const response = await fetch("/api/producto/registrar", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: formData,
+        // No establecer Content-Type, FormData lo hará automáticamente
       });
 
       if (!response.ok) {
@@ -159,18 +149,28 @@ const handleHoraFinChange = (e) => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      alert("Datos enviados correctamente");
+      alert("Producto creado correctamente");
+      
+      // Limpiar formulario después de un envío exitoso
+      setTitulo("");
+      setDescripcion("");
+      setValorTarifa("");
+      setTipoTarifa("");
+      setIdioma("");
+      setHoraInicio("");
+      setHoraFin("");
+      setEventType("");
+      setDiasDisponible([]);
+      setFechaEvento("");
+      setSelectedImages([]);
+      
     } catch (error) {
       console.error("Error:", error.message);
       alert(`Error al enviar los datos: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-
-
-    
-  
-
 
   return (
     <form className="form-base" onSubmit={handleSubmit}>
@@ -200,38 +200,14 @@ const handleHoraFinChange = (e) => {
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
       </div>
-      {/* <div className="container-address">
-        <label htmlFor="address">Dirección:</label>
-        <input
-          type="text"
-          id="address"
-          name="direccion"
-          placeholder="Ingresa tu dirección"
-          value={direccion}
-          onChange={handleAddressBlur}
-          required
-        />
-        {errorDireccion && <FieldError message={errorDireccion} />}
-      </div>
-      <div className="container-city">
-        <label htmlFor="city">Ciudad:</label>
-        <select id="city" name="ciudad" required>
-          <option value="" disabled selected>
-            Selecciona tu ciudad
-          </option>
-          <option value="buenosaires">Buenos Aires</option>
-          <option value="lapaz">La paz</option>
-          <option value="lima">Lima</option>
-          <option value="quito">Quito</option>
-        </select>
-      </div> */}
+      
       <div className="container-addrate">
         <button
           type="button"
           onClick={toggleExtraFields}
           className="hamburger-button"
         >
-          &#x2795; Añadir Tarifas {/* Icono de hamburguesa con label */}
+          &#x2795; Añadir Tarifas
         </button>
       </div>
       {showExtraFields && (
@@ -239,18 +215,17 @@ const handleHoraFinChange = (e) => {
           <div>
             <label htmlFor="rateName">Nombre Tarifa:</label>
             <select 
-    id="rateType" 
-    value={tipoTarifa} 
-    onChange={(e) => setTipoTarifa(e.target.value)} // ✅ Captura correctamente el valor seleccionado
-    required
-  >
-    <option value="" disabled>Selecciona el tipo de tarifa</option>
-    <option value="POR_PERSONA">Por persona</option>
-    <option value="POR_PAREJA">Por pareja</option>
-    <option value="POR_GRUPO_6">Por grupo (6)</option>
-    <option value="POR_GRUPO_10">Por grupo (10)</option>
-  </select>
-            {/* {errorNombreTarifa && <FieldError message={errorNombreTarifa} />} */}
+              id="rateType" 
+              value={tipoTarifa} 
+              onChange={(e) => setTipoTarifa(e.target.value)}
+              required
+            >
+              <option value="" disabled>Selecciona el tipo de tarifa</option>
+              <option value="POR_PERSONA">Por persona</option>
+              <option value="POR_PAREJA">Por pareja</option>
+              <option value="POR_GRUPO_6">Por grupo (6)</option>
+              <option value="POR_GRUPO_10">Por grupo (10)</option>
+            </select>
           </div>
           <div>
             <label htmlFor="ratePrice">Precio:</label>
@@ -270,32 +245,32 @@ const handleHoraFinChange = (e) => {
         </div>
       )}
       <div className="rates">
-      <div>
-        <label htmlFor="rateValue">Valor tarifa:</label>
-        <input 
+        <div>
+          <label htmlFor="rateValue">Valor tarifa:</label>
+          <input 
             type="number" 
             id="rateValue" 
             value={valorTarifa} 
             onChange={(e) => setValorTarifa(e.target.value)} 
             required 
-        />
-    </div>
-    <div>
-        <label htmlFor="rateType">Tarifa por:</label>
-        <select 
+          />
+        </div>
+        <div>
+          <label htmlFor="rateType">Tarifa por:</label>
+          <select 
             id="rateType" 
             name="tipoTarifa" 
-            value={tipoTarifa} // ✅ Se enlaza correctamente con el estado
-            onChange={(e) => setTipoTarifa(e.target.value)} // ✅ Captura el valor correctamente
+            value={tipoTarifa}
+            onChange={(e) => setTipoTarifa(e.target.value)}
             required
-        >
+          >
             <option value="" disabled>Selecciona el tipo de tarifa</option>
             <option value="POR_PERSONA">Por persona</option>
             <option value="POR_PAREJA">Por pareja</option>
             <option value="POR_GRUPO_6">Por grupo (6)</option>
             <option value="POR_GRUPO_10">Por grupo (10)</option>
-        </select>
-    </div>
+          </select>
+        </div>
         <button type="button" className="delete-button" onClick={handleDelete}>
           <i className="fas fa-trash-alt"></i>
         </button>
@@ -305,10 +280,11 @@ const handleHoraFinChange = (e) => {
         <select
           id="eventType"
           name="eventType"
+          value={eventType}
           onChange={handleEventTypeChange}
           required
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Selecciona tipo de evento
           </option>
           <option value="FECHA_UNICA">Fecha única</option>
@@ -328,18 +304,6 @@ const handleHoraFinChange = (e) => {
         </div>
       )}
 
-      {/* <div className="container-categories">
-        <label htmlFor="category">Categorías:</label>
-        <select id="category" name="categoria">
-          <option value="" disabled selected>
-            Selecciona la categoría
-          </option>
-          <option value="cultural">Cultural</option>
-          <option value="gastronomia">Gastronomía</option>
-          <option value="airelibre">Aire libre</option>
-          <option value="cuidadobienestar">Cuidado y Bienestar</option>
-        </select>
-      </div> */}
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
         <select id="language" value={idioma} onChange={(e) => setIdioma(e.target.value)} required>
@@ -347,7 +311,16 @@ const handleHoraFinChange = (e) => {
           <option value="Español">Español</option>
         </select>
       </div>
-      {/* <ImageUploader /> */}
+      
+      {/* Componente ImageUploader actualizado */}
+      <div className="container-images">
+        <label>Imágenes:</label>
+        <ImageUploader onImagesSelected={handleImagesSelected} />
+        {selectedImages.length > 0 && (
+          <p className="selected-count">{selectedImages.length} imagen(es) seleccionada(s)</p>
+        )}
+      </div>
+      
       <div className="div-p-preview">
         <p>
           Puedes previsualizar como quedará tu actividad dando click en el boton
@@ -358,8 +331,14 @@ const handleHoraFinChange = (e) => {
         <ButtonBluePill
           text="Vista Previa"
           className="button-yellow btn-preview"
+          type="button"
         />
-        <ButtonBluePill text="Guardar" className="button-blue btn-save" />
+        <ButtonBluePill 
+          text={isSubmitting ? "Guardando..." : "Guardar"} 
+          className="button-blue btn-save" 
+          type="submit"
+          disabled={isSubmitting}
+        />
       </div>
     </form>
   );
