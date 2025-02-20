@@ -43,7 +43,7 @@ const ActivityDetail = () => {
   useEffect(() => {
     const fetchActivityDetails = async () => {
       try {
-        const response = await fetch(`http://44.195.185.220:8080/producto/${id}`);
+        const response = await fetch(`/api/producto/${id}`);
 
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
