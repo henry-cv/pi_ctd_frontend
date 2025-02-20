@@ -11,6 +11,7 @@ import Days from "./Days";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
 
+
 const FormBasis = () => {
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
@@ -18,10 +19,20 @@ const FormBasis = () => {
   const [errorTitulo, setErrorTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [errorDireccion, setErrorDireccion] = useState("");
-  const [nombreTarifa, setNombreTarifa] = useState("");
-  const [errorNombreTarifa, setErrorNombreTarifa] = useState("");
+  //const [direccion, setDireccion] = useState("");
+  //const [errorDireccion, setErrorDireccion] = useState("");
+  //const [nombreTarifa, setNombreTarifa] = useState("");
+  //const [errorNombreTarifa, setErrorNombreTarifa] = useState("");
+
+  const [valorTarifa, setValorTarifa] = useState("");
+  const [tipoTarifa, setTipoTarifa] = useState("");
+  const [idioma, setIdioma] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
+  const [diasDisponible, setDiasDisponible] = useState([]);
+  const [fechaEvento, setFechaEvento] = useState("");
+  //const [categoriasNombres, setCategoriasNombres] = useState(new Set());
+  //const [imagenes, setImagenes] = useState([]);
 
 
   const toggleExtraFields = () => {
@@ -79,8 +90,90 @@ const FormBasis = () => {
       setErrorNombreTarifa("");
     }
   };
+
+  // const handleDateChange = (date) => {
+  //   setFechaEvento(date);
+  // };
+
+  // const handleHoursChange = (start, end) => {
+  //   setHoraInicio(start);
+  //   setHoraFin(end);
+  // };
+  const handleDateChange = (e) => {
+    setFechaEvento(e.target.value);  // ✅ Captura correctamente la fecha seleccionada
+};
+
+const handleHoraInicioChange = (e) => {
+    setHoraInicio(e.target.value);  // ✅ Captura correctamente la hora de inicio
+};
+
+const handleHoraFinChange = (e) => {
+    setHoraFin(e.target.value);  // ✅ Captura correctamente la hora de fin
+};
+
+  const handleDaysChange = (selectedDays) => {
+    setDiasDisponible(selectedDays);
+  };
+
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    if (tipoTarifa === "") {
+      alert("Debe seleccionar un tipo de tarifa");
+      return;
+  }
+
+  if (isNaN(valorTarifa) || valorTarifa <= 0) {
+      alert("El valor de la tarifa debe ser un número positivo");
+      return;
+  }
+
+    const formData = {
+      nombre: titulo,
+      descripcion,
+      valorTarifa: parseFloat(valorTarifa),
+      tipoTarifa,
+      idioma,
+      horaInicio: `${horaInicio}:00`,
+      horaFin: `${horaFin}:00`,
+      tipoEvento: eventType,
+      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
+      fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
+      //categoriasNombres: Array.from(categoriasNombres),
+      //imagenes,
+    }
+    console.log("Enviando datos al backend:", JSON.stringify(formData, null, 2));
+
+    try {
+      const response = await fetch("/api/producto/registrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error en la solicitud: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log("Respuesta del servidor:", data);
+      alert("Datos enviados correctamente");
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert(`Error al enviar los datos: ${error.message}`);
+    }
+  };
+
+
+
+    
+  
+
+
   return (
-    <form className="form-base">
+    <form className="form-base" onSubmit={handleSubmit}>
       <div className="container-name">
         <label htmlFor="title">Título:</label>
         <input
@@ -107,7 +200,7 @@ const FormBasis = () => {
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
       </div>
-      <div className="container-address">
+      {/* <div className="container-address">
         <label htmlFor="address">Dirección:</label>
         <input
           type="text"
@@ -131,7 +224,7 @@ const FormBasis = () => {
           <option value="lima">Lima</option>
           <option value="quito">Quito</option>
         </select>
-      </div>
+      </div> */}
       <div className="container-addrate">
         <button
           type="button"
@@ -145,17 +238,19 @@ const FormBasis = () => {
         <div className="extra-fields">
           <div>
             <label htmlFor="rateName">Nombre Tarifa:</label>
-            <input
-              type="text"
-              id="rateName"
-              name="nombreTarifa"
-              placeholder="Inserta el nombre de la tarifa"
-              value={nombreTarifa}
-              onChange={(e) => setNombreTarifa(e.target.value)}
-              onBlur={handleRateNameBlur}
-              required
-            />
-            {errorNombreTarifa && <FieldError message={errorNombreTarifa} />}
+            <select 
+    id="rateType" 
+    value={tipoTarifa} 
+    onChange={(e) => setTipoTarifa(e.target.value)} // ✅ Captura correctamente el valor seleccionado
+    required
+  >
+    <option value="" disabled>Selecciona el tipo de tarifa</option>
+    <option value="POR_PERSONA">Por persona</option>
+    <option value="POR_PAREJA">Por pareja</option>
+    <option value="POR_GRUPO_6">Por grupo (6)</option>
+    <option value="POR_GRUPO_10">Por grupo (10)</option>
+  </select>
+            {/* {errorNombreTarifa && <FieldError message={errorNombreTarifa} />} */}
           </div>
           <div>
             <label htmlFor="ratePrice">Precio:</label>
@@ -175,29 +270,32 @@ const FormBasis = () => {
         </div>
       )}
       <div className="rates">
-        <div>
-          <label htmlFor="rateValue">Valor tarifa:</label>
-          <input
-            type="number"
-            id="rateValue"
-            min="1"
-            name="valorTarifa"
-            placeholder="Inserta el valor"
+      <div>
+        <label htmlFor="rateValue">Valor tarifa:</label>
+        <input 
+            type="number" 
+            id="rateValue" 
+            value={valorTarifa} 
+            onChange={(e) => setValorTarifa(e.target.value)} 
+            required 
+        />
+    </div>
+    <div>
+        <label htmlFor="rateType">Tarifa por:</label>
+        <select 
+            id="rateType" 
+            name="tipoTarifa" 
+            value={tipoTarifa} // ✅ Se enlaza correctamente con el estado
+            onChange={(e) => setTipoTarifa(e.target.value)} // ✅ Captura el valor correctamente
             required
-          />
-        </div>
-        <div>
-          <label htmlFor="rateType">Tarifa por:</label>
-          <select id="rateType" name="tipoTarifa" required>
-            <option value="" disabled selected>
-              Selecciona el precio
-            </option>
+        >
+            <option value="" disabled>Selecciona el tipo de tarifa</option>
             <option value="POR_PERSONA">Por persona</option>
             <option value="POR_PAREJA">Por pareja</option>
             <option value="POR_GRUPO_6">Por grupo (6)</option>
             <option value="POR_GRUPO_10">Por grupo (10)</option>
-          </select>
-        </div>
+        </select>
+    </div>
         <button type="button" className="delete-button" onClick={handleDelete}>
           <i className="fas fa-trash-alt"></i>
         </button>
@@ -219,18 +317,18 @@ const FormBasis = () => {
       </div>
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
-          <DateCalendar />
-          <Horas />
+          <DateCalendar onChange={handleDateChange} />
+          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange}/>
         </div>
       )}
       {eventType === "RECURRENTE" && (
         <div className="container-days">
-          <Days />
-          <Horas />
+          <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
+          <Horas onChange={handleHoursChange} />
         </div>
       )}
 
-      <div className="container-categories">
+      {/* <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
         <select id="category" name="categoria">
           <option value="" disabled selected>
@@ -241,20 +339,15 @@ const FormBasis = () => {
           <option value="airelibre">Aire libre</option>
           <option value="cuidadobienestar">Cuidado y Bienestar</option>
         </select>
-      </div>
+      </div> */}
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
-        <select id="language" name="idioma" required>
-          <option value="" disabled selected>
-            Selecciona idioma
-          </option>
+        <select id="language" value={idioma} onChange={(e) => setIdioma(e.target.value)} required>
+          <option value="" disabled>Selecciona idioma</option>
           <option value="Español">Español</option>
-          {/* <option value="english">Inglés</option>
-          <option value="italian">Italiano</option>
-          <option value="french">Francés</option> */}
         </select>
       </div>
-      <ImageUploader />
+      {/* <ImageUploader /> */}
       <div className="div-p-preview">
         <p>
           Puedes previsualizar como quedará tu actividad dando click en el boton
