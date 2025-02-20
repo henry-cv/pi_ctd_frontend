@@ -186,7 +186,7 @@ const Home = () => {
         className="activity-link"
       >
         <ActivityCard 
-          image={activity.imagenes?.[0]?.url || "/activitie.jpg"}  // ✅ Muestra la primera imagen o una por defecto
+          image={activity.imagenes?.[0]?.rutaImagen || "/activitie.jpg"}  // ✅ Muestra la primera imagen o una por defecto
           title={activity.nombre} 
           location={activity.direccion || "Ubicación no disponible"}  // ✅ Fallback si no hay dirección
           duration={`${activity.horaInicio} - ${activity.horaFin}`} 
