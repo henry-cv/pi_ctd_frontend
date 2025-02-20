@@ -1,0 +1,25 @@
+:root {
+  --black-300: #606570;
+}
+.container-days {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.days-checkboxes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.days-checkboxes label {
+  border-radius: 5px;
+  border: 1px solid var(--black-300);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1rem;
+  width: 90px;
+}
