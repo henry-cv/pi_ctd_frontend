@@ -12,7 +12,7 @@ import BasicBreadcrumbs from "./BasicBreadcrumbs";
 import PropTypes from 'prop-types';
 import '../css/NavDashHome.css';
 
-const NavDash = ({ variant = "home", isLoggedIn = false }) => {
+const NavDash = ({ variant = "home" }) => {
   const [theme, setTheme] = useState("light");
 
   const toggleTheme = () => {
@@ -41,27 +41,27 @@ const NavDash = ({ variant = "home", isLoggedIn = false }) => {
     <nav className="navbarDash home">
       <div className="leftContainer">
         <img src="/Property 1=BlackV1.svg" alt="Logo" className="logo" />
-        <Activities />
-        <a href="#" className="nav-link">Crea tu Actividad</a>
+        <div className="hide-mobile">
+          <Activities />
+          <a href="#" className="nav-link">Crea tu Actividad</a>
+        </div>
       </div>
       <div className="rightContainer">
-        <button onClick={toggleTheme} className="icon-button">
-          <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} />
-        </button>
-        <button className="icon-button">
-          <FontAwesomeIcon icon={faGlobe} />
-        </button>
-        {!isLoggedIn ? (
-          <>
+        <div className="theme-globe-buttons"> {/* Nuevo contenedor sin hide-mobile */}
+          <button onClick={toggleTheme} className="icon-button">
+            <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} />
+          </button>
+          <button className="icon-button">
+            <FontAwesomeIcon icon={faGlobe} />
+          </button>
+        </div>
+        <div className="auth-buttons hide-mobile"> {/* Movido hide-mobile aquí */}
+          <div className="hide-tablet">
             <ButtonGral text="Registrar" color="transparent" />
-            <ButtonGral text="Acceso" color="blue" />
-          </>
-        ) : (
-          <div className="user-info">
-            <img src="../user_example.jpg" alt="Perfil" className="user-avatar" />
           </div>
-        )}
-        <div className="mobile-menu">
+          <ButtonGral text="Acceso" color="blue" />
+        </div>
+        <div className="show-mobile">
           <button className="icon-button menu-button">
             <FontAwesomeIcon icon={faBars} />
           </button>
@@ -73,7 +73,6 @@ const NavDash = ({ variant = "home", isLoggedIn = false }) => {
 
 NavDash.propTypes = {
   variant: PropTypes.oneOf(['home', 'admin']),
-  isLoggedIn: PropTypes.bool
 };
 
 export default NavDash;

@@ -1,4 +1,4 @@
-/* Estilos para la variante home del NavDash */
+/* Estilos base del NavDash */
 .navbarDash.home {
   display: flex;
   justify-content: space-between;
@@ -26,12 +26,34 @@
   height: 100%;
 }
 
+/* Contenedor izquierdo */
 .home .leftContainer {
   gap: 2.5rem;
 }
 
+.home .leftContainer .hide-mobile {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* Contenedor derecho */
 .home .rightContainer {
+  display: flex;
+  align-items: center;
   gap: 2rem;
+}
+
+.home .rightContainer .hide-mobile {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.home .auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Logo */
@@ -42,9 +64,65 @@
 
 /* Dropdown y navegación */
 .home .dropdown {
+  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+.home .dropdown-button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--black);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.home .dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--white);
+  min-width: 200px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  padding: 0.75rem;
+  z-index: 1500; /* Mayor que el z-index del navbar */
+  margin-top: 0.5rem;
+}
+
+/* Estilos para la lista de categorías dentro del dropdown */
+.home .dropdown-content .list-categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.home .dropdown-content .list-categories li {
+  padding: 0.75rem 1rem;
+  color: var(--black);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+}
+
+.home .dropdown-content .list-categories li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.home .dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+.home .dropdown-arrow.rotate-180 {
+  transform: rotate(180deg);
 }
 
 /* Botones y enlaces */
@@ -56,6 +134,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .home .icon-button {
@@ -123,4 +202,129 @@
   .home .hide-sm {
     display: flex;
   }
+}
+
+/* Utilidades de visibilidad */
+.show-mobile {
+  display: none;
+}
+
+/* Media Queries */
+/* Desktop grande (>1200px) */
+@media screen and (min-width: 1201px) {
+  .hide-desktop {
+    display: none;
+  }
+}
+
+/* Tablet (768px - 1200px) */
+@media screen and (max-width: 1200px) {
+  .navbarDash.home {
+    width: min(90%, 900px);
+    height: 65px;
+    padding: 0 1.5rem;
+  }
+
+  .home .leftContainer,
+  .home .rightContainer {
+    gap: 1.5rem;
+  }
+
+  .hide-tablet {
+    display: none; /* Oculta el botón de registro */
+  }
+}
+
+/* Mobile (< 768px) */
+@media screen and (max-width: 768px) {
+  .navbarDash.home {
+    width: calc(100% - 2rem);
+    height: 60px;
+    padding: 0 1rem;
+    border-radius: 30px;
+  }
+
+  .home .leftContainer,
+  .home .rightContainer {
+    gap: 1rem;
+  }
+
+  /* Ocultar elementos en mobile */
+  .hide-mobile {
+    display: none !important;
+  } 
+
+  /* Mostrar menú hamburguesa */
+  .show-mobile {
+    display: flex !important;
+  }
+
+  /* Logo más pequeño en mobile */
+  .home .logo {
+    height: 24px;
+  }
+
+  /* Ajustes del botón hamburguesa */
+  .menu-button {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0.5rem;
+  }
+
+  .menu-button svg {
+    font-size: 1.5rem;
+  }
+
+  /* Aseguramos que los botones de tema y globo permanezcan visibles */
+  .theme-globe-buttons {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .home .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Mobile pequeño (< 480px) */
+@media screen and (max-width: 480px) {
+  .navbarDash.home {
+    width: calc(100% - 1.5rem);
+    height: 50px;
+    padding: 0 0.75rem;
+    border-radius: 25px;
+  }
+
+  .home .logo {
+    height: 20px;
+  }
+
+  .menu-button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+/* Estilos del menú hamburguesa */
+.menu-button {
+  background: none;
+  border: none;
+  color: var(--black);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.menu-button svg {
+  font-size: 1.5rem;
+}
+
+/* Añadir estos estilos */
+.theme-globe-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
