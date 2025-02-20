@@ -18,7 +18,7 @@ const DashActividades = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await fetch("http://34.192.152.81:8080/producto/listar");
+        const response = await fetch("/api/producto/listar");
         if (!response.ok) {
           throw new Error(`Error al obtener actividades: ${response.status}`);
         }
