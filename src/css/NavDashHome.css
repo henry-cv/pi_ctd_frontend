@@ -1,0 +1,126 @@
+/* Estilos para la variante home del NavDash */
+.navbarDash.home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 60px;
+  box-shadow: var(--shadow-md);
+  width: min(80%, 1142px);
+  height: 70px;
+  padding: 0 2rem;
+  margin: 1rem auto;
+  backdrop-filter: blur(8px);
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+/* Contenedores laterales */
+.home .leftContainer,
+.home .rightContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.home .leftContainer {
+  gap: 2.5rem;
+}
+
+.home .rightContainer {
+  gap: 2rem;
+}
+
+/* Logo */
+.home .logo {
+  height: 28px;
+  width: auto;
+}
+
+/* Dropdown y navegación */
+.home .dropdown {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Botones y enlaces */
+.home .nav-link {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.home .icon-button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.home .icon-button svg {
+  font-size: 1.125rem;
+}
+
+/* Media Queries */
+@media screen and (max-width: 1024px) {
+  .navbarDash.home {
+    width: min(85%, 900px);
+  }
+
+  .home .leftContainer {
+    gap: 2rem;
+  }
+
+  .home .rightContainer {
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbarDash.home {
+    width: 90%;
+    height: 60px;
+    padding: 0 1.5rem;
+  }
+
+  .home .hide-sm {
+    display: none;
+  }
+
+  .home .show-sm {
+    display: flex;
+  }
+
+  .home .mobile-menu {
+    display: block;
+  }
+}
+
+/* Utilidades */
+.home .mobile-menu {
+  display: none;
+}
+
+.home .show-sm {
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  .home .hide-sm {
+    display: flex;
+  }
+}

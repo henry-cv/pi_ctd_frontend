@@ -1,8 +1,9 @@
 import Carousel from '../components/Carousel';
 import SearchBox from '../components/SearchBox';
-import Navbar from '../components/NavBar';
 import CategoryCard from '../components/CategoryCard';
+import NavDash from '../components/NavDash';
 import '../css/Home.css';
+import { useState } from 'react';
 
 const Home = () => {
   const images = [
@@ -11,13 +12,15 @@ const Home = () => {
     '/bkgd_slider3.jpg',
   ];
 
+  const [isLoggedIn] = useState(false);
+
   return (
     <div className="home-container">
       {/* Header Section */}
       <section className="hero-section">
         <header className="header-container">
           <div className="content-wrapper">
-            <Navbar />
+            <NavDash variant="home" isLoggedIn={isLoggedIn} />
           </div>
         </header>
         <Carousel images={images} />

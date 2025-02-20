@@ -1,7 +1,5 @@
-import React from "react";
 import "../css/dashboard.css";
 import "../css/variables.css";
-import Navbar from "../components/NavBar";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { FaAngleRight } from "react-icons/fa";
@@ -45,7 +43,7 @@ const Dashboard = () => {
           </button>
         </article>
         <section>
-          <NavDash />
+          <NavDash variant="admin" />
           <Outlet />
         </section>
       </div>
