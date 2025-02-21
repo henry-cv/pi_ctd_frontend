@@ -1,13 +1,8 @@
 {
-  "build": {
-    "env": {
-      "BACKEND_URL": "${BACKEND_URL}"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "${BACKEND_URL}/:path*"
-    }
-  ]
-}
+    "rewrites": [
+      {
+        "source": "/api/:path*",
+        "destination": "http://44.195.185.220:8080/:path*"
+      }
+    ]
+  }
