@@ -1,11 +1,13 @@
 {
+  "build": {
+    "env": {
+      "BACKEND_URL": "${BACKEND_URL}"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "${BACKEND_URL}/:path*"
     }
-  ],
-  "env": {
-    "BACKEND_URL": "PLACEHOLDER_URL_REPLACED_BY_ENVIRONMENT"
-  }
+  ]
 }
