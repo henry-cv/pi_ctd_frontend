@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "chmod +x ./select-config.sh && ./select-config.sh && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
