@@ -213,7 +213,7 @@ const ActivityDetail = () => {
       {/* Visor de imágenes en pantalla completa */}
       {showImageViewer && activity.imagenes && (
         <ImageViewer 
-          images={activity.imagenes.map(img => img.rutaImagen)}
+          images={activity.imagenesSalidaDto.map(img => img.rutaImagen)}
           onClose={() => setShowImageViewer(false)}
         />
       )}
