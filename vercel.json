@@ -1,8 +1,8 @@
 {
     "rewrites": [
       {
-        "source": "/api/:path*", 
-        "destination": "/api-redirect/:path*"
+        "source": "/api/:path*",
+        "destination": "http://44.195.185.220:8080/:path*"
       }
     ]
-}
+  }
