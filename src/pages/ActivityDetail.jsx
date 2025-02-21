@@ -77,33 +77,33 @@ const ActivityDetail = () => {
         <BasicBreadcrumbs />
         
         {/* Sección de imágenes */}
-        {activity.imagenes && activity.imagenes.length > 0 ? (
+        {activity.imagenesSalidaDto && activity.imagenesSalidaDto.length > 0 ? (
           <div className="images-section">
             <div className="main-image">
               <img 
-                src={activity.imagenes[0].rutaImagen} 
+                src={activity.imagenesSalidaDto[0].rutaImagen} 
                 alt={activity.nombre}
                 onError={handleImageError}
               />
             </div>
             <div className="side-images">
-              {activity.imagenes.slice(1, 4).map((imagen, index) => (
+              {activity.imagenesSalidaDto.slice(1, 4).map((imagen, index) => (
                 <div 
                   key={index} 
-                  className={`side-image ${index === 2 && activity.imagenes.length > 4 ? 'with-overlay' : ''}`}
+                  className={`side-image ${index === 2 && activity.imagenesSalidaDto.length > 4 ? 'with-overlay' : ''}`}
                 >
                   <img 
                     src={imagen.rutaImagen} 
                     alt={`${activity.nombre} ${index + 1}`}
                     onError={handleImageError}
                   />
-                  {index === 2 && activity.imagenes.length > 4 && (
+                  {index === 2 && activity.imagenesSalidaDto.length > 4 && (
                     <div 
                       className="view-more-overlay"
                       onClick={() => setShowImageViewer(true)}
                     >
                       <span className="view-more-text">
-                        Ver más (+{activity.imagenes.length - 4})
+                        Ver más (+{activity.imagenesSalidaDto.length - 4})
                         <FontAwesomeIcon icon={faSearch} />
                       </span>
                     </div>
