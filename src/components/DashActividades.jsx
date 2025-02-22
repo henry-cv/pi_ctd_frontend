@@ -48,6 +48,7 @@ const DashActividades = () => {
         titulo={"Cena 4 tiempos"}
         reservas="25"
       />
+      
       <ActivitieRow
         imagen={"../activitie.jpg"}
         titulo={"Cata de vino"}
