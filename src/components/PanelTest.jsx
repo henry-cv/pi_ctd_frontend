@@ -1,6 +1,7 @@
 import Categories from "../Routes/Categories";
 import ButtonBluePill from "./ButtonBluePill";
 import Navbar from "./NavBar";
+import FormBasis from "./FormBasis";
 
 const PanelTest = () => {
   return (
@@ -22,6 +23,8 @@ const PanelTest = () => {
       <br />
       <br />
       <br />
+      <h4>Formulario</h4><br />
+      <FormBasis />
     </main>
   );
 };

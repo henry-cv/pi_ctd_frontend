@@ -7,11 +7,14 @@ import DashActividades from "./components/DashActividades";
 import DashCategorias from "./components/DashCategorias";
 import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
+import ActivityDetail from "./pages/ActivityDetail";
+import { useContextGlobal } from "./gContext/globalContext";
 
 function App() {
+  const { state } = useContextGlobal();
   return (
     <BrowserRouter>
-      <div className="bg-white min-h-screen">
+      <div className={`bg-white min-h-screen  ${state.theme}`}>
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -20,13 +23,13 @@ function App() {
             <Route path="panel" element={<PanelControl />} />
             <Route path="actividades" element={<DashActividades />} />
             <Route
-              path="actividades/crear actividad"
+              path="actividades/crearactividad"
               element={<AddActivitie />}
             />
             <Route path="categorias" element={<DashCategorias />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
-
+          <Route path="/actividad/:id" element={<ActivityDetail />} />
         </Routes>
       </div>
     </BrowserRouter>

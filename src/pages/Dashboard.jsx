@@ -1,12 +1,11 @@
-import React from "react";
 import "../css/dashboard.css";
 import "../css/variables.css";
-import Navbar from "../components/NavBar";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { FaAngleRight } from "react-icons/fa";
-import { ListSidebar } from "../constantes/ListSidebar";
+import { ListSidebar } from "../constants/ListSidebar";
 import NavDash from "../components/NavDash";
+import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const activeLink = "isActiveDash";
@@ -25,7 +24,7 @@ const Dashboard = () => {
               />
             </Link>
           </div>
-          
+
           <div className="list_sidebar">
             {ListSidebar.map(({ label, icon, to, id }) => (
               <NavLink
@@ -45,10 +44,11 @@ const Dashboard = () => {
           </button>
         </article>
         <section>
-          <NavDash />
+          <NavDash variant="admin" />
           <Outlet />
         </section>
       </div>
+    <Footer/>
     </>
   );
 };

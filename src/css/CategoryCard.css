@@ -1,0 +1,76 @@
+.category-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  text-align: center;
+}
+
+.category-title {
+  font-family: var(--font-archivo);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
+  text-align: left;
+}
+
+.category-count {
+  display: none; /* Ocultamos el contador según el diseño */
+}
+
+@media (max-width: 768px) {
+  .category-card {
+    max-width: 200px; /* Tamaño más pequeño en tablets */
+  }
+
+  .category-image {
+    height: 160px;
+  }
+
+  .category-title {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-card {
+    max-width: 150px; /* Aún más pequeño en móviles */
+  }
+
+  .category-content {
+    padding: 1rem;
+  }
+
+  .category-title {
+    font-size: 1rem;
+  }
+}

@@ -1,23 +1,22 @@
 /* Contenedor principal */
 .search-box-container {
-  position: absolute;
-  left: 50%;
+  position: fixed;  
+  left: 49%;
+  bottom: 10%; 
   transform: translateX(-50%);
   width: min(90%, 800px);
-  bottom: 10%;
   z-index: 10;
+  margin-bottom: 2rem;
 }
 
-/* Wrapper principal */
+/* Wrapper del searchbox */
 .search-box-wrapper {
-  background-color: var(--white);
+  background-color: var(--Background-components);
   border-radius: 16px;
   box-shadow: var(--shadow-md);
   width: 100%;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
+  padding: 1.25rem;
 }
 
 /* Grid de campos */
@@ -28,51 +27,37 @@
   width: 100%;
 }
 
-/* Contenedor individual de cada campo */
+/* Campo individual */
 .search-field {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  cursor: pointer;
   padding: 0.5rem;
+  transition: background-color 0.2s;
+  border-radius: 8px;
 }
 
-/* Encabezado de cada campo */
+.search-field:hover {
+  background-color: var(--gray-200);
+}
+
+/* Título del campo */
 .field-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .field-title svg {
-  color: var(--gray-400);
+  color: var(--Icons-gray);
   font-size: 1rem;
 }
 
 .field-title span {
   font-family: var(--font-archivo);
   font-weight: 600;
-  font-size: 1rem;
-  color: var(--black);
-}
-
-/* Estilos de los inputs */
-.react-select-container,
-.datepicker-container {
-  width: 100%;
-}
-
-.react-select__control {
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  min-height: unset !important;
-}
-
-.react-select__placeholder,
-.react-datepicker-input {
-  font-family: var(--font-archivo);
   font-size: 0.875rem;
-  color: var(--black);
+  color: var(--Font-Background);
 }
 
 /* Botón de búsqueda */
@@ -82,8 +67,8 @@
   bottom: 0;
   transform: translate(-50%, 50%);
   background-color: var(--blue-base);
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: none;
   color: var(--white);
@@ -92,32 +77,34 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.2s;
+  padding: 0;
 }
 
 .search-button:hover {
   background-color: var(--blue-hover);
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .search-box-wrapper {
-    padding: 1.25rem;
-  }
-
-  .search-fields {
-    gap: 1rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
+/* Media Queries */
+@media screen and (max-width: 1024px) {
   .search-box-container {
-    bottom: 5%;
-    width: min(92%, 440px);
+    width: min(92%, 700px);
+    bottom: 18%;
   }
 
   .search-box-wrapper {
     padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .search-box-container {
+    bottom: 15%;
+    width: calc(100% - 3rem);
+  }
+
+  .search-box-wrapper {
+    padding: 0.875rem;
+    border-radius: 12px;
   }
 
   .search-fields {
@@ -132,13 +119,9 @@
   .search-field:nth-child(2) { grid-area: categoria; }
   .search-field:nth-child(3) { grid-area: fecha; }
 
-  .field-title span {
-    font-size: 0.875rem;
-  }
-
   .search-button {
     left: auto;
-    right: 1rem;
+    right: 0.75rem;
     bottom: 50%;
     transform: translateY(50%);
     width: 36px;
@@ -146,26 +129,51 @@
   }
 }
 
-/* Pantallas muy pequeñas */
-@media (max-width: 375px) {
+@media screen and (max-width: 480px) {
   .search-box-container {
+    bottom: 12%;
     width: calc(100% - 2rem);
   }
 
-  .search-box-wrapper {
-    padding: 0.75rem;
-  }
-
-  .search-fields {
+  .field-title {
     gap: 0.5rem;
   }
 
   .field-title span {
     font-size: 0.813rem;
   }
+}
 
-  .search-button {
-    width: 32px;
-    height: 32px;
+@media screen and (max-width: 375px) {
+  .search-box-container {
+    width: calc(100% - 2rem);
+    bottom: 10%;
+  }
+
+  .search-box-wrapper {
+    padding: 0.75rem;
+  }
+
+  .field-title svg {
+    font-size: 0.875rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .search-box-container {
+    width: calc(100% - 1.5rem);
+    bottom: 8%;
+  }
+
+  .search-box-wrapper {
+    padding: 0.625rem;
+  }
+
+  .field-title span {
+    font-size: 0.75rem;
+  }
+
+  .field-title svg {
+    font-size: 0.75rem;
   }
 }

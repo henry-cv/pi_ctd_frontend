@@ -1,39 +1,41 @@
+/* Base */
 .home-container {
-  position: relative;
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
-.content-wrapper {
-  max-width: var(--container-xl);
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: 100vh;
   width: 100%;
-  margin: 0 auto;
-  padding: 0 var(--padding-sm);
 }
 
 .header-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: absolute;
+  inset: 0 0 auto 0;
   z-index: 1000;
-  display: flex;
-  justify-content: center;
-  padding: 1rem 0;
   background: transparent;
 }
 
-.hero-content {
+.hero-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
   text-align: center;
   color: var(--white);
-  z-index: 2;
-  width: 100%;
-  max-width: var(--container-xl);
-  padding: 0 var(--padding-sm);
+  margin-bottom: 4rem;
+  max-width: 800px;
+  position: relative;
+  top: -5%;
 }
 
 .hero-title {
@@ -42,58 +44,236 @@
   font-weight: bold;
   margin-bottom: 1rem;
   line-height: 1.2;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
   font-family: var(--font-archivo);
   font-size: 1.5rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Overlay para contraste */
-.home-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1;
+/* Layout */
+.content-wrapper {
+  max-width: var(--container-xl);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--padding-sm);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Ajustamos los tamaños para cada breakpoint */
-@media (max-width: 1200px) {
-  .content-wrapper {
-    max-width: 782px;
+.main-content {
+  background-color: var(--white);
+  position: relative;
+  z-index: 2;
+  margin-top: -2rem;
+  border-radius: 2rem 2rem 0 0;
+}
+
+/* Things To Do Section */
+.things-to-do {
+  padding: 4rem 0;
+  background-color: var(--white);
+}
+
+.things-to-do .content-wrapper {
+  max-width: 50%;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--font-archivo);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 2rem;
+}
+
+.things-to-do .section-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.things-to-do .section-title .highlight {
+  color: var(--blue-base);
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--black);
+  font-family: var(--font-outfit);
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+/* Feature Cards */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+}
+
+.feature-card {
+  padding: 2rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 200px;
+}
+
+.feature-card.blue {
+  background-color: var(--blue-base);
+  color: var(--white);
+}
+
+.feature-card.yellow {
+  background-color: #EEC52D;
+  color: var(--black);
+}
+
+.feature-title {
+  font-family: var(--font-archivo);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.feature-description {
+  font-family: var(--font-outfit);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Categories & Activities Sections */
+.categories-section,
+.activities-section {
+  padding: 4rem 0;
+  background-color: var(--white);
+}
+
+.categories-section .content-wrapper,
+.activities-section .content-wrapper {
+  width: 90%;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.categories-section .section-title,
+.activities-section .section-title {
+  text-align: left;
+  width: 100%;
+}
+
+/* Grids */
+.categories-grid,
+.activities-grid,
+.popular-section .activities-grid {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.categories-grid::-webkit-scrollbar,
+.activities-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cards */
+.category-card {
+  flex: 0 0 150px;
+  height: 150px;
+  scroll-snap-align: start;
+}
+
+.activity-card {
+  flex: 0 0 240px;
+  scroll-snap-align: start;
+}
+
+/* Popular Section */
+.popular-section {
+  padding-top: 0;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .things-to-do .content-wrapper {
+    max-width: 70%;
   }
-  
-  .hero-content {
-    max-width: 782px;
+
+  .features-grid {
+    gap: 1.5rem;
+  }
+
+  .categories-section .content-wrapper,
+  .activities-section .content-wrapper {
+    padding: 0 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .content-wrapper {
-    max-width: 420px;
-  }
-  
-  .hero-content {
-    max-width: 90%;
-    padding: 0 var(--padding-sm);
-    top: 45%; /* Ajustamos posición para dar más espacio al SearchBox */
-  }
-
   .hero-title {
     font-size: 2rem;
-    margin-bottom: 0.5rem;
   }
 
   .hero-subtitle {
     font-size: 1rem;
+  }
+
+  .hero-content {
+    margin-bottom: 1.5rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .things-to-do .content-wrapper {
+    max-width: 90%;
+  }
+
+  .categories-grid,
+  .activities-grid,
+  .popular-section .activities-grid {
+    gap: 1rem;
+    padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+
+  .section-title {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero-title {
     font-size: 1.75rem;
+  }
+
+  .things-to-do .content-wrapper {
+    max-width: 95%;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .categories-section .content-wrapper,
+  .activities-section .content-wrapper,
+  .popular-section .content-wrapper {
+    width: 90%;
+    padding: 0 1rem;
   }
 }

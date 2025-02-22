@@ -1,0 +1,153 @@
+
+.form-base {
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
+  border-radius: 45px;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-archivo);
+  row-gap: 20px;
+  padding: 61px 69px 100px 69px;
+  max-height: 510px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.form-base > div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 696px;
+}
+
+.form-base > div > label,
+.rates label,
+label {
+  color: var(--Font-Background);
+  font-family: var(--font-archivo);
+  font-size: var(--h5-size);
+}
+
+.form-base > div > input,
+.form-base > div > textarea,
+.form-base > div select,
+.form-base > div input {
+  border-radius: 10px;
+  border-color: var(--black-300);
+  color: var(--black-300);
+  font-family: var(--font-outfit);
+  font-size: var(--h5-size);
+  padding: 1rem;
+}
+
+.form-base > div > textarea {
+  font-size: var(--h5-size);
+}
+
+.form-base > div.extra-fields {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-base > div.extra-fields > div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.form-base > div.rates {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.rates > div {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  row-gap: 8px;
+}
+
+.hamburger-button {
+  display: flex;
+  align-items: flex-start;
+  background: none;
+  /* border: none; */
+  cursor: pointer;
+  font-family: "geologica", var(--font-outfit);
+  font-size: var(--h5-size);
+  margin-top: 10px;
+  color: var(--Font-Background);
+}
+
+.extra-fields > div {
+  align-self: center;
+  margin-bottom: 10px;
+}
+
+.save-rate-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--black-300);
+  font-size: var(--h4-size);
+}
+
+.centered-button {
+  display: flex;
+  justify-content: center;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--black-300);
+  font-size: var(--h4-size);
+}
+
+div.container-categories {
+  display: none;
+}
+
+.form-base .container-dates {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+div.div-p-preview {
+  align-self: center;
+  margin: 20px auto;
+  width: 498px;
+}
+
+.form-base > div > p {
+  font-family: var(--font-outfit);
+  text-align: center;
+}
+
+.form-base > div.div-submit {
+  column-gap: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.form-base > div.div-submit button {
+  border-radius: 72px;
+  font-size: var(--h5-size);
+}

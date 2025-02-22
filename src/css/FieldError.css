@@ -1,0 +1,12 @@
+/* Importación de las dos fuentes a utilizar */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+
+:root {
+  --color-error: #d61b1b;
+  --font-outfit: "Outfit", sans-serif;
+}
+.field-error {
+  color: var(--color-error);
+  font-family: var(--font-outfit);
+  text-align: center;
+}
