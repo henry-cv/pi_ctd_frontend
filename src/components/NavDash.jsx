@@ -12,13 +12,13 @@ import ButtonGral from "./ButtonGral";
 import BasicBreadcrumbs from "./BasicBreadcrumbs";
 import PropTypes from 'prop-types';
 import '../css/NavDashHome.css';
+import { useContextGlobal } from '../gContext/globalContext';
+
+
 
 const NavDash = ({ variant = "home" }) => {
-  const [theme, setTheme] = useState("light");
+  const { dispatch ,state } = useContextGlobal();
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
 
   if (variant === "admin") {
     return (
@@ -49,8 +49,9 @@ const NavDash = ({ variant = "home" }) => {
       </div>
       <div className="rightContainer">
         <div className="theme-globe-buttons"> {/* Nuevo contenedor sin hide-mobile */}
-          <button onClick={toggleTheme} className="icon-button">
-            <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} />
+          <button onClick={() => dispatch({ type: "CHANGE_THEME" })} 
+          className="icon-button">
+            <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
           </button>
           <button className="icon-button">
             <FontAwesomeIcon icon={faGlobe} />

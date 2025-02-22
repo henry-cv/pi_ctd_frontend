@@ -5,6 +5,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
 import { ListSidebar } from "../constants/ListSidebar";
 import NavDash from "../components/NavDash";
+import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const activeLink = "isActiveDash";
@@ -47,6 +48,7 @@ const Dashboard = () => {
           <Outlet />
         </section>
       </div>
+    <Footer/>
     </>
   );
 };
