@@ -48,7 +48,10 @@ const Dashboard = () => {
           <Outlet />
         </section>
       </div>
-    <Footer/>
+      <div className="admin_hidden">
+        <h2>DISPONIBLE SÓLO EN DESKTOP🖥️</h2>
+      </div>
+      {/* <Footer /> */}
     </>
   );
 };

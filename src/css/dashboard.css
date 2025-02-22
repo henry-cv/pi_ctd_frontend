@@ -13,7 +13,9 @@
   max-height: 785px;
   padding: 10px 12px 0;
   height: 100vh;
-  background: var(--Background-sideBar);  /* se le agregó el color de la sideBar info en variables.css */
+  background: var(
+    --Background-sideBar
+  ); /* se le agregó el color de la sideBar info en variables.css */
   border-radius: 20px;
   position: relative;
 }
@@ -43,7 +45,9 @@
 }
 .list_sidebar > .listDashHover:hover {
   background-color: white;
-  color: var(--Background-sideBar) !important; /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
+  color: var(
+    --Background-sideBar
+  ) !important; /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
   border-radius: 50px;
   padding: 0 20px;
 }
@@ -290,7 +294,6 @@
   margin: 50px 0;
 }
 
-
 .add-activitie-container {
   padding: 2rem;
   display: flex;
@@ -306,7 +309,28 @@
   align-self: flex-start;
 }
 
+.dark_containers {
+  background-color: #383f4c;
+}
 
-.dark_containers{
-  background-color: #383F4C;
+.admin_hidden {
+  display: none;
+}
+
+.pagination_dash {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0;
+}
+
+@media (max-width: 960px) {
+  .admin_hidden {
+    display: grid;
+    place-content: center;
+    height: 100vh;
+    padding: 0 30px;
+  }
+  .admin_container {
+    display: none;
+  }
 }
