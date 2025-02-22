@@ -12,18 +12,18 @@ const Footer = () => {
                 <LogoImg/>
                 <div className="text-and-icons">
                     <p >Tu aventura comienza aquí.</p>
-                    <div class="social-icons">
+                    <div className="social-icons">
                         <a href="https://facebook.com" target="_blank">
-                            <i class="fab fa-facebook-f"></i>
+                            <i className="fab fa-facebook-f"></i>
                         </a>
                         <a href="https://instagram.com" target="_blank">
-                            <i class="fab fa-instagram"></i>
+                            <i className="fab fa-instagram"></i>
                         </a>
                         <a href="https://twitter.com" target="_blank">
-                            <i class="fab fa-twitter"></i>
+                            <i className="fab fa-twitter"></i>
                         </a>
                         <a href="https://linkedin.com" target="_blank">
-                            <i class="fab fa-linkedin-in"></i>
+                            <i className="fab fa-linkedin-in"></i>
                         </a>
                     </div>
                 </div>
