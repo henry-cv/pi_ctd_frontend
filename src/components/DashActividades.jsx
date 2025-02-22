@@ -34,7 +34,9 @@ const DashActividades = () => {
 
     fetchActivities();
   }, []);
-
+  const handleDelete = (id) => {
+    setActivities((prev) => prev.filter((activity) => activity.id !== id));
+  };
   return (
     <div className="activities_container">
       <div className="header_activities">
@@ -80,9 +82,11 @@ const DashActividades = () => {
         activities.map((activity) => (
           <ActivitieRow
             key={activity.id}
+            id={activity.id}
             imagen={activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.jpg"}  // ✅ Muestra la primera imagen o una por defecto
             titulo={activity.nombre}
             reservas={activity.reservas || "0"} // 📌 Asegurar un número de reservas
+            onDelete={handleDelete}
           />
         ))
       ) : (
