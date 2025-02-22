@@ -11,7 +11,7 @@
 
 /* Wrapper del searchbox */
 .search-box-wrapper {
-  background-color: var(--white);
+  background-color: var(--Background-components);
   border-radius: 16px;
   box-shadow: var(--shadow-md);
   width: 100%;
@@ -49,7 +49,7 @@
 }
 
 .field-title svg {
-  color: var(--gray-400);
+  color: var(--Icons-gray);
   font-size: 1rem;
 }
 
@@ -57,7 +57,7 @@
   font-family: var(--font-archivo);
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--black);
+  color: var(--Font-Background);
 }
 
 /* Botón de búsqueda */

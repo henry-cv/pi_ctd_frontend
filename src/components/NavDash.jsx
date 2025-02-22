@@ -13,7 +13,7 @@ import BasicBreadcrumbs from "./BasicBreadcrumbs";
 import PropTypes from 'prop-types';
 import '../css/NavDashHome.css';
 import { useContextGlobal } from '../gContext/globalContext';
-
+import LogoImg from "./LogoImg";
 
 
 const NavDash = ({ variant = "home" }) => {
@@ -27,7 +27,10 @@ const NavDash = ({ variant = "home" }) => {
           <BasicBreadcrumbs />
         </div>
         <div className="user-info">
-          <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} className="icon" />
+          <button onClick={() => dispatch({ type: "CHANGE_THEME" })} 
+          className="icon-button">
+            <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
+          </button>
           <div className="user-details">
             <p className="user-name">Luisa Lopez</p>
             <p className="user-role">Propietaria</p>
@@ -41,7 +44,7 @@ const NavDash = ({ variant = "home" }) => {
   return (
     <nav className="navbarDash home">
       <div className="leftContainer">
-        <img src="/Property 1=BlackV1.svg" alt="Logo" className="logo" />
+        <LogoImg  inNavbar={true} /> 
         <div className="hide-mobile">
           <Activities />
           <a href="#" className="nav-link">Crea tu Actividad</a>

@@ -1,44 +1,16 @@
-/* Estilos comunes para los formularios */
-/* Importación de las dos fuentes a utilizar */
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
 
-:root {
-  /* Fuentes */
-  --font-outfit: "Outfit", sans-serif;
-  --font-archivo: "Archivo", sans-serif;
-
-  /* Colores principales */
-  --blue-base: #3e10da;
-  --blue-hover: #3209c0;
-  --white: #ffffff;
-  --black: #101828;
-
-  /* Colores BG para botones */
-  --color-error: #d61b1b;
-  --color-sucess: #12c618;
-
-  /* Tonalidades de Black */
-  --black-100: #afb2b7;
-  --black-300: #606570;
-
-  /* Tamaños de letra, no para encabezados
-  no confundir con h1, h2, h3, h4, h5, h6
-  que se aplican así h5 { font-size: 22px }
-  */
-  --h4-size: 1.5rem;
-  --h5-size: 1.25rem;
-}
 .form-base {
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
   border-radius: 45px;
   display: flex;
   flex-direction: column;
   font-family: var(--font-archivo);
   row-gap: 20px;
   padding: 61px 69px 100px 69px;
-  width: 834px;
+  max-height: 510px;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .form-base > div {
@@ -51,9 +23,9 @@
 .form-base > div > label,
 .rates label,
 label {
-  color: var(--black);
+  color: var(--Font-Background);
   font-family: var(--font-archivo);
-  font-size: var(--h4-size);
+  font-size: var(--h5-size);
 }
 
 .form-base > div > input,
@@ -109,8 +81,9 @@ label {
   /* border: none; */
   cursor: pointer;
   font-family: "geologica", var(--font-outfit);
-  font-size: var(--h4-size);
+  font-size: var(--h5-size);
   margin-top: 10px;
+  color: var(--Font-Background);
 }
 
 .extra-fields > div {
