@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
@@ -47,7 +47,7 @@ const DashActividades = () => {
             </button>
           </div>
           {/* 🔗 Corregir la ruta a la creación de actividades */}
-          <Link to="crear-actividad">
+          <Link to="crearactividad">
             <ButtonGral
               text={"Agregar actividad"}
               color="yellow"
@@ -80,7 +80,7 @@ const DashActividades = () => {
         activities.map((activity) => (
           <ActivitieRow
             key={activity.id}
-            imagen={activity.imagenes?.[0] || "/default.jpg"} // 🖼 Imagen por defecto si no hay imagen
+            imagen={activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.jpg"}  // ✅ Muestra la primera imagen o una por defecto
             titulo={activity.nombre}
             reservas={activity.reservas || "0"} // 📌 Asegurar un número de reservas
           />

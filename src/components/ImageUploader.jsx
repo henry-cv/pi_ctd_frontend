@@ -1,82 +1,85 @@
 import { useState } from "react";
 import "../css/ImageUploader.css";
-import { FaUpload } from "react-icons/fa"; // Importa el ícono de subida
+import { FaUpload, FaTrash } from "react-icons/fa";
 
-const ImageUploader = () => {
+const ImageUploader = ({ onImagesSelected }) => {
   const [images, setImages] = useState([]);
-  const [uploadProgress, setUploadProgress] = useState({});
+  const [uploading, setUploading] = useState(false);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map((file) => ({
+    
+    // Validar archivos
+    const validFiles = files.filter(file => {
+      const isValidType = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
+      const isValidSize = file.size <= 3 * 1024 * 1024; // 3MB
+      return isValidType && isValidSize;
+    });
+
+    if (validFiles.length !== files.length) {
+      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, PNG, GIF, SVG) y no excedan 3MB.");
+    }
+
+    if (validFiles.length === 0) return;
+
+    const newImages = validFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
-      progress: 0,
     }));
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    
+    const updatedImages = [...images, ...newImages];
+    setImages(updatedImages);
+    
+    // Notificar al componente padre sobre los archivos seleccionados
+    onImagesSelected(updatedImages.map(img => img.file));
   };
 
-  const handleUpload = (image, index) => {
-    const uploadTask = fakeUpload(image.file); // Simula una subida de archivo
-
-    uploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setUploadProgress((prevProgress) => ({
-        ...prevProgress,
-        [index]: progress,
-      }));
-    });
-  };
-
-  const fakeUpload = () => {
-    return {
-      on: (event, callback) => {
-        if (event === "state_changed") {
-          let progress = 0;
-          const interval = setInterval(() => {
-            progress += 10;
-            if (progress <= 100) {
-              callback({ bytesTransferred: progress, totalBytes: 100 });
-            } else {
-              clearInterval(interval);
-            }
-          }, 100);
-        }
-      },
-    };
+  const handleRemoveImage = (index) => {
+    const updatedImages = [...images];
+    // Liberar URL de objeto para evitar fugas de memoria
+    URL.revokeObjectURL(updatedImages[index].preview);
+    updatedImages.splice(index, 1);
+    setImages(updatedImages);
+    
+    // Notificar al componente padre sobre la actualización
+    onImagesSelected(updatedImages.map(img => img.file));
   };
 
   return (
-    <div>
+    <div className="image-uploader-container">
       <label htmlFor="photos" className="file-label">
         <FaUpload className="upload-icon" />
-        <span>Link, or drag and drop</span>
-        <span className="file-types">SVG, JPG, PNG, or GIF (Máx 3MB) </span>
+        <span>Seleccionar imágenes</span>
+        <span className="file-types">SVG, JPG, PNG, o GIF (Máx 3MB) </span>
         <input
           type="file"
           id="photos"
           name="photos"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/gif,image/svg+xml"
           multiple
           onChange={handleImageChange}
+          disabled={uploading}
         />
       </label>
-      <div className="image-previews">
-        {images.map((image, index) => (
-          <div key={index} className="image-preview">
-            <img src={image.preview} alt={`Preview ${index}`} />
-            <div className="progress-bar">
-              <div
-                className="progress"
-                style={{ width: `${uploadProgress[index] || 0}%` }}
-              ></div>
+
+      {images.length > 0 && (
+        <div className="image-previews">
+          {images.map((image, index) => (
+            <div key={index} className="image-preview">
+              <img src={image.preview} alt={`Vista previa ${index}`} />
+              <button 
+                type="button" 
+                className="remove-button"
+                onClick={() => handleRemoveImage(index)}
+                disabled={uploading}
+              >
+                <FaTrash />
+              </button>
+              <div className="file-name">{image.file.name.length > 15 ? image.file.name.substring(0, 15) + '...' : image.file.name}</div>
             </div>
-            <button type="button" onClick={() => handleUpload(image, index)}>
-              Subir
-            </button>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -15,10 +15,21 @@ const ActivityCard = ({
   price, 
   rating 
 }) => {
+  // Imagen por defecto en caso de error o sin imagen
+  const defaultImage = '/activitie.jpg';  
+  const handleImageError = (e) => {
+    e.target.src = defaultImage;
+  };
+
   return (
     <div className="activity-card">
       <div className="activity-image-container">
-        <img src={image} alt={title} className="activity-image" />
+        <img 
+          src={image || defaultImage} 
+          alt={title} 
+          className="activity-image" 
+          onError={handleImageError}
+        />
       </div>
       <div className="activity-content">
         <h3 className="activity-title">{title}</h3>
@@ -45,12 +56,16 @@ const ActivityCard = ({
 };
 
 ActivityCard.propTypes = {
-  image: PropTypes.string.isRequired,
+  image: PropTypes.string,
   title: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
   duration: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   rating: PropTypes.number.isRequired
+};
+
+ActivityCard.defaultProps = {
+  image: '/activitie.jpg'
 };
 
 export default ActivityCard;
