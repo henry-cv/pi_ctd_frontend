@@ -2,6 +2,14 @@
   --clock-size: 0.6rem;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fue necesario agregar el box-sizing:border-box, para el tamaño preciso de la caja del elemento, sería mejor agregar la regla al variables.css */
+
 .container-hours {
   display: flex;
   flex-direction: column;
@@ -19,7 +27,7 @@
   position: relative;
   width: 79px;
   height: 55px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-200);
   background: none;
   font-size: var(--clock-size);
   cursor: pointer;

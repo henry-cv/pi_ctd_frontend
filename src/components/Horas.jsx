@@ -6,9 +6,9 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {
     <div className="container-hours">
       <label>Hora:</label>
       <div className="time-inputs">
-        <input type="time" id="startTime" name="startTime" className="time-input" onChange={onHoraInicioChange} required />
+        <input type="time" id="startTime" name="horaInicio" className="time-input" onChange={onHoraInicioChange} required />
         <label>A</label>
-        <input type="time" id="endTime" name="endTime" className="time-input" onChange={onHoraFinChange} required />
+        <input type="time" id="endTime" name="horaFin" className="time-input" onChange={onHoraFinChange} required />
       </div>
     </div>
   );
