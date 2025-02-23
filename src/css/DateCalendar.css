@@ -1,7 +1,9 @@
-:root {
-  --black: #101828;
-  --black-300: #606570;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
 .container-date {
   display: flex;
   flex-direction: column;
@@ -12,6 +14,7 @@
 .date-picker-container {
   position: relative;
   border: solid 1px var(--black-300);
+  background-color: var(--white);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -26,9 +29,9 @@
   color: var(--black);
 }
 
-.date-placeholder {
+p.date-placeholder {
   pointer-events: none;
-  color: var(--black);
+  color: var(--gray-400);
 }
 
 .date-input {

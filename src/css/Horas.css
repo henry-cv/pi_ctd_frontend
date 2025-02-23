@@ -1,5 +1,7 @@
 :root {
-  --clock-size: 0.6rem;
+  --clock-size: 0.5rem;
+  --Font-Background: var(--black);
+  --Border-Input-color: var(--gray-400);
 }
 
 * {
@@ -23,12 +25,14 @@
   column-gap: 10px;
 }
 
-.time-input {
+.time-inputs>input.time-input {
   position: relative;
   width: 79px;
   height: 55px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--Border-Input-color);
   background: none;
+  background-color: var(--white);
+  color: var(--gray-400);
   font-size: var(--clock-size);
   cursor: pointer;
   padding: 1rem;

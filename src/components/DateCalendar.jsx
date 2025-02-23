@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import "../css/DateCalendar.css";
+import PropTypes from 'prop-types';
 import { FaCalendarAlt } from "react-icons/fa";
 
-const DateCalendar = ({onChange}) => {
+const DateCalendar = ({ onChange }) => {
   const dateInputRef = useRef(null);
 
-  const handleCalendarClick=() =>{
-    if(dateInputRef.current){
+  const handleCalendarClick = () => {
+    if (dateInputRef.current) {
       dateInputRef.current.click();
     }
   }
@@ -26,4 +27,7 @@ const DateCalendar = ({onChange}) => {
   );
 };
 
+DateCalendar.propTypes = {
+  onChange: PropTypes.func.isRequired,
+};
 export default DateCalendar;
