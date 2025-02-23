@@ -304,13 +304,7 @@ const FormBasis = () => {
           <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange} />
         </div>
       )}
-      {eventType === "FECHA_UNICA" && (fechaEvento || horaInicio || horaFin) && (
-        <div className="container-singledate">
-          {fechaEvento && <label className="selected-value-box">Fecha: {fechaEvento}</label>}
-          {horaInicio && <label className="selected-value-box">Hora de Inicio: {horaInicio}</label>}
-          {horaFin && <label className="selected-value-box">Hora de Fin: {horaFin}</label>}
-        </div>
-      )}
+
       {eventType === "RECURRENTE" && (
         <div className="container-days">
           <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
