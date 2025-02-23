@@ -1,6 +1,7 @@
 import "../css/Horas.css";
+import PropTypes from 'prop-types';
 
-const Horas = ({onHoraInicioChange, onHoraFinChange}) => {
+const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {
   return (
     <div className="container-hours">
       <label>Hora:</label>
@@ -13,4 +14,9 @@ const Horas = ({onHoraInicioChange, onHoraFinChange}) => {
   );
 };
 
+// Validación de tipos de props
+Horas.propTypes = {
+  onHoraInicioChange: PropTypes.func.isRequired,
+  onHoraFinChange: PropTypes.func.isRequired,
+};
 export default Horas;
