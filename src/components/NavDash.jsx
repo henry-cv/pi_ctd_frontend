@@ -1,24 +1,22 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom'; // Añadimos import de Link
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faGlobe, 
-  faMoon, 
+import { useState } from "react";
+import { Link } from "react-router-dom"; // Añadimos import de Link
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGlobe,
+  faMoon,
   faSun,
-  faBars 
-} from '@fortawesome/free-solid-svg-icons';
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 import Activities from "./Activities";
 import ButtonGral from "./ButtonGral";
 import BasicBreadcrumbs from "./BasicBreadcrumbs";
-import PropTypes from 'prop-types';
-import '../css/NavDashHome.css';
+import PropTypes from "prop-types";
+import "../css/NavDashHome.css";
+import { useContextGlobal } from "../gContext/globalContext";
+import LogoImg from "./LogoImg";
 
 const NavDash = ({ variant = "home" }) => {
-  const [theme, setTheme] = useState("light");
-
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  const { dispatch, state } = useContextGlobal();
 
   if (variant === "admin") {
     return (
@@ -27,7 +25,12 @@ const NavDash = ({ variant = "home" }) => {
           <BasicBreadcrumbs />
         </div>
         <div className="user-info">
-          <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} className="icon" />
+          <button
+            onClick={() => dispatch({ type: "CHANGE_THEME" })}
+            className="icon-button"
+          >
+            <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
+          </button>
           <div className="user-details">
             <p className="user-name">Luisa Lopez</p>
             <p className="user-role">Propietaria</p>
@@ -41,26 +44,37 @@ const NavDash = ({ variant = "home" }) => {
   return (
     <nav className="navbarDash home">
       <div className="leftContainer">
-        <img src="/Property 1=BlackV1.svg" alt="Logo" className="logo" />
+        <LogoImg inNavbar={true} />
         <div className="hide-mobile">
           <Activities />
-          <a href="#" className="nav-link">Crea tu Actividad</a>
+          <a href="#" className="nav-link">
+            Crea tu Actividad
+          </a>
         </div>
       </div>
       <div className="rightContainer">
-        <div className="theme-globe-buttons"> {/* Nuevo contenedor sin hide-mobile */}
-          <button onClick={toggleTheme} className="icon-button">
-            <FontAwesomeIcon icon={theme === "light" ? faMoon : faSun} />
+        <div className="theme-globe-buttons">
+          {" "}
+          {/* Nuevo contenedor sin hide-mobile */}
+          <button
+            onClick={() => dispatch({ type: "CHANGE_THEME" })}
+            className="icon-button"
+          >
+            <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
           </button>
           <button className="icon-button">
             <FontAwesomeIcon icon={faGlobe} />
           </button>
         </div>
-        <div className="auth-buttons hide-mobile"> {/* Movido hide-mobile aquí */}
+        <div className="auth-buttons hide-mobile">
+          {" "}
+          {/* Movido hide-mobile aquí */}
           <div className="hide-tablet">
             <ButtonGral text="Registrar" color="transparent" />
           </div>
-          <Link to="/administrador"> {/* Añadimos Link al botón de acceso */}
+          <Link to="/administrador">
+            {" "}
+            {/* Añadimos Link al botón de acceso */}
             <ButtonGral text="Acceso" color="blue" />
           </Link>
         </div>
@@ -75,7 +89,7 @@ const NavDash = ({ variant = "home" }) => {
 };
 
 NavDash.propTypes = {
-  variant: PropTypes.oneOf(['home', 'admin']),
+  variant: PropTypes.oneOf(["home", "admin"]),
 };
 
 export default NavDash;

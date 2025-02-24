@@ -3,18 +3,28 @@ import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
 import { LuListFilter } from "react-icons/lu";
-
 import "../css/dashboard.css";
 import ActivitieRow from "./ActivitieRow";
 import { Link } from "react-router-dom";
+import BasicPagination from "./BasicPagination";
 
 const DashActividades = () => {
-
   const [activities, setActivities] = useState([]);
+  const [filteredActivities, setFilteredActivities] = useState([]); // Nuevo estado filtrado
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activitiesPerPage] = useState(6);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado de búsqueda
 
-  // 📡 Cargar actividades desde el backend
+  const lastActivity = currentPage * activitiesPerPage;
+  const firstActivity = lastActivity - activitiesPerPage;
+  const allPages = Math.ceil(filteredActivities.length / activitiesPerPage);
+  const currentActivities = filteredActivities.slice(
+    firstActivity,
+    lastActivity
+  );
+
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -24,6 +34,7 @@ const DashActividades = () => {
         }
         const data = await response.json();
         setActivities(data);
+        setFilteredActivities(data); // Inicialmente, las actividades filtradas son todas
       } catch (error) {
         console.error("Error cargando actividades:", error);
         setError(error.message);
@@ -35,18 +46,38 @@ const DashActividades = () => {
     fetchActivities();
   }, []);
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    if (term.trim() === "") {
+      setFilteredActivities(activities);
+    } else {
+      setFilteredActivities(
+        activities.filter((activity) =>
+          activity.nombre.toLowerCase().includes(term.toLowerCase())
+        )
+      );
+    }
+    setCurrentPage(1);
+  };
+
+  const handleDelete = (id) => {
+    setActivities((prev) => prev.filter((activity) => activity.id !== id));
+    setFilteredActivities((prev) =>
+      prev.filter((activity) => activity.id !== id)
+    );
+  };
+
   return (
     <div className="activities_container">
       <div className="header_activities">
         <h2>Mis Actividades</h2>
         <div className="activitieRight">
           <div className="searchFilter">
-            <DashSearch />
+            <DashSearch onSearch={handleSearch} />{" "}
             <button className="btnIconFilter">
               <LuListFilter size={"2rem"} />
             </button>
           </div>
-          {/* 🔗 Corregir la ruta a la creación de actividades */}
           <Link to="crearactividad">
             <ButtonGral
               text={"Agregar actividad"}
@@ -69,33 +100,41 @@ const DashActividades = () => {
         </div>
       </div>
 
-      {/* 🛠 Mostrar mensaje de carga */}
       {loading && <p>Cargando actividades...</p>}
-
-      {/* 🚨 Mostrar error si hay problemas con la carga */}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
-      {/* 🔥 Renderizar actividades si existen */}
-      {!loading && !error && activities.length > 0 ? (
-        activities.map((activity) => (
-          <ActivitieRow
-            key={activity.id}
-            imagen={activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.jpg"}  // ✅ Muestra la primera imagen o una por defecto
-            titulo={activity.nombre}
-            reservas={activity.reservas || "0"} // 📌 Asegurar un número de reservas
-          />
-        ))
-      ) : (
-        // 📌 Mostrar mensaje si no hay actividades creadas
-        !loading && !error && (
-          <div className="activities_info_img">
-            <p>
-              Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera actividad!
-            </p>
-            <img src="/activitiesImg.png" alt="Sin actividades" />
-          </div>
-        )
-      )}
+      {!loading && !error && currentActivities.length > 0
+        ? currentActivities.map((activity) => (
+            <ActivitieRow
+              key={activity.id}
+              id={activity.id}
+              imagen={
+                activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.jpg"
+              }
+              titulo={activity.nombre}
+              reservas={activity.reservas || "0"}
+              onDelete={handleDelete}
+            />
+          ))
+        : !loading &&
+          !error && (
+            <div className="activities_info_img">
+              <p>
+                {searchTerm
+                  ? "No hay actividades que coincidan con la búsqueda."
+                  : "Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera actividad!"}
+              </p>
+              <img src="/activitiesImg.png" alt="Sin actividades" />
+            </div>
+          )}
+
+      <div className="pagination_dash">
+        <BasicPagination
+          count={allPages}
+          page={currentPage}
+          onChange={(_, page) => setCurrentPage(page)}
+        />
+      </div>
     </div>
   );
 };

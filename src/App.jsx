@@ -8,11 +8,13 @@ import DashCategorias from "./components/DashCategorias";
 import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
+import { useContextGlobal } from "./gContext/globalContext";
 
 function App() {
+  const { state } = useContextGlobal();
   return (
     <BrowserRouter>
-      <div className="bg-white min-h-screen">
+      <div className={`bg-white min-h-screen  ${state.theme}`}>
         <Routes>
           <Route path="/" element={<Home />} />
 

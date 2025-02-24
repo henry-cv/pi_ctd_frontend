@@ -6,6 +6,7 @@ import ActivityCard from '../components/ActivityCard';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Home.css';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const [isLoggedIn] = useState(false);
@@ -336,6 +337,7 @@ const Home = () => {
           </div>
         </section>
       </main>
+      <Footer/>
     </div>
 
   );

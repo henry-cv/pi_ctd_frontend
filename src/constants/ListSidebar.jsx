@@ -14,7 +14,7 @@ export const ListSidebar = [
   },
   {
     id: "2",
-    label: "Mis Actividades",
+    label: "Lista de Productos",
     icon: <FaTicketAlt size={size} />,
     to: "actividades",
   },
