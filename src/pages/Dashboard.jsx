@@ -6,20 +6,29 @@ import { FaAngleRight } from "react-icons/fa";
 import { ListSidebar } from "../constants/ListSidebar";
 import NavDash from "../components/NavDash";
 import Footer from "../components/Footer";
+import { useState } from "react";
 
 const Dashboard = () => {
   const activeLink = "isActiveDash";
   const normalLink = "listDashHover";
+  const [barOpen, setBarOpen] = useState(false);
+
+  const handleBar = () => {
+    setBarOpen(!barOpen);
+  };
+
   return (
     <>
-      <div className="admin_container">
+      <div className={`${barOpen ? "admin_container" : "admin_container2"}`}>
         <article className="sidebar">
           <div className="logo_container">
             <Link to={"/"}>
               <img
-                src="../GoBook_LOGO_LIGHT.svg"
+                src={`${
+                  barOpen ? "../GoBook_LOGO_LIGHT.svg" : "../LogoDashSM.svg"
+                }`}
                 alt="logo goBook"
-                width={125}
+                width={`${barOpen && 125}`}
                 className="logoSidebar"
               />
             </Link>
@@ -30,16 +39,25 @@ const Dashboard = () => {
               <NavLink
                 to={to}
                 className={({ isActive }) =>
-                  `listDash ${isActive ? activeLink : normalLink}`
+                  `${barOpen ? "listDash" : "listDash2"}  ${
+                    isActive && barOpen ? activeLink : normalLink
+                  } ${!barOpen && isActive && "isActiveDash2"}`
                 }
                 key={id}
               >
                 {icon}
-                <span>{label}</span>
+                {barOpen && <span className="listNameSide">{label}</span>}
               </NavLink>
             ))}
           </div>
-          <button className="circleToggle">
+          <button
+            className={`${
+              barOpen
+                ? "circleToggle shadowCircle"
+                : "circleToggle animationToggle"
+            }`}
+            onClick={handleBar}
+          >
             <FaAngleRight />
           </button>
         </article>
