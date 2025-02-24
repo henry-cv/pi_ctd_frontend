@@ -2,11 +2,19 @@
 .footer {  
   background-color: var(--BackgroundColor-700);
   padding: 2rem; 
-  margin-top: 25px;
   position: relative;
   z-index: 2;
 }
-
+.footer::before {
+    content: "";
+    position: absolute;
+    top: -25px; /* Hasta la altura que iria margin top */
+    left: 0;
+    right: 0;
+    height: 25px; /* Alto igual al tamaño del margin top */
+    background-color: var(--BackgroundColor-700);
+    z-index: -1;
+}
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
