@@ -60,7 +60,7 @@ const ActivityDetail = () => {
   };
   
   // Imagen por defecto en caso de error
-  const defaultImage = '/activitie.jpg';
+  const defaultImage = '/activitie.webp';
   
   // Manejar errores de carga de imágenes
   const handleImageError = (e) => {

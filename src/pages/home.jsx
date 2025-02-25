@@ -15,22 +15,22 @@ const Home = () => {
   const [activities, setActivities] = useState([]);
 
   const carouselImages = [
-    '/bkgd_slider1.jpg',
-    '/bkgd_slider2.jpg',
-    '/bkgd_slider3.jpg',
+    '/bkgd_slider1.webp',
+    '/bkgd_slider2.webp',
+    '/bkgd_slider3.webp',
   ];
 
   const categories = [
-    { image: "/cultural-category.png", title: "Cultural" },
-    { image: "/food-category.png", title: "Gastronomía" },
-    { image: "/outdoor-category.png", title: "Aire libre" },
-    { image: "/wellness-category.png", title: "Bienestar" }
+    { image: "/cultural-category.webp", title: "Cultural" },
+    { image: "/food-category.webp", title: "Gastronomía" },
+    { image: "/outdoor-category.webp", title: "Aire libre" },
+    { image: "/wellness-category.webp", title: "Bienestar" }
   ];
 
   // const activities = [
   //   {
   //     id: 1,
-  //     image: "/activity1.jpg",
+  //     image: "/activity1.webp",
   //     title: "Tour gastronómico por la ciudad",
   //     location: "Buenos Aires, Argentina",
   //     duration: "3 horas",
@@ -39,7 +39,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 2,
-  //     image: "/activity2.jpg",
+  //     image: "/activity2.webp",
   //     title: "Clase de cocina tradicional",
   //     location: "Lima, Perú",
   //     duration: "2 horas",
@@ -48,7 +48,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 3,
-  //     image: "/activity3.jpg",
+  //     image: "/activity3.webp",
   //     title: "Visita guiada al Museo de Arte Moderno",
   //     location: "Ciudad de México, México",
   //     duration: "2 horas",
@@ -57,7 +57,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 4,
-  //     image: "/activity4.jpg",
+  //     image: "/activity4.webp",
   //     title: "Clase de Tenis",
   //     location: "Ciudad de México, México",
   //     duration: "1 hora",
@@ -69,7 +69,7 @@ const Home = () => {
   // const popularActivities = [
   //   {
   //     id: 1,
-  //     image: "/popular1.jpg",
+  //     image: "/popular1.webp",
   //     title: "Taller de Arte Urbano",
   //     location: "Buenos Aires, Argentina",
   //     duration: "4 horas",
@@ -78,7 +78,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 2,
-  //     image: "/popular2.jpg",
+  //     image: "/popular2.webp",
   //     title: "Clase de Tango",
   //     location: "Buenos Aires, Argentina",
   //     duration: "2 horas",
@@ -87,7 +87,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 3,
-  //     image: "/popular3.jpg",
+  //     image: "/popular3.webp",
   //     title: "Tour Gastronómico",
   //     location: "Lima, Perú",
   //     duration: "5 horas",
@@ -96,7 +96,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 4,
-  //     image: "/popular4.jpg",
+  //     image: "/popular4.webp",
   //     title: "Experiencia de Café",
   //     location: "Bogotá, Colombia",
   //     duration: "3 horas",
@@ -105,7 +105,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 5,
-  //     image: "/popular5.jpg",
+  //     image: "/popular5.webp",
   //     title: "Tour Fotográfico",
   //     location: "Ciudad de México, México",
   //     duration: "4 horas",
@@ -114,7 +114,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 6,
-  //     image: "/popular6.jpg",
+  //     image: "/popular6.webp",
   //     title: "Clase de Cocina Gourmet",
   //     location: "Santiago, Chile",
   //     duration: "3 horas",
@@ -123,7 +123,7 @@ const Home = () => {
   //   },
   //   {
   //     id: 7,
-  //     image: "/popular7.jpg",
+  //     image: "/popular7.webp",
   //     title: "Degustación de Vinos",
   //     location: "Mendoza, Argentina",
   //     duration: "4 horas",
@@ -187,7 +187,7 @@ const Home = () => {
         className="activity-link"
       >
         <ActivityCard 
-          image={activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.jpg"}  // ✅ Muestra la primera imagen o una por defecto
+          image={activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"}  // ✅ Muestra la primera imagen o una por defecto
           title={activity.nombre} 
           location={activity.direccion || "Ubicación no disponible"}  // ✅ Fallback si no hay dirección
           duration={`${activity.horaInicio} - ${activity.horaFin}`} 
