@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="logo-socialIcons">
                 <LogoImg/>
                 <div className="text-and-icons">
-                    <p >Tu aventura comienza aquí.</p>
+                    <p className="tagline">Tu aventura comienza aquí.</p>
                     <div className="social-icons">
                         <a href="https://facebook.com" target="_blank">
                             <i className="fab fa-facebook-f"></i>
