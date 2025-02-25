@@ -35,7 +35,7 @@ const NavDash = ({ variant = "home" }) => {
             <p className="user-name">Luisa Lopez</p>
             <p className="user-role">Propietaria</p>
           </div>
-          <img src="../user_example.jpg" alt="Perfil" className="user-avatar" />
+          <img src="../user_example.webp" alt="Perfil" className="user-avatar" />
         </div>
       </nav>
     );

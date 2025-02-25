@@ -109,7 +109,7 @@ const DashActividades = () => {
               key={activity.id}
               id={activity.id}
               imagen={
-                activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.jpg"
+                activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"
               }
               titulo={activity.nombre}
               reservas={activity.reservas || "0"}
@@ -124,7 +124,7 @@ const DashActividades = () => {
                   ? "No hay actividades que coincidan con la búsqueda."
                   : "Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera actividad!"}
               </p>
-              <img src="/activitiesImg.png" alt="Sin actividades" />
+              <img src="/activitiesImg.webp" alt="Sin actividades" />
             </div>
           )}
 

@@ -16,7 +16,7 @@ const ActivityCard = ({
   rating 
 }) => {
   // Imagen por defecto en caso de error o sin imagen
-  const defaultImage = '/activitie.jpg';  
+  const defaultImage = '/activitie.webp';  
   const handleImageError = (e) => {
     e.target.src = defaultImage;
   };
@@ -65,7 +65,7 @@ ActivityCard.propTypes = {
 };
 
 ActivityCard.defaultProps = {
-  image: '/activitie.jpg'
+  image: '/activitie.webp'
 };
 
 export default ActivityCard;
