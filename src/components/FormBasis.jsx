@@ -56,7 +56,9 @@ const FormBasis = () => {
     const texto = e.target.value;
     const maximo = 100;
     if (!validarAreaTexto(texto, maximo)) {
-      setErrorDescripcion(`La desripción debe tener entre 4 y máximo ${maximo} carácteres`);
+      setErrorDescripcion(
+        `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
+      );
     } else {
       setErrorDescripcion("");
     }
@@ -129,14 +131,17 @@ const FormBasis = () => {
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
       // No incluir imágenes aquí, ya que se enviará como archivos separados
-      imagenes: []
+      imagenes: [],
     };
 
     // Agregar el objeto producto como una parte JSON
-    formData.append("producto", new Blob([JSON.stringify(productoData)], { type: 'application/json' }));
+    formData.append(
+      "producto",
+      new Blob([JSON.stringify(productoData)], { type: "application/json" })
+    );
 
     // Agregar cada imagen como una parte separada
-    selectedImages.forEach(file => {
+    selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
 
@@ -151,7 +156,9 @@ const FormBasis = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Error en la solicitud: ${response.status} - ${errorText}`);
+        throw new Error(
+          `Error en la solicitud: ${response.status} - ${errorText}`
+        );
       }
 
       const data = await response.json();
@@ -170,7 +177,6 @@ const FormBasis = () => {
       setDiasDisponible([]);
       setFechaEvento("");
       setSelectedImages([]);
-
     } catch (error) {
       console.error("Error:", error.message);
       alert(`Error al enviar los datos: ${error.message}`);
@@ -220,14 +226,16 @@ const FormBasis = () => {
       {showExtraFields && (
         <div className="extra-fields">
           <div>
-            <label htmlFor="rateName">Nombre Tarifa:</label>
+            <label htmlFor="rateName">Valor tarifa:</label>
             <select
               id="rateType"
               value={tipoTarifa}
               onChange={(e) => setTipoTarifa(e.target.value)}
               required
             >
-              <option value="" disabled>Selecciona el tipo de tarifa</option>
+              <option value="" disabled>
+                Selecciona el tipo de tarifa
+              </option>
               <option value="POR_PERSONA">Por persona</option>
               <option value="POR_PAREJA">Por pareja</option>
               <option value="POR_GRUPO_6">Por grupo (6)</option>
@@ -235,7 +243,7 @@ const FormBasis = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="ratePrice">Precio:</label>
+            <label htmlFor="ratePrice">Tarifa por:</label>
             <input
               type="number"
               id="ratePrice"
@@ -257,6 +265,7 @@ const FormBasis = () => {
           <input
             type="number"
             id="rateValue"
+            min="1"
             value={valorTarifa}
             onChange={(e) => setValorTarifa(e.target.value)}
             required
@@ -271,7 +280,9 @@ const FormBasis = () => {
             onChange={(e) => setTipoTarifa(e.target.value)}
             required
           >
-            <option value="" disabled>Selecciona el tipo de tarifa</option>
+            <option value="" disabled>
+              Selecciona el tipo de tarifa
+            </option>
             <option value="POR_PERSONA">Por persona</option>
             <option value="POR_PAREJA">Por pareja</option>
             <option value="POR_GRUPO_6">Por grupo (6)</option>
@@ -301,21 +312,34 @@ const FormBasis = () => {
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
           <DateCalendar onChange={handleDateChange} />
-          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange} />
+          <Horas
+            onHoraInicioChange={handleHoraInicioChange}
+            onHoraFinChange={handleHoraFinChange}
+          />
         </div>
       )}
 
       {eventType === "RECURRENTE" && (
         <div className="container-days">
           <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
-          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange} />
+          <Horas
+            onHoraInicioChange={handleHoraInicioChange}
+            onHoraFinChange={handleHoraFinChange}
+          />
         </div>
       )}
 
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
-        <select id="language" value={idioma} onChange={(e) => setIdioma(e.target.value)} required>
-          <option value="" disabled>Selecciona idioma</option>
+        <select
+          id="language"
+          value={idioma}
+          onChange={(e) => setIdioma(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Selecciona idioma
+          </option>
           <option value="Español">Español</option>
         </select>
       </div>
@@ -325,7 +349,9 @@ const FormBasis = () => {
         <label>Imágenes:</label>
         <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
-          <p className="selected-count">{selectedImages.length} imagen(es) seleccionada(s)</p>
+          <p className="selected-count">
+            {selectedImages.length} imagen(es) seleccionada(s)
+          </p>
         )}
       </div>
 
