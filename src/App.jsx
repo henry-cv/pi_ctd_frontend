@@ -9,6 +9,7 @@ import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
 import { useContextGlobal } from "./gContext/globalContext";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   const { state } = useContextGlobal();
@@ -30,6 +31,7 @@ function App() {
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
           <Route path="/actividad/:id" element={<ActivityDetail />} />
+          <Route path="/perfil" element={<UserProfile />} />
         </Routes>
       </div>
     </BrowserRouter>
