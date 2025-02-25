@@ -3,6 +3,7 @@
   width: 100%;
   min-height: 100vh;
   position: relative;
+  background-color: var(--BackgroundColor);
 }
 
 /* Hero Section */
@@ -64,7 +65,7 @@
 }
 
 .main-content {
-  background-color: var(--white);
+  background-color: var(--BackgroundColor);
   position: relative;
   z-index: 2;
   margin-top: -2rem;
@@ -74,7 +75,7 @@
 /* Things To Do Section */
 .things-to-do {
   padding: 4rem 0;
-  background-color: var(--white);
+  background-color: var(--BackgroundColor);
 }
 
 .things-to-do .content-wrapper {
@@ -86,7 +87,7 @@
   font-family: var(--font-archivo);
   font-size: 2.5rem;
   font-weight: 600;
-  color: var(--black);
+  color: var(--Font-Background);
   margin-bottom: 2rem;
 }
 
@@ -101,7 +102,7 @@
 
 .section-subtitle {
   text-align: center;
-  color: var(--black);
+  color: var(--Font-Background);
   font-family: var(--font-outfit);
   font-size: 1rem;
   max-width: 600px;
@@ -153,7 +154,7 @@
 .categories-section,
 .activities-section {
   padding: 4rem 0;
-  background-color: var(--white);
+  background-color: var(--BackgroundColor);
 }
 
 .categories-section .content-wrapper,

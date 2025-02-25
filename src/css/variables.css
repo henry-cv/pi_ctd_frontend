@@ -39,23 +39,23 @@
     --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
 
     
-    /* Estas variables manejan el modo ligth */
-   --BackgroundColor:var(--white) ;    /* todo lo que es background el fonde la pagina */
-    --BackgroundColor-700:var(--white) ; /* background mas oscuro especial lo tiene el footer y elementos del home */
-    --Background-components:var(--white); /*background para navbar , formularios , etc */
-    --Background-sideBar:var(--blue-base); /*background de la sidebar en ligth es diferenciado y en dark es igual que la nav y formularios */
-    --Font-Background:var(var(--black));  /* Las fuentes que van sobre el background , navbar y form, no aplica a botones esos nunca cambian se mantienen */
-    --Icons-gray:var(--gray-400); /* para fuentes e iconos que en ligt son gris y en dark pasan a blanco */
+    /* Estas variables manejan el modo light */
+   --BackgroundColor: var(--white);    /* todo lo que es background el fonde la pagina */
+    --BackgroundColor-700: var(--white); /* background mas oscuro especial lo tiene el footer y elementos del home */
+    --Background-components: var(--white); /*background para navbar , formularios , etc */
+    --Background-sideBar: var(--blue-base); /*background de la sidebar en ligth es diferenciado y en dark es igual que la nav y formularios */
+    --Font-Background: var(--black);  /* Las fuentes que van sobre el background , navbar y form, no aplica a botones esos nunca cambian se mantienen */
+    --Icons-gray: var(--gray-400); /* para fuentes e iconos que en ligt son gris y en dark pasan a blanco */
     
 }
 
 /* EL cambio del tono de las variables en el modo dark */
 .dark{
-  --BackgroundColor:var(--black-);
-  --BackgroundColor-700:var(--black-700) ;
-  --Background-components:var(--black-400);
-  --Background-sideBar:var(--black-400);
-  --Font-Background:var(--white);
-  --Icons-gray:var(--Font-Background);
+  --BackgroundColor: var(--black);
+  --BackgroundColor-700: var(--black-700) ;
+  --Background-components: var(--black-400);
+  --Background-sideBar: var(--black-400);
+  --Font-Background: var(--white);
+  --Icons-gray: var(--Font-Background);
 
 }
