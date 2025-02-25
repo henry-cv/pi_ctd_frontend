@@ -1,11 +1,13 @@
 .activity-card {
-  background-color: var(--white);
+  background-color: var(--Background-components);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  width: 100%;
+  width: 335px;
+  height: 373px;
+  padding: 10px;
 }
 
 .activity-card:hover {
@@ -15,8 +17,10 @@
 
 .activity-image-container {
   width: 100%;
-  height: 80px; /* Reducido 20% de 100px */
+  height: 55%;
+  border-radius: 18px;
   overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .activity-image {
@@ -26,51 +30,63 @@
 }
 
 .activity-content {
-  padding: 1rem; /* Reducido de 1.5rem a 1rem */
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .activity-title {
   font-family: var(--font-archivo);
-  font-size: 1rem; /* Reducido de 1.25rem a 1rem */
+  font-size: 20px;
   font-weight: 600;
-  color: var(--black);
-  margin: 0 0 0.75rem 0;
+  color: var(--Font-Background);
+  margin: 0;
 }
 
 .activity-details {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem; /* Reducido de 0.5rem a 0.25rem */
-  margin-bottom: 0.75rem; /* Reducido de 1.5rem a 0.75rem */
+  gap: 8px;
 }
 
 .activity-location,
 .activity-duration {
   display: flex;
   align-items: center;
-  gap: 0.25rem; /* Reducido de 0.5rem a 0.25rem */
-  color: var(--gray-400);
-  font-size: 0.75rem; /* Reducido de 0.875rem a 0.75rem */
+  gap: 8px;
+  color: var(--Icons-gray);
+  font-size: 14px;
 }
 
 .activity-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .activity-price {
   font-family: var(--font-archivo);
-  font-size: 1rem; /* Reducido de 1.25rem a 1rem */
+  font-size: 28px;
   font-weight: 600;
-  color: var(--black);
+  color: var(--Font-Background);
 }
 
 .activity-rating {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
   color: #FFC107;
   font-weight: 500;
-  font-size: 0.75rem; /* Reducido */
+  font-size: 16px;
+}
+
+/* Para los iconos */
+.activity-location svg,
+.activity-duration svg,
+.activity-rating svg {
+  width: 16px;
+  height: 16px;
 }

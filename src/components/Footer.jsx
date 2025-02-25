@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="logo-socialIcons">
                 <LogoImg/>
                 <div className="text-and-icons">
-                    <p >Tu aventura comienza aquí.</p>
+                    <p className="tagline">Tu aventura comienza aquí.</p>
                     <div className="social-icons">
                         <a href="https://facebook.com" target="_blank">
                             <i className="fab fa-facebook-f"></i>
@@ -22,7 +22,7 @@ const Footer = () => {
                         <a href="https://twitter.com" target="_blank">
                             <i className="fab fa-twitter"></i>
                         </a>
-                        <a href="https://linkedin.com" target="_blank">
+                        <a href="https://www.linkedin.com/in/gobook" target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-linkedin-in"></i>
                         </a>
                     </div>

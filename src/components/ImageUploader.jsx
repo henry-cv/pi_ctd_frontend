@@ -11,13 +11,13 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Validar archivos
     const validFiles = files.filter(file => {
-      const isValidType = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
-      const isValidSize = file.size <= 3 * 1024 * 1024; // 3MB
+      const isValidType = ['image/jpg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
+      const isValidSize = file.size <= 10 * 1024 * 1024; // 3MB
       return isValidType && isValidSize;
     });
 
     if (validFiles.length !== files.length) {
-      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, PNG, GIF, SVG) y no excedan 3MB.");
+      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (jpg, png, GIF, SVG) y no excedan 10MB.");
     }
 
     if (validFiles.length === 0) return;
@@ -55,7 +55,7 @@ const ImageUploader = ({ onImagesSelected }) => {
           type="file"
           id="photos"
           name="photos"
-          accept="image/jpeg,image/png,image/gif,image/svg+xml"
+          accept="image/jpeg,image/webp,image/gif,image/svg+xml"
           multiple
           onChange={handleImageChange}
           disabled={uploading}
