@@ -1,7 +1,6 @@
-@import "./variables.css";
+/* @import "./variables.css"; */
 
 :root {
-  --clock-size: 0.5rem;
   --gray-200: #e5e7eb;
   --black: #101828;
   --white: #ffffff;
@@ -30,30 +29,12 @@
   column-gap: 10px;
 }
 
-.time-inputs>input.time-input {
+.time-inputs > input.time-input {
   position: relative;
-  width: 79px;
-  height: 55px;
   border: 1px solid var(--Border-Input-color);
   background: none;
   background-color: var(--white);
   color: var(--gray-400);
-  font-size: var(--clock-size);
   cursor: pointer;
   padding: 1rem;
-}
-
-.time-input::-webkit-calendar-picker-indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-.time-input::-webkit-datetime-edit,
-.time-input::-webkit-inner-spin-button,
-.time-input::-webkit-clear-button {
-  display: none;
 }
