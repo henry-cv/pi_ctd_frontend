@@ -130,8 +130,6 @@ const FormBasis = () => {
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      // No incluir imágenes aquí, ya que se enviará como archivos separados
-      imagenes: [],
     };
 
     // Agregar el objeto producto como una parte JSON
