@@ -109,7 +109,7 @@ const DashActividades = () => {
               key={activity.id}
               id={activity.id}
               imagen={
-                activity.imagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"
+                activity.productoImagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"
               }
               titulo={activity.nombre}
               reservas={activity.reservas || "0"}

@@ -1,3 +1,12 @@
+:root {
+  --Font-Background: var(--black);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 .form-base {
   background-color: var(--Background-components);
@@ -13,14 +22,14 @@
   overflow-x: auto;
 }
 
-.form-base > div {
+.form-base>div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   width: 696px;
 }
 
-.form-base > div > label,
+.form-base>div>label,
 .rates label,
 label {
   color: var(--Font-Background);
@@ -28,10 +37,10 @@ label {
   font-size: var(--h5-size);
 }
 
-.form-base > div > input,
-.form-base > div > textarea,
-.form-base > div select,
-.form-base > div input {
+.form-base>div>input,
+.form-base>div>textarea,
+.form-base>div select,
+.form-base>div input {
   border-radius: 10px;
   border-color: var(--black-300);
   color: var(--black-300);
@@ -40,11 +49,11 @@ label {
   padding: 1rem;
 }
 
-.form-base > div > textarea {
+.form-base>div>textarea {
   font-size: var(--h5-size);
 }
 
-.form-base > div.extra-fields {
+.form-base>div.extra-fields {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
@@ -52,20 +61,20 @@ label {
   margin-top: 20px;
 }
 
-.form-base > div.extra-fields > div {
+.form-base>div.extra-fields>div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
 }
 
-.form-base > div.rates {
+.form-base>div.rates {
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.rates > div {
+.rates>div {
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -86,7 +95,7 @@ label {
   color: var(--Font-Background);
 }
 
-.extra-fields > div {
+.extra-fields>div {
   align-self: center;
   margin-bottom: 10px;
 }
@@ -134,12 +143,12 @@ div.div-p-preview {
   width: 498px;
 }
 
-.form-base > div > p {
+.form-base>div>p {
   font-family: var(--font-outfit);
   text-align: center;
 }
 
-.form-base > div.div-submit {
+.form-base>div.div-submit {
   column-gap: 40px;
   display: flex;
   flex-direction: row;
@@ -147,7 +156,7 @@ div.div-p-preview {
   margin-top: 20px;
 }
 
-.form-base > div.div-submit button {
+.form-base>div.div-submit button {
   border-radius: 72px;
   font-size: var(--h5-size);
 }
