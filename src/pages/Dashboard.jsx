@@ -52,7 +52,7 @@ const Dashboard = () => {
           </div>
           <button
             className={`${
-              barOpen
+              !barOpen
                 ? "circleToggle shadowCircle"
                 : "circleToggle animationToggle"
             }`}
