@@ -1,5 +1,5 @@
 /* Importar las reglas de Form.css */
-@import "./Form.css";
+@import "./components/Form.css";
 
 /* Añadir las reglas nuevas */
 form .new-category {

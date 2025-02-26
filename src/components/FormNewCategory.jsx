@@ -1,5 +1,5 @@
-import "../css/variables.css";
-import "../css/FormNewCategory.css";
+import "../css/global/variables.css";
+import "../css/components/FormNewCategory.css";
 import { useState } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
