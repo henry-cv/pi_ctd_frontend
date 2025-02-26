@@ -6,7 +6,7 @@
   background-color: var(--BackgroundColor);
 }
 
-/* Hero Section */
+/* Hero Section - Version simplificada temporal */
 .hero-section {
   position: relative;
   height: 100vh;
@@ -18,38 +18,6 @@
   inset: 0 0 auto 0;
   z-index: 1000;
   background: transparent;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-content {
-  text-align: center;
-  color: var(--white);
-  margin-bottom: 4rem;
-  max-width: 800px;
-  position: relative;
-  top: -5%;
-}
-
-.hero-title {
-  font-family: var(--font-archivo);
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-.hero-subtitle {
-  font-family: var(--font-archivo);
-  font-size: 1.5rem;
 }
 
 /* Layout */
@@ -70,15 +38,16 @@
   z-index: 2;
   margin-top: -2rem;
   border-radius: 2rem 2rem 0 0;
+  padding-top: 2rem;
 }
 
-/* Things To Do Section */
-.things-to-do {
+/* Features Section */
+.features-section {
   padding: 4rem 0;
   background-color: var(--BackgroundColor);
 }
 
-.things-to-do .content-wrapper {
+.features-section .content-wrapper {
   max-width: 50%;
   margin: 0 auto;
 }
@@ -89,24 +58,6 @@
   font-weight: 600;
   color: var(--Font-Background);
   margin-bottom: 2rem;
-}
-
-.things-to-do .section-title {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.things-to-do .section-title .highlight {
-  color: var(--blue-base);
-}
-
-.section-subtitle {
-  text-align: center;
-  color: var(--Font-Background);
-  font-family: var(--font-outfit);
-  font-size: 1rem;
-  max-width: 600px;
-  margin: 0 auto 3rem;
 }
 
 /* Feature Cards */
@@ -209,6 +160,10 @@
 
 /* Media Queries */
 @media (max-width: 1024px) {
+  .features-section .content-wrapper {
+    max-width: 70%;
+  }
+
   .things-to-do .content-wrapper {
     max-width: 70%;
   }
@@ -216,24 +171,11 @@
   .features-grid {
     gap: 1.5rem;
   }
-
-  .categories-section .content-wrapper,
-  .activities-section .content-wrapper {
-    padding: 0 1.5rem;
-  }
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .hero-content {
-    margin-bottom: 1.5rem;
+  .features-section .content-wrapper {
+    max-width: 90%;
   }
 
   .features-grid {
@@ -259,8 +201,8 @@
 }
 
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: 1.75rem;
+  .features-section .content-wrapper {
+    max-width: 95%;
   }
 
   .things-to-do .content-wrapper {
