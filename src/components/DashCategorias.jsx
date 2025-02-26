@@ -1,11 +1,10 @@
 import "../css/pages/dashboard.css";
-import FormNewCategory from "./FormNewCategory";
+//import FormNewCategory from "./FormNewCategory";
 import { useState, useEffect } from "react";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
 import { LuListFilter } from "react-icons/lu";
-import "../css/pages/dashboard.css";
 import ActivitieRow from "./ActivitieRow";
 import { Link } from "react-router-dom";
 import BasicPagination from "./BasicPagination";
@@ -19,12 +18,12 @@ const DashCategorias = () => {
   const [categoriesPerPage] = useState(6);
   const [searchTerm, setSearchTerm] = useState(""); // Estado de búsqueda
 
-  const lastActivity = currentPage * categoriesPerPage;
-  const firstActivity = lastActivity - categoriesPerPage;
+  const lastCategory = currentPage * categoriesPerPage;
+  const firstCategory = lastCategory - categoriesPerPage;
   const allPages = Math.ceil(filteredCategories.length / categoriesPerPage);
   const currentCategories = filteredCategories.slice(
-    firstActivity,
-    lastActivity
+    firstCategory,
+    lastCategory
   );
 
   useEffect(() => {
@@ -36,7 +35,7 @@ const DashCategorias = () => {
         }
         const data = await response.json();
         setCategories(data);
-        setFilteredCategories(data); // Inicialmente, las actividades filtradas son todas
+        setFilteredCategories(data); // Inicialmente, las categorías filtradas son todas
       } catch (error) {
         console.error("Error cargando categorías:", error);
         setError(error.message);
@@ -70,38 +69,67 @@ const DashCategorias = () => {
   };
 
   return (
-    <>
-      <div className="categories_container">
-        <header className="header_categories">
-          <h2>Nueva Categoría</h2>
-          <div className="activitieRight">
-            <div className="searchFilter">
-              <DashSearch onSearch={handleSearch} />{" "}
-              <button className="btnIconFilter">
-                <LuListFilter size={"2rem"} />
-              </button>
-            </div>
-            <Link to="crearcategoria">
-              <ButtonGral
-                text={"Nueva Categoría"}
-                color="yellow"
-                icon={<FaCirclePlus size={"1.5rem"} />}
-              />
-            </Link>
+    <div className="categories_container">
+      <header className="header_categories">
+        <h2>Nueva Categoría</h2>
+        <div className="categoryRight">
+          <div className="searchFilter">
+            <DashSearch onSearch={handleSearch} />{" "}
+            <button className="btnIconFilter">
+              <LuListFilter size={"2rem"} />
+            </button>
           </div>
-        </header>
-
-        <div className="table_categories">
-          <div><span className="titleTable">Categoría</span></div>
-          <div><span className="titleTable">Acciones</span></div>
+          <Link to="crearcategoria">
+            <ButtonGral
+              text={"Nueva Categoría"}
+              color="yellow"
+              icon={<FaCirclePlus size={"1.5rem"} />}
+            />
+          </Link>
         </div>
+      </header>
+
+      <div className="table_categories">
+        <div><span className="titleTable">Categoría</span></div>
+        <div><span className="titleTable">Acciones</span></div>
       </div>
 
       {loading && <p>Cargando categorías...</p>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
-      <FormNewCategory />
-    </>
+      {!loading && !error && currentCategories.length > 0
+        ? currentCategories.map((category) => (
+          <ActivitieRow
+            key={category.id}
+            id={category.id}
+            imagen={
+              category.productoImagenesSalidaDto?.[0]?.rutaImagen || "/category.webp"
+            }
+            titulo={category.nombre}
+            reservas={category.reservas || "0"}
+            onDelete={handleDelete}
+          />
+        ))
+        : !loading &&
+        !error && (
+          <div className="categories_info_img">
+            <p>
+              {searchTerm
+                ? "No hay categorías que coincidan con la búsqueda."
+                : "Aún no tienes categorías creadas. ¡Empieza ahora y añade tu primera categoría!"}
+            </p>
+            <img src="/categoriesImg.webp" alt="Sin categorías" />
+          </div>
+        )
+      }
+      <div className="pagination_dash">
+        <BasicPagination
+          count={allPages}
+          page={currentPage}
+          onChange={(_, page) => setCurrentPage(page)}
+        />
+      </div>
+    </div>
   );
 };
 
