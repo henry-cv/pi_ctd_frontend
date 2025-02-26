@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../css/ImageUploader.css";
+import "../css/components/ImageUploader.css";
 import { FaUpload, FaTrash } from "react-icons/fa";
 
 const ImageUploader = ({ onImagesSelected }) => {
@@ -11,13 +11,13 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Validar archivos
     const validFiles = files.filter(file => {
-      const isValidType = ['image/jpg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
-      const isValidSize = file.size <= 10 * 1024 * 1024; // 3MB
+      const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type);
+      const isValidSize = file.size <= 4 * 1024 * 1024; // 4MB
       return isValidType && isValidSize;
     });
 
     if (validFiles.length !== files.length) {
-      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (jpg, png, GIF, SVG) y no excedan 10MB.");
+      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, WEBP) y no excedan 4MB.");
     }
 
     if (validFiles.length === 0) return;
@@ -50,12 +50,12 @@ const ImageUploader = ({ onImagesSelected }) => {
       <label htmlFor="photos" className="file-label">
         <FaUpload className="upload-icon" />
         <span>Seleccionar imágenes</span>
-        <span className="file-types">SVG, JPG, PNG, o GIF (Máx 3MB) </span>
+        <span className="file-types">JPG, JPEG, PNG, o WEBP (Máx 4MB) </span>
         <input
           type="file"
           id="photos"
           name="photos"
-          accept="image/jpeg,image/webp,image/gif,image/svg+xml"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
           multiple
           onChange={handleImageChange}
           disabled={uploading}

@@ -1,4 +1,4 @@
-import '../css/BluePill.css';
+import '../css/components/BluePill.css';
 import PropTypes from 'prop-types';
 
 const ButtonBluePill = ({ text = "Button", className = "button-blue", size = "default" }) => {

@@ -1,5 +1,8 @@
 
-.form-base {
+@import "../components/Form.css";
+
+/* Añadir las reglas nuevas */
+form .new-category {
   background-color: var(--Background-components);
   color: var(--Font-Background);
   border-radius: 45px;
@@ -13,14 +16,14 @@
   overflow-x: auto;
 }
 
-.form-base > div {
+form .new-category>div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   width: 696px;
 }
 
-.form-base > div > label,
+form .new-category>div>label,
 .rates label,
 label {
   color: var(--Font-Background);
@@ -28,10 +31,10 @@ label {
   font-size: var(--h5-size);
 }
 
-.form-base > div > input,
-.form-base > div > textarea,
-.form-base > div select,
-.form-base > div input {
+form .new-category>div>input,
+form .new-category>div>textarea,
+form .new-category>div select,
+form .new-category>div input {
   border-radius: 10px;
   border-color: var(--black-300);
   color: var(--black-300);
@@ -40,11 +43,11 @@ label {
   padding: 1rem;
 }
 
-.form-base > div > textarea {
+form .new-category>div>textarea {
   font-size: var(--h5-size);
 }
 
-.form-base > div.extra-fields {
+form .new-category>div.extra-fields {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
@@ -52,20 +55,20 @@ label {
   margin-top: 20px;
 }
 
-.form-base > div.extra-fields > div {
+form .new-category>div.extra-fields>div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
 }
 
-.form-base > div.rates {
+form .new-category>div.rates {
   align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.rates > div {
+.rates>div {
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -86,7 +89,7 @@ label {
   color: var(--Font-Background);
 }
 
-.extra-fields > div {
+.extra-fields>div {
   align-self: center;
   margin-bottom: 10px;
 }
@@ -122,7 +125,7 @@ div.container-categories {
   display: none;
 }
 
-.form-base .container-dates {
+form .new-category .container-dates {
   display: flex;
   flex-direction: row;
   column-gap: 10px;
@@ -134,12 +137,12 @@ div.div-p-preview {
   width: 498px;
 }
 
-.form-base > div > p {
+form .new-category>div>p {
   font-family: var(--font-outfit);
   text-align: center;
 }
 
-.form-base > div.div-submit {
+form .new-category>div.div-submit {
   column-gap: 40px;
   display: flex;
   flex-direction: row;
@@ -147,7 +150,7 @@ div.div-p-preview {
   margin-top: 20px;
 }
 
-.form-base > div.div-submit button {
+form .new-category>div.div-submit button {
   border-radius: 72px;
   font-size: var(--h5-size);
 }

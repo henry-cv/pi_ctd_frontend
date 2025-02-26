@@ -1,4 +1,4 @@
-import '../css/CategoryCard.css';
+import '../css/components/CategoryCard.css';
 import PropTypes from 'prop-types';
 
 const CategoryCard = ({ title, image }) => {

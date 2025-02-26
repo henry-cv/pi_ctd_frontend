@@ -1,11 +1,10 @@
-import "../css/dashboard.css";
-import "../css/variables.css";
+import "../css/pages/dashboard.css";
+import "../css/global/variables.css";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { FaAngleRight } from "react-icons/fa";
 import { ListSidebar } from "../constants/ListSidebar";
 import NavDash from "../components/NavDash";
-import Footer from "../components/Footer";
 import { useState } from "react";
 
 const Dashboard = () => {
@@ -52,7 +51,7 @@ const Dashboard = () => {
           </div>
           <button
             className={`${
-              barOpen
+              !barOpen
                 ? "circleToggle shadowCircle"
                 : "circleToggle animationToggle"
             }`}

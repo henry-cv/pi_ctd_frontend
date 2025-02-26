@@ -1,0 +1,354 @@
+/* Contenedor Base */
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--BackgroundColor);
+}
+
+/* Hero Section - Version simplificada temporal */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+.header-container {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  background: transparent;
+}
+
+/* Layout */
+.content-wrapper {
+  max-width: var(--container-xl);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--padding-sm);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-content {
+  background-color: var(--BackgroundColor);
+  position: relative;
+  z-index: 2;
+  margin-top: -2rem;
+  border-radius: 2rem 2rem 0 0;
+  padding-top: 2rem;
+}
+
+/* Features Section */
+.features-section {
+  padding: 4rem 1rem;
+  background-color: var(--BackgroundColor);
+}
+
+.features-section .content-wrapper {
+  max-width: 1140px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.features-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.features-title {
+  font-family: var(--font-archivo);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--Font-Background);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.features-subtitle {
+  font-family: var(--font-outfit);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--Icons-gray);
+  line-height: 1.5;
+  margin: 0 auto;
+}
+
+/* Feature Cards Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  width: 100%;
+}
+
+.feature-card {
+  padding: clamp(1.5rem, 4vw, 2rem);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 200px;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-card.blue {
+  background-color: var(--blue-base);
+  color: var(--white);
+}
+
+.feature-card.yellow {
+  background-color: #EEC52D;
+  color: var(--black);
+}
+
+.feature-title {
+  font-family: var(--font-archivo);
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.feature-description {
+  font-family: var(--font-outfit);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Categories & Activities Sections */
+.categories-section,
+.activities-section {
+  padding: 4rem 0;
+  background-color: var(--BackgroundColor);
+}
+
+.categories-section .content-wrapper,
+.activities-section .content-wrapper {
+  width: 90%;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.categories-section .section-title,
+.activities-section .section-title {
+  text-align: left;
+  width: 100%;
+}
+
+/* Grids */
+.categories-grid,
+.activities-grid,
+.popular-section .activities-grid {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.categories-grid::-webkit-scrollbar,
+.activities-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cards */
+.category-card {
+  flex: 0 0 150px;
+  height: 150px;
+  scroll-snap-align: start;
+}
+
+.activity-card {
+  flex: 0 0 240px;
+  scroll-snap-align: start;
+}
+
+/* Popular Section */
+.popular-section {
+  padding-top: 0;
+}
+
+/* Special Banner Section */
+.special-banner-section {
+  width: 100%;
+  height: 80vh;
+  background-color: #F7F8FC;
+  position: relative;
+  margin-top: 4rem;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dark .special-banner-section {
+  background-color: #0B101B;
+}
+
+.special-banner-section .content-wrapper {
+  height: 100%;
+  position: relative;
+  width: 70%;
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.special-banner-section picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 70%; /* Mantenemos el 70% en todos los tamaños */
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto; /* Centramos la imagen */
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .features-section .content-wrapper {
+    max-width: 90%;
+  }
+
+  .things-to-do .content-wrapper {
+    max-width: 70%;
+  }
+
+  .features-grid {
+    gap: 1.5rem;
+  }
+
+  .special-banner-section .content-wrapper {
+    width: 80%; /* Un poco más ancho en tablets grandes */
+  }
+}
+
+@media (max-width: 768px) {
+  .features-section {
+    padding: 3rem 1rem;
+  }
+
+  .features-section .content-wrapper {
+    max-width: 100%;
+  }
+
+  .features-header {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .things-to-do .content-wrapper {
+    max-width: 90%;
+  }
+
+  .categories-grid,
+  .activities-grid,
+  .popular-section .activities-grid {
+    gap: 1rem;
+    padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .feature-card {
+    min-height: 180px;
+  }
+
+  .special-banner-section {
+    height: 120vh;
+    margin-top: 2rem;
+  }
+
+  .special-banner-section .content-wrapper {
+    width: 100%;
+    padding: 0;
+  }
+
+  .banner-image {
+    width: 70%; /* Mantenemos el mismo ancho que en desktop */
+    height: auto;
+    object-fit: contain; /* Cambiamos a contain para mantener proporciones */
+  }
+}
+
+@media (max-width: 480px) {
+  .features-section {
+    padding: 2rem 1rem;
+  }
+
+  .features-section .content-wrapper {
+    max-width: 95%;
+  }
+
+  .things-to-do .content-wrapper {
+    max-width: 95%;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .categories-section .content-wrapper,
+  .activities-section .content-wrapper,
+  .popular-section .content-wrapper {
+    width: 90%;
+    padding: 0 1rem;
+  }
+
+  .features-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-card {
+    min-height: 160px;
+    padding: 1.5rem;
+  }
+
+  .special-banner-section {
+    height: 140vh;
+    margin-top: 1.5rem;
+  }
+
+  .special-banner-section .content-wrapper {
+    width: 100%;
+  }
+
+  .banner-image {
+    width: 70%; /* Mantenemos el mismo ancho que en desktop */
+  }
+}

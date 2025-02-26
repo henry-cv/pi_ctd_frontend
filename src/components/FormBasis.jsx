@@ -1,5 +1,5 @@
-import "../css/Form.css";
-import "../css/variables.css";
+import "../css/components/Form.css";
+import "../css/global/variables.css";
 
 import { useState } from "react";
 import ImageUploader from "./ImageUploader";
@@ -56,7 +56,9 @@ const FormBasis = () => {
     const texto = e.target.value;
     const maximo = 100;
     if (!validarAreaTexto(texto, maximo)) {
-      setErrorDescripcion(`La desripción debe tener entre 4 y máximo ${maximo} carácteres`);
+      setErrorDescripcion(
+        `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
+      );
     } else {
       setErrorDescripcion("");
     }
@@ -86,98 +88,100 @@ const FormBasis = () => {
 
   // En la función handleSubmit dentro de FormBasis.jsx
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  // Validaciones
-  if (errorTitulo || errorDescripcion) {
-    alert("Por favor, corrige los errores en el formulario antes de enviar.");
-    return;
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (tipoTarifa === "") {
-    alert("Debe seleccionar un tipo de tarifa");
-    return;
-  }
-
-  if (isNaN(valorTarifa) || valorTarifa <= 0) {
-    alert("El valor de la tarifa debe ser un número positivo");
-    return;
-  }
-
-  if (selectedImages.length === 0) {
-    alert("Debe seleccionar al menos una imagen");
-    return;
-  }
-
-  // Prevenir múltiples envíos
-  setIsSubmitting(true);
-
-  // Crear FormData para enviar archivos y datos
-  const formData = new FormData();
-  
-  // Datos del producto como JSON string
-  const productoData = {
-    nombre: titulo,
-    descripcion,
-    valorTarifa: parseFloat(valorTarifa),
-    tipoTarifa,
-    idioma,
-    horaInicio: `${horaInicio}:00`,
-    horaFin: `${horaFin}:00`,
-    tipoEvento: eventType,
-    diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-    fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-    // No incluir imágenes aquí, ya que se enviará como archivos separados
-    imagenes: []
-  };
-  
-  // Agregar el objeto producto como una parte JSON
-  formData.append("producto", new Blob([JSON.stringify(productoData)], { type: 'application/json' }));
-  
-  // Agregar cada imagen como una parte separada
-  selectedImages.forEach(file => {
-    formData.append("imagenes", file);
-  });
-  
-  console.log("Enviando datos al backend...");
-
-  try {
-    const response = await fetch("/api/producto/registrar", {
-      method: "POST",
-      body: formData,
-      // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error en la solicitud: ${response.status} - ${errorText}`);
+    // Validaciones
+    if (errorTitulo || errorDescripcion) {
+      alert("Por favor, corrige los errores en el formulario antes de enviar.");
+      return;
     }
 
-    const data = await response.json();
-    console.log("Respuesta del servidor:", data);
-    alert("Producto creado correctamente");
-    
-    // Limpiar formulario después de un envío exitoso
-    setTitulo("");
-    setDescripcion("");
-    setValorTarifa("");
-    setTipoTarifa("");
-    setIdioma("");
-    setHoraInicio("");
-    setHoraFin("");
-    setEventType("");
-    setDiasDisponible([]);
-    setFechaEvento("");
-    setSelectedImages([]);
-    
-  } catch (error) {
-    console.error("Error:", error.message);
-    alert(`Error al enviar los datos: ${error.message}`);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    if (tipoTarifa === "") {
+      alert("Debe seleccionar un tipo de tarifa");
+      return;
+    }
+
+    if (isNaN(valorTarifa) || valorTarifa <= 0) {
+      alert("El valor de la tarifa debe ser un número positivo");
+      return;
+    }
+
+    if (selectedImages.length === 0) {
+      alert("Debe seleccionar al menos una imagen");
+      return;
+    }
+
+    // Prevenir múltiples envíos
+    setIsSubmitting(true);
+
+    // Crear FormData para enviar archivos y datos
+    const formData = new FormData();
+
+    // Datos del producto como JSON string
+    const productoData = {
+      nombre: titulo,
+      descripcion,
+      valorTarifa: parseFloat(valorTarifa),
+      tipoTarifa,
+      idioma,
+      horaInicio: `${horaInicio}:00`,
+      horaFin: `${horaFin}:00`,
+      tipoEvento: eventType,
+      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
+      fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
+    };
+
+    // Agregar el objeto producto como una parte JSON
+    formData.append(
+      "producto",
+      new Blob([JSON.stringify(productoData)], { type: "application/json" })
+    );
+
+    // Agregar cada imagen como una parte separada
+    selectedImages.forEach((file) => {
+      formData.append("imagenes", file);
+    });
+
+    console.log("Enviando datos al backend...");
+
+    try {
+      const response = await fetch("/api/producto/registrar", {
+        method: "POST",
+        body: formData,
+        // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Error en la solicitud: ${response.status} - ${errorText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("Respuesta del servidor:", data);
+      alert("Producto creado correctamente");
+
+      // Limpiar formulario después de un envío exitoso
+      setTitulo("");
+      setDescripcion("");
+      setValorTarifa("");
+      setTipoTarifa("");
+      setIdioma("");
+      setHoraInicio("");
+      setHoraFin("");
+      setEventType("");
+      setDiasDisponible([]);
+      setFechaEvento("");
+      setSelectedImages([]);
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert(`Error al enviar los datos: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <form className="form-base" onSubmit={handleSubmit}>
@@ -207,7 +211,7 @@ const handleSubmit = async (e) => {
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
       </div>
-      
+
       <div className="container-addrate">
         <button
           type="button"
@@ -220,14 +224,16 @@ const handleSubmit = async (e) => {
       {showExtraFields && (
         <div className="extra-fields">
           <div>
-            <label htmlFor="rateName">Nombre Tarifa:</label>
-            <select 
-              id="rateType" 
-              value={tipoTarifa} 
+            <label htmlFor="rateName">Valor tarifa:</label>
+            <select
+              id="rateType"
+              value={tipoTarifa}
               onChange={(e) => setTipoTarifa(e.target.value)}
               required
             >
-              <option value="" disabled>Selecciona el tipo de tarifa</option>
+              <option value="" disabled>
+                Selecciona el tipo de tarifa
+              </option>
               <option value="POR_PERSONA">Por persona</option>
               <option value="POR_PAREJA">Por pareja</option>
               <option value="POR_GRUPO_6">Por grupo (6)</option>
@@ -235,7 +241,7 @@ const handleSubmit = async (e) => {
             </select>
           </div>
           <div>
-            <label htmlFor="ratePrice">Precio:</label>
+            <label htmlFor="ratePrice">Tarifa por:</label>
             <input
               type="number"
               id="ratePrice"
@@ -254,24 +260,27 @@ const handleSubmit = async (e) => {
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
-          <input 
-            type="number" 
-            id="rateValue" 
-            value={valorTarifa} 
-            onChange={(e) => setValorTarifa(e.target.value)} 
-            required 
+          <input
+            type="number"
+            id="rateValue"
+            min="1"
+            value={valorTarifa}
+            onChange={(e) => setValorTarifa(e.target.value)}
+            required
           />
         </div>
         <div>
           <label htmlFor="rateType">Tarifa por:</label>
-          <select 
-            id="rateType" 
-            name="tipoTarifa" 
+          <select
+            id="rateType"
+            name="tipoTarifa"
             value={tipoTarifa}
             onChange={(e) => setTipoTarifa(e.target.value)}
             required
           >
-            <option value="" disabled>Selecciona el tipo de tarifa</option>
+            <option value="" disabled>
+              Selecciona el tipo de tarifa
+            </option>
             <option value="POR_PERSONA">Por persona</option>
             <option value="POR_PAREJA">Por pareja</option>
             <option value="POR_GRUPO_6">Por grupo (6)</option>
@@ -301,33 +310,49 @@ const handleSubmit = async (e) => {
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
           <DateCalendar onChange={handleDateChange} />
-          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange}/>
+          <Horas
+            onHoraInicioChange={handleHoraInicioChange}
+            onHoraFinChange={handleHoraFinChange}
+          />
         </div>
       )}
+
       {eventType === "RECURRENTE" && (
         <div className="container-days">
           <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
-          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange}/>
+          <Horas
+            onHoraInicioChange={handleHoraInicioChange}
+            onHoraFinChange={handleHoraFinChange}
+          />
         </div>
       )}
 
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
-        <select id="language" value={idioma} onChange={(e) => setIdioma(e.target.value)} required>
-          <option value="" disabled>Selecciona idioma</option>
+        <select
+          id="language"
+          value={idioma}
+          onChange={(e) => setIdioma(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Selecciona idioma
+          </option>
           <option value="Español">Español</option>
         </select>
       </div>
-      
+
       {/* Componente ImageUploader actualizado */}
       <div className="container-images">
         <label>Imágenes:</label>
         <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
-          <p className="selected-count">{selectedImages.length} imagen(es) seleccionada(s)</p>
+          <p className="selected-count">
+            {selectedImages.length} imagen(es) seleccionada(s)
+          </p>
         )}
       </div>
-      
+
       <div className="div-p-preview">
         <p>
           Puedes previsualizar como quedará tu actividad dando click en el boton
@@ -340,9 +365,9 @@ const handleSubmit = async (e) => {
           className="button-yellow btn-preview"
           type="button"
         />
-        <ButtonBluePill 
-          text={isSubmitting ? "Guardando..." : "Guardar"} 
-          className="button-blue btn-save" 
+        <ButtonBluePill
+          text={isSubmitting ? "Guardando..." : "Guardar"}
+          className="button-blue btn-save"
           type="submit"
           disabled={isSubmitting}
         />

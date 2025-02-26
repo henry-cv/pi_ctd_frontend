@@ -5,7 +5,7 @@ import {
   faTicket,
   faSearch
 } from '@fortawesome/free-solid-svg-icons';
-import '../css/SearchBox.css';
+import '../css/components/SearchBox.css';
 
 const SearchBox = () => {
   return (

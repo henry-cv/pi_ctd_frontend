@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { Link } from "react-router-dom"; // Añadimos import de Link
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +11,7 @@ import Activities from "./Activities";
 import ButtonGral from "./ButtonGral";
 import BasicBreadcrumbs from "./BasicBreadcrumbs";
 import PropTypes from "prop-types";
-import "../css/NavDashHome.css";
+import "../css/components/NavDashHome.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import LogoImg from "./LogoImg";
 
@@ -44,7 +44,9 @@ const NavDash = ({ variant = "home" }) => {
   return (
     <nav className="navbarDash home">
       <div className="leftContainer">
-        <LogoImg inNavbar={true} />
+        <Link to="/">
+          <LogoImg inNavbar={true} />
+        </Link>
         <div className="hide-mobile">
           <Activities />
           <a href="#" className="nav-link">

@@ -1,4 +1,4 @@
-import "../css/dashboard.css";
+import "../css/pages/dashboard.css";
 const PanelControl = () => {
   return (
     <div>

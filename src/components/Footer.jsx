@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../css/Footer.css";
+import "../css/components/Footer.css";
 import LogoImg from "./LogoImg";
 
 const Footer = () => {
@@ -22,7 +22,7 @@ const Footer = () => {
                         <a href="https://twitter.com" target="_blank">
                             <i className="fab fa-twitter"></i>
                         </a>
-                        <a href="https://linkedin.com" target="_blank">
+                        <a href="https://www.linkedin.com/in/gobook" target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-linkedin-in"></i>
                         </a>
                     </div>
