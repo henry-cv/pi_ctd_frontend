@@ -87,20 +87,35 @@ const Home = () => {
           </div>
         </header>
         <Carousel images={carouselImages} />
-        <div className="hero-overlay">
-          <div className="content-wrapper">
-            <div className="hero-content">
-              <h1 className="hero-title">
-                Descubre, reserva y vive nuevas experiencias
-              </h1>
-              <h6 className="hero-subtitle">
-                Conéctate con la emoción de viajar, descubrir y disfrutar
-              </h6>
-            </div>
-            <SearchBox />
-          </div>
-        </div>
+        <SearchBox />
       </section>
+
+      <section className="features-section">
+          <div className="content-wrapper">
+            <div className="features-grid">
+              <div className="feature-card blue">
+                <h3 className="feature-title">Momentos de relajación</h3>
+                <p className="feature-description">
+                  Descansa en lugares de ensueño, y recarga energías para tu próxima gran aventura.
+                </p>
+              </div>
+
+              <div className="feature-card yellow">
+                <h3 className="feature-title">Viajes apasionantes</h3>
+                <p className="feature-description">
+                  Comience y explore una amplia gama de emocionantes experiencias de viaje.
+                </p>
+              </div>
+
+              <div className="feature-card blue">
+                <h3 className="feature-title">Escapadas culturales</h3>
+                <p className="feature-description">
+                  Descubre la esencia de cada destino a través de su historia, arte y gastronomía.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
       <main className="main-content">
         <section className="categories-section">
@@ -135,6 +150,8 @@ const Home = () => {
             </div>
           </div>
         </section>
+
+        
       </main>
       <Footer/>
     </div>
