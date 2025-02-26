@@ -15,13 +15,14 @@ const FormNewCategory = () => {
 
   const handleCategoryBlur = (e) => {
     const texto = e.target.value;
-    const maximo = 100;
+    const maximo = 60;
     if (!validarTexto(texto, maximo)) {
       setErrorCategory(
         `La categoría debe tener entre 4 y máximo ${maximo} carácteres, sin números o carácteres especiales`
       );
     } else {
       setErrorCategory("");
+      setCategory(texto);
     }
   };
 
@@ -29,6 +30,8 @@ const FormNewCategory = () => {
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
   };
+
+  //Manejador del Evento Submit del Formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,7 +59,7 @@ const FormNewCategory = () => {
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
-      "producto",
+      "categoria",
       new Blob([JSON.stringify(categoryData)], { type: "application/json" })
     );
 
@@ -64,11 +67,11 @@ const FormNewCategory = () => {
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
-
+    console.log(`--->${categoryData}<---`)
     console.log("Enviando datos al backend...");
 
     try {
-      const response = await fetch("/api/producto/registrar", {
+      const response = await fetch("/api/categoria/registrar", {
         method: "POST",
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
@@ -99,8 +102,8 @@ const FormNewCategory = () => {
   return (
     <form action="" className="form-base new-category" onSubmit={handleSubmit}>
       <div className="container-title">
-        <label htmlFor="">Nombre Categoria</label>
-        <input type="text" placeholder="Ingresa título de la categoría" name="categoria" onChange={(e) => setCategory(e.target.value)} onBlur={handleCategoryBlur} value={category} required />
+        <label htmlFor="">Nombre Categoría</label>
+        <input type="text" placeholder="Ingresa título de la categoría" name="categoria" onBlur={handleCategoryBlur} value={category} onChange={(e) => setCategory(e.target.value)} required />
         {errorCategory && <FieldError message={errorCategory} />}
       </div>
       <div className="container-images">
