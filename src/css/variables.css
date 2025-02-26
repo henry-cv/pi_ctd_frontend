@@ -57,7 +57,7 @@
 
 /* EL cambio del tono de las variables en el modo dark */
 .dark {
-  --BackgroundColor: var(--black-);
+  --BackgroundColor: var(--black);
   --BackgroundColor-700: var(--black-700);
   --Background-components: var(--black-400);
   --Background-sideBar: var(--black-400);
