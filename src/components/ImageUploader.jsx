@@ -11,13 +11,13 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Validar archivos
     const validFiles = files.filter(file => {
-      const isValidType = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
-      const isValidSize = file.size <= 3 * 1024 * 1024; // 3MB
+      const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
+      const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
       return isValidType && isValidSize;
     });
 
     if (validFiles.length !== files.length) {
-      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, PNG, GIF, SVG) y no excedan 3MB.");
+      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, GIF, SVG) y no excedan 3MB.");
     }
 
     if (validFiles.length === 0) return;
@@ -50,12 +50,12 @@ const ImageUploader = ({ onImagesSelected }) => {
       <label htmlFor="photos" className="file-label">
         <FaUpload className="upload-icon" />
         <span>Seleccionar imágenes</span>
-        <span className="file-types">SVG, JPG, PNG, o GIF (Máx 3MB) </span>
+        <span className="file-types">SVG, JPG, JPEG, PNG, o GIF (Máx 10MB) </span>
         <input
           type="file"
           id="photos"
           name="photos"
-          accept="image/jpeg,image/png,image/gif,image/svg+xml"
+          accept="image/jpeg,image/jpg,image/png,image/gif,image/svg+xml"
           multiple
           onChange={handleImageChange}
           disabled={uploading}

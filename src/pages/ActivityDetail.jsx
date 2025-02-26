@@ -60,7 +60,7 @@ const ActivityDetail = () => {
   };
   
   // Imagen por defecto en caso de error
-  const defaultImage = '/activitie.jpg';
+  const defaultImage = '/activitie.webp';
   
   // Manejar errores de carga de imágenes
   const handleImageError = (e) => {
@@ -77,33 +77,33 @@ const ActivityDetail = () => {
         <BasicBreadcrumbs />
         
         {/* Sección de imágenes */}
-        {activity.imagenesSalidaDto && activity.imagenesSalidaDto.length > 0 ? (
+        {activity.productoImagenesSalidaDto && activity.productoImagenesSalidaDto.length > 0 ? (
           <div className="images-section">
             <div className="main-image">
               <img 
-                src={activity.imagenesSalidaDto[0].rutaImagen} 
+                src={activity.productoImagenesSalidaDto[0].rutaImagen} 
                 alt={activity.nombre}
                 onError={handleImageError}
               />
             </div>
             <div className="side-images">
-              {activity.imagenesSalidaDto.slice(1, 4).map((imagen, index) => (
+              {activity.productoImagenesSalidaDto.slice(1, 4).map((imagen, index) => (
                 <div 
                   key={index} 
-                  className={`side-image ${index === 2 && activity.imagenesSalidaDto.length > 4 ? 'with-overlay' : ''}`}
+                  className={`side-image ${index === 2 && activity.productoImagenesSalidaDto.length > 4 ? 'with-overlay' : ''}`}
                 >
                   <img 
                     src={imagen.rutaImagen} 
                     alt={`${activity.nombre} ${index + 1}`}
                     onError={handleImageError}
                   />
-                  {index === 2 && activity.imagenesSalidaDto.length > 4 && (
+                  {index === 2 && activity.productoImagenesSalidaDto.length > 4 && (
                     <div 
                       className="view-more-overlay"
                       onClick={() => setShowImageViewer(true)}
                     >
                       <span className="view-more-text">
-                        Ver más (+{activity.imagenesSalidaDto.length - 4})
+                        Ver más (+{activity.productoImagenesSalidaDto.length - 4})
                         <FontAwesomeIcon icon={faSearch} />
                       </span>
                     </div>
@@ -211,9 +211,9 @@ const ActivityDetail = () => {
       </div>
       
       {/* Visor de imágenes en pantalla completa */}
-      {showImageViewer && activity.imagenesSalidaDto && (
+      {showImageViewer && activity.productoImagenesSalidaDto && (
         <ImageViewer 
-          images={activity.imagenesSalidaDto.map(img => img.rutaImagen)}
+          images={activity.productoImagenesSalidaDto.map(img => img.rutaImagen)}
           onClose={() => setShowImageViewer(false)}
         />
       )}

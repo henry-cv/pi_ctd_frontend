@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { Link } from "react-router-dom"; // Añadimos import de Link
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -35,7 +35,7 @@ const NavDash = ({ variant = "home" }) => {
             <p className="user-name">Luisa Lopez</p>
             <p className="user-role">Propietaria</p>
           </div>
-          <img src="../user_example.jpg" alt="Perfil" className="user-avatar" />
+          <img src="../user_example.webp" alt="Perfil" className="user-avatar" />
         </div>
       </nav>
     );
@@ -44,7 +44,9 @@ const NavDash = ({ variant = "home" }) => {
   return (
     <nav className="navbarDash home">
       <div className="leftContainer">
-        <LogoImg inNavbar={true} />
+        <Link to="/">
+          <LogoImg inNavbar={true} />
+        </Link>
         <div className="hide-mobile">
           <Activities />
           <a href="#" className="nav-link">

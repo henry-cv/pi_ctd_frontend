@@ -5,7 +5,6 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa";
 import { ListSidebar } from "../constants/ListSidebar";
 import NavDash from "../components/NavDash";
-import Footer from "../components/Footer";
 import { useState } from "react";
 
 const Dashboard = () => {
