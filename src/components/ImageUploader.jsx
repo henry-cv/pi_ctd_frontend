@@ -11,7 +11,7 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Validar archivos
     const validFiles = files.filter(file => {
-      const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/webpl'].includes(file.type);
+      const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type);
       const isValidSize = file.size <= 4 * 1024 * 1024; // 4MB
       return isValidType && isValidSize;
     });
