@@ -10,7 +10,7 @@ import {
 import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 import BasicBreadcrumbs from '../components/BasicBreadcrumbs';
 import ButtonGral from '../components/ButtonGral';
-import '../css/ActivityDetail.css';
+import '../css/pages/ActivityDetail.css';
 import ImageViewer from '../components/ImageViewer';
 
 const ActivityDetail = () => {

@@ -11,7 +11,7 @@ import Activities from "./Activities";
 import ButtonGral from "./ButtonGral";
 import BasicBreadcrumbs from "./BasicBreadcrumbs";
 import PropTypes from "prop-types";
-import "../css/NavDashHome.css";
+import "../css/components/NavDashHome.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import LogoImg from "./LogoImg";
 

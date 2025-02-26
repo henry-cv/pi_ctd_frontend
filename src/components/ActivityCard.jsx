@@ -5,7 +5,7 @@ import {
   faClock,
   faStar
 } from '@fortawesome/free-solid-svg-icons';
-import '../css/ActivityCard.css';
+import '../css/components/ActivityCard.css';
 
 const ActivityCard = ({ 
   image, 

@@ -1,6 +1,6 @@
 import { FaSearch } from "react-icons/fa"; // Ícono de ejemplo
 import PropTypes from "prop-types";
-import "../css/dashboard.css";
+import "../css/pages/dashboard.css";
 
 const ButtonGral = ({ text, color = "blue", icon = <FaSearch /> }) => {
   const baseStyles = color === "yellow" ? "btn_yellow" : "btn_blue ";

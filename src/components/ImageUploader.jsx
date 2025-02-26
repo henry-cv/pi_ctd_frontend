@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../css/ImageUploader.css";
+import "../css/components/ImageUploader.css";
 import { FaUpload, FaTrash } from "react-icons/fa";
 
 const ImageUploader = ({ onImagesSelected }) => {

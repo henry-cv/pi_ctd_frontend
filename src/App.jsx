@@ -1,4 +1,4 @@
-import "./css/variables.css";
+import "./css/global/variables.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Dashboard from "./pages/Dashboard";

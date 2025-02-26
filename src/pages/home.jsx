@@ -5,10 +5,16 @@ import NavDash from '../components/NavDash';
 import ActivityCard from '../components/ActivityCard';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/Home.css';
+import '../css/pages/Home.css';
+import '../css/components/ActivityCard.css';
 import Footer from '../components/Footer';
+// Primero importamos el contexto
+import { useContextGlobal } from "../gContext/globalContext";
 
 const Home = () => {
+  // Agregamos el estado global
+  const { state } = useContextGlobal();
+  
   const [isLoggedIn] = useState(false);
   const [activities, setActivities] = useState([]);
   const [popularActivities, setPopularActivities] = useState([]); // Nuevo estado
@@ -91,31 +97,39 @@ const Home = () => {
       </section>
 
       <section className="features-section">
-          <div className="content-wrapper">
-            <div className="features-grid">
-              <div className="feature-card blue">
-                <h3 className="feature-title">Momentos de relajación</h3>
-                <p className="feature-description">
-                  Descansa en lugares de ensueño, y recarga energías para tu próxima gran aventura.
-                </p>
-              </div>
+        <div className="content-wrapper">
+          <div className="features-header">
+            <h2 className="features-title">
+              Cosas que debe <span className="highlight">hacer</span>
+            </h2>
+            <p className="features-subtitle">
+              Nos aseguramos de que se embarque en unas vacaciones perfectamente planificadas y seguras a un precio asequible.
+            </p>
+          </div>
+          <div className="features-grid">
+            <div className="feature-card blue">
+              <h3 className="feature-title">Momentos de relajación</h3>
+              <p className="feature-description">
+                Descansa en lugares de ensueño, y recarga energías para tu próxima gran aventura.
+              </p>
+            </div>
 
-              <div className="feature-card yellow">
-                <h3 className="feature-title">Viajes apasionantes</h3>
-                <p className="feature-description">
-                  Comience y explore una amplia gama de emocionantes experiencias de viaje.
-                </p>
-              </div>
+            <div className="feature-card yellow">
+              <h3 className="feature-title">Viajes apasionantes</h3>
+              <p className="feature-description">
+                Comience y explore una amplia gama de emocionantes experiencias de viaje.
+              </p>
+            </div>
 
-              <div className="feature-card blue">
-                <h3 className="feature-title">Escapadas culturales</h3>
-                <p className="feature-description">
-                  Descubre la esencia de cada destino a través de su historia, arte y gastronomía.
-                </p>
-              </div>
+            <div className="feature-card blue">
+              <h3 className="feature-title">Escapadas culturales</h3>
+              <p className="feature-description">
+                Descubre la esencia de cada destino a través de su historia, arte y gastronomía.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       <main className="main-content">
         <section className="categories-section">
@@ -151,6 +165,32 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Nueva sección con fondo especial */}
+        <section className="special-banner-section">
+          <div className="content-wrapper">
+            <picture>
+              <source 
+                media="(max-width: 768px)" 
+                srcSet={state.theme === "dark" 
+                  ? "/patrones_body/adsbanner_body_mobile.webp"
+                  : "/patrones_body/adsbanner_body_mobile_lightMode.webp"} 
+              />
+              <source 
+                media="(min-width: 769px)" 
+                srcSet={state.theme === "dark"
+                  ? "/patrones_body/adsbanner_body.webp"
+                  : "/patrones_body/adsbanner_body_lightMode.webp"} 
+              />
+              <img 
+                src={state.theme === "dark"
+                  ? "/patrones_body/adsbanner_body.webp"
+                  : "/patrones_body/adsbanner_body_lightMode.webp"}
+                alt="Banner promocional"
+                className="banner-image"
+              />
+            </picture>
+          </div>
+        </section>
         
       </main>
       <Footer/>
