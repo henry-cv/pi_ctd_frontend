@@ -1,0 +1,129 @@
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    width: 100%;
+  }
+  
+  .dashboard-title {
+    width: 100%;
+    height: 50px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #101828;
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+  
+  .activities {
+    width: 100%;
+    max-width: none;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .activities h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 271px;
+    height: 147px;
+    background: #FFFFFF;
+    padding: 25px;
+    border-radius: 40px;
+    border: 1px solid #AFB2B7;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    gap: 10px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .stat-card h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 25px;
+  }
+  
+  .stat-card p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0%;
+    margin: 10px 0 0 0;
+    color: #101828;
+  }
+  
+  .rounded-title {
+    background: #ddd;
+    padding: 10px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .activity-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .activity-img {
+    width: 30px;
+    height: 30px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  thead tr {
+    background: #AFB2B733;
+    border-radius: 15px;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: none;
+  }
+  
+  tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tr:last-child {
+    border-bottom: none;
+  }
+  
+  
