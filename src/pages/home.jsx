@@ -191,6 +191,26 @@ const Home = () => {
             </picture>
           </div>
         </section>
+
+        <section className="second-banner-section">
+          <div className="content-wrapper">
+            <picture>
+              <source 
+                media="(max-width: 768px)" 
+                srcSet="/patrones_body/BannerApp.webp"
+              />
+              <source 
+                media="(min-width: 769px)" 
+                srcSet="/patrones_body/BannerApp.webp"
+              />
+              <img 
+                src="/patrones_body/BannerApp.webp"
+                alt="Banner secundario"
+                className="second-banner-image"
+              />
+            </picture>
+          </div>
+        </section>
         
       </main>
       <Footer/>
