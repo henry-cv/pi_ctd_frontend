@@ -73,7 +73,7 @@ const ImageUploader = ({ onImagesSelected }) => {
                 onClick={() => handleRemoveImage(index)}
                 disabled={uploading}
               >
-                <FaTrash />
+                <FaTrash  className="icon-trash" />
               </button>
               <div className="file-name">{image.file.name.length > 15 ? image.file.name.substring(0, 15) + '...' : image.file.name}</div>
             </div>

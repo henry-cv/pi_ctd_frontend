@@ -19,20 +19,22 @@
     margin: 25px;
   }
   
-  .user-info {
+  .user-info-profile {
     height:80%;
+    display: flex;
     align-items: start;
     color:var(--BackgroundColor);
     position: absolute;
     bottom: 0px;
   }
 
-  p {
-    color:var(--BackgroundColor);
+  .user-details p , h2{
+    color:var(--white);
+    
   }
   
   .avatar-container {
-    margin-right: 20px;
+    margin-right: 20px; 
   }
   
   .avatar {
@@ -43,7 +45,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .user-details h2 {
+  .user-details h2  {
     margin: 0;
     font-size: 28px;
     font-weight: 600;
@@ -53,40 +55,6 @@
     margin: 5px 0 0;
     font-size: 16px;
     opacity: 0.9;
-  }
-  
-
-  .profile-tabs {
-    display: flex;
-    justify-content: center;
-    border-bottom: 1px solid #e0e0e0;
-    margin-top: 60px;
-    padding: 0 20px;
-  }
-  
-  .tab-button {
-    padding: 15px 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    position: relative;
-    color: #555;
-  }
-  
-  .tab-button.active {
-    color: #6633cc;
-    font-weight: 600;
-  }
-  
-  .tab-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #6633cc;
   }
   
   /* Formulario */
@@ -99,7 +67,9 @@
   .form-data-picture-columns{
     display: flex;
     justify-content: space-around;
+    
   }
+
   
   .form-row {
     display: flex;
@@ -183,20 +153,26 @@
   }
   
   .edit-picture-button {
+    padding: 10px 12px;
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 36px;
-    height: 36px;
     border-radius: 50%;
-    background-color: #6633cc;
-    color: white;
+    background-color:var(--blue-base);
+    color: var(--white);
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+  }
+
+  .edit-picture-button:hover {
+    background-color: var(--blue-hover);
+  }
+
+  .icon-pencil-edit{
+    width: 12px;
   }
   
 
@@ -271,16 +247,17 @@
 
   @media (max-width:768px){
     .profile-banner{background-image:url("../../public/marco perfil usuario MD.png")}
+    .form-data{min-width: 480px;}
     .form-row{flex-direction:column;gap:0}
-    .avatar-container{margin-right:0;margin-bottom:15px}
     .profile-tabs{margin-top:20px;overflow-x:auto}
   }
   @media (max-width:480px){
+    .form-data{min-width: 370px;}
+    .form-data-picture-columns{ flex-direction: column-reverse;}
     .profile-banner{background-image:url("../../public/marco perfil usuario sm.png")}
     .profile-tabs{margin-top:60px}
     .action-buttons{flex-direction:column;align-items:center;gap:10px}
-    .cancel-button,.save-button{width:80%}
-    .delete-account-button{width:80%}
     .delete-account-container{justify-content:center}
-    .profile-picture-section{display:none}
+
+  
   }
