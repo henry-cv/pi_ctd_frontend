@@ -1,4 +1,4 @@
-import "../css/Days.css";
+import "../css/components/Days.css";
 
 const Days = () => {
   return (

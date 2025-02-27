@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import "../css/Horas.css";
+import "../css/components/Horas.css";
 import PropTypes from 'prop-types';
 
 const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {

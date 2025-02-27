@@ -1,4 +1,4 @@
-import "./css/variables.css";
+import "./css/global/variables.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Dashboard from "./pages/Dashboard";
@@ -8,6 +8,7 @@ import DashCategorias from "./components/DashCategorias";
 import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
+import AddCategory from "./components/AddCategory";
 import { useContextGlobal } from "./gContext/globalContext";
 import AppRoutes from "./Routes/AppRoutes";
 
@@ -28,6 +29,7 @@ function App() {
               element={<AddActivitie />}
             />
             <Route path="categorias" element={<DashCategorias />} />
+            <Route path="categorias/crearcategoria" element={<AddCategory />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
           <Route path="/actividad/:id" element={<ActivityDetail />} />

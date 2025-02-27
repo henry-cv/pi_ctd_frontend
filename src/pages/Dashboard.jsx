@@ -1,5 +1,5 @@
-import "../css/dashboard.css";
-import "../css/variables.css";
+import "../css/pages/dashboard.css";
+import "../css/global/variables.css";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { FaAngleRight } from "react-icons/fa";

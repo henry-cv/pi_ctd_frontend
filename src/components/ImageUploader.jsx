@@ -1,7 +1,8 @@
 import { useState } from "react";
-import "../css/ImageUploader.css";
+import "../css/components/ImageUploader.css";
 import { FaUpload, FaTrash } from "react-icons/fa";
 
+// eslint-disable-next-line react/prop-types
 const ImageUploader = ({ onImagesSelected }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -11,16 +12,17 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Validar archivos
     const validFiles = files.filter(file => {
-      const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'].includes(file.type);
-      const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
+      const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type);
+      const isValidSize = file.size <= 4 * 1024 * 1024; // 4MB
       return isValidType && isValidSize;
     });
 
     if (validFiles.length !== files.length) {
-      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, GIF, SVG) y no excedan 3MB.");
+      alert("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, WEBP) y no excedan 4MB.");
     }
 
     if (validFiles.length === 0) return;
+    setUploading(true);
 
     const newImages = validFiles.map((file) => ({
       file,
@@ -32,6 +34,7 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Notificar al componente padre sobre los archivos seleccionados
     onImagesSelected(updatedImages.map(img => img.file));
+    setUploading(false);
   };
 
   const handleRemoveImage = (index) => {
@@ -50,18 +53,22 @@ const ImageUploader = ({ onImagesSelected }) => {
       <label htmlFor="photos" className="file-label">
         <FaUpload className="upload-icon" />
         <span>Seleccionar imágenes</span>
-        <span className="file-types">SVG, JPG, JPEG, PNG, o GIF (Máx 10MB) </span>
+        <span className="file-types">JPG, JPEG, PNG, o WEBP (Máx 4MB) </span>
         <input
           type="file"
           id="photos"
           name="photos"
-          accept="image/jpeg,image/jpg,image/png,image/gif,image/svg+xml"
+          accept="image/jpeg,image/jpg,image/png,image/webp"
           multiple
           onChange={handleImageChange}
           disabled={uploading}
         />
       </label>
-
+      {uploading && (
+        <div className="upload-loading">
+          <p>Procesando imágenes...</p>
+        </div>
+      )}
       {images.length > 0 && (
         <div className="image-previews">
           {images.map((image, index) => (

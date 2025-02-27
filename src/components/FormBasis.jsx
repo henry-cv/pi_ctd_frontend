@@ -1,5 +1,5 @@
-import "../css/Form.css";
-import "../css/variables.css";
+import "../css/components/Form.css";
+import "../css/global/variables.css";
 
 import { useState } from "react";
 import ImageUploader from "./ImageUploader";

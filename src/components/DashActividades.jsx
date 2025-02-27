@@ -3,7 +3,7 @@ import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
 import { LuListFilter } from "react-icons/lu";
-import "../css/dashboard.css";
+import "../css/pages/dashboard.css";
 import ActivitieRow from "./ActivitieRow";
 import { Link } from "react-router-dom";
 import BasicPagination from "./BasicPagination";

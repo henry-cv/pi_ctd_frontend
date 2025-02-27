@@ -3,7 +3,7 @@ import { Autoplay } from 'swiper/modules';
 import PropTypes from 'prop-types';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import '../css/carousel.css';
+import '../css/components/carousel.css';
 
 const Carousel = ({ images }) => {
   return (

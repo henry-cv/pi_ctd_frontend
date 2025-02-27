@@ -17,6 +17,12 @@
   border: 1px solid var(--black-300);
   border-radius: 10px;
   overflow: hidden;
+  transition: all 0.2s;
+}
+
+.image-preview:hover {
+  border-color: var(--blue-base);
+  box-shadow: 0 0 8px rgba(62, 16, 218, 0.3);
 }
 
 .image-preview img {
@@ -63,4 +69,26 @@
 .file-types {
   font-size: 0.875rem;
   color: var(--black-300);
+}
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+  color: #d61b1b;
+}
+
+.remove-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.2);
 }

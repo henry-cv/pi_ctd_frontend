@@ -6,7 +6,7 @@ import {
   faChevronRight 
 } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import '../css/ImageViewer.css';
+import '../css/components/ImageViewer.css';
 
 const ImageViewer = ({ images, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
