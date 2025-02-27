@@ -70,7 +70,7 @@ const DashActividades = () => {
   return (
     <div className="activities_container">
       <div className="header_activities">
-        <h2>Mis Actividades</h2>
+        <h2 className="dark_activities">Mis Actividades</h2>
         <div className="activitieRight">
           <div className="searchFilter">
             <DashSearch onSearch={handleSearch} />{" "}
@@ -109,7 +109,8 @@ const DashActividades = () => {
               key={activity.id}
               id={activity.id}
               imagen={
-                activity.productoImagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"
+                activity.productoImagenesSalidaDto?.[0]?.rutaImagen ||
+                "/activitie.webp"
               }
               titulo={activity.nombre}
               reservas={activity.reservas || "0"}

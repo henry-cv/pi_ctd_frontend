@@ -19,25 +19,19 @@ const ActivitieRow = ({ id, imagen, titulo, reservas, onDelete }) => {
     }
   };
 
-
   return (
     <div className="RegisterActivitie">
       <div className="infoActivitie">
         <input type="checkbox" className="inputActivitie" />
-        <img
-          src={imagen}
-          alt="Actividad"
-          width={50}
-          className="activitieImg"
-        />
+        <img src={imagen} alt="Actividad" width={50} className="activitieImg" />
         <p>{titulo}</p>
       </div>
       <div className="amount_reservation">
-        <span>{reservas}</span>
+        <span className="dark_activities">{reservas}</span>
       </div>
 
       <div className="btn_action">
-        <button className="btn_blueAction"> 
+        <button className="btn_blueAction">
           <FaEdit size={"1.2rem"} />
         </button>
         <button className="btn_redAction" onClick={handleDelete}>

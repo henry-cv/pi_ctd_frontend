@@ -9,7 +9,6 @@ const AuthRoutes = () => {
     <Routes>
       <Route path="/entrar" element={<Login />} />
       <Route path="/registro" element={<Register />} />
-      {/* Seguido va el componente de register */}
     </Routes>
   );
 };

@@ -5,8 +5,14 @@
   display: grid;
   grid-template-columns: 270px 1fr;
   gap: 30px;
-  margin-top: 20px;
+  padding-top: 20px;
   transition: all 0.4s ease-in-out;
+}
+.dashboard_container {
+  background: var(--BackgroundColor);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 .admin_container2 {
   max-width: 1140px;
@@ -15,7 +21,7 @@
   display: grid;
   grid-template-columns: 121px 1fr;
   gap: 30px;
-  margin-top: 20px;
+  padding-top: 20px;
   transition: all 0.4s ease-in-out;
 }
 
@@ -423,4 +429,12 @@
   .admin_container {
     display: none;
   }
+}
+
+.breadcrumbs {
+  color: var(--Font-Background) !important;
+}
+
+.dark_activities {
+  color: var(--Font-Background) !important;
 }
