@@ -17,6 +17,12 @@
   border: 1px solid var(--black-300);
   border-radius: 10px;
   overflow: hidden;
+  transition: all 0.2s;
+}
+
+.image-preview:hover {
+  border-color: var(--blue-base);
+  box-shadow: 0 0 8px rgba(62, 16, 218, 0.3);
 }
 
 .image-preview img {

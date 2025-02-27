@@ -3,18 +3,18 @@
 
 :root {
   /* Colores */
-  --blue-base: #3E10DA;
+  --blue-base: #3e10da;
   --blue-hover: #3209c0;
   --blue-700: #5e38e0;
-  --white: #FFFFFF;
+  --white: #ffffff;
   --black: #101828;
   --black-100: #afb2b7;
   --black-300: #606570;
-  --black-400: #383F4C;
-  --black-700: #0B101B;
+  --black-400: #383f4c;
+  --black-700: #0b101b;
 
-  --gray-400: #4B5563;
-  --gray-200: #E5E7EB;
+  --gray-400: #4b5563;
+  --gray-200: #e5e7eb;
 
   --yellow-base: #f1c40f;
   --yellow-hover: #a1830a;
@@ -23,8 +23,8 @@
   --color-sucess: #12c618;
 
   /* Fuentes */
-  --font-outfit: 'Outfit', sans-serif;
-  --font-archivo: 'Archivo', sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+  --font-archivo: "Archivo", sans-serif;
 
   /* Tamaños de letra, no para encabezados
   no confundir con h1, h2, h3, h4, h5, h6
@@ -37,7 +37,6 @@
   /* Sombras */
   --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-
 
   /* Estas variables manejan el modo ligth */
   --BackgroundColor: var(--white);
@@ -53,6 +52,7 @@
   --Icons-gray: var(--gray-400);
   /* para fuentes e iconos que en ligt son gris y en dark pasan a blanco */
 
+  --Color-base: var(--blue-base);
 }
 
 /* EL cambio del tono de las variables en el modo dark */
@@ -64,4 +64,5 @@
   --Font-Background: var(--white);
   --Icons-gray: var(--Font-Background);
 
+  --Color-base: var(--yellow-base);
 }

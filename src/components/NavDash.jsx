@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom"; // Añadimos import de Link
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,6 +13,7 @@ import PropTypes from "prop-types";
 import "../css/components/NavDashHome.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import LogoImg from "./LogoImg";
+import AccountMenu from "./AccountMenu";
 
 const NavDash = ({ variant = "home" }) => {
   const { dispatch, state } = useContextGlobal();
@@ -35,7 +35,11 @@ const NavDash = ({ variant = "home" }) => {
             <p className="user-name">Luisa Lopez</p>
             <p className="user-role">Propietaria</p>
           </div>
-          <img src="../user_example.webp" alt="Perfil" className="user-avatar" />
+          <img
+            src="../user_example.webp"
+            alt="Perfil"
+            className="user-avatar"
+          />
         </div>
       </nav>
     );
@@ -71,10 +75,10 @@ const NavDash = ({ variant = "home" }) => {
         <div className="auth-buttons hide-mobile">
           {" "}
           {/* Movido hide-mobile aquí */}
-          <div className="hide-tablet">
+          <Link to={"/registro"} className="hide-tablet">
             <ButtonGral text="Registrar" color="transparent" />
-          </div>
-          <Link to="/administrador">
+          </Link>
+          <Link to="/entrar">
             {" "}
             {/* Añadimos Link al botón de acceso */}
             <ButtonGral text="Acceso" color="blue" />
@@ -84,6 +88,9 @@ const NavDash = ({ variant = "home" }) => {
           <button className="icon-button menu-button">
             <FontAwesomeIcon icon={faBars} />
           </button>
+        </div>
+        <div>
+          <AccountMenu />
         </div>
       </div>
     </nav>

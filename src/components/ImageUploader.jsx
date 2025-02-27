@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../css/components/ImageUploader.css";
 import { FaUpload, FaTrash } from "react-icons/fa";
 
+// eslint-disable-next-line react/prop-types
 const ImageUploader = ({ onImagesSelected }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -21,6 +22,7 @@ const ImageUploader = ({ onImagesSelected }) => {
     }
 
     if (validFiles.length === 0) return;
+    setUploading(true);
 
     const newImages = validFiles.map((file) => ({
       file,
@@ -32,6 +34,7 @@ const ImageUploader = ({ onImagesSelected }) => {
     
     // Notificar al componente padre sobre los archivos seleccionados
     onImagesSelected(updatedImages.map(img => img.file));
+    setUploading(false);
   };
 
   const handleRemoveImage = (index) => {
@@ -61,7 +64,11 @@ const ImageUploader = ({ onImagesSelected }) => {
           disabled={uploading}
         />
       </label>
-
+      {uploading && (
+        <div className="upload-loading">
+          <p>Procesando imágenes...</p>
+        </div>
+      )}
       {images.length > 0 && (
         <div className="image-previews">
           {images.map((image, index) => (
