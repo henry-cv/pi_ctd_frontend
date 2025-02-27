@@ -8,6 +8,7 @@ import DashCategorias from "./components/DashCategorias";
 import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
+import AddCategory from "./components/AddCategory";
 import { useContextGlobal } from "./gContext/globalContext";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               element={<AddActivitie />}
             />
             <Route path="categorias" element={<DashCategorias />} />
+            <Route path="categorias/crearcategoria" element={<AddCategory />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
           <Route path="/actividad/:id" element={<ActivityDetail />} />
