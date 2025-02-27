@@ -22,10 +22,9 @@ const CategoryRow = ({ id, nombre, descripcion, imagen, onDelete }) => {
   };
 
   return (
-    <div className="RegisterCategory">
-      <div className="infoCategory">
-        <input type="checkbox" className="inputCategory" />
-        <img src={imagen} alt="Categoría" width={50} className="categoryImg" />
+    <div className="RegisterCategory RegisterActivitie">
+      <div className="infoCategory infoActivitie">
+        <input type="checkbox" className="inputCategory inputActivitie" />
         <p>{nombre}</p>
       </div>
       <div className="category-description">

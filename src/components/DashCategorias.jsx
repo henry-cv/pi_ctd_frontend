@@ -29,7 +29,7 @@ const DashCategorias = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/categorias/listar");
+        const response = await fetch("/api/categoria/listar");
         if (!response.ok) {
           throw new Error(`Error al obtener las categorías: ${response.status}`);
         }
@@ -69,10 +69,10 @@ const DashCategorias = () => {
   };
 
   return (
-    <div className="categories_container">
-      <header className="header_categories">
+    <div className="categories_container activities_container">
+      <header className="header_categories header_activities">
         <h2>Nueva Categoría</h2>
-        <div className="categoryRight">
+        <div className="categoryRight activitieRight">
           <div className="searchFilter">
             <DashSearch onSearch={handleSearch} />{" "}
             <button className="btnIconFilter">
@@ -89,8 +89,9 @@ const DashCategorias = () => {
         </div>
       </header>
 
-      <div className="table_categories">
+      <div className="table_categories table_activities">
         <div><span className="titleTable">Categoría</span></div>
+        <div><span className="titleTable">Descripción</span></div>
         <div><span className="titleTable">Acciones</span></div>
       </div>
 
@@ -99,19 +100,18 @@ const DashCategorias = () => {
 
       {!loading && !error && currentCategories.length > 0
         ? currentCategories.map((category) => (
+          console.log(category),
           <CategoryRow
             key={category.id}
             id={category.id}
-            imagen={
-              category.productoImagenesSalidaDto?.[0]?.rutaImagen || "/category.webp"
-            }
+            descripcion={category.descripcion}
             nombre={category.nombre}
             onDelete={handleDelete}
           />
         ))
         : !loading &&
         !error && (
-          <div className="categories_info_img">
+          <div className="categories_info_img activities_info_img">
             <p>
               {searchTerm
                 ? "No hay categorías que coincidan con la búsqueda."
