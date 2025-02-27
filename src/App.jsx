@@ -9,6 +9,7 @@ import DashAjustes from "./components/DashAjustes";
 import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
 import { useContextGlobal } from "./gContext/globalContext";
+import AppRoutes from "./Routes/AppRoutes";
 
 function App() {
   const { state } = useContextGlobal();
@@ -31,6 +32,7 @@ function App() {
           </Route>
           <Route path="/actividad/:id" element={<ActivityDetail />} />
         </Routes>
+        <AppRoutes />
       </div>
     </BrowserRouter>
   );
