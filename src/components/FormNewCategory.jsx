@@ -4,12 +4,16 @@ import { useState } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
-import { validarTexto } from "../utils/utils";
+import { validarTexto, validarAreaTexto } from "../utils/utils";
 
 const FormNewCategory = () => {
 
   const [category, setCategory] = useState("");
   const [errorCategory, setErrorCategory] = useState("");
+
+  const [description, setDescription] = useState("");
+  const [errorDescription, setErrorDescription] = useState("");
+
   const [selectedImages, setSelectedImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -25,6 +29,18 @@ const FormNewCategory = () => {
       setCategory(texto);
     }
   };
+  const handleDescriptionChange = (e) => {
+    const texto = e.target.value;
+    const maximo = 100;
+    if (!validarAreaTexto(texto, maximo)) {
+      setErrorDescription(
+        `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
+      );
+    } else {
+      setErrorDescription("");
+    }
+    setDescription(texto);
+  };
 
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
@@ -36,7 +52,7 @@ const FormNewCategory = () => {
     e.preventDefault();
 
     // Validaciones
-    if (errorCategory) {
+    if (errorCategory || errorDescription) {
       alert("Por favor, corrige los errores en el formulario antes de enviar.");
       return;
     }
@@ -55,6 +71,7 @@ const FormNewCategory = () => {
     // Datos del producto como JSON string
     const categoryData = {
       nombre: category,
+      descripcion: description
     };
 
     // Agregar el objeto producto como una parte JSON
@@ -90,6 +107,7 @@ const FormNewCategory = () => {
 
       // Limpiar formulario después de un envío exitoso
       setCategory("");
+      setDescription("");
       setSelectedImages([]);
     } catch (error) {
       console.error("Error:", error.message);
@@ -105,6 +123,11 @@ const FormNewCategory = () => {
         <label htmlFor="">Nombre Categoría</label>
         <input type="text" placeholder="Ingresa título de la categoría" name="categoria" onBlur={handleCategoryBlur} value={category} onChange={(e) => setCategory(e.target.value)} required />
         {errorCategory && <FieldError message={errorCategory} />}
+      </div>
+      <div className="container-description">
+        <label htmlFor="">Descripción</label>
+        <textarea id="description" placeholder="Ingresa descripción de la categoría" name="descripcion" value={description} onChange={handleDescriptionChange} required></textarea>
+        {errorDescription && <FieldError message={errorDescription} />}
       </div>
       <div className="container-images">
         <label>Imágenes:</label>

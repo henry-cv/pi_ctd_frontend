@@ -5,7 +5,7 @@ import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
 import { LuListFilter } from "react-icons/lu";
-import ActivitieRow from "./ActivitieRow";
+import CategoryRow from "./CategoryRow";
 import { Link } from "react-router-dom";
 import BasicPagination from "./BasicPagination";
 
@@ -99,14 +99,13 @@ const DashCategorias = () => {
 
       {!loading && !error && currentCategories.length > 0
         ? currentCategories.map((category) => (
-          <ActivitieRow
+          <CategoryRow
             key={category.id}
             id={category.id}
             imagen={
               category.productoImagenesSalidaDto?.[0]?.rutaImagen || "/category.webp"
             }
-            titulo={category.nombre}
-            reservas={category.reservas || "0"}
+            nombre={category.nombre}
             onDelete={handleDelete}
           />
         ))
