@@ -17,7 +17,7 @@ const Dashboard = () => {
   };
 
   return (
-    <>
+    <main className="dashboard_container">
       <div className={`${barOpen ? "admin_container" : "admin_container2"}`}>
         <article className="sidebar">
           <div className="logo_container">
@@ -69,7 +69,7 @@ const Dashboard = () => {
         <h2>DISPONIBLE SÓLO EN DESKTOP🖥️</h2>
       </div>
       {/* <Footer /> */}
-    </>
+    </main>
   );
 };
 
