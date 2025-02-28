@@ -91,10 +91,12 @@ export default function AccountMenu() {
         </div>
 
         <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonOutlineRoundedIcon />
-          </ListItemIcon>
-          Perfil
+          <Link to="/perfil">
+            <ListItemIcon>
+              <PersonOutlineRoundedIcon />
+            </ListItemIcon>
+            Perfil
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link to="/administrador" className="listAvatar">

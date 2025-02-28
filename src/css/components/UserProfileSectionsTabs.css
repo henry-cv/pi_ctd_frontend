@@ -1,0 +1,45 @@
+.profile-tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--black-100);
+    margin-top: 60px;
+    padding: 0 20px;
+  }
+  
+  .tab-button {
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+    color: var(--black-400);
+  }
+  
+  .tab-button.active {
+    color: var(--Font-Background);
+    font-weight: 600;
+  }
+  
+  .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color:var(--blue-base);
+  }
+
+
+  @media (max-width:768px){
+
+    .profile-tabs{
+        margin-top:20px;overflow-x:auto
+    }
+  }
+  @media (max-width:480px){
+    .profile-tabs{
+        margin-top:60px
+    }
+  }

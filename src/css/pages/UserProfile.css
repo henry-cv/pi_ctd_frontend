@@ -1,0 +1,226 @@
+
+.profile-container {
+    margin: 0 ;
+    background-color: var(--BackgroundColor);
+    padding-top: 140px;
+    padding-bottom: 25px;    
+  }
+  
+.profile-banner {
+    background-image: url("../../../public/marco\ perfil\ usuario\ XL.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding: 30px;
+    position: relative;
+    height: 117px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+    max-width:  min(80%, 1142px); 
+}
+  
+  .user-info-profile {
+    height:80%;
+    display: flex;
+    align-items: start;
+    color:var(--BackgroundColor);
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .user-details p , h2{
+    color:var(--white);
+    
+  }
+  
+  .avatar-container {
+    margin-right: 20px; 
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .user-details h2  {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  .user-details p {
+    margin: 5px 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+  }
+  
+  .profile-form {
+    padding: 30px 20px;
+    margin: 15px 20px;
+    /* border-bottom: 1px solid var(--Icons-gray); */
+  }
+
+  .form-data-picture-columns{
+    display: flex;
+    justify-content: space-around;
+    
+  }
+
+  .form-data label{
+    color: var(--Font-Background);
+  }
+
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    flex: 1;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--black-100);
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .form-input:focus {
+    border-color: var(--blue-base);
+  }
+  
+  .email-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-container {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+
+  .profile-picture-section {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .profile-picture-container {
+    position: relative;
+    height: 120px;
+  }
+  
+  .profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 72px;
+    object-fit: cover;
+  }
+  
+  .edit-picture-button {
+    padding: 10px 12px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background-color:var(--blue-base);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .edit-picture-button:hover {
+    background-color: var(--blue-hover);
+  }
+
+  .icon-pencil-edit{
+    width: 12px;
+  }
+  
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  
+  .delete-account-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    border-top: 1px solid var(--black-100);
+  }
+  
+  .delete-account-button {
+    display: flex;
+    justify-content: center;
+    font-size: var(--h5-size);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .trash-icon {
+    margin-right: 8px;
+  }
+
+  .delete-account-button:hover {
+    background-color: #f0ad0f;
+  }
+  
+ .error-message {
+    color: var(--color-error);
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  @media (max-width:768px){
+    .profile-banner{background-image:url("../../../public/marco\ perfil\ usuario\ MD.png")}
+    .form-data{min-width: 480px;}
+    .form-row{flex-direction:column;gap:0}
+    .profile-tabs{margin-top:20px;overflow-x:auto}
+  }
+  @media (max-width:480px){
+    .form-data{min-width: 370px;}
+    .form-data-picture-columns{ flex-direction: column-reverse;}
+    .profile-banner{background-image:url("../../../public/marco\ perfil\ usuario\ sm.png")}
+    .profile-tabs{margin-top:60px}
+    .action-buttons{flex-direction:column;align-items:center;gap:10px}
+    .delete-account-container{justify-content:center}
+
+  
+  }

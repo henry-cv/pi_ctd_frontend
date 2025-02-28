@@ -3,6 +3,7 @@ import { reducer } from "../reducer/reducer";
 
 const initialState = {
   theme: "",
+  activeTab: "edit-profile",
 };
 
 export const ContextGlobal = createContext();
