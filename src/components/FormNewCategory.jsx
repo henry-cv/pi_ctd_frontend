@@ -86,7 +86,7 @@ const FormNewCategory = () => {
 
     // Agregar cada imagen como una parte separada
     selectedImages.forEach((file) => {
-      formData.append("imagenes", file);
+      formData.append("imagenCategoria", file);
     });
     console.log(`--->${categoryData}<---`)
     console.log("Enviando datos al backend...");
@@ -107,7 +107,7 @@ const FormNewCategory = () => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      alert("Producto creado correctamente");
+      alert("Categoría creada correctamente");
 
       // Limpiar formulario después de un envío exitoso
       setCategory("");
