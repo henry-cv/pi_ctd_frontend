@@ -186,6 +186,7 @@ const FormBasis = () => {
   return (
     <form className="form-base" onSubmit={handleSubmit}>
       <div className="container-name">
+        <h2>Agregar Actividad:</h2>
         <label htmlFor="title">Título:</label>
         <input
           type="text"
