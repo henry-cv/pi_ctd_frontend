@@ -120,13 +120,28 @@ const FormNewCategory = () => {
   return (
     <form action="" className="form-base new-category" onSubmit={handleSubmit}>
       <div className="container-title">
-        <label htmlFor="">Nombre Categoría</label>
-        <input type="text" placeholder="Ingresa título de la categoría" name="categoria" onBlur={handleCategoryBlur} value={category} onChange={(e) => setCategory(e.target.value)} required />
+        <label htmlFor="category">Nombre Categoría</label>
+        <input
+          id="category"
+          type="text"
+          placeholder="Ingresa título de la categoría"
+          name="categoria"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          onBlur={handleCategoryBlur}
+          required />
         {errorCategory && <FieldError message={errorCategory} />}
       </div>
       <div className="container-description">
-        <label htmlFor="">Descripción</label>
-        <textarea id="description" placeholder="Ingresa descripción de la categoría" name="descripcion" value={description} onChange={handleDescriptionChange} required></textarea>
+        <label htmlFor="description">Descripción</label>
+        <textarea
+          id="description"
+          placeholder="Ingresa descripción de la categoría"
+          name="descripcion"
+          value={description}
+          onChange={handleDescriptionChange}
+          required>
+        </textarea>
         {errorDescription && <FieldError message={errorDescription} />}
       </div>
       <div className="container-images">
