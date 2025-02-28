@@ -1,23 +1,23 @@
 
 .profile-container {
-    width: 100%;
-    max-width: 1142px;
-    margin: 0 auto;
-    background-color: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 ;
+    background-color: var(--BackgroundColor);
+    padding-top: 140px;
+    padding-bottom: 25px;    
   }
   
-  .profile-banner {
-    background-image: url("../../public/marco perfil usuario XL.png");
+.profile-banner {
+    background-image: url("../../../public/marco\ perfil\ usuario\ XL.png");
     background-repeat: no-repeat;
-    background-size:contain;
-    padding: 30px 20px;
+    background-size: contain;
+    padding: 30px;
     position: relative;
     height: 117px;
-    margin: 25px;
-  }
+    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+    max-width:  min(80%, 1142px); 
+}
   
   .user-info-profile {
     height:80%;
@@ -57,17 +57,20 @@
     opacity: 0.9;
   }
   
-  /* Formulario */
   .profile-form {
     padding: 30px 20px;
     margin: 15px 20px;
-    border-bottom: 1px solid var(--Icons-gray);
+    /* border-bottom: 1px solid var(--Icons-gray); */
   }
 
   .form-data-picture-columns{
     display: flex;
     justify-content: space-around;
     
+  }
+
+  .form-data label{
+    color: var(--Font-Background);
   }
 
   
@@ -92,7 +95,7 @@
   .form-input {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--black-100);
     border-radius: 30px;
     font-size: 16px;
     outline: none;
@@ -100,22 +103,12 @@
   }
   
   .form-input:focus {
-    border-color: #6633cc;
+    border-color: var(--blue-base);
   }
   
   .email-container {
     display: flex;
     align-items: center;
-  }
-  
-  .modify-button {
-    background: none;
-    border: none;
-    color: #f44336;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-    flex-shrink: 0;
   }
   
   .password-container {
@@ -183,53 +176,18 @@
     margin-top: 30px;
   }
   
-  .cancel-button {
-    padding: 12px 30px;
-    background-color: #ffb700;
-    color: #000;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s;
-  }
   
-  .save-button {
-    padding: 12px 30px;
-    background-color: #6633cc;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s;
-  }
-  
-  .cancel-button:hover {
-    background-color: #f0ad0f;
-  }
-  
-  .save-button:hover {
-    background-color: #5728b3;
-  }
-  
-
   .delete-account-container {
     display: flex;
     justify-content: flex-end;
     padding: 20px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--black-100);
   }
   
   .delete-account-button {
     display: flex;
     justify-content: center;
-    padding: 10px 5px;
-    background-color: #ffb700;
     font-size: var(--h5-size);
-    color: #000;
     border: none;
     border-radius: 30px;
     cursor: pointer;
@@ -239,14 +197,19 @@
   .trash-icon {
     margin-right: 8px;
   }
-  
+
   .delete-account-button:hover {
     background-color: #f0ad0f;
   }
   
+ .error-message {
+    color: var(--color-error);
+    font-size: 14px;
+    margin-top: 5px;
+  }
 
   @media (max-width:768px){
-    .profile-banner{background-image:url("../../public/marco perfil usuario MD.png")}
+    .profile-banner{background-image:url("../../../public/marco\ perfil\ usuario\ MD.png")}
     .form-data{min-width: 480px;}
     .form-row{flex-direction:column;gap:0}
     .profile-tabs{margin-top:20px;overflow-x:auto}
@@ -254,7 +217,7 @@
   @media (max-width:480px){
     .form-data{min-width: 370px;}
     .form-data-picture-columns{ flex-direction: column-reverse;}
-    .profile-banner{background-image:url("../../public/marco perfil usuario sm.png")}
+    .profile-banner{background-image:url("../../../public/marco\ perfil\ usuario\ sm.png")}
     .profile-tabs{margin-top:60px}
     .action-buttons{flex-direction:column;align-items:center;gap:10px}
     .delete-account-container{justify-content:center}

@@ -1,6 +1,8 @@
 .activity-detail {
-  background-color: var(--white);
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
   min-height: 100vh;
+  padding-top: 100px;
 }
 
 .detail-container {

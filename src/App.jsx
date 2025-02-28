@@ -12,6 +12,7 @@ import AddCategory from "./components/AddCategory";
 import { useContextGlobal } from "./gContext/globalContext";
 import AppRoutes from "./Routes/AppRoutes";
 import UserProfile from "./pages/UserProfile";
+import UserLayout from "./Layouts/UserLayout";
 
 function App() {
   const { state } = useContextGlobal();
@@ -20,7 +21,6 @@ function App() {
       <div className={`bg-white min-h-screen  ${state.theme}`}>
         <Routes>
           <Route path="/" element={<Home />} />
-
           <Route path="/administrador" element={<Dashboard />}>
             <Route index element={<Navigate to="panel" replace />} />
             <Route path="panel" element={<PanelControl />} />
@@ -33,8 +33,11 @@ function App() {
             <Route path="categorias/crearcategoria" element={<AddCategory />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
+          <Route path="/" element={<UserLayout/>} > 
           <Route path="/actividad/:id" element={<ActivityDetail />} />
           <Route path="/perfil" element={<UserProfile />} />
+          </Route>
+
         </Routes>
         <AppRoutes />
       </div>

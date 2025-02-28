@@ -5,22 +5,23 @@ import FormEditUser from "../components/FormEditUser";
 import { useContextGlobal } from "../gContext/globalContext";
 
 const UserProfile = () => {
-   const { state } = useContextGlobal();
-   const style = {
+  const { state } = useContextGlobal();
+  const style = {
     display: "flex", 
     justifyContent: "center", 
     alignItems: "center", 
     height: "50vh", 
     fontSize: "24px", 
-  fontWeight: "bold", 
-    textAlign: "center" }
+    fontWeight: "bold", 
+    textAlign: "center" 
+  };
 
   const [userData, setUserData] = useState({
     nombre: "Sara",
     apellido: "Mendez",
     email: "saris@gmail.com",
-    contraseña: "",
-    repetirContraseña: "",
+    contraseñaActual: "passwordExample123", 
+    profileImage: "../../public/user_example.webp",
   });
 
   return (
@@ -28,7 +29,7 @@ const UserProfile = () => {
       <div className="profile-banner">
         <div className="user-info-profile">
           <div className="avatar-container">
-            <img src="../../public/user_example.webp" alt="Avatar del usuario" className="avatar" />
+            <img src={userData.profileImage} alt="Avatar del usuario" className="avatar" />
           </div>
           <div className="user-details">
             <h2>{userData.nombre} {userData.apellido}</h2>
@@ -40,17 +41,12 @@ const UserProfile = () => {
       <UserProfileSectionsTabs />
 
       {state.activeTab === "edit-profile" ? (
-  <FormEditUser userData={userData} setUserData={setUserData} />
-) : state.activeTab === "reservations" ? (
-  <>
-    <p style={style}>Lista de reservas</p>
-
-  </>
-) : (
-  <p style={style}>Lista de favoritos</p>
-)}
-
-      
+        <FormEditUser userData={userData} setUserData={setUserData} />
+      ) : state.activeTab === "reservations" ? (
+        <p style={style}>Lista de reservas</p>
+      ) : (
+        <p style={style}>Lista de favoritos</p>
+      )}
     </div>
   );
 };
