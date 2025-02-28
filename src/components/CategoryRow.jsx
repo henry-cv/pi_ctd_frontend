@@ -1,9 +1,9 @@
-/* eslint-disable react/prop-types */
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import PropTypes from 'prop-types';
 
-const CategoryRow = ({ id, nombre, descripcion, imagenCategoriaUrl, onDelete }) => {
-
+const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
+  console.log(`Imagen: ${imagenCategoriaUrl}`);
   const handleDelete = async () => {
     if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
       try {
@@ -22,14 +22,11 @@ const CategoryRow = ({ id, nombre, descripcion, imagenCategoriaUrl, onDelete }) 
   };
 
   return (
-    <div className="RegisterCategory RegisterActivitie">
+    <div className="RegisterCategory">
       <div className="infoCategory infoActivitie">
         <input type="checkbox" className="inputCategory inputActivitie" />
-        <img src={imagenCategoriaUrl} alt="Categoria" width={50} className="categoryImg activitieImg" />
+        <img src={imagenCategoriaUrl} alt="Categoria" width={50} className="categoryImg" />
         <p>{nombre}</p>
-      </div>
-      <div className="category-description">
-        <p>{descripcion}</p>
       </div>
       <div className="btn_action">
         <button className="btn_blueAction">
@@ -43,4 +40,11 @@ const CategoryRow = ({ id, nombre, descripcion, imagenCategoriaUrl, onDelete }) 
   )
 }
 
+CategoryRow.propTypes = {
+  id: PropTypes.number.isRequired,
+  nombre: PropTypes.string.isRequired,
+  descripcion: PropTypes.string.isRequired,
+  imagenCategoriaUrl: PropTypes.string.isRequired,
+  onDelete: PropTypes.func
+};
 export default CategoryRow
