@@ -2,7 +2,7 @@
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
-const CategoryRow = ({ id, nombre, descripcion, imagen, onDelete }) => {
+const CategoryRow = ({ id, nombre, descripcion, imagenCategoriaUrl, onDelete }) => {
 
   const handleDelete = async () => {
     if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
@@ -25,6 +25,7 @@ const CategoryRow = ({ id, nombre, descripcion, imagen, onDelete }) => {
     <div className="RegisterCategory RegisterActivitie">
       <div className="infoCategory infoActivitie">
         <input type="checkbox" className="inputCategory inputActivitie" />
+        <img src={imagenCategoriaUrl} alt="Categoria" width={50} className="categoryImg activitieImg" />
         <p>{nombre}</p>
       </div>
       <div className="category-description">

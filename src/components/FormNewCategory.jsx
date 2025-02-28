@@ -72,6 +72,7 @@ const FormNewCategory = () => {
     const categoryData = {
       nombre: category,
       descripcion: description
+
     };
 
     // Agregar el objeto producto como una parte JSON
@@ -109,6 +110,7 @@ const FormNewCategory = () => {
       setCategory("");
       setDescription("");
       setSelectedImages([]);
+      window.location.replace('/administrador/categorias');
     } catch (error) {
       console.error("Error:", error.message);
       alert(`Error al enviar los datos: ${error.message}`);
