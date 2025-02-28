@@ -6,7 +6,7 @@
   --blue-base: #3e10da;
   --blue-hover: #3209c0;
   --blue-700: #5e38e0;
-  --blue-300:#7E60E6;
+  --blue-300: #7e60e6;
   --white: #ffffff;
   --black: #101828;
   --black-100: #afb2b7;
@@ -19,7 +19,7 @@
 
   --yellow-base: #f1c40f;
   --yellow-hover: #a1830a;
-  --yellow-300: #F6D85F;
+  --yellow-300: #f6d85f;
 
   --color-error: #d61b1b;
   --color-sucess: #12c618;
@@ -55,6 +55,7 @@
   /* para fuentes e iconos que en ligt son gris y en dark pasan a blanco */
 
   --Color-base: var(--blue-base);
+  --Menu-Hamburger: var(--white);
 }
 
 /* EL cambio del tono de las variables en el modo dark */
@@ -66,5 +67,6 @@
   --Font-Background: var(--white);
   --Icons-gray: var(--Font-Background);
 
+  --Menu-Hamburger: var(--black);
   --Color-base: var(--yellow-base);
 }

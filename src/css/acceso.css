@@ -125,7 +125,9 @@
   justify-content: center;
   transition: all 0.3s ease-in-out;
   gap: 20px;
+  padding: 0.6em 1.2em;
 }
+
 .google_auth:hover {
   color: #f7f8fc;
   border: 1px solid #afb2b7;

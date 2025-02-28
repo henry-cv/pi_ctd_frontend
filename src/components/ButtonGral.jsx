@@ -1,12 +1,19 @@
-import { FaSearch } from "react-icons/fa"; // Ícono de ejemplo
 import PropTypes from "prop-types";
 import "../css/pages/dashboard.css";
 
-const ButtonGral = ({ text, color = "blue", icon = <FaSearch /> }) => {
-  const baseStyles = color === "yellow" ? "btn_yellow" : "btn_blue ";
+const ButtonGral = ({ text, color = "transparent", icon = null }) => {
+  const colorStyles = {
+    yellow: "btn_yellow",
+    blue: "btn_blue",
+    transparent: "btn_transparent",
+  };
+
+  const buttonClass = `btn_style ${
+    colorStyles[color] || colorStyles.transparent
+  }`;
 
   return (
-    <button className={`btn_style ${baseStyles}`}>
+    <button className={buttonClass}>
       {icon && <span>{icon}</span>}
       {text}
     </button>
@@ -15,7 +22,7 @@ const ButtonGral = ({ text, color = "blue", icon = <FaSearch /> }) => {
 
 ButtonGral.propTypes = {
   text: PropTypes.string.isRequired,
-  color: PropTypes.string,
+  color: PropTypes.oneOf(["yellow", "blue", "transparent"]),
   icon: PropTypes.element,
 };
 

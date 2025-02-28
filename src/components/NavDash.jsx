@@ -48,14 +48,16 @@ const NavDash = ({ variant = "home" }) => {
   return (
     <nav className="navbarDash home">
       <div className="leftContainer">
+        <div className="show-mobile">
+          <button className="icon-button menu-button">
+            <FontAwesomeIcon icon={faBars} />
+          </button>
+        </div>
         <Link to="/">
           <LogoImg inNavbar={true} />
         </Link>
         <div className="hide-mobile">
           <Activities />
-          <a href="#" className="nav-link">
-            Crea tu Actividad
-          </a>
         </div>
       </div>
       <div className="rightContainer">
@@ -72,22 +74,15 @@ const NavDash = ({ variant = "home" }) => {
             <FontAwesomeIcon icon={faGlobe} />
           </button>
         </div>
-        <div className="auth-buttons hide-mobile">
+        <div className="auth-buttons">
           {" "}
           {/* Movido hide-mobile aquí */}
           <Link to={"/registro"} className="hide-tablet">
             <ButtonGral text="Registrar" color="transparent" />
           </Link>
           <Link to="/entrar">
-            {" "}
-            {/* Añadimos Link al botón de acceso */}
             <ButtonGral text="Acceso" color="blue" />
           </Link>
-        </div>
-        <div className="show-mobile">
-          <button className="icon-button menu-button">
-            <FontAwesomeIcon icon={faBars} />
-          </button>
         </div>
         <div>
           <AccountMenu />

@@ -205,22 +205,37 @@
 .activitieRight {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
-}
-
-.btn_base {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 10px 6px;
-  border-radius: 100px;
 }
 
 .btn_style {
   display: flex;
-  gap: 10px;
   align-items: center;
   justify-content: center;
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+}
+
+/* button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */
+
+.btn_style > span {
+  margin-right: 10px;
 }
 
 .btn_blue {
@@ -242,6 +257,17 @@
 .btn_yellow:hover {
   background-color: #d8af18;
   color: #101828;
+  border-radius: 30px;
+}
+
+.btn_transparent {
+  background-color: transparent;
+  color: var(--Font-Background);
+  border-radius: 30px;
+}
+
+.btn_transparent:hover {
+  color: var(--Color-base);
   border-radius: 30px;
 }
 

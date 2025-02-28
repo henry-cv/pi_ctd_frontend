@@ -24,7 +24,9 @@ const Dashboard = () => {
             <Link to={"/"}>
               <img
                 src={`${
-                  barOpen ? "../GoBook_LOGO_LIGHT.svg" : "../LogoDashSM.svg"
+                  barOpen
+                    ? "https://res.cloudinary.com/drq4tucwt/image/upload/v1740759880/GoBook_LOGO_LIGHT_x7tb97.svg"
+                    : "https://res.cloudinary.com/drq4tucwt/image/upload/v1740759889/LogoDashSM_h7iijn.svg"
                 }`}
                 alt="logo goBook"
                 width={`${barOpen && 125}`}
