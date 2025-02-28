@@ -71,7 +71,7 @@ const DashCategorias = () => {
   return (
     <div className="categories_container activities_container">
       <header className="header_categories header_activities">
-        <h2>Nueva Categoría</h2>
+        <h2 className="dark_activities">Nueva Categoría</h2>
         <div className="categoryRight activitieRight">
           <div className="searchFilter">
             <DashSearch onSearch={handleSearch} />{" "}
@@ -104,6 +104,10 @@ const DashCategorias = () => {
           <CategoryRow
             key={category.id}
             id={category.id}
+            imagen={
+              category.productoImagenesSalidaDto?.[0]?.rutaImagen ||
+              "/categorie.webp"
+            }
             descripcion={category.descripcion}
             nombre={category.nombre}
             onDelete={handleDelete}
