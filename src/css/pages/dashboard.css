@@ -393,6 +393,7 @@ button:focus-visible {
 .user-details {
   display: flex;
   flex-direction: column;
+  
 }
 
 .user-name {
