@@ -163,6 +163,10 @@ const Register = () => {
           <button type="submit" className="submit_auth">
             Registrarse
           </button>
+          <button type="button" className="google_auth">
+            <FcGoogle fontSize={"26px"} />
+            Regístrate con Google
+          </button>
         </form>
         <div className="register_auth_text">
           <p>¿Ya tienes una cuenta? </p>
