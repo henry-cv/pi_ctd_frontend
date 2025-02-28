@@ -5,8 +5,11 @@ import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
+import { useNavigate } from 'react-router-dom';
 
 const FormNewCategory = () => {
+
+  const navigate = useNavigate();
 
   const [category, setCategory] = useState("");
   const [errorCategory, setErrorCategory] = useState("");
@@ -111,6 +114,8 @@ const FormNewCategory = () => {
       setDescription("");
       setSelectedImages([]);
       window.location.replace('/administrador/categorias');
+      navigate('/administrador/categorias');
+
     } catch (error) {
       console.error("Error:", error.message);
       alert(`Error al enviar los datos: ${error.message}`);
