@@ -80,6 +80,7 @@
   font-size: 16px;
   font-weight: regular;
   font-family: var(--font-archivo);
+  color: var(--Font-Background);
 }
 .input_auth,
 .input_auth_register {
