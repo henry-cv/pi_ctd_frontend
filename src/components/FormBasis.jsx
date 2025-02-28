@@ -10,6 +10,8 @@ import DateCalendar from "./DateCalendar";
 import Days from "./Days";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const FormBasis = () => {
   const [showExtraFields, setShowExtraFields] = useState(false);
@@ -27,6 +29,8 @@ const FormBasis = () => {
   const [fechaEvento, setFechaEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
@@ -161,7 +165,17 @@ const FormBasis = () => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      alert("Producto creado correctamente");
+      // alert("Producto creado correctamente");
+
+      Swal.fire({
+        title: "¡Actividad Creada!",
+        text: "La actividad se ha guardado correctamente.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000
+      }).then(() => {
+        navigate("/administrador/actividades");
+      });
 
       // Limpiar formulario después de un envío exitoso
       setTitulo("");
@@ -181,6 +195,7 @@ const FormBasis = () => {
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   return (

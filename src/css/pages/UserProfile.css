@@ -27,7 +27,7 @@
     bottom: 0px;
   }
 
-  .user-details p , h2{
+  .user-details-banner p , h2{
     color:var(--white);
     
   }
@@ -44,13 +44,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .user-details h2  {
+  .user-details-banner h2  {
     margin: 0;
     font-size: 28px;
     font-weight: 600;
   }
   
-  .user-details p {
+  .user-details-banner p {
     margin: 5px 0 0;
     font-size: 16px;
     opacity: 0.9;

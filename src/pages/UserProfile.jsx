@@ -31,7 +31,7 @@ const UserProfile = () => {
           <div className="avatar-container">
             <img src={userData.profileImage} alt="Avatar del usuario" className="avatar" />
           </div>
-          <div className="user-details">
+          <div className="user-details-banner">
             <h2>{userData.nombre} {userData.apellido}</h2>
             <p>{userData.email}</p>
           </div>
