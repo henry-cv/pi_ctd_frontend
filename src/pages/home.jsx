@@ -26,10 +26,10 @@ const Home = () => {
   ];
 
   const categories = [
-    { image: "/cultural-category.webp", title: "Cultural" },
-    { image: "/food-category.webp", title: "Gastronomía" },
-    { image: "/outdoor-category.webp", title: "Aire libre" },
-    { image: "/wellness-category.webp", title: "Bienestar" }
+    { image: "/Culture.webp", title: "Cultural" },
+    { image: "/Gastronomy.webp", title: "Gastronomía" },
+    { image: "/Outdoor.webp", title: "Aire libre" },
+    { image: "/Wellness.webp", title: "Bienestar" }
   ];
 
   const fetchActivities= async()=>{

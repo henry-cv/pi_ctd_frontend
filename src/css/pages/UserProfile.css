@@ -1,4 +1,3 @@
-
 .profile-container {
     margin: 0 ;
     background-color: var(--BackgroundColor);
@@ -7,7 +6,7 @@
   }
   
 .profile-banner {
-    background-image: url("../../../public/marco\ perfil\ usuario\ XL.png");
+    background-image: url("../../../public/marco_perfil_us_xl.webp");
     background-repeat: no-repeat;
     background-size: contain;
     padding: 30px;
@@ -20,7 +19,7 @@
 }
   
   .user-info-profile {
-    height:80%;
+    height:90%;
     display: flex;
     align-items: start;
     color:var(--BackgroundColor);
@@ -209,7 +208,7 @@
   }
 
   @media (max-width:768px){
-    .profile-banner{background-image:url("../../../public/marco\ perfil\ usuario\ MD.png")}
+    .profile-banner{background-image:url("../../../public/marco_perfil_us_md.webp")}
     .form-data{min-width: 480px;}
     .form-row{flex-direction:column;gap:0}
     .profile-tabs{margin-top:20px;overflow-x:auto}
@@ -217,10 +216,8 @@
   @media (max-width:480px){
     .form-data{min-width: 370px;}
     .form-data-picture-columns{ flex-direction: column-reverse;}
-    .profile-banner{background-image:url("../../../public/marco\ perfil\ usuario\ sm.png")}
+    .profile-banner{background-image:url("../../../public/marco_perfil_us_sm.webp")}
     .profile-tabs{margin-top:60px}
     .action-buttons{flex-direction:column;align-items:center;gap:10px}
     .delete-account-container{justify-content:center}
-
-  
   }
