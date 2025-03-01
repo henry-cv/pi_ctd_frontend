@@ -12,22 +12,35 @@ import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 
-const FormBasis = () => {
+
+const FormBasis = ({ isEditMode = false }) => {
+  const location = useLocation();
+  const activityToEdit = location.state?.activity || null;
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
-  const [titulo, setTitulo] = useState("");
+
+  const [titulo, setTitulo] = useState(activityToEdit?.nombre || "");
+
   const [errorTitulo, setErrorTitulo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
+
+  const [descripcion, setDescripcion] = useState(activityToEdit?.descripcion || "");
+
   const [errorDescripcion, setErrorDescripcion] = useState("");
-  const [valorTarifa, setValorTarifa] = useState("");
-  const [tipoTarifa, setTipoTarifa] = useState("");
-  const [idioma, setIdioma] = useState("");
-  const [horaInicio, setHoraInicio] = useState("");
-  const [horaFin, setHoraFin] = useState("");
-  const [diasDisponible, setDiasDisponible] = useState([]);
-  const [fechaEvento, setFechaEvento] = useState("");
-  const [selectedImages, setSelectedImages] = useState([]);
+
+  const [valorTarifa, setValorTarifa] = useState(activityToEdit?.valorTarifa || "");
+
+  const [tipoTarifa, setTipoTarifa] = useState(activityToEdit?.tipoTarifa || "");
+
+  const [idioma, setIdioma] = useState(activityToEdit?.idioma || "");
+  const [horaInicio, setHoraInicio] = useState(activityToEdit?.horaInicio || "");
+
+  const [horaFin, setHoraFin] = useState(activityToEdit?.horaFin || "");
+  const [diasDisponible, setDiasDisponible] = useState(activityToEdit?.diasDisponible || []);
+  const [fechaEvento, setFechaEvento] = useState(activityToEdit?.fechaEvento || "");
+  const [selectedImages, setSelectedImages] = useState(activityToEdit?.selectedImages || []);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
@@ -94,6 +107,11 @@ const FormBasis = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const endpoint = isEditMode
+      ? `/api/producto/actualizar/${activityToEdit.id}`
+      : "/api/producto/registrar";
+
+    const method = isEditMode ? "PUT" : "POST";
 
     // Validaciones
     if (errorTitulo || errorDescripcion) {

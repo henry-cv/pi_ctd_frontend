@@ -1,29 +1,28 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
 import { LuListFilter } from "react-icons/lu";
 import "../css/pages/dashboard.css";
 import ActivitieRow from "./ActivitieRow";
-import { Link } from "react-router-dom";
 import BasicPagination from "./BasicPagination";
 
 const DashActividades = () => {
   const [activities, setActivities] = useState([]);
-  const [filteredActivities, setFilteredActivities] = useState([]); // Nuevo estado filtrado
+  const [filteredActivities, setFilteredActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [activitiesPerPage] = useState(6);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado de búsqueda
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const navigate = useNavigate();
 
   const lastActivity = currentPage * activitiesPerPage;
   const firstActivity = lastActivity - activitiesPerPage;
   const allPages = Math.ceil(filteredActivities.length / activitiesPerPage);
-  const currentActivities = filteredActivities.slice(
-    firstActivity,
-    lastActivity
-  );
+  const currentActivities = filteredActivities.slice(firstActivity, lastActivity);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -33,9 +32,8 @@ const DashActividades = () => {
           throw new Error(`Error al obtener actividades: ${response.status}`);
         }
         const data = await response.json();
-        const reversedData = data.reverse(); // Invertimos el orden
-        setActivities(reversedData);
-        setFilteredActivities(reversedData);
+        setActivities(data.reverse()); // Invertimos el orden
+        setFilteredActivities(data.reverse());
       } catch (error) {
         console.error("Error cargando actividades:", error);
         setError(error.message);
@@ -63,9 +61,12 @@ const DashActividades = () => {
 
   const handleDelete = (id) => {
     setActivities((prev) => prev.filter((activity) => activity.id !== id));
-    setFilteredActivities((prev) =>
-      prev.filter((activity) => activity.id !== id)
-    );
+    setFilteredActivities((prev) => prev.filter((activity) => activity.id !== id));
+  };
+
+  const handleUpdate = (activity) => {
+    // Redirigir a la ruta de edición con el ID de la actividad
+    navigate(`/administrador/actividades/editarActividad`, { state: { activity } });
   };
 
   return (
@@ -74,12 +75,12 @@ const DashActividades = () => {
         <h2 className="dark_activities">Mis Actividades</h2>
         <div className="activitieRight">
           <div className="searchFilter">
-            <DashSearch onSearch={handleSearch} />{" "}
+            <DashSearch onSearch={handleSearch} />
             <button className="btnIconFilter">
               <LuListFilter size={"2rem"} />
             </button>
           </div>
-          <Link to="crearactividad">
+          <Link to="crearActividad">
             <ButtonGral
               text={"Agregar actividad"}
               color="yellow"
@@ -106,29 +107,27 @@ const DashActividades = () => {
 
       {!loading && !error && currentActivities.length > 0
         ? currentActivities.map((activity) => (
-            <ActivitieRow
-              key={activity.id}
-              id={activity.id}
-              imagen={
-                activity.productoImagenesSalidaDto?.[0]?.rutaImagen ||
-                "/activitie.webp"
-              }
-              titulo={activity.nombre}
-              reservas={activity.reservas || "0"}
-              onDelete={handleDelete}
-            />
-          ))
+          <ActivitieRow
+            key={activity.id}
+            id={activity.id}
+            imagen={activity.productoImagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"}
+            titulo={activity.nombre}
+            reservas={activity.reservas || "0"}
+            onDelete={handleDelete}
+            onUpdate={() => handleUpdate(activity)}
+          />
+        ))
         : !loading &&
-          !error && (
-            <div className="activities_info_img">
-              <p>
-                {searchTerm
-                  ? "No hay actividades que coincidan con la búsqueda."
-                  : "Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera actividad!"}
-              </p>
-              <img src="/activitiesImg.webp" alt="Sin actividades" />
-            </div>
-          )}
+        !error && (
+          <div className="activities_info_img">
+            <p>
+              {searchTerm
+                ? "No hay actividades que coincidan con la búsqueda."
+                : "Aún no tienes actividades creadas. ¡Empieza ahora y añade tu primera actividad!"}
+            </p>
+            <img src="/activitiesImg.webp" alt="Sin actividades" />
+          </div>
+        )}
 
       <div className="pagination_dash">
         <BasicPagination

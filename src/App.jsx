@@ -13,6 +13,7 @@ import { useContextGlobal } from "./gContext/globalContext";
 import AppRoutes from "./Routes/AppRoutes";
 import UserProfile from "./pages/UserProfile";
 import UserLayout from "./Layouts/UserLayout";
+import FormBasis from "./components/FormBasis";
 
 function App() {
   const { state } = useContextGlobal();
@@ -29,13 +30,17 @@ function App() {
               path="actividades/crearactividad"
               element={<AddActivitie />}
             />
+            <Route
+              path="/administrador/actividades/editarActividad"
+              element={<FormBasis isEditMode={true} />}
+            />
             <Route path="categorias" element={<DashCategorias />} />
             <Route path="categorias/crearcategoria" element={<AddCategory />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
-          <Route path="/" element={<UserLayout/>} > 
-          <Route path="/actividad/:id" element={<ActivityDetail />} />
-          <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/" element={<UserLayout />} >
+            <Route path="/actividad/:id" element={<ActivityDetail />} />
+            <Route path="/perfil" element={<UserProfile />} />
           </Route>
 
         </Routes>
