@@ -3,7 +3,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import PropTypes from 'prop-types';
 
 const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
-  console.log(`Imagen: ${imagenCategoriaUrl}`);
+  //console.log(`Imagen: ${imagenCategoriaUrl}`);
   const handleDelete = async () => {
     if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
       try {
