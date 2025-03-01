@@ -1,7 +1,7 @@
 import "../css/components/Form.css";
 import "../css/global/variables.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import { FaSave } from "react-icons/fa";
@@ -13,37 +13,37 @@ import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
-
+import PropTypes from "prop-types";
 
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
-  const activityToEdit = location.state?.activity || null;
+  const activityId = location.state?.activityId || null;
+
+
+  //const activityToEdit = location.state?.activity || null;
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
 
-  const [titulo, setTitulo] = useState(activityToEdit?.nombre || "");
-
+  const [titulo, setTitulo] = useState("");
   const [errorTitulo, setErrorTitulo] = useState("");
 
-  const [descripcion, setDescripcion] = useState(activityToEdit?.descripcion || "");
-
+  const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
 
-  const [valorTarifa, setValorTarifa] = useState(activityToEdit?.valorTarifa || "");
-
-  const [tipoTarifa, setTipoTarifa] = useState(activityToEdit?.tipoTarifa || "");
-
-  const [idioma, setIdioma] = useState(activityToEdit?.idioma || "");
-  const [horaInicio, setHoraInicio] = useState(activityToEdit?.horaInicio || "");
-
-  const [horaFin, setHoraFin] = useState(activityToEdit?.horaFin || "");
-  const [diasDisponible, setDiasDisponible] = useState(activityToEdit?.diasDisponible || []);
-  const [fechaEvento, setFechaEvento] = useState(activityToEdit?.fechaEvento || "");
-  const [selectedImages, setSelectedImages] = useState(activityToEdit?.selectedImages || []);
+  const [valorTarifa, setValorTarifa] = useState("");
+  const [tipoTarifa, setTipoTarifa] = useState("");
+  const [idioma, setIdioma] = useState("");
+  const [horaInicio, setHoraInicio] = useState("");
+  const [horaFin, setHoraFin] = useState("");
+  const [diasDisponible, setDiasDisponible] = useState([]);
+  const [fechaEvento, setFechaEvento] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
 
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
@@ -103,12 +103,48 @@ const FormBasis = ({ isEditMode = false }) => {
     setSelectedImages(files);
   };
 
-  // En la función handleSubmit dentro de FormBasis.jsx
+  useEffect(() => {
+    const fetchActivity = async () => {
+      if (activityId) {
+        setLoading(true);
+        try {
+          const response = await fetch(`/api/producto/${activityId}`);
+          if (!response.ok) {
+            throw new Error(`Error al cargar la actividad: ${response.status}`);
+          }
+          const data = await response.json();
+          setTitulo(data.nombre);
+          setDescripcion(data.descripcion);
+          setValorTarifa(data.valorTarifa);
+          setTipoTarifa(data.tipoTarifa);
+          setIdioma(data.idioma);
+          setHoraInicio(data.horaInicio);
+          setHoraFin(data.horaFin);
+          setDiasDisponible(data.diasDisponible || []);
+          setFechaEvento(data.fechaEvento || "");
+          setSelectedImages(data.imagen || []);
+        } catch (error) {
+          console.error("Error cargando actividad:", error);
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la actividad.",
+            icon: "error",
+          });
+          navigate("/administrador/actividades");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
 
+    fetchActivity();
+  }, [activityId, navigate]);
+
+  // Función handleSubmit dentro de FormBasis.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
     const endpoint = isEditMode
-      ? `/api/producto/actualizar/${activityToEdit.id}`
+      ? `/api/producto/editar/${activityId}`
       : "/api/producto/registrar";
 
     const method = isEditMode ? "PUT" : "POST";
@@ -168,8 +204,8 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log("Enviando datos al backend...");
 
     try {
-      const response = await fetch("/api/producto/registrar", {
-        method: "POST",
+      const response = await fetch(endpoint, {
+        method,
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
@@ -186,11 +222,11 @@ const FormBasis = ({ isEditMode = false }) => {
       // alert("Producto creado correctamente");
 
       Swal.fire({
-        title: "¡Actividad Creada!",
-        text: "La actividad se ha guardado correctamente.",
+        title: isEditMode ? "¡Actividad Actualizada!" : "¡Actividad Creada!",
+        text: "La actividad se guardó correctamente.",
         icon: "success",
         showConfirmButton: false,
-        timer: 2000
+        timer: 2000,
       }).then(() => {
         navigate("/administrador/actividades");
       });
@@ -209,17 +245,25 @@ const FormBasis = ({ isEditMode = false }) => {
       setSelectedImages([]);
     } catch (error) {
       console.error("Error:", error.message);
-      alert(`Error al enviar los datos: ${error.message}`);
+      //alert(`Error al enviar los datos: ${error.message}`);
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo completar la operación.",
+        icon: "error",
+      });
     } finally {
       setIsSubmitting(false);
     }
 
   };
-
+  if (loading) {
+    return <p>Cargando datos de la actividad...</p>;
+  }
   return (
     <form className="form-base" onSubmit={handleSubmit}>
       <div className="container-name">
-        <h2>Agregar Actividad:</h2>
+        <h2>{isEditMode ? "Editar Actividad" : "Agregar Actividad"}</h2>
+
         <label htmlFor="title">Título:</label>
         <input
           type="text"
@@ -409,5 +453,7 @@ const FormBasis = ({ isEditMode = false }) => {
     </form>
   );
 };
-
+FormBasis.propTypes = {
+  isEditMode: PropTypes.bool,
+}
 export default FormBasis;

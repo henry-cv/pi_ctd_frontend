@@ -64,9 +64,9 @@ const DashActividades = () => {
     setFilteredActivities((prev) => prev.filter((activity) => activity.id !== id));
   };
 
-  const handleUpdate = (activity) => {
+  const handleUpdate = (activityId) => {
     // Redirigir a la ruta de edición con el ID de la actividad
-    navigate(`/administrador/actividades/editarActividad`, { state: { activity } });
+    navigate(`/administrador/actividades/editarActividad`, { state: { activityId } });
   };
 
   return (
@@ -114,7 +114,7 @@ const DashActividades = () => {
             titulo={activity.nombre}
             reservas={activity.reservas || "0"}
             onDelete={handleDelete}
-            onUpdate={() => handleUpdate(activity)}
+            onUpdate={() => handleUpdate(activity.id)}
           />
         ))
         : !loading &&
