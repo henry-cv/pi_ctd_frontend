@@ -33,8 +33,9 @@ const DashActividades = () => {
           throw new Error(`Error al obtener actividades: ${response.status}`);
         }
         const data = await response.json();
-        setActivities(data);
-        setFilteredActivities(data); // Inicialmente, las actividades filtradas son todas
+        const reversedData = data.reverse(); // Invertimos el orden
+        setActivities(reversedData);
+        setFilteredActivities(reversedData);
       } catch (error) {
         console.error("Error cargando actividades:", error);
         setError(error.message);
