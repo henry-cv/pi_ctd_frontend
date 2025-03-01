@@ -13,6 +13,7 @@
   background: var(--BackgroundColor);
   margin: 0;
   padding: 0;
+  height: 100vh;
 }
 
 .admin_container2 {
@@ -30,20 +31,7 @@
   max-width: 270px;
   height: 795px;
   padding: 10px 12px 0;
-  /* height: 100vh; */
   background: var(--Background-sideBar);
-  /* se le agregó el color de la sideBar info en variables.css */
-  border-radius: 20px;
-  position: relative;
-}
-
-.siderbar2 {
-  max-width: 270px;
-  height: 795px;
-  padding: 10px 12px 0;
-  /* height: 100vh; */
-  background: var(--Background-sideBar);
-  /* se le agregó el color de la sideBar info en variables.css */
   border-radius: 20px;
   position: relative;
 }
@@ -60,7 +48,7 @@
   gap: 30px;
 }
 
-.list_sidebar>.listDash {
+.list_sidebar > .listDash {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -95,7 +83,7 @@
   }
 }
 
-.list_sidebar>.listDash2 {
+.list_sidebar > .listDash2 {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -109,7 +97,7 @@
   margin: 0 auto;
 }
 
-.list_sidebar>.listDashHover:hover {
+.list_sidebar > .listDashHover:hover {
   background-color: white;
   color: var(--Background-sideBar) !important;
   /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
@@ -348,6 +336,10 @@ button:focus-visible {
   padding-left: 4px;
 }
 
+.infoActivitie p {
+  color: var(--Font-Background);
+}
+
 .inputActivitie {
   width: 20px;
   height: 20px;
@@ -417,7 +409,6 @@ button:focus-visible {
 .user-details {
   display: flex;
   flex-direction: column;
-  
 }
 
 .user-name {
@@ -471,7 +462,7 @@ button:focus-visible {
 .pagination_dash {
   display: flex;
   justify-content: center;
-  margin: 2.5rem 0;
+  margin: 1.6rem 0 0;
 }
 
 @media (max-width: 960px) {
@@ -483,6 +474,9 @@ button:focus-visible {
   }
 
   .admin_container {
+    display: none;
+  }
+  .admin_container2 {
     display: none;
   }
 }

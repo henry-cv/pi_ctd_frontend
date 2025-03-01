@@ -1,4 +1,3 @@
-
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 const ActivitieRow = ({ id, imagen, titulo, reservas, onDelete }) => {
