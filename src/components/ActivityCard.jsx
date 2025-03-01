@@ -1,17 +1,20 @@
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faLocationDot, 
-  faClock,
-  faStar
+  faStar,
 } from '@fortawesome/free-solid-svg-icons';
+import {  faMap, faCalendarAlt, faClock } from '@fortawesome/free-regular-svg-icons';
 import '../css/components/ActivityCard.css';
+import DurationInfo from './DurationInfo';
 
 const ActivityCard = ({ 
   image, 
   title, 
   location, 
-  duration, 
+  tipoEvento, 
+  horaInicio, 
+  horaFin, 
+  diasDisponible,
   price, 
   rating 
 }) => {
@@ -35,12 +38,17 @@ const ActivityCard = ({
         <h3 className="activity-title">{title}</h3>
         <div className="activity-details">
           <span className="activity-location">
-            <FontAwesomeIcon icon={faLocationDot} />
+            <FontAwesomeIcon icon={faMap} />
             {location}
           </span>
           <span className="activity-duration">
-            <FontAwesomeIcon icon={faClock} />
-            {duration}
+            {/* La duracion o el horario del evento depende del tipo de evento se manda a este componente DurationInfo para que maneje eso */}
+            {tipoEvento === "FECHA_UNICA" ? <FontAwesomeIcon icon={faClock} /> : <FontAwesomeIcon icon={faCalendarAlt} />}          
+            <DurationInfo
+            tipoEvento={tipoEvento} 
+            horaInicio={horaInicio} 
+            horaFin={horaFin} 
+            diasDisponible={diasDisponible}/>
           </span>
         </div>
         <div className="activity-footer">

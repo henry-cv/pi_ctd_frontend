@@ -89,12 +89,6 @@ const DashCategorias = () => {
         </div>
       </header>
 
-      <div className="table_categories table_activities">
-        <div><span className="titleTable">Categoría</span></div>
-        <div><span className="titleTable">Descripción</span></div>
-        <div><span className="titleTable">Acciones</span></div>
-      </div>
-
       {loading && <p>Cargando categorías...</p>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
@@ -104,11 +98,10 @@ const DashCategorias = () => {
           <CategoryRow
             key={category.id}
             id={category.id}
-            imagen={
-              category.productoImagenesSalidaDto?.[0]?.rutaImagen ||
+            imagenCategoriaUrl={
+              category.imagenCategoriaUrl ||
               "/categorie.webp"
             }
-            descripcion={category.descripcion}
             nombre={category.nombre}
             onDelete={handleDelete}
           />

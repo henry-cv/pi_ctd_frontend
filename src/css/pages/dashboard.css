@@ -8,12 +8,13 @@
   padding-top: 20px;
   transition: all 0.4s ease-in-out;
 }
+
 .dashboard_container {
   background: var(--BackgroundColor);
-  height: 100vh;
   margin: 0;
   padding: 0;
 }
+
 .admin_container2 {
   max-width: 1140px;
   margin: 0 auto;
@@ -30,9 +31,8 @@
   height: 795px;
   padding: 10px 12px 0;
   /* height: 100vh; */
-  background: var(
-    --Background-sideBar
-  ); /* se le agregó el color de la sideBar info en variables.css */
+  background: var(--Background-sideBar);
+  /* se le agregó el color de la sideBar info en variables.css */
   border-radius: 20px;
   position: relative;
 }
@@ -42,9 +42,8 @@
   height: 795px;
   padding: 10px 12px 0;
   /* height: 100vh; */
-  background: var(
-    --Background-sideBar
-  ); /* se le agregó el color de la sideBar info en variables.css */
+  background: var(--Background-sideBar);
+  /* se le agregó el color de la sideBar info en variables.css */
   border-radius: 20px;
   position: relative;
 }
@@ -60,7 +59,8 @@
   flex-direction: column;
   gap: 30px;
 }
-.list_sidebar > .listDash {
+
+.list_sidebar>.listDash {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -79,20 +79,23 @@
   min-width: 170px;
   animation: listNameSideAnimate 0.55s ease-in-out forwards;
 }
+
 @keyframes listNameSideAnimate {
   0% {
     opacity: 0;
   }
+
   50% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-.list_sidebar > .listDash2 {
+.list_sidebar>.listDash2 {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -106,14 +109,14 @@
   margin: 0 auto;
 }
 
-.list_sidebar > .listDashHover:hover {
+.list_sidebar>.listDashHover:hover {
   background-color: white;
-  color: var(
-    --Background-sideBar
-  ) !important; /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
+  color: var(--Background-sideBar) !important;
+  /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
   border-radius: 50px;
   padding: 0 20px;
 }
+
 .isActiveDash2 {
   background-color: #f1c40f;
   color: black !important;
@@ -153,6 +156,7 @@
   transition: all 0.3s ease-in-out;
   animation: animationCircleToggle2 0.5s ease-in-out forwards;
 }
+
 .shadowCircle {
   box-shadow: 10px 9px 24px -10px rgba(0, 0, 0, 0.67);
   -webkit-box-shadow: 10px 9px 24px -10px rgba(0, 0, 0, 0.67);
@@ -167,14 +171,17 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(180deg);
   }
 }
+
 @keyframes animationCircleToggle2 {
   0% {
     transform: rotate(180deg);
   }
+
   100% {
     transform: rotate(0deg);
   }
@@ -187,6 +194,7 @@
 
 .activities_container {
   margin-top: 2rem;
+  padding: 0px 15px;
 }
 
 .activities_container .header_activities {
@@ -243,6 +251,7 @@ button:focus-visible {
   color: white;
   border-radius: 30px;
 }
+
 .btn_blue:hover {
   background-color: #290b91;
   color: white;
@@ -254,6 +263,7 @@ button:focus-visible {
   color: #101828;
   border-radius: 30px;
 }
+
 .btn_yellow:hover {
   background-color: #d8af18;
   color: #101828;
@@ -300,12 +310,14 @@ button:focus-visible {
   margin-top: 30px;
   color: #101828;
 }
+
 .table_activities div {
   text-align: center;
 }
+
 .table_categories {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 2fr 1fr;
 }
 
 .RegisterActivitie {
@@ -315,10 +327,19 @@ button:focus-visible {
   margin-top: 30px;
 }
 
+.RegisterCategory {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+  margin-top: 30px;
+}
+
 .activitieImg {
   object-fit: cover;
+  height: 50px;
   border-radius: 10px;
 }
+
 .infoActivitie {
   display: flex;
   align-items: center;
@@ -326,13 +347,15 @@ button:focus-visible {
   text-align: center;
   padding-left: 4px;
 }
+
 .inputActivitie {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-.amount_reservation {
+.amount_reservation,
+.category-description {
   text-align: center;
   font-size: 18px;
 }
@@ -350,6 +373,7 @@ button:focus-visible {
   border-radius: 30px;
   padding: 10px 30px;
 }
+
 .btn_blueAction {
   background-color: var(--blue-base);
   color: white;
@@ -393,6 +417,7 @@ button:focus-visible {
 .user-details {
   display: flex;
   flex-direction: column;
+  
 }
 
 .user-name {
@@ -456,6 +481,7 @@ button:focus-visible {
     height: 100vh;
     padding: 0 30px;
   }
+
   .admin_container {
     display: none;
   }

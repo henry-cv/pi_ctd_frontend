@@ -5,8 +5,12 @@ import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 const FormNewCategory = () => {
+
+  const navigate = useNavigate();
 
   const [category, setCategory] = useState("");
   const [errorCategory, setErrorCategory] = useState("");
@@ -72,6 +76,7 @@ const FormNewCategory = () => {
     const categoryData = {
       nombre: category,
       descripcion: description
+
     };
 
     // Agregar el objeto producto como una parte JSON
@@ -82,7 +87,7 @@ const FormNewCategory = () => {
 
     // Agregar cada imagen como una parte separada
     selectedImages.forEach((file) => {
-      formData.append("imagenes", file);
+      formData.append("imagenCategoria", file);
     });
     console.log(`--->${categoryData}<---`)
     console.log("Enviando datos al backend...");
@@ -103,18 +108,32 @@ const FormNewCategory = () => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      alert("Producto creado correctamente");
+      //alert("Categoría creada correctamente");
+
+      //Agregada para Sweet Alert 2
+      Swal.fire({
+        title: "¡Categoría Creada!",
+        text: "La categoría se ha guardado correctamente.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000
+      }).then(() => {
+        navigate("/administrador/categorias");
+      });
 
       // Limpiar formulario después de un envío exitoso
       setCategory("");
       setDescription("");
       setSelectedImages([]);
+      //navigate('/administrador/categorias');
+
     } catch (error) {
       console.error("Error:", error.message);
       alert(`Error al enviar los datos: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   return (

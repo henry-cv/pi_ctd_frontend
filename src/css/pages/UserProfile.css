@@ -2,7 +2,12 @@
     margin: 0 ;
     background-color: var(--BackgroundColor);
     padding-top: 140px;
-    padding-bottom: 25px;    
+    padding-bottom: 25px;
+  }
+
+  .profile-tabs{
+    max-width:  min(80%, 1142px); 
+    margin: 0 auto;
   }
   
 .profile-banner {
@@ -27,7 +32,7 @@
     bottom: 0px;
   }
 
-  .user-details p , h2{
+  .user-details-banner p , h2{
     color:var(--white);
     
   }
@@ -44,13 +49,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .user-details h2  {
+  .user-details-banner h2  {
     margin: 0;
     font-size: 28px;
     font-weight: 600;
   }
   
-  .user-details p {
+  .user-details-banner p {
     margin: 5px 0 0;
     font-size: 16px;
     opacity: 0.9;
@@ -59,12 +64,12 @@
   .profile-form {
     padding: 30px 20px;
     margin: 15px 20px;
-    /* border-bottom: 1px solid var(--Icons-gray); */
   }
 
   .form-data-picture-columns{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 50px;
     
   }
 
@@ -88,7 +93,7 @@
     display: block;
     font-size: 14px;
     margin-bottom: 8px;
-    color: #555;
+    color: var(--black-400);
   }
   
   .form-input {
@@ -108,6 +113,10 @@
   .email-container {
     display: flex;
     align-items: center;
+  }
+
+  .email-container input {
+    color: var(--Icons-gray);
   }
   
   .password-container {
@@ -181,6 +190,8 @@
     justify-content: flex-end;
     padding: 20px;
     border-top: 1px solid var(--black-100);
+    max-width:  min(80%, 1142px); 
+    margin: 0 auto;
   }
   
   .delete-account-button {
@@ -191,16 +202,14 @@
     border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s;
+    
   }
   
   .trash-icon {
     margin-right: 8px;
   }
 
-  .delete-account-button:hover {
-    background-color: #f0ad0f;
-  }
-  
+
  .error-message {
     color: var(--color-error);
     font-size: 14px;

@@ -14,7 +14,6 @@ import { useContextGlobal } from "../gContext/globalContext";
 const Home = () => {
   // Agregamos el estado global
   const { state } = useContextGlobal();
-  
   const [isLoggedIn] = useState(false);
   const [activities, setActivities] = useState([]);
   const [popularActivities, setPopularActivities] = useState([]); // Nuevo estado
@@ -39,11 +38,12 @@ const Home = () => {
         throw new Error("Error al obtener las actividades");
       }
       const data = await response.json();
-      console.log("Actividades obtenidas:", data);
+      console.log("Actividades obtenidas:", data);  
       setActivities(data);  // 🔹 Guardamos las actividades en el estado
     } catch (error) {
       console.error("Error:", error.message);
     }
+
   }
 
   const fetchPopularActivities = async () => {
@@ -76,7 +76,11 @@ const Home = () => {
           image={activity.productoImagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"}  // ✅ Muestra la primera imagen o una por defecto
           title={activity.nombre} 
           location={activity.direccion || "Ubicación no disponible"}  // ✅ Fallback si no hay dirección
-          duration={`${activity.horaInicio} - ${activity.horaFin}`} 
+          tipoEvento={activity.tipoEvento}
+          horaInicio={activity.horaInicio}
+          horaFin={activity.horaFin}
+          diasDisponible={activity.diasDisponible}
+          duration={activity.duracion}
           price={activity.valorTarifa}
           rating={4.5}  // 🔹 Asigna una calificación temporal (si no hay en el backend)
         />
@@ -195,14 +199,7 @@ const Home = () => {
         <section className="second-banner-section">
           <div className="content-wrapper">
             <picture>
-              <source 
-                media="(max-width: 768px)" 
-                srcSet="/patrones_body/BannerApp.webp"
-              />
-              <source 
-                media="(min-width: 769px)" 
-                srcSet="/patrones_body/BannerApp.webp"
-              />
+
               <img 
                 src="/patrones_body/BannerApp.webp"
                 alt="Banner secundario"
@@ -215,6 +212,7 @@ const Home = () => {
       </main>
       <Footer/>
     </div>
+    
   );
 };
 
