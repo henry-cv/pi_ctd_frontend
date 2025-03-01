@@ -31,14 +31,9 @@
 }
 
 .logo-socialIcons {
-  height: 25px;
+ gap: 10px;
 }
 
-p,
-a {
-  color: var(--Icons-gray);
-  text-decoration: none;
-}
 
 .footer-bottom a:hover {
   text-decoration: underline;
@@ -88,6 +83,7 @@ a {
   display: flex;
   justify-content: space-between;
   margin: 15px auto;
+  gap: 10px;
 }
 
 .hidden {
