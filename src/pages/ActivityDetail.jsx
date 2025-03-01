@@ -12,7 +12,7 @@ import {
 import { faCalendarCheck, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { FaGlobe } from "react-icons/fa";
-// Eliminamos la importación de BasicBreadcrumbs
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 import ButtonGral from "../components/ButtonGral";
 import "../css/pages/ActivityDetail.css";
 import DurationInfo from "../components/DurationInfo";
@@ -174,7 +174,8 @@ const ActivityDetail = () => {
     <div className="activity-detail-container">
       {/* Sección principal */}
       <main className="activity-main">
-        {/* Eliminamos la sección de breadcrumbs */}
+   
+      <BasicBreadcrumbs />
         
         {/* Galería de imágenes */}
         <section className="gallery-section" ref={galleryRef}>
@@ -239,12 +240,12 @@ const ActivityDetail = () => {
                 ))}
                 
                 {/* Añadimos contenedores vacíos si no hay 4 imágenes en la columna */}
-                {[...Array(Math.max(0, 4 - images.slice(1, 5).length))].map((_, index) => (
+                {/* {[...Array(Math.max(0, 4 - images.slice(1, 5).length))].map((_, index) => (
                   <div 
                     key={`empty-${index}`}
                     className={`thumbnail empty ${state.theme || ''}`}
                   ></div>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
