@@ -6,6 +6,7 @@ import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 const FormNewCategory = () => {
 
@@ -107,14 +108,24 @@ const FormNewCategory = () => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      alert("Categoría creada correctamente");
+      //alert("Categoría creada correctamente");
+
+      //Agregada para Sweet Alert 2
+      Swal.fire({
+        title: "¡Categoría Creada!",
+        text: "La categoría se ha guardado correctamente.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000
+      }).then(() => {
+        navigate("/administrador/categorias");
+      });
 
       // Limpiar formulario después de un envío exitoso
       setCategory("");
       setDescription("");
       setSelectedImages([]);
-      window.location.replace('/administrador/categorias');
-      navigate('/administrador/categorias');
+      //navigate('/administrador/categorias');
 
     } catch (error) {
       console.error("Error:", error.message);
@@ -122,6 +133,7 @@ const FormNewCategory = () => {
     } finally {
       setIsSubmitting(false);
     }
+
   };
 
   return (
