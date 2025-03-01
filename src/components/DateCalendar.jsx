@@ -3,9 +3,9 @@ import "../css/components/DateCalendar.css";
 import PropTypes from 'prop-types';
 import { FaCalendarAlt } from "react-icons/fa";
 
-const DateCalendar = ({ onChange }) => {
+const DateCalendar = ({ onChange, selectedDate }) => {
   const dateInputRef = useRef(null);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [date, setDate] = useState(selectedDate || "");
 
 
   const handleCalendarClick = () => {
@@ -18,7 +18,7 @@ const DateCalendar = ({ onChange }) => {
   // };
   const handleDateChange = (event) => {
     const date = event.target.value;
-    setSelectedDate(date);
+    setDate(date);
     onChange(event); // Llama al manejador onChange pasado desde el componente padre
   };
 
@@ -27,8 +27,8 @@ const DateCalendar = ({ onChange }) => {
       <label htmlFor="datePicker">Fecha:</label>
       <div className="date-picker-container" onClick={handleCalendarClick}>
         <FaCalendarAlt className="calendar-icon" />
-        {selectedDate ? (
-          <p className="date-placeholder">{selectedDate}</p>
+        {date ? (
+          <p className="date-placeholder">{date}</p>
         ) : (
           <p className="date-placeholder">Ingrese fechas disponibles</p>
         )}
@@ -40,6 +40,7 @@ const DateCalendar = ({ onChange }) => {
           required
           ref={dateInputRef}
           onChange={handleDateChange}
+          value={date}
         />
       </div>
     </div>
@@ -48,5 +49,6 @@ const DateCalendar = ({ onChange }) => {
 
 DateCalendar.propTypes = {
   onChange: PropTypes.func.isRequired,
+  selectedDate: PropTypes.string
 };
 export default DateCalendar;

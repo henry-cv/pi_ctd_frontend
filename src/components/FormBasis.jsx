@@ -123,6 +123,9 @@ const FormBasis = ({ isEditMode = false }) => {
           setDiasDisponible(data.diasDisponible || []);
           setFechaEvento(data.fechaEvento || "");
           setSelectedImages(data.imagen || []);
+          setEventType(data.eventType || data.tipoEvento);
+          console.log("data activityID obtenida:");
+          console.log(data);
         } catch (error) {
           console.error("Error cargando actividad:", error);
           Swal.fire({
@@ -387,10 +390,12 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
-          <DateCalendar onChange={handleDateChange} />
+          <DateCalendar onChange={handleDateChange} selectedDate={fechaEvento} />
           <Horas
             onHoraInicioChange={handleHoraInicioChange}
+            horaInicio={horaInicio}
             onHoraFinChange={handleHoraFinChange}
+            horaFin={horaFin}
           />
         </div>
       )}
