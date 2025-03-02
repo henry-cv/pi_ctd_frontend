@@ -124,6 +124,10 @@ const FormBasis = ({ isEditMode = false }) => {
           setFechaEvento(data.fechaEvento || "");
           setSelectedImages(data.imagen || []);
           setEventType(data.eventType || data.tipoEvento);
+          if (data.tipoEvento === "RECURRENTE") {
+            setDiasDisponible(data.diasDisponible || []);
+          }
+
           console.log("data activityID obtenida:");
           console.log(data);
         } catch (error) {
@@ -404,6 +408,8 @@ const FormBasis = ({ isEditMode = false }) => {
         <div className="container-days">
           <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
           <Horas
+            horaInicio={horaInicio}
+            horaFin={horaFin}
             onHoraInicioChange={handleHoraInicioChange}
             onHoraFinChange={handleHoraFinChange}
           />
