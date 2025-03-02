@@ -22,7 +22,9 @@ function App() {
         <Routes>
           {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
-          <Route path="/actividad/:id" element={<ActivityDetail />} />
+          <Route path="/" element={<UserLayout />}>
+            <Route path="/actividad/:id" element={<ActivityDetail />} />
+          </Route>
 
           {/* Rutas de autenticación (públicas) */}
           <Route path="/*" element={<AuthRoutes />} />
