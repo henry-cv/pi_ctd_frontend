@@ -13,6 +13,7 @@ import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
 
 const FormBasis = ({ isEditMode = false }) => {
@@ -38,6 +39,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [diasDisponible, setDiasDisponible] = useState([]);
   const [fechaEvento, setFechaEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -122,12 +124,14 @@ const FormBasis = ({ isEditMode = false }) => {
           setHoraFin(data.horaFin);
           setDiasDisponible(data.diasDisponible || []);
           setFechaEvento(data.fechaEvento || "");
-          setSelectedImages(data.imagen || []);
+          setSelectedImages(data.productoImagenesSalidaDto || []);
           setEventType(data.eventType || data.tipoEvento);
-          if (data.tipoEvento === "RECURRENTE") {
+          /* if (data.tipoEvento === "RECURRENTE") {
             setDiasDisponible(data.diasDisponible || []);
-          }
-
+          } */
+          // Cargar imágenes existentes
+          const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
+          setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
           console.log("data activityID obtenida:");
           console.log(data);
         } catch (error) {
@@ -202,6 +206,10 @@ const FormBasis = ({ isEditMode = false }) => {
       "producto",
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
+    // Agregar imágenes nuevas al FormData
+    /*     selectedImages.forEach((file) => {
+          formData.append("imagenesNuevas", file);
+        }); */
 
     // Agregar cada imagen como una parte separada
     selectedImages.forEach((file) => {
@@ -210,6 +218,8 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log(productoData);
     console.log("Enviando datos al backend...");
     console.log(endpoint);
+    console.log("FORMDATA para enviar: ")
+    console.info(formData);
     try {
       const response = await fetch(endpoint, {
         method,
@@ -251,7 +261,7 @@ const FormBasis = ({ isEditMode = false }) => {
       setFechaEvento("");
       setSelectedImages([]);
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error:", error.message, "Error completo: ", error);
       //alert(`Error al enviar los datos: ${error.message}`);
       Swal.fire({
         title: "Error",
@@ -433,7 +443,25 @@ const FormBasis = ({ isEditMode = false }) => {
 
       {/* Componente ImageUploader actualizado */}
       <div className="container-images">
-        <label>Imágenes:</label>
+        {existingImages &&
+          <label>Imágenes Existentes:</label>}
+        {existingImages.length > 0 &&
+          <div className="existing-images">
+            {existingImages.map((img) => (
+              <div key={img.id} className="image-preview">
+                <img src={img.url} alt="Imagen existente" />
+                <button
+                  type="button"
+                  className="remove-button"
+                  onClick={() => handleRemoveExistingImage(img.id)}
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            ))}
+          </div>
+        }
+        <label>Nuevas Imágenes:</label>
         <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
           <p className="selected-count">
@@ -459,7 +487,9 @@ const FormBasis = ({ isEditMode = false }) => {
           className="button-blue btn-save"
           type="submit"
           disabled={isSubmitting}
-        />
+        >
+          {isEditMode ? "Actualizar" : "Guardar"}
+        </ButtonBluePill>
       </div>
     </form>
   );
