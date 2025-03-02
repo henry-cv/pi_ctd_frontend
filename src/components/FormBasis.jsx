@@ -207,9 +207,9 @@ const FormBasis = ({ isEditMode = false }) => {
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
-
+    console.log(productoData);
     console.log("Enviando datos al backend...");
-
+    console.log(endpoint);
     try {
       const response = await fetch(endpoint, {
         method,
