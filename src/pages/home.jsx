@@ -1,15 +1,13 @@
-import Carousel from '../components/Carousel';
-import SearchBox from '../components/SearchBox';
-import CategoryCard from '../components/CategoryCard';
-import NavDash from '../components/NavDash';
-import ActivityCard from '../components/ActivityCard';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import '../css/pages/Home.css';
-import '../css/components/ActivityCard.css';
-import Footer from '../components/Footer';
-// Primero importamos el contexto
+import Carousel from "../components/Carousel";
+import SearchBox from "../components/SearchBox";
+import CategoryCard from "../components/CategoryCard";
+import NavDash from "../components/NavDash";
+import { useState, useEffect } from "react";
+import "../css/pages/Home.css";
+import "../css/components/ActivityCard.css";
+import Footer from "../components/Footer";
 import { useContextGlobal } from "../gContext/globalContext";
+import renderActivityCards from "../components/RenderActivityCards";
 
 const Home = () => {
   // Agregamos el estado global
@@ -19,36 +17,35 @@ const Home = () => {
   const [popularActivities, setPopularActivities] = useState([]); // Nuevo estado
 
   const carouselImages = [
-    '/bkgd_slider1.webp',
-    '/bkgd_slider2.webp',
-    '/bkgd_slider3.webp',
+    "/bkgd_slider1.webp",
+    "/bkgd_slider2.webp",
+    "/bkgd_slider3.webp",
   ];
 
   const categories = [
     { image: "/Culture.webp", title: "Cultural" },
     { image: "/Gastronomy.webp", title: "Gastronomía" },
     { image: "/Outdoor.webp", title: "Aire libre" },
-    { image: "/Wellness.webp", title: "Bienestar" }
+    { image: "/Wellness.webp", title: "Bienestar" },
   ];
 
-  const fetchActivities= async()=>{
+  const fetchActivities = async () => {
     try {
       const response = await fetch("/api/producto/listaAleatoria");
       if (!response.ok) {
         throw new Error("Error al obtener las actividades");
       }
       const data = await response.json();
-      console.log("Actividades obtenidas:", data);  
-      setActivities(data);  // 🔹 Guardamos las actividades en el estado
+      console.log("Actividades obtenidas:", data);
+      setActivities(data); // 🔹 Guardamos las actividades en el estado
     } catch (error) {
       console.error("Error:", error.message);
     }
-
-  }
+  };
 
   const fetchPopularActivities = async () => {
     try {
-      const response = await fetch("/api/producto/listaAleatoria"); 
+      const response = await fetch("/api/producto/listaAleatoria");
       if (!response.ok) {
         throw new Error("Error al obtener las actividades populares");
       }
@@ -62,31 +59,8 @@ const Home = () => {
 
   useEffect(() => {
     fetchActivities();
-    fetchPopularActivities(); 
+    fetchPopularActivities();
   }, []);
-
-  const renderActivityCards = (activities) => (
-    activities.map(activity => (
-      <Link 
-        key={activity.id} 
-        to={`/actividad/${activity.id}`}
-        className="activity-link"
-      >
-        <ActivityCard 
-          image={activity.productoImagenesSalidaDto?.[0]?.rutaImagen || "/activitie.webp"}  // ✅ Muestra la primera imagen o una por defecto
-          title={activity.nombre} 
-          location={activity.direccion || "Ubicación no disponible"}  // ✅ Fallback si no hay dirección
-          tipoEvento={activity.tipoEvento}
-          horaInicio={activity.horaInicio}
-          horaFin={activity.horaFin}
-          diasDisponible={activity.diasDisponible}
-          duration={activity.duracion}
-          price={activity.valorTarifa}
-          rating={4.5}  // 🔹 Asigna una calificación temporal (si no hay en el backend)
-        />
-      </Link>
-    ))
-  );
 
   return (
     <div className="home-container">
@@ -107,28 +81,32 @@ const Home = () => {
               Cosas que debe <span className="highlight">hacer</span>
             </h2>
             <p className="features-subtitle">
-              Nos aseguramos de que se embarque en unas vacaciones perfectamente planificadas y seguras a un precio asequible.
+              Nos aseguramos de que se embarque en unas vacaciones perfectamente
+              planificadas y seguras a un precio asequible.
             </p>
           </div>
           <div className="features-grid">
             <div className="feature-card blue">
               <h3 className="feature-title">Momentos de relajación</h3>
               <p className="feature-description">
-                Descansa en lugares de ensueño, y recarga energías para tu próxima gran aventura.
+                Descansa en lugares de ensueño, y recarga energías para tu
+                próxima gran aventura.
               </p>
             </div>
 
             <div className="feature-card yellow">
               <h3 className="feature-title">Viajes apasionantes</h3>
               <p className="feature-description">
-                Comience y explore una amplia gama de emocionantes experiencias de viaje.
+                Comience y explore una amplia gama de emocionantes experiencias
+                de viaje.
               </p>
             </div>
 
             <div className="feature-card blue">
               <h3 className="feature-title">Escapadas culturales</h3>
               <p className="feature-description">
-                Descubre la esencia de cada destino a través de su historia, arte y gastronomía.
+                Descubre la esencia de cada destino a través de su historia,
+                arte y gastronomía.
               </p>
             </div>
           </div>
@@ -148,23 +126,28 @@ const Home = () => {
         </section>
 
         <section className="activities-section">
-          <div className="content-wrapper">
+          <div className="content-wrapper wrapper-mobile-card">
             <h2 className="section-title">Actividades cercanas</h2>
-            <div className="activities-grid">
-              {activities.length > 0 ? renderActivityCards(activities) : <p>Cargando actividades...</p>}
+            <div className="activities-grid mobile-activities-grid">
+              {activities.length > 0 ? (
+                renderActivityCards(activities)
+              ) : (
+                <p>Cargando actividades...</p>
+              )}
             </div>
           </div>
         </section>
 
         {/* Nueva sección de actividades populares */}
         <section className="activities-section popular-section">
-          <div className="content-wrapper">
+          <div className="content-wrapper wrapper-mobile-card">
             <h2 className="section-title">Los más populares</h2>
-            <div className="activities-grid">
-              {popularActivities.length > 0 ? 
-                renderActivityCards(popularActivities) : 
+            <div className="activities-grid mobile-activities-grid">
+              {popularActivities.length > 0 ? (
+                renderActivityCards(popularActivities)
+              ) : (
                 <p>Cargando actividades populares...</p>
-              }
+              )}
             </div>
           </div>
         </section>
@@ -173,22 +156,28 @@ const Home = () => {
         <section className="special-banner-section">
           <div className="content-wrapper">
             <picture>
-              <source 
-                media="(max-width: 768px)" 
-                srcSet={state.theme === "dark" 
-                  ? "/patrones_body/adsbanner_body_mobile.webp"
-                  : "/patrones_body/adsbanner_body_mobile_lightMode.webp"} 
+              <source
+                media="(max-width: 768px)"
+                srcSet={
+                  state.theme === "dark"
+                    ? "/patrones_body/adsbanner_body_mobile.webp"
+                    : "/patrones_body/adsbanner_body_mobile_lightMode.webp"
+                }
               />
-              <source 
-                media="(min-width: 769px)" 
-                srcSet={state.theme === "dark"
-                  ? "/patrones_body/adsbanner_body.webp"
-                  : "/patrones_body/adsbanner_body_lightMode.webp"} 
+              <source
+                media="(min-width: 769px)"
+                srcSet={
+                  state.theme === "dark"
+                    ? "/patrones_body/adsbanner_body.webp"
+                    : "/patrones_body/adsbanner_body_lightMode.webp"
+                }
               />
-              <img 
-                src={state.theme === "dark"
-                  ? "/patrones_body/adsbanner_body.webp"
-                  : "/patrones_body/adsbanner_body_lightMode.webp"}
+              <img
+                src={
+                  state.theme === "dark"
+                    ? "/patrones_body/adsbanner_body.webp"
+                    : "/patrones_body/adsbanner_body_lightMode.webp"
+                }
                 alt="Banner promocional"
                 className="banner-image"
               />
@@ -199,15 +188,7 @@ const Home = () => {
         <section className="second-banner-section">
           <div className="content-wrapper">
             <picture>
-              <source 
-                media="(max-width: 768px)" 
-                srcSet="/patrones_body/BannerApp.webp"
-              />
-              <source 
-                media="(min-width: 769px)" 
-                srcSet="/patrones_body/BannerApp.webp"
-              />
-              <img 
+              <img
                 src="/patrones_body/BannerApp.webp"
                 alt="Banner secundario"
                 className="second-banner-image"
@@ -215,9 +196,8 @@ const Home = () => {
             </picture>
           </div>
         </section>
-        
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

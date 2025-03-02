@@ -34,7 +34,7 @@ const DurationInfo = ({ tipoEvento, horaInicio, horaFin, diasDisponible }) => {
       if (!start.isValid() || !end.isValid()) return "Horario no válido";
 
       const diffHours = Math.round(end.diff(start, "hour", true)); 
-      return `${diffHours} ${diffHours === 1 ? "hora" : "horas"}`; 
+      return `  ${diffHours} ${diffHours === 1 ? "hora" : "horas"}`; 
     } 
     
     else if (tipoEvento === "RECURRENTE") {
@@ -55,7 +55,7 @@ const DurationInfo = ({ tipoEvento, horaInicio, horaFin, diasDisponible }) => {
       const horaInicioFormatted = dayjs(horaInicio, "HH:mm").format("HH:mm");
       const horaFinFormatted = dayjs(horaFin, "HH:mm").format("HH:mm");
 
-      return `${diasTexto} (${horaInicioFormatted} - ${horaFinFormatted})`;
+      return `  ${diasTexto} (${horaInicioFormatted} - ${horaFinFormatted})`;
     }
 
     return "Horario no disponible";

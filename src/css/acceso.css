@@ -13,6 +13,14 @@
 .required_auth {
   color: red;
 }
+.listAvatar {
+  display: flex;
+  align-items: center;
+  color: black;
+}
+.listAvatar:hover {
+  color: var(--Color-base);
+}
 
 .form_login,
 .form_register {
@@ -40,7 +48,6 @@
 .text_auth_register {
   width: 100%;
 }
-
 .title_auth {
   font-size: 32px;
   margin-top: 20px;

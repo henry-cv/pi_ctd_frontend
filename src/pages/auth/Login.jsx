@@ -2,31 +2,22 @@ import "../../css/acceso.css";
 import { MdAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useContextGlobal } from "../../gContext/globalContext";
-
+import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 
-const userTest = {
-  id: 1,
-  email: "test@test.com",
-  password: "test",
-  name: "Test User",
-  role: "admin",
-};
-
 const Login = () => {
-  const { state } = useContextGlobal();
+  const { state, dispatch } = useContextGlobal();
+  const navigate = useNavigate();
 
   const initialValues = {
     email: "",
     password: "",
   };
-
-  const [usuarios, setUsuarios] = useState([userTest]);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -35,32 +26,67 @@ const Login = () => {
     password: Yup.string().trim().required("La contraseña es obligatoria"),
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    try {
+      const response = await axios.post(
+        "http://44.195.185.220:8080/auth/login",
+        values
+      );
 
-    const userFound = usuarios.find(
-      (user) => user.email === values.email && user.password === values.password
-    );
-    if (userFound) {
-      console.log("Usuario encontrado");
-      Swal.fire({
-        icon: "success",
-        title: "Inicio de sesión exitoso",
-        text: "Bienvenido de nuevo",
-        showConfirmButton: false,
-        timer: 2000,
-      }).then(() => {
-        localStorage.setItem("userIdTest", userFound.id);
-        // window.location.href = "/";
-      });
-    } else {
+      if (response.status >= 200 && response.status < 300) {
+        const { token } = response.data;
+
+        localStorage.setItem("token", token);
+
+        const decodedPayload = JSON.parse(atob(token.split(".")[1]));
+        const { sub } = decodedPayload;
+
+        const fetchUserData = async () => {
+          try {
+            const userResponse = await axios.get(
+              `http://44.195.185.220:8080/usuario/${sub}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            const userData = userResponse.data;
+            dispatch({
+              type: "LOGIN_USER",
+              payload: { user: userData, token },
+            });
+
+            Swal.fire({
+              icon: "success",
+              title: "Inicio de sesión exitoso",
+              text: "Bienvenido de nuevo",
+              showConfirmButton: false,
+              timer: 2000,
+            }).then(() => {
+              navigate("/");
+            });
+          } catch (error) {
+            console.error("Error al obtener los datos del usuario:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Algo salió mal. Vuelve a intentarlo más tarde.",
+              confirmButtonColor: "#D61B1B",
+            });
+          }
+        };
+
+        fetchUserData(); // Llamamos la función para obtener los datos del usuario
+      } else {
+        throw new Error("Credenciales incorrectas");
+      }
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Credenciales incorrectas",
         confirmButtonColor: "#D61B1B",
-        showConfirmButton: false,
-        timer: 2000,
       });
     }
   };

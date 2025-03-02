@@ -8,28 +8,46 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import GridViewIcon from "@mui/icons-material/GridView";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContextGlobal } from "../gContext/globalContext";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { dispatch, state } = useContextGlobal();
+  const { user, isLoading } = state;
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch({ type: "LOGOUT_USER" });
+    navigate("/", { replace: true });
+  };
+
+  const nameUser = `${user.nombre} ${user.apellido}`;
+  const getUserInitials = `${user?.nombre?.[0] || "U"}${
+    user?.apellido?.[0] || "U"
+  }`.toUpperCase();
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Typography sx={{ minWidth: 100 }} className="user_name_account">
-          Sara Mendez
+        <Typography
+          sx={{ minWidth: 100, marginLeft: 2 }}
+          className="user_name_account"
+          color={state.theme === "dark" ? "white" : "black"}
+        >
+          {isLoading ? "Cargando..." : user ? nameUser : "Usuario"}
         </Typography>
         <Tooltip title="Account settings">
           <IconButton
@@ -40,7 +58,9 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 38, height: 38, background: "#3E10DA" }}>
+              {getUserInitials}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -57,6 +77,7 @@ export default function AccountMenu() {
               overflow: "visible",
               filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
+              bgcolor: state.theme === "dark" ? "#383F4C" : "white",
               "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
@@ -83,13 +104,13 @@ export default function AccountMenu() {
       >
         <div className="menu_name_account">
           <MenuItem>
-            <Typography sx={{ minWidth: 100 }}>Sara Mendez</Typography>
+            <Typography sx={{ minWidth: 100 }}>{nameUser}</Typography>
           </MenuItem>
           <Divider />
         </div>
 
         <MenuItem onClick={handleClose}>
-          <Link to="/perfil">
+          <Link to="/perfil" className="listAvatar">
             <ListItemIcon>
               <PersonOutlineRoundedIcon />
             </ListItemIcon>
@@ -105,7 +126,7 @@ export default function AccountMenu() {
           </Link>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout />
           </ListItemIcon>

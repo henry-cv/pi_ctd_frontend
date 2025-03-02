@@ -14,6 +14,7 @@ import "../css/components/NavDashHome.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import LogoImg from "./LogoImg";
 import AccountMenu from "./AccountMenu";
+import Skeleton from "@mui/material/Skeleton";
 
 const NavDash = ({ variant = "home" }) => {
   const { dispatch, state } = useContextGlobal();
@@ -31,15 +32,7 @@ const NavDash = ({ variant = "home" }) => {
           >
             <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
           </button>
-          <div className="user-details">
-            <p className="user-name">Luisa Lopez</p>
-            <p className="user-role">Propietaria</p>
-          </div>
-          <img
-            src="../user_example.webp"
-            alt="Perfil"
-            className="user-avatar"
-          />
+          <AccountMenu />
         </div>
       </nav>
     );
@@ -62,8 +55,6 @@ const NavDash = ({ variant = "home" }) => {
       </div>
       <div className="rightContainer">
         <div className="theme-globe-buttons">
-          {" "}
-          {/* Nuevo contenedor sin hide-mobile */}
           <button
             onClick={() => dispatch({ type: "CHANGE_THEME" })}
             className="icon-button"
@@ -74,19 +65,31 @@ const NavDash = ({ variant = "home" }) => {
             <FontAwesomeIcon icon={faGlobe} />
           </button>
         </div>
-        <div className="auth-buttons">
-          {" "}
-          {/* Movido hide-mobile aquí */}
-          <Link to={"/registro"} className="hide-tablet">
-            <ButtonGral text="Registrar" color="transparent" />
-          </Link>
-          <Link to="/entrar">
-            <ButtonGral text="Acceso" color="blue" />
-          </Link>
-        </div>
-        <div>
-          <AccountMenu />
-        </div>
+
+        {state.isLoading ? (
+          <div className="skeleton-container">
+            <Skeleton variant="text" width={100} height={34} animation="wave" />
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              width={40}
+              height={40}
+            />
+          </div>
+        ) : state.isAuthenticated ? (
+          <div>
+            <AccountMenu />
+          </div>
+        ) : (
+          <div className="auth-buttons">
+            <Link to={"/registro"} className="hide-tablet">
+              <ButtonGral text="Registrar" color="transparent" />
+            </Link>
+            <Link to="/entrar">
+              <ButtonGral text="Acceso" color="blue" />
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

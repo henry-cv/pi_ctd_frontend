@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../css/acceso.css";
 import { useContextGlobal } from "../../gContext/globalContext";
 import { RiUserSmileLine } from "react-icons/ri";
@@ -7,9 +7,12 @@ import { MdAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const Register = () => {
-  const { state } = useContextGlobal();
+  const { state, dispatch } = useContextGlobal();
+  const navigate = useNavigate();
 
   const initialValues = {
     name: "",
@@ -34,8 +37,64 @@ const Register = () => {
       .required("La contraseña es obligatoria."),
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    try {
+      const payload = {
+        nombre: values.name.trim(),
+        apellido: values.lastname.trim(),
+        email: values.email.trim(),
+        password: values.password.trim(),
+      };
+
+      const response = await axios.post(
+        "http://44.195.185.220:8080/auth/register",
+        payload
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        const { token } = response.data;
+        localStorage.setItem("token", token);
+
+        const decodedPayload = JSON.parse(atob(token.split(".")[1]));
+        const { sub } = decodedPayload;
+
+        const userResponse = await axios.get(
+          `http://44.195.185.220:8080/usuario/${sub}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const userData = userResponse.data;
+
+        dispatch({
+          type: "LOGIN_USER",
+          payload: { user: userData, token },
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "Registro exitoso",
+          text: "Bienvenido a Gobook",
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          navigate("/");
+        });
+      } else {
+        throw new Error("Error al registrar el usuario");
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response?.data?.message || "Error al registrar el usuario",
+        confirmButtonColor: "#D61B1B",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
   };
 
   const {
@@ -162,6 +221,10 @@ const Register = () => {
 
           <button type="submit" className="submit_auth">
             Registrarse
+          </button>
+          <button type="button" className="google_auth">
+            <FcGoogle fontSize={"26px"} />
+            Regístrate con Google
           </button>
         </form>
         <div className="register_auth_text">

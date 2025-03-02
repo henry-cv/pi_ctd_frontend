@@ -1,8 +1,8 @@
-
 import { useLocation, Link as RouterLink } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import "../css/pages/ActivityDetail.css";
 
 export default function DynamicBreadcrumbs() {
   const location = useLocation();
@@ -10,7 +10,7 @@ export default function DynamicBreadcrumbs() {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs">
+    <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs breadcrumbs-mobile">
       <Link underline="hover" color="inherit" component={RouterLink} to="/">
         Inicio
       </Link>

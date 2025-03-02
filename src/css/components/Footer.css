@@ -34,11 +34,6 @@
  gap: 10px;
 }
 
-p,
-a {
-  color: var(--Icons-gray);
-  text-decoration: none;
-}
 
 .footer-bottom a:hover {
   text-decoration: underline;
