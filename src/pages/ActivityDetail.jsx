@@ -62,14 +62,13 @@ const ActivityDetail = () => {
     const handleScroll = () => {
       if (galleryRef.current) {
         const galleryBottom = galleryRef.current.getBoundingClientRect().bottom;
-        setShowMobileBooking(galleryBottom < 0);
+        setShowMobileBooking(galleryBottom < window.innerHeight / 0); 
       }
     };
-
+  
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   // Detectar si estamos en vista móvil
   useEffect(() => {
     const checkMobileView = () => {
@@ -180,7 +179,7 @@ const ActivityDetail = () => {
         {/* Galería de imágenes */}
         <section className="gallery-section" ref={galleryRef}>
           <div className="content-wrapper">
-            <div className="gallery-grid">
+          <div className={`gallery-grid ${images.length === 1 ? "single-image" : ""}`}>
               <div 
                 className="main-image" 
                 onClick={() => !isMobileView && handleOpenImageViewer(0)}
