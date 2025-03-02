@@ -10,7 +10,7 @@ import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
 import AddCategory from "./components/AddCategory";
 import { useContextGlobal } from "./gContext/globalContext";
-import AppRoutes from "./Routes/AppRoutes";
+import AuthRoutes from "./Routes/AuthRoutes";
 import UserProfile from "./pages/UserProfile";
 import UserLayout from "./Layouts/UserLayout";
 
@@ -18,9 +18,16 @@ function App() {
   const { state } = useContextGlobal();
   return (
     <BrowserRouter>
-      <div className={`bg-white min-h-screen  ${state.theme}`}>
+      <div className={`bg-white min-h-screen ${state.theme}`}>
         <Routes>
+          {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
+          <Route path="/actividad/:id" element={<ActivityDetail />} />
+
+          {/* Rutas de autenticación (públicas) */}
+          <Route path="/*" element={<AuthRoutes />} />
+
+          {/* Rutas privadas */}
           <Route path="/administrador" element={<Dashboard />}>
             <Route index element={<Navigate to="panel" replace />} />
             <Route path="panel" element={<PanelControl />} />
@@ -33,13 +40,11 @@ function App() {
             <Route path="categorias/crearcategoria" element={<AddCategory />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
-          <Route path="/" element={<UserLayout/>} > 
-          <Route path="/actividad/:id" element={<ActivityDetail />} />
-          <Route path="/perfil" element={<UserProfile />} />
-          </Route>
 
+          <Route path="/" element={<UserLayout />}>
+            <Route path="/perfil" element={<UserProfile />} />
+          </Route>
         </Routes>
-        <AppRoutes />
       </div>
     </BrowserRouter>
   );
