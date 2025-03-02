@@ -1,6 +1,7 @@
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-const ActivitieRow = ({ id, imagen, titulo, reservas, onDelete }) => {
+
+const ActivitieRow = ({ id, imagen, titulo, reservas, onDelete, onUpdate }) => {
   const handleDelete = async () => {
     if (window.confirm("¿Estás seguro de eliminar este producto?")) {
       try {
@@ -28,9 +29,8 @@ const ActivitieRow = ({ id, imagen, titulo, reservas, onDelete }) => {
       <div className="amount_reservation">
         <span className="dark_activities">{reservas}</span>
       </div>
-
       <div className="btn_action">
-        <button className="btn_blueAction">
+        <button className="btn_blueAction" onClick={onUpdate}>
           <FaEdit size={"1.2rem"} />
         </button>
         <button className="btn_redAction" onClick={handleDelete}>
