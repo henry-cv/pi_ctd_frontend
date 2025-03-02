@@ -7,7 +7,8 @@ import {
   faChevronDown,
   faChevronUp,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faArrowLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarCheck, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
@@ -174,6 +175,7 @@ const ActivityDetail = () => {
       {/* Sección principal */}
       <main className="activity-main">
    
+   
       <BasicBreadcrumbs />
         
         {/* Galería de imágenes */}
@@ -184,6 +186,20 @@ const ActivityDetail = () => {
                 className="main-image" 
                 onClick={() => !isMobileView && handleOpenImageViewer(0)}
               >
+
+                        {/* Botón de regreso en móvil */}
+        {isMobileView && (
+          <button 
+            className="back-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.history.back();
+            }}
+            aria-label="Regresar"
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+        )}
                 <img 
                   src={isMobileView ? (images[currentMobileImageIndex] || defaultImage) : (images[0] || defaultImage)} 
                   alt={activity.nombre} 
