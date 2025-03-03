@@ -144,7 +144,7 @@ const Home = () => {
             <h2 className="section-title">Los más populares</h2>
             <div className="activities-grid mobile-activities-grid">
               {popularActivities.length > 0 ? (
-                renderActivityCards(activities.slice(0, 10))
+                renderActivityCards(popularActivities.slice(0, 10))
               ) : (
                 <p>Cargando actividades populares...</p>
               )}
