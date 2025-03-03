@@ -1,28 +1,28 @@
-
-.footer {  
+.footer {
   background-color: var(--BackgroundColor-700);
-  padding: 2rem; 
-  position: relative;
-  z-index: 2;
+  padding: 2rem;
+  padding-top: 25px;
+  /* position: relative;
+  z-index: 2; */
 }
-.footer::before {
+/* .footer::before {
     content: "";
     position: absolute;
-    top: -25px; /* Hasta la altura que iria margin top */
+    top: -25px;
     left: 0;
     right: 0;
-    height: 25px; /* Alto igual al tamaño del margin top */
+    height: 25px; 
     background-color: var(--BackgroundColor-700);
     z-index: -1;
-}
+} */
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--black-300);
-  padding-bottom: 5px;   
+  border-bottom: 1px solid var(--black-300);
+  padding-bottom: 5px;
 }
 
 .tagline {
@@ -30,24 +30,20 @@
   font-family: var(--font-archivo);
 }
 
-p ,a{
-  margin-top: 5px;
-  color: var(--Icons-gray);
-  text-decoration: none;
+.logo-socialIcons {
+ gap: 10px;
 }
 
 
 .footer-bottom a:hover {
   text-decoration: underline;
-  color: var(--blue-base);  
+  color: var(--blue-base);
 }
-
 
 .social-icons {
   margin-top: 25px;
   display: flex;
   gap: 10px;
-
 }
 
 .social-icons a {
@@ -65,9 +61,8 @@ p ,a{
 }
 
 .social-icons a:hover {
-  background-color: var(--blue-hover)
+  background-color: var(--blue-hover);
 }
-
 
 .footer-links {
   display: flex;
@@ -81,7 +76,6 @@ p ,a{
   color: var(--Font-Background);
 }
 
-
 .footer-bottom {
   max-width: 1200px;
   font-size: 0.9rem;
@@ -89,34 +83,31 @@ p ,a{
   display: flex;
   justify-content: space-between;
   margin: 15px auto;
+  gap: 10px;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-
-@media (max-width: 768px) { 
-
+@media (max-width: 768px) {
 }
 
 @media (max-width: 480px) {
-
   .social-icons {
     display: flex;
     justify-content: center;
-  
   }
 
-  .logo-socialIcons{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+  .logo-socialIcons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
-  .footer-container{
-      flex-direction: column;
+  .footer-container {
+    flex-direction: column;
   }
   .footer-links {
     display: flex;

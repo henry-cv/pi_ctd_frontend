@@ -8,7 +8,7 @@
   box-shadow: var(--shadow-md);
   width: min(80%, 1142px);
   height: 70px;
-  padding: 0 2rem;
+  padding: 0 3rem;
   margin: 1rem auto;
   backdrop-filter: blur(8px);
   position: fixed;
@@ -17,7 +17,11 @@
   transform: translateX(-50%);
   z-index: 1000;
 }
-
+.skeleton-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 /* Contenedores laterales */
 .home .leftContainer,
 .home .rightContainer {
@@ -31,7 +35,7 @@
 }
 
 .home .rightContainer {
-  gap: 2rem;
+  gap: 0.4rem;
 }
 
 /* Elementos comunes */
@@ -40,7 +44,6 @@
 .home .auth-buttons {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
 }
 
 /* Logo */
@@ -115,16 +118,19 @@
   white-space: nowrap;
 }
 
+.theme-globe-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .icon-button {
   background: none;
   border: none;
-  padding: 0.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--Font-Background) ;
+  color: var(--Font-Background);
   cursor: pointer;
 }
 
@@ -144,7 +150,6 @@
   .navbarDash.home {
     width: min(90%, 900px);
     height: 65px;
-    padding: 0 1.5rem;
   }
 
   .home .leftContainer,
@@ -161,13 +166,12 @@
   .navbarDash.home {
     width: calc(100% - 2rem);
     height: 60px;
-    padding: 0 1rem;
     border-radius: 30px;
   }
 
   .home .leftContainer,
   .home .rightContainer {
-    gap: 1rem;
+    gap: 0.6rem;
   }
 
   .hide-mobile {
@@ -183,21 +187,19 @@
     height: 24px;
   }
 
-  .theme-globe-buttons {
-    gap: 0.75rem;
-  }
-
   .menu-button {
     width: 40px !important;
     height: 40px !important;
     padding: 0.5rem;
-    background: none;
     border: none;
-    color: var(--black);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background: var(--Color-base);
+    color: var(--Menu-Hamburger);
+    border-radius: 100%;
   }
 
   .menu-button svg {
@@ -208,8 +210,8 @@
 @media screen and (max-width: 480px) {
   .navbarDash.home {
     width: calc(100% - 1.5rem);
-    height: 50px;
-    padding: 0 0.75rem;
+    height: 53px;
+    padding: 1rem 2rem;
     border-radius: 25px;
   }
 
@@ -223,6 +225,12 @@
   }
 }
 
+@media screen and (max-width: 400px) {
+  .navbarDash.home {
+    padding: 1rem;
+  }
+}
+
 @media screen and (min-width: 769px) {
   .home .hide-sm {
     display: flex;
@@ -230,28 +238,12 @@
 }
 
 /* Estilos del menú hamburguesa */
-.menu-button {
-background: none;
-border: none;
-color: var(--black);
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 0.5rem;
-}
 
 .menu-button svg {
-font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 /* Añadir estos estilos */
-.theme-globe-buttons {
-display: flex;
-align-items: center;
-gap: 1rem;
-}
-
 .auth-buttons a {
-text-decoration: none;
+  text-decoration: none;
 }

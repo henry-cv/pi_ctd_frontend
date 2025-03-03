@@ -17,14 +17,16 @@ const Dashboard = () => {
   };
 
   return (
-    <>
+    <main className="dashboard_container">
       <div className={`${barOpen ? "admin_container" : "admin_container2"}`}>
         <article className="sidebar">
           <div className="logo_container">
             <Link to={"/"}>
               <img
                 src={`${
-                  barOpen ? "../GoBook_LOGO_LIGHT.svg" : "../LogoDashSM.svg"
+                  barOpen
+                    ? "https://res.cloudinary.com/drq4tucwt/image/upload/v1740759880/GoBook_LOGO_LIGHT_x7tb97.svg"
+                    : "https://res.cloudinary.com/drq4tucwt/image/upload/v1740759889/LogoDashSM_h7iijn.svg"
                 }`}
                 alt="logo goBook"
                 width={`${barOpen && 125}`}
@@ -69,7 +71,7 @@ const Dashboard = () => {
         <h2>DISPONIBLE SÓLO EN DESKTOP🖥️</h2>
       </div>
       {/* <Footer /> */}
-    </>
+    </main>
   );
 };
 

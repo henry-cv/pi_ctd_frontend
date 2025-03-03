@@ -1,152 +1,262 @@
 .image-viewer-overlay {
   position: fixed;
-  inset: 0;
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo claro semi-transparente */
-  backdrop-filter: blur(8px); /* Efecto blur */
-  -webkit-backdrop-filter: blur(8px); /* Soporte Safari */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.486); /*  transparente */
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 2rem;
+  backdrop-filter: blur(5px);
+  overflow: hidden;
 }
 
-.image-viewer-content {
-  width: 100%;
-  max-width: 1200px;
+.image-viewer-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  align-items: center;
+  width: 90%;
+  max-width: 1140px;
+  height: 85vh;
+  max-height: 900px;
+  position: relative;
 }
 
 .close-button {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  top: -40px;
+  right: 0;
   background: none;
   border: none;
-  color: var(--black); /* Cambiar a negro */
+  color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.5rem;
-  z-index: 1001;
+  z-index: 1002;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  color: var(--blue-base);
+}
+
+.main-viewer-section {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .main-image-container {
   width: 100%;
-  height: 60vh;
-  background-color: #2a2a2a;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.main-viewer-image {
-  width: 100%;
   height: 100%;
-  object-fit: contain;
-}
-
-.thumbnails-container {
-  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  padding: 0 3rem;
+  position: relative;
+  border-radius: 10px; /* Agregado border-radius */
+  overflow: hidden; /* Para asegurar que la imagen respete el borde redondeado */
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
 
-.thumbnails-scroll {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: 0.5rem 0;
+.image-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
-.thumbnails-scroll::-webkit-scrollbar {
+.image-loader.hidden {
   display: none;
 }
 
-.thumbnail {
-  flex: 0 0 120px;
-  height: 120px;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  background-color: #2a2a2a;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--blue-base);
+  animation: spin 1s ease-in-out infinite;
 }
 
-.thumbnail.active {
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.main-viewer-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 10px; /* Agregado border-radius */
+}
+
+.main-viewer-image.visible {
   opacity: 1;
-  border: 2px solid var(--white);
-}
-
-.thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.1); /* Más sutil */
+  background: rgba(0, 0, 0, 0.5);
   border: none;
-  color: var(--black);
-  width: 40px;
-  height: 40px;
+  color: white;
+  font-size: 1.2rem;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s;
+  z-index: 1002;
+  transition: all 0.2s;
+  animation: pulseOpacity 4s infinite;
 }
 
 .nav-button:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--blue-base);
+  animation: none;
+  opacity: 1;
 }
 
 .nav-button.prev {
-  left: 0;
+  left: 15px;
 }
 
 .nav-button.next {
-  right: 0;
+  right: 15px;
 }
 
-/* Media Queries */
+@keyframes pulseOpacity {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.image-counter {
+  color: white;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0.5rem 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Agregado sombreado para mejorar legibilidad */
+}
+
+/* Modificaciones para las miniaturas */
+.thumbnails-container {
+  width: 100%;
+  height: 20%;
+  margin-top: 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue-base) rgba(0, 0, 0, 0.2);
+  padding: 0 5px;
+}
+
+.thumbnails-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.thumbnails-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.thumbnails-container::-webkit-scrollbar-thumb {
+  background-color: var(--blue-base);
+  border-radius: 4px;
+}
+
+.thumbnails-wrapper {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  min-width: min-content;
+  height: 100%;
+}
+
+.thumbnail-item {
+  aspect-ratio: 1/1; /* Esto hace que los thumbnails sean cuadrados */
+  height: 90%; /* Altura ligeramente menor que el contenedor para el padding */
+  width: auto; /* El ancho se ajustará según el aspect-ratio */
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  opacity: 0.7;
+  position: relative;
+  flex-shrink: 0; /* Evitar que se compriman */
+  border-radius: 10px; /* Agregado border-radius */
+  overflow: hidden; /* Para asegurar que la imagen respete el borde redondeado */
+  background-color: rgba(0, 0, 0, 0.3); /* Fondo semi-transparente para mejorar visibilidad */
+}
+
+.thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra todo el espacio */
+}
+
+.thumbnail-item.active {
+  border-color: var(--blue-base);
+  opacity: 1;
+}
+
+.thumbnail-item:hover {
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
-  .image-viewer-overlay {
-    padding: 1rem;
+  .image-viewer-container {
+    height: 80vh;
   }
-
-  .main-image-container {
-    height: 50vh;
+  
+  .main-viewer-section {
+    height: 60%;
   }
-
-  .thumbnail {
-    flex: 0 0 100px;
-    height: 100px;
+  
+  .nav-button {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
-
-  .close-button {
-    top: 1rem;
-    right: 1rem;
+  
+  .thumbnail-item {
+    height: 80%; /* Ajustar altura para móviles */
   }
 }
 
-@media (max-width: 480px) {
-  .main-image-container {
-    height: 40vh;
+@media (max-width: 576px) {
+  .image-viewer-container {
+    width: 95%;
+    height: 90vh;
   }
-
-  .thumbnail {
-    flex: 0 0 80px;
-    height: 80px;
+  
+  .main-viewer-section {
+    height: 55%;
+  }
+  
+  .thumbnails-container {
+    height: 15%;
+  }
+  
+  .nav-button {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .thumbnail-item {
+    height: 70%; /* Ajustar altura para dispositivos muy pequeños */
   }
 }
