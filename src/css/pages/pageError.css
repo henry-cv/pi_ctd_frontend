@@ -17,6 +17,7 @@
 .text-info-error {
   place-content: center;
   place-items: center;
+  text-align: center;
 }
 
 .page-error > .text-info-error > h1 {

@@ -232,6 +232,7 @@ button:focus-visible {
 
 .btn_style > span {
   margin-right: 10px;
+  line-height: 0;
 }
 
 .btn_blue {

@@ -3,6 +3,8 @@ import "../css/pages/pageError.css";
 import NavDash from "./NavDash";
 import Footer from "./Footer";
 import ButtonGral from "./ButtonGral";
+import { Link } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
 
 const ErrorPage = () => {
   const [isLoggedIn] = useState(false);
@@ -14,7 +16,9 @@ const ErrorPage = () => {
           <h1>404</h1>
           <p>La página no fue encontrada, ¡lo sentimos!</p>
         </div>
-        <ButtonGral text="Volver al inicio" color="blue" />
+        <Link to={"/"}>
+          <ButtonGral text="Volver al inicio" color="blue" icon={<FaHome />} />
+        </Link>
       </section>
       <Footer />
     </>
