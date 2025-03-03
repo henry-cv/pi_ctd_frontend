@@ -46,10 +46,7 @@ const Register = () => {
         password: values.password.trim(),
       };
 
-      const response = await axios.post(
-        "http://44.195.185.220:8080/auth/register",
-        payload
-      );
+      const response = await axios.post("/api/auth/register", payload);
 
       if (response.status >= 200 && response.status < 300) {
         const { token } = response.data;
@@ -58,14 +55,11 @@ const Register = () => {
         const decodedPayload = JSON.parse(atob(token.split(".")[1]));
         const { sub } = decodedPayload;
 
-        const userResponse = await axios.get(
-          `http://44.195.185.220:8080/usuario/${sub}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const userResponse = await axios.get(`/api/usuario/${sub}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const userData = userResponse.data;
 
         dispatch({

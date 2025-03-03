@@ -28,10 +28,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const response = await axios.post(
-        "http://44.195.185.220:8080/auth/login",
-        values
-      );
+      const response = await axios.post("api/auth/login", values);
 
       if (response.status >= 200 && response.status < 300) {
         const { token } = response.data;
@@ -43,14 +40,11 @@ const Login = () => {
 
         const fetchUserData = async () => {
           try {
-            const userResponse = await axios.get(
-              `http://44.195.185.220:8080/usuario/${sub}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+            const userResponse = await axios.get(`api/usuario/${sub}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             const userData = userResponse.data;
             dispatch({
               type: "LOGIN_USER",

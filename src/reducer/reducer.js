@@ -14,6 +14,7 @@ export const reducer = (state, action) => {
         token: action.payload.token,
         isAuthenticated: true,
         isLoading: false,
+        usuarioRoles: action.payload.user.usuarioRoles,
       };
     case "LOGOUT_USER":
       return {
@@ -26,7 +27,7 @@ export const reducer = (state, action) => {
     case "STOP_LOADING":
       return {
         ...state,
-        isLoading: false, 
+        isLoading: false,
       };
     default:
       throw new Error("Acción no existente");

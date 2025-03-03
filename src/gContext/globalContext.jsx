@@ -9,6 +9,7 @@ const initialState = {
   token: null,
   isAuthenticated: false,
   isLoading: true,
+  usuarioRoles: null,
 };
 
 export const ContextGlobal = createContext();
@@ -35,7 +36,7 @@ export const ContextProvider = ({ children }) => {
           const fetchUserData = async (email) => {
             try {
               const response = await axios.get(
-                `http://44.195.185.220:8080/usuario/${email}`,
+                `/api/usuario/${email}`,
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,

@@ -21,6 +21,8 @@ export default function AccountMenu() {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
+  console.log("usuarios", user);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -117,14 +119,18 @@ export default function AccountMenu() {
             Perfil
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to="/administrador" className="listAvatar">
-            <ListItemIcon>
-              <GridViewIcon />
-            </ListItemIcon>
-            Dashboard
-          </Link>
-        </MenuItem>
+        
+        {user.usuarioRoles === "ADMIN" && (
+          <MenuItem onClick={handleClose}>
+            <Link to="/administrador" className="listAvatar">
+              <ListItemIcon>
+                <GridViewIcon />
+              </ListItemIcon>
+              Dashboard
+            </Link>
+          </MenuItem>
+        )}
+
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
