@@ -13,7 +13,7 @@ import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
+//import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
 
 const FormBasis = ({ isEditMode = false }) => {
@@ -450,13 +450,6 @@ const FormBasis = ({ isEditMode = false }) => {
             {existingImages.map((img) => (
               <div key={img.id} className="image-preview">
                 <img src={img.url} alt="Imagen existente" />
-                <button
-                  type="button"
-                  className="remove-button"
-                  onClick={() => handleRemoveExistingImage(img.id)}
-                >
-                  <FaTrash />
-                </button>
               </div>
             ))}
           </div>
