@@ -9,7 +9,7 @@ const ImageUploader = ({ onImagesSelected }) => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-
+    
     // Validar archivos
     const validFiles = files.filter(file => {
       const isValidType = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type);
@@ -28,10 +28,10 @@ const ImageUploader = ({ onImagesSelected }) => {
       file,
       preview: URL.createObjectURL(file),
     }));
-
+    
     const updatedImages = [...images, ...newImages];
     setImages(updatedImages);
-
+    
     // Notificar al componente padre sobre los archivos seleccionados
     onImagesSelected(updatedImages.map(img => img.file));
     setUploading(false);
@@ -43,7 +43,7 @@ const ImageUploader = ({ onImagesSelected }) => {
     URL.revokeObjectURL(updatedImages[index].preview);
     updatedImages.splice(index, 1);
     setImages(updatedImages);
-
+    
     // Notificar al componente padre sobre la actualización
     onImagesSelected(updatedImages.map(img => img.file));
   };
@@ -74,13 +74,13 @@ const ImageUploader = ({ onImagesSelected }) => {
           {images.map((image, index) => (
             <div key={index} className="image-preview">
               <img src={image.preview} alt={`Vista previa ${index}`} />
-              <button
-                type="button"
+              <button 
+                type="button" 
                 className="remove-button"
                 onClick={() => handleRemoveImage(index)}
                 disabled={uploading}
               >
-                <FaTrash className="icon-trash" />
+                <FaTrash  className="icon-trash" />
               </button>
               <div className="file-name">{image.file.name.length > 15 ? image.file.name.substring(0, 15) + '...' : image.file.name}</div>
             </div>

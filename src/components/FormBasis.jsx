@@ -1,7 +1,7 @@
 import "../css/components/Form.css";
 import "../css/global/variables.css";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import { FaSave } from "react-icons/fa";
@@ -12,25 +12,14 @@ import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useLocation } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
-import PropTypes from "prop-types";
 
-const FormBasis = ({ isEditMode = false }) => {
-  const location = useLocation();
-  const activityId = location.state?.activityId || null;
-
-
-  //const activityToEdit = location.state?.activity || null;
+const FormBasis = () => {
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
-
   const [titulo, setTitulo] = useState("");
   const [errorTitulo, setErrorTitulo] = useState("");
-
   const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
-
   const [valorTarifa, setValorTarifa] = useState("");
   const [tipoTarifa, setTipoTarifa] = useState("");
   const [idioma, setIdioma] = useState("");
@@ -39,13 +28,9 @@ const FormBasis = ({ isEditMode = false }) => {
   const [diasDisponible, setDiasDisponible] = useState([]);
   const [fechaEvento, setFechaEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
-  const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
 
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
@@ -105,60 +90,10 @@ const FormBasis = ({ isEditMode = false }) => {
     setSelectedImages(files);
   };
 
-  useEffect(() => {
-    const fetchActivity = async () => {
-      if (activityId) {
-        setLoading(true);
-        try {
-          const response = await fetch(`/api/producto/${activityId}`);
-          if (!response.ok) {
-            throw new Error(`Error al cargar la actividad: ${response.status}`);
-          }
-          const data = await response.json();
-          setTitulo(data.nombre);
-          setDescripcion(data.descripcion);
-          setValorTarifa(data.valorTarifa);
-          setTipoTarifa(data.tipoTarifa);
-          setIdioma(data.idioma);
-          setHoraInicio(data.horaInicio);
-          setHoraFin(data.horaFin);
-          setDiasDisponible(data.diasDisponible || []);
-          setFechaEvento(data.fechaEvento || "");
-          setSelectedImages(data.productoImagenesSalidaDto || []);
-          setEventType(data.eventType || data.tipoEvento);
-          /* if (data.tipoEvento === "RECURRENTE") {
-            setDiasDisponible(data.diasDisponible || []);
-          } */
-          // Cargar imágenes existentes
-          const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
-          setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
-          console.log("data activityID obtenida:");
-          console.log(data);
-        } catch (error) {
-          console.error("Error cargando actividad:", error);
-          Swal.fire({
-            title: "Error",
-            text: "No se pudo cargar la actividad.",
-            icon: "error",
-          });
-          navigate("/administrador/actividades");
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
+  // En la función handleSubmit dentro de FormBasis.jsx
 
-    fetchActivity();
-  }, [activityId, navigate]);
-
-  // Función handleSubmit dentro de FormBasis.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = isEditMode
-      ? `/api/producto/editar/${activityId}`
-      : "/api/producto/registrar";
-
-    const method = isEditMode ? "PUT" : "POST";
 
     // Validaciones
     if (errorTitulo || errorDescripcion) {
@@ -206,23 +141,17 @@ const FormBasis = ({ isEditMode = false }) => {
       "producto",
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
-    // Agregar imágenes nuevas al FormData
-    /*     selectedImages.forEach((file) => {
-          formData.append("imagenesNuevas", file);
-        }); */
 
     // Agregar cada imagen como una parte separada
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
-    console.log(productoData);
+
     console.log("Enviando datos al backend...");
-    console.log(endpoint);
-    console.log("FORMDATA para enviar: ")
-    console.info(formData);
+
     try {
-      const response = await fetch(endpoint, {
-        method,
+      const response = await fetch("/api/producto/registrar", {
+        method: "POST",
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
@@ -239,11 +168,11 @@ const FormBasis = ({ isEditMode = false }) => {
       // alert("Producto creado correctamente");
 
       Swal.fire({
-        title: isEditMode ? "¡Actividad Actualizada!" : "¡Actividad Creada!",
-        text: "La actividad se guardó correctamente.",
+        title: "¡Actividad Creada!",
+        text: "La actividad se ha guardado correctamente.",
         icon: "success",
         showConfirmButton: false,
-        timer: 2000,
+        timer: 2000
       }).then(() => {
         navigate("/administrador/actividades");
       });
@@ -261,26 +190,18 @@ const FormBasis = ({ isEditMode = false }) => {
       setFechaEvento("");
       setSelectedImages([]);
     } catch (error) {
-      console.error("Error:", error.message, "Error completo: ", error);
-      //alert(`Error al enviar los datos: ${error.message}`);
-      Swal.fire({
-        title: "Error",
-        text: "No se pudo completar la operación.",
-        icon: "error",
-      });
+      console.error("Error:", error.message);
+      alert(`Error al enviar los datos: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
 
   };
-  if (loading) {
-    return <p>Cargando datos de la actividad...</p>;
-  }
+
   return (
     <form className="form-base" onSubmit={handleSubmit}>
       <div className="container-name">
-        <h2>{isEditMode ? "Editar Actividad" : "Agregar Actividad"}</h2>
-
+        <h2>Agregar Actividad:</h2>
         <label htmlFor="title">Título:</label>
         <input
           type="text"
@@ -404,12 +325,10 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
-          <DateCalendar onChange={handleDateChange} selectedDate={fechaEvento} />
+          <DateCalendar onChange={handleDateChange} />
           <Horas
             onHoraInicioChange={handleHoraInicioChange}
-            horaInicio={horaInicio}
             onHoraFinChange={handleHoraFinChange}
-            horaFin={horaFin}
           />
         </div>
       )}
@@ -418,8 +337,6 @@ const FormBasis = ({ isEditMode = false }) => {
         <div className="container-days">
           <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
           <Horas
-            horaInicio={horaInicio}
-            horaFin={horaFin}
             onHoraInicioChange={handleHoraInicioChange}
             onHoraFinChange={handleHoraFinChange}
           />
@@ -443,25 +360,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
       {/* Componente ImageUploader actualizado */}
       <div className="container-images">
-        {existingImages &&
-          <label>Imágenes Existentes:</label>}
-        {existingImages.length > 0 &&
-          <div className="existing-images">
-            {existingImages.map((img) => (
-              <div key={img.id} className="image-preview">
-                <img src={img.url} alt="Imagen existente" />
-                <button
-                  type="button"
-                  className="remove-button"
-                  onClick={() => handleRemoveExistingImage(img.id)}
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            ))}
-          </div>
-        }
-        <label>Nuevas Imágenes:</label>
+        <label>Imágenes:</label>
         <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
           <p className="selected-count">
@@ -487,14 +386,10 @@ const FormBasis = ({ isEditMode = false }) => {
           className="button-blue btn-save"
           type="submit"
           disabled={isSubmitting}
-        >
-          {isEditMode ? "Actualizar" : "Guardar"}
-        </ButtonBluePill>
+        />
       </div>
     </form>
   );
 };
-FormBasis.propTypes = {
-  isEditMode: PropTypes.bool,
-}
+
 export default FormBasis;
