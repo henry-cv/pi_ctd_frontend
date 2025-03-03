@@ -45,7 +45,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const [categories, setCategories] = useState([]);
 
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
@@ -104,7 +104,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
   };
-
+  //useEffect para buscar actividad por Id y cargarla en el formulario
   useEffect(() => {
     const fetchActivity = async () => {
       if (activityId) {
@@ -425,7 +425,18 @@ const FormBasis = ({ isEditMode = false }) => {
           />
         </div>
       )}
-
+      <div className="container-categories">
+        <label htmlFor="category">Categorías:</label>
+        <select id="category" name="categoria">
+          <option value="" disabled selected>
+            Selecciona la categoría
+          </option>
+          <option value="cultural">Cultural</option>
+          <option value="gastronomia">Gastronomía</option>
+          <option value="airelibre">Aire libre</option>
+          <option value="cuidadobienestar">Cuidado y Bienestar</option>
+        </select>
+      </div>
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
         <select

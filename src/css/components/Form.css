@@ -144,10 +144,6 @@ label {
   font-size: var(--h4-size);
 }
 
-div.container-categories {
-  display: none;
-}
-
 .form-base .container-dates {
   display: flex;
   flex-direction: row;
