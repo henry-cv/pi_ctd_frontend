@@ -489,6 +489,27 @@ max-height: 500px;
   50% { opacity: 0.6; }
 }
 
+
+.back-button {
+  position: absolute;
+  top: 105px;
+  left: 22px;
+  background: var(--blue-base);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.back-button:hover {
+  background: var(--blue-hover);
+}
 /* Media queries */
 /* @media (max-width: 1200px) {
   .gallery-section {
