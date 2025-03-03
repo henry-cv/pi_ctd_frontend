@@ -29,7 +29,7 @@ const Register = () => {
       .required("El email es obligatorio."),
     password: Yup.string()
       .trim()
-      .min(6, "La contraseña debe tener por lo menos 6 carácteres.")
+      .min(8, "La contraseña debe tener por lo menos 8 carácteres.")
       .matches(
         /^(?=.*[A-Z])(?=.*\d)(?=.*\W)/,
         "La contraseña debe contener al menos una mayúscula, un número y un símbolo."
@@ -220,7 +220,7 @@ const Register = () => {
           </div>
 
           <button type="submit" className="submit_auth">
-            Registrarse
+            Registrate
           </button>
           <button type="button" className="google_auth">
             <FcGoogle fontSize={"26px"} />

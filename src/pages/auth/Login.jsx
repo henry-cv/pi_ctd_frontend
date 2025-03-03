@@ -164,11 +164,11 @@ const Login = () => {
           </div>
 
           <button type="submit" className="submit_auth">
-            Iniciar Sesión
+            Inicia Sesión
           </button>
           <button type="button" className="google_auth">
             <FcGoogle fontSize={"26px"} />
-            Iniciar sesión con Google
+            Inicia sesión con Google
           </button>
         </form>
         <div className="register_auth_text">

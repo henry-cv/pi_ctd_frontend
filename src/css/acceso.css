@@ -88,6 +88,7 @@
   font-weight: regular;
   font-family: var(--font-archivo);
   color: var(--Font-Background);
+  margin: 0;
 }
 .input_auth,
 .input_auth_register {
@@ -277,12 +278,13 @@
   font-family: var(--font-outfit);
   font-weight: medium;
   right: 10px;
-  top: 47px;
+  top: 50px;
   position: absolute;
 }
 .error_mssg_register {
   color: red;
   font-size: 14px;
+  margin-top: 4px;
   font-family: var(--font-outfit);
   font-weight: medium;
 }
