@@ -2,19 +2,19 @@ import { useState } from 'react';
 import "../css/components/Horas.css";
 import PropTypes from 'prop-types';
 
-const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {
-  const [horaInicio, setHoraInicio] = useState("");
-  const [horaFin, setHoraFin] = useState("");
+const Horas = ({ onHoraInicioChange, onHoraFinChange, horaInicio, horaFin }) => {
+  const [horaInicioState, setHoraInicioState] = useState(horaInicio || "");
+  const [horaFinState, setHoraFinState] = useState(horaFin || "");
 
   const handleHoraInicioChange = (event) => {
     const value = event.target.value;
-    setHoraInicio(value);
+    setHoraInicioState(value);
     onHoraInicioChange(event);
   };
 
   const handleHoraFinChange = (event) => {
     const value = event.target.value;
-    setHoraFin(value);
+    setHoraFinState(value);
     onHoraFinChange(event);
   };
 
@@ -27,7 +27,7 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {
           id="startTime"
           name="horaInicio"
           className="time-input"
-          value={horaInicio}
+          value={horaInicioState}
           onChange={handleHoraInicioChange}
           required
         />
@@ -37,7 +37,7 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {
           id="endTime"
           name="horaFin"
           className="time-input"
-          value={horaFin}
+          value={horaFinState}
           onChange={handleHoraFinChange}
           required
         />
@@ -50,6 +50,8 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange }) => {
 Horas.propTypes = {
   onHoraInicioChange: PropTypes.func.isRequired,
   onHoraFinChange: PropTypes.func.isRequired,
+  horaInicio: PropTypes.string,
+  horaFin: PropTypes.string
 };
 
 export default Horas;

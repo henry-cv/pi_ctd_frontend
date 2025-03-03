@@ -71,3 +71,13 @@ button.light i {
   height: 43px;
   width: 197px;
 }
+
+.btn-blue-disabled{
+  background-color: var(--blue-300);
+  color: var(--white);
+}
+
+.btn-yellow-disabled{
+  background-color: var(--yellow-300);
+  color: var(--black);
+}

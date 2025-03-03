@@ -5,9 +5,17 @@
   display: grid;
   grid-template-columns: 270px 1fr;
   gap: 30px;
-  margin-top: 20px;
+  padding-top: 20px;
   transition: all 0.4s ease-in-out;
 }
+
+.dashboard_container {
+  background: var(--BackgroundColor);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
 .admin_container2 {
   max-width: 1140px;
   margin: 0 auto;
@@ -15,7 +23,7 @@
   display: grid;
   grid-template-columns: 121px 1fr;
   gap: 30px;
-  margin-top: 20px;
+  padding-top: 20px;
   transition: all 0.4s ease-in-out;
 }
 
@@ -23,22 +31,7 @@
   max-width: 270px;
   height: 795px;
   padding: 10px 12px 0;
-  /* height: 100vh; */
-  background: var(
-    --Background-sideBar
-  ); /* se le agregó el color de la sideBar info en variables.css */
-  border-radius: 20px;
-  position: relative;
-}
-
-.siderbar2 {
-  max-width: 270px;
-  height: 795px;
-  padding: 10px 12px 0;
-  /* height: 100vh; */
-  background: var(
-    --Background-sideBar
-  ); /* se le agregó el color de la sideBar info en variables.css */
+  background: var(--Background-sideBar);
   border-radius: 20px;
   position: relative;
 }
@@ -54,6 +47,7 @@
   flex-direction: column;
   gap: 30px;
 }
+
 .list_sidebar > .listDash {
   display: flex;
   align-items: center;
@@ -73,13 +67,16 @@
   min-width: 170px;
   animation: listNameSideAnimate 0.55s ease-in-out forwards;
 }
+
 @keyframes listNameSideAnimate {
   0% {
     opacity: 0;
   }
+
   50% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -102,12 +99,12 @@
 
 .list_sidebar > .listDashHover:hover {
   background-color: white;
-  color: var(
-    --Background-sideBar
-  ) !important; /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
+  color: var(--Background-sideBar) !important;
+  /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
   border-radius: 50px;
   padding: 0 20px;
 }
+
 .isActiveDash2 {
   background-color: #f1c40f;
   color: black !important;
@@ -147,6 +144,7 @@
   transition: all 0.3s ease-in-out;
   animation: animationCircleToggle2 0.5s ease-in-out forwards;
 }
+
 .shadowCircle {
   box-shadow: 10px 9px 24px -10px rgba(0, 0, 0, 0.67);
   -webkit-box-shadow: 10px 9px 24px -10px rgba(0, 0, 0, 0.67);
@@ -161,14 +159,17 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(180deg);
   }
 }
+
 @keyframes animationCircleToggle2 {
   0% {
     transform: rotate(180deg);
   }
+
   100% {
     transform: rotate(0deg);
   }
@@ -181,6 +182,7 @@
 
 .activities_container {
   margin-top: 2rem;
+  padding: 0px 15px;
 }
 
 .activities_container .header_activities {
@@ -199,22 +201,37 @@
 .activitieRight {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
-}
-
-.btn_base {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 10px 6px;
-  border-radius: 100px;
 }
 
 .btn_style {
   display: flex;
-  gap: 10px;
   align-items: center;
   justify-content: center;
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+}
+
+/* button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */
+
+.btn_style > span {
+  margin-right: 10px;
 }
 
 .btn_blue {
@@ -222,6 +239,7 @@
   color: white;
   border-radius: 30px;
 }
+
 .btn_blue:hover {
   background-color: #290b91;
   color: white;
@@ -233,9 +251,21 @@
   color: #101828;
   border-radius: 30px;
 }
+
 .btn_yellow:hover {
   background-color: #d8af18;
   color: #101828;
+  border-radius: 30px;
+}
+
+.btn_transparent {
+  background-color: transparent;
+  color: var(--Font-Background);
+  border-radius: 30px;
+}
+
+.btn_transparent:hover {
+  color: var(--Color-base);
   border-radius: 30px;
 }
 
@@ -268,8 +298,14 @@
   margin-top: 30px;
   color: #101828;
 }
+
 .table_activities div {
   text-align: center;
+}
+
+.table_categories {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
 }
 
 .RegisterActivitie {
@@ -279,10 +315,19 @@
   margin-top: 30px;
 }
 
+.RegisterCategory {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+  margin-top: 30px;
+}
+
 .activitieImg {
   object-fit: cover;
+  height: 50px;
   border-radius: 10px;
 }
+
 .infoActivitie {
   display: flex;
   align-items: center;
@@ -290,13 +335,19 @@
   text-align: center;
   padding-left: 4px;
 }
+
+.infoActivitie p {
+  color: var(--Font-Background);
+}
+
 .inputActivitie {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-.amount_reservation {
+.amount_reservation,
+.category-description {
   text-align: center;
   font-size: 18px;
 }
@@ -314,6 +365,7 @@
   border-radius: 30px;
   padding: 10px 30px;
 }
+
 .btn_blueAction {
   background-color: var(--blue-base);
   color: white;
@@ -410,7 +462,7 @@
 .pagination_dash {
   display: flex;
   justify-content: center;
-  margin: 2.5rem 0;
+  margin: 1.6rem 0 0;
 }
 
 @media (max-width: 960px) {
@@ -420,7 +472,19 @@
     height: 100vh;
     padding: 0 30px;
   }
+
   .admin_container {
     display: none;
   }
+  .admin_container2 {
+    display: none;
+  }
+}
+
+.breadcrumbs {
+  color: var(--Font-Background) !important;
+}
+
+.dark_activities {
+  color: var(--Font-Background) !important;
 }

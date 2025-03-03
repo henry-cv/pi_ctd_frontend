@@ -8,6 +8,7 @@
   width: 335px;
   height: 373px;
   padding: 10px;
+  border: var(--black-100) solid 1px;
 }
 
 .activity-card:hover {
@@ -42,6 +43,10 @@
   font-weight: 600;
   color: var(--Font-Background);
   margin: 0;
+  white-space: nowrap;  
+  overflow: hidden;     
+  text-overflow: ellipsis; 
+  width: 100%;  
 }
 
 .activity-details {

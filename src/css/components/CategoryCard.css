@@ -20,27 +20,28 @@
   object-fit: cover;
 }
 
+.category-card {
+  position: relative;
+}
+
 .category-content {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1.5rem;
+  padding-bottom: 13px;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.7) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  text-align: center;
 }
-
 .category-title {
   font-family: var(--font-archivo);
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--white);
-  margin: 0;
-  text-align: left;
+  text-align: center;
 }
 
 .category-count {

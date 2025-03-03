@@ -6,6 +6,17 @@
   background-color: var(--BackgroundColor);
 }
 
+.carousel-container,
+.carousel-swiper,
+.swiper-slide {
+  height: inherit;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--Font-Background);
+}
+
 /* Hero Section - Version simplificada temporal */
 .hero-section {
   position: relative;
@@ -106,7 +117,7 @@
 }
 
 .feature-card.yellow {
-  background-color: #EEC52D;
+  background-color: #eec52d;
   color: var(--black);
 }
 
@@ -129,7 +140,7 @@
 /* Categories & Activities Sections */
 .categories-section,
 .activities-section {
-  padding: 4rem 0;
+  padding: 1.5rem 0;
   background-color: var(--BackgroundColor);
 }
 
@@ -144,6 +155,10 @@
 .activities-section .section-title {
   text-align: left;
   width: 100%;
+  font-size: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+  color: var(--Font-Background);
 }
 
 /* Grids */
@@ -159,6 +174,8 @@
   padding: 1rem 0;
   width: 100%;
   scroll-snap-type: x mandatory;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .categories-grid::-webkit-scrollbar,
@@ -187,7 +204,7 @@
 .special-banner-section {
   width: 100%;
   height: 80vh;
-  background-color: #F7F8FC;
+  background-color: #f7f8fc;
   position: relative;
   margin-top: 4rem;
   padding: 0;
@@ -198,7 +215,7 @@
 }
 
 .dark .special-banner-section {
-  background-color: #0B101B;
+  background-color: #0b101b;
 }
 
 .special-banner-section .content-wrapper {
@@ -229,6 +246,52 @@
   margin: 0 auto; /* Centramos la imagen */
 }
 
+/* Second Banner Section */
+.second-banner-section {
+  width: 100%;
+  height: 60vh; /* Reducimos la altura para que se parezca más a la referencia */
+  background-color: #ffffff;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem 0; /* Agregamos margen vertical */
+}
+
+.dark .second-banner-section {
+  background-color: #101828;
+}
+
+.second-banner-section .content-wrapper {
+  height: 100%;
+  position: relative;
+  width: 90%; /* Aumentamos el ancho del contenedor */
+  max-width: 1440px; /* Aumentamos el ancho máximo */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.second-banner-section picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.second-banner-image {
+  width: 70%; /* Ajustamos el ancho base */
+  height: auto;
+  max-height: 90%;
+  object-fit: contain;
+  display: block;
+  margin: 15% auto; /* Agregamos el margen del 15% por defecto */
+}
+
 /* Media Queries */
 @media (max-width: 1024px) {
   .features-section .content-wrapper {
@@ -245,6 +308,13 @@
 
   .special-banner-section .content-wrapper {
     width: 80%; /* Un poco más ancho en tablets grandes */
+  }
+}
+
+@media (max-width: 992px) {
+  .second-banner-image {
+    width: 80%; /* Un poco más grande en tablets */
+    margin: 5% auto; /* Margen del 5% para tablets */
   }
 }
 
@@ -304,6 +374,20 @@
     height: auto;
     object-fit: contain; /* Cambiamos a contain para mantener proporciones */
   }
+
+  .second-banner-section {
+    height: 40vh; /* Altura más pequeña en móviles */
+  }
+
+  .second-banner-section .content-wrapper {
+    width: 100%;
+    padding: 0;
+  }
+
+  .second-banner-image {
+    width: 90%; /* Más grande en móviles */
+    margin: 5% auto 10% auto; /* 5% arriba, 10% abajo */
+  }
 }
 
 @media (max-width: 480px) {
@@ -350,5 +434,17 @@
 
   .banner-image {
     width: 70%; /* Mantenemos el mismo ancho que en desktop */
+  }
+  .mobile-activities-grid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .wrapper-mobile-card {
+    padding: 0;
+    margin: 0;
+    width: 100% !important;
   }
 }
