@@ -7,12 +7,13 @@ import {
   faChevronDown,
   faChevronUp,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faArrowLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarCheck, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { FaGlobe } from "react-icons/fa";
-// Eliminamos la importación de BasicBreadcrumbs
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 import ButtonGral from "../components/ButtonGral";
 import "../css/pages/ActivityDetail.css";
 import DurationInfo from "../components/DurationInfo";
@@ -62,14 +63,13 @@ const ActivityDetail = () => {
     const handleScroll = () => {
       if (galleryRef.current) {
         const galleryBottom = galleryRef.current.getBoundingClientRect().bottom;
-        setShowMobileBooking(galleryBottom < 0);
+        setShowMobileBooking(galleryBottom < window.innerHeight / 0); 
       }
     };
-
+  
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   // Detectar si estamos en vista móvil
   useEffect(() => {
     const checkMobileView = () => {
@@ -174,16 +174,32 @@ const ActivityDetail = () => {
     <div className="activity-detail-container">
       {/* Sección principal */}
       <main className="activity-main">
-        {/* Eliminamos la sección de breadcrumbs */}
+   
+   
+      <BasicBreadcrumbs />
         
         {/* Galería de imágenes */}
         <section className="gallery-section" ref={galleryRef}>
           <div className="content-wrapper">
-            <div className="gallery-grid">
+          <div className={`gallery-grid ${images.length === 1 ? "single-image" : ""}`}>
               <div 
                 className="main-image" 
                 onClick={() => !isMobileView && handleOpenImageViewer(0)}
               >
+
+                        {/* Botón de regreso en móvil */}
+        {isMobileView && (
+          <button 
+            className="back-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.history.back();
+            }}
+            aria-label="Regresar"
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+        )}
                 <img 
                   src={isMobileView ? (images[currentMobileImageIndex] || defaultImage) : (images[0] || defaultImage)} 
                   alt={activity.nombre} 
@@ -239,12 +255,12 @@ const ActivityDetail = () => {
                 ))}
                 
                 {/* Añadimos contenedores vacíos si no hay 4 imágenes en la columna */}
-                {[...Array(Math.max(0, 4 - images.slice(1, 5).length))].map((_, index) => (
+                {/* {[...Array(Math.max(0, 4 - images.slice(1, 5).length))].map((_, index) => (
                   <div 
                     key={`empty-${index}`}
                     className={`thumbnail empty ${state.theme || ''}`}
                   ></div>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: transparent; /* Cambiado a transparente */
+  background-color: rgba(0, 0, 0, 0.486); /*  transparente */
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -64,7 +64,7 @@
   position: relative;
   border-radius: 10px; /* Agregado border-radius */
   overflow: hidden; /* Para asegurar que la imagen respete el borde redondeado */
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para mejorar visibilidad */
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
 
 .image-loader {

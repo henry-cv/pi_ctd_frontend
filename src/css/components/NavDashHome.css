@@ -17,7 +17,11 @@
   transform: translateX(-50%);
   z-index: 1000;
 }
-
+.skeleton-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 /* Contenedores laterales */
 .home .leftContainer,
 .home .rightContainer {

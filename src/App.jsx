@@ -10,17 +10,27 @@ import AddActivitie from "./components/AddActivitie";
 import ActivityDetail from "./pages/ActivityDetail";
 import AddCategory from "./components/AddCategory";
 import { useContextGlobal } from "./gContext/globalContext";
-import AppRoutes from "./Routes/AppRoutes";
+import AuthRoutes from "./Routes/AuthRoutes";
 import UserProfile from "./pages/UserProfile";
 import UserLayout from "./Layouts/UserLayout";
+import FormBasis from "./components/FormBasis";
 
 function App() {
   const { state } = useContextGlobal();
   return (
     <BrowserRouter>
-      <div className={`bg-white min-h-screen  ${state.theme}`}>
+      <div className={`bg-white min-h-screen ${state.theme}`}>
         <Routes>
+          {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
+          <Route path="/" element={<UserLayout />}>
+            <Route path="/actividad/:id" element={<ActivityDetail />} />
+          </Route>
+
+          {/* Rutas de autenticación (públicas) */}
+          <Route path="/*" element={<AuthRoutes />} />
+
+          {/* Rutas privadas */}
           <Route path="/administrador" element={<Dashboard />}>
             <Route index element={<Navigate to="panel" replace />} />
             <Route path="panel" element={<PanelControl />} />
@@ -29,17 +39,19 @@ function App() {
               path="actividades/crearactividad"
               element={<AddActivitie />}
             />
+            <Route
+              path="/administrador/actividades/editarActividad"
+              element={<FormBasis isEditMode={true} />}
+            />
             <Route path="categorias" element={<DashCategorias />} />
             <Route path="categorias/crearcategoria" element={<AddCategory />} />
             <Route path="ajustes" element={<DashAjustes />} />
           </Route>
-          <Route path="/" element={<UserLayout/>} > 
-          <Route path="/actividad/:id" element={<ActivityDetail />} />
-          <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/" element={<UserLayout />} >
+            <Route path="/actividad/:id" element={<ActivityDetail />} />
+            <Route path="/perfil" element={<UserProfile />} />
           </Route>
-
         </Routes>
-        <AppRoutes />
       </div>
     </BrowserRouter>
   );
