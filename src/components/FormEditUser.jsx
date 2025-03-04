@@ -5,19 +5,35 @@ import { FaTrash } from "react-icons/fa";
 import ButtonGral from "../components/ButtonGral";
 import Swal from "sweetalert2";
 import ProfileImageUploader from "./ProfileImageUploader";
+import { useContextGlobal } from "../gContext/globalContext";
 
-function FormEditUser({ userData, setUserData }) {
-  const [formData, setFormData] = useState({ ...userData, contraseña: '', repetirContraseña: '', currentPassword: '' });
+function FormEditUser({ setUserData }) {
+  const { state } = useContextGlobal();
+  const userData = state.user;
+  const [formData, setFormData] = useState({
+    ...userData,
+    contraseña: "",
+    repetirContraseña: "",
+    currentPassword: "",
+  });
   const [originalData, setOriginalData] = useState({ ...userData });
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [errors, setErrors] = useState({});
+  const [changePassword, setChangePassword] = useState(false);
+
+  console.log("el usuario a editar", state.user);
 
   const imageUploaderRef = useRef(null);
 
   useEffect(() => {
-    setFormData({ ...userData, contraseña: '', repetirContraseña: '', currentPassword: '' });
+    setFormData({
+      ...userData,
+      contraseña: "",
+      repetirContraseña: "",
+      currentPassword: "",
+    });
     setOriginalData({ ...userData });
   }, [userData]);
 
@@ -25,23 +41,30 @@ function FormEditUser({ userData, setUserData }) {
     const hasDataChanged =
       formData.nombre !== originalData.nombre ||
       formData.apellido !== originalData.apellido ||
-      profileImage !== null || 
-      (formData.currentPassword && formData.currentPassword !== userData.contraseñaActual) || 
-      formData.contraseña || 
+      profileImage !== null ||
+      (formData.currentPassword &&
+        formData.currentPassword !== userData.contraseñaActual) ||
+      formData.contraseña ||
       formData.repetirContraseña;
-  
+
     const passwordsMatch =
-      (!formData.contraseña && !formData.repetirContraseña) || 
-      (formData.contraseña && formData.contraseña === formData.repetirContraseña);
-  
-    const requiredFieldsValid = formData.nombre?.trim() && formData.apellido?.trim();
-  
+      (!formData.contraseña && !formData.repetirContraseña) ||
+      (formData.contraseña &&
+        formData.contraseña === formData.repetirContraseña);
+
+    const requiredFieldsValid =
+      formData.nombre?.trim() && formData.apellido?.trim();
+
     const isFormValid = hasDataChanged && passwordsMatch && requiredFieldsValid;
-  
+
     setIsButtonDisabled(!isFormValid);
-  
+
     const newErrors = {};
-    if (formData.contraseña && formData.repetirContraseña && formData.contraseña !== formData.repetirContraseña) {
+    if (
+      formData.contraseña &&
+      formData.repetirContraseña &&
+      formData.contraseña !== formData.repetirContraseña
+    ) {
       newErrors.password = "Las contraseñas no coinciden";
     }
     if (!formData.nombre?.trim()) {
@@ -51,7 +74,7 @@ function FormEditUser({ userData, setUserData }) {
       newErrors.apellido = "El apellido es requerido";
     }
     setErrors(newErrors);
-  }, [formData, originalData, profileImage, userData.contraseñaActual]); 
+  }, [formData, originalData, profileImage, userData.contraseñaActual]);
 
   const handleProfileImageChange = (file, previewUrl) => {
     setProfileImage(file);
@@ -69,94 +92,118 @@ function FormEditUser({ userData, setUserData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newErrors = validateForm();
-    if (Object.keys(newErrors).length > 0) {
-      Swal.fire({
-        title: "Error",
-        text: "Por favor, completa correctamente todos los campos requeridos.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-      return;
-    }
+    console.log("usuario editado");
+    
 
-    if (formData.currentPassword && formData.currentPassword !== userData.contraseñaActual) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        currentPassword: "La contraseña actual no coincide",
-      }));
-      Swal.fire({
-        title: "Error",
-        text: "La contraseña actual no coincide.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-      return;
-    }
+    // Cambiar la logica con el endpoint de editar usuario 
 
-    if (formData.currentPassword === userData.contraseñaActual) {
-      if (!formData.contraseña || !formData.repetirContraseña || formData.contraseña !== formData.repetirContraseña) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          password: "Las nuevas contraseñas deben estar llenas y coincidir",
-        }));
-        Swal.fire({
-          title: "Error",
-          text: "Las nuevas contraseñas deben estar llenas y coincidir.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        return;
-      }
-    }
+  //   const newErrors = validateForm();
+  //   if (Object.keys(newErrors).length > 0) {
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "Por favor, completa correctamente todos los campos requeridos.",
+  //       icon: "error",
+  //       confirmButtonText: "OK",
+  //     });
+  //     return;
+  //   }
 
-    const submitData = new FormData();
-    submitData.append("nombre", formData.nombre);
-    submitData.append("apellido", formData.apellido);
+  //   if (
+  //     formData.currentPassword &&
+  //     formData.currentPassword !== userData.contraseñaActual
+  //   ) {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       currentPassword: "La contraseña actual no coincide",
+  //     }));
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "La contraseña actual no coincide.",
+  //       icon: "error",
+  //       confirmButtonText: "OK",
+  //     });
+  //     return;
+  //   }
 
-    if (formData.contraseña && formData.contraseña !== originalData.contraseña) {
-      submitData.append("contraseña", formData.contraseña);
-    }
+  //   if (formData.currentPassword === userData.contraseñaActual) {
+  //     if (
+  //       !formData.contraseña ||
+  //       !formData.repetirContraseña ||
+  //       formData.contraseña !== formData.repetirContraseña
+  //     ) {
+  //       setErrors((prevErrors) => ({
+  //         ...prevErrors,
+  //         password: "Las nuevas contraseñas deben estar llenas y coincidir",
+  //       }));
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: "Las nuevas contraseñas deben estar llenas y coincidir.",
+  //         icon: "error",
+  //         confirmButtonText: "OK",
+  //       });
+  //       return;
+  //     }
+  //   }
 
-    if (profileImage) {
-      submitData.append("profileImage", profileImage);
-    }
+  //   const submitData = new FormData();
+  //   submitData.append("nombre", formData.nombre);
+  //   submitData.append("apellido", formData.apellido);
 
-    setUserData(formData);
-    setOriginalData({ ...formData });
-    setProfileImage(null);
-    setIsButtonDisabled(true);
+  //   if (
+  //     formData.contraseña &&
+  //     formData.contraseña !== originalData.contraseña
+  //   ) {
+  //     submitData.append("contraseña", formData.contraseña);
+  //   }
 
-    Swal.fire({
-      title: "¡Datos guardados!",
-      text: "Los cambios se han guardado correctamente.",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1800,
-    });
-  };
+  //   if (profileImage) {
+  //     submitData.append("profileImage", profileImage);
+  //   }
 
-  const validateForm = () => {
-    const newErrors = {};
+  //   setUserData(formData);
+  //   setOriginalData({ ...formData });
+  //   setProfileImage(null);
+  //   setIsButtonDisabled(true);
 
-    if (!formData.nombre?.trim()) {
-      newErrors.nombre = "El nombre es requerido";
-    }
+  //   Swal.fire({
+  //     title: "¡Datos guardados!",
+  //     text: "Los cambios se han guardado correctamente.",
+  //     icon: "success",
+  //     showConfirmButton: false,
+  //     timer: 1800,
+  //   });
+  // };
 
-    if (!formData.apellido?.trim()) {
-      newErrors.apellido = "El apellido es requerido";
-    }
+  // const validateForm = () => {
+  //   const newErrors = {};
 
-    if (formData.contraseña && formData.repetirContraseña && formData.contraseña !== formData.repetirContraseña) {
-      newErrors.password = "Las contraseñas no coinciden";
-    }
+  //   if (!formData.nombre?.trim()) {
+  //     newErrors.nombre = "El nombre es requerido";
+  //   }
 
-    setErrors(newErrors);
-    return newErrors;
+  //   if (!formData.apellido?.trim()) {
+  //     newErrors.apellido = "El apellido es requerido";
+  //   }
+
+  //   if (
+  //     formData.contraseña &&
+  //     formData.repetirContraseña &&
+  //     formData.contraseña !== formData.repetirContraseña
+  //   ) {
+  //     newErrors.password = "Las contraseñas no coinciden";
+  //   }
+
+  //   setErrors(newErrors);
+  //   return newErrors;
   };
 
   const handleCancel = () => {
-    setFormData({ ...originalData, contraseña: '', repetirContraseña: '', currentPassword: '' });
+    setFormData({
+      ...originalData,
+      contraseña: "",
+      repetirContraseña: "",
+      currentPassword: "",
+    });
 
     if (imageUploaderRef.current) {
       imageUploaderRef.current.reset();
@@ -179,11 +226,13 @@ function FormEditUser({ userData, setUserData }) {
                   type="text"
                   id="nombre"
                   name="nombre"
-                  value={formData.nombre || ''}
+                  value={formData.nombre || ""}
                   onChange={handleChange}
-                  className={`form-input ${errors.nombre ? 'error-input' : ''}`}
+                  className={`form-input ${errors.nombre ? "error-input" : ""}`}
                 />
-                {errors.nombre && <span className="error-message">{errors.nombre}</span>}
+                {errors.nombre && (
+                  <span className="error-message">{errors.nombre}</span>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="apellido">Apellido *</label>
@@ -191,11 +240,15 @@ function FormEditUser({ userData, setUserData }) {
                   type="text"
                   id="apellido"
                   name="apellido"
-                  value={formData.apellido || ''}
+                  value={formData.apellido || ""}
                   onChange={handleChange}
-                  className={`form-input ${errors.apellido ? 'error-input' : ''}`}
+                  className={`form-input ${
+                    errors.apellido ? "error-input" : ""
+                  }`}
                 />
-                {errors.apellido && <span className="error-message">{errors.apellido}</span>}
+                {errors.apellido && (
+                  <span className="error-message">{errors.apellido}</span>
+                )}
               </div>
             </div>
 
@@ -206,14 +259,14 @@ function FormEditUser({ userData, setUserData }) {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email || ''}
+                  value={formData.email || ""}
                   className="form-input"
                   disabled
                 />
               </div>
             </div>
 
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="currentPassword">Contraseña actual</label>
               <div className="password-container">
                 <input
@@ -233,52 +286,76 @@ function FormEditUser({ userData, setUserData }) {
                 </button>
               </div>
               {errors.currentPassword && <span className="error-message">{errors.currentPassword}</span>}
-            </div>
+            </div> */}
 
             <div className="form-group">
-              <label htmlFor="contraseña">Cambiar contraseña</label>
-              <div className="password-container">
-                <input
-                  type="password"
-                  id="contraseña"
-                  name="contraseña"
-                  value={formData.contraseña}
-                  onChange={handleChange}
-                  className="form-input"
-                  placeholder="Contraseña"
-                />
-              </div>
-            </div>
+              <div className="Change-Password-check">
+                <label htmlFor="contraseña">Cambiar contraseña</label>
 
-            <div className="form-group">
-              <div className="password-container">
                 <input
-                  type="password"
-                  id="repetirContraseña"
-                  name="repetirContraseña"
-                  value={formData.repetirContraseña}
-                  onChange={handleChange}
-                  className={`form-input ${errors.password ? 'error-input' : ''}`}
-                  placeholder="Repetir Contraseña"
+                  type="checkbox"
+                  id="changePassword"
+                  checked={changePassword}
+                  onChange={() => setChangePassword(!changePassword)}
                 />
               </div>
-              {errors.password && <span className="error-message">{errors.password}</span>}
+
+              {changePassword ? (
+                <>
+                  <div className="password-container">
+                    <input
+                      type="password"
+                      id="contraseña"
+                      name="contraseña"
+                      value={formData.contraseña}
+                      onChange={handleChange}
+                      className="form-input"
+                      placeholder="Contraseña"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <div className="password-container">
+                      <input
+                        type="password"
+                        id="repetirContraseña"
+                        name="repetirContraseña"
+                        value={formData.repetirContraseña}
+                        onChange={handleChange}
+                        className={`form-input ${
+                          errors.password ? "error-input" : ""
+                        }`}
+                        placeholder="Repetir Contraseña"
+                      />
+                    </div>
+                    {errors.password && (
+                      <span className="error-message">{errors.password}</span>
+                    )}
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
-
+          {/* 
           <div className="profile-picture-section">
             <ProfileImageUploader
               ref={imageUploaderRef}
               initialImage={userData.profileImage}
               onImageChange={handleProfileImageChange}
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="action-buttons">
           <button
             type="button"
-            className={isButtonDisabled ? "button btn-yellow-disabled btn-preview" : "button button-yellow btn-preview"}
+            className={
+              isButtonDisabled
+                ? "button btn-yellow-disabled btn-preview"
+                : "button button-yellow btn-preview"
+            }
             onClick={handleCancel}
             disabled={isButtonDisabled}
           >
@@ -287,7 +364,11 @@ function FormEditUser({ userData, setUserData }) {
           <ButtonBluePill
             text="Guardar"
             type="submit"
-            className={isButtonDisabled ? "btn-blue-disabled btn-save" : "button-blue btn-save"}
+            className={
+              isButtonDisabled
+                ? "btn-blue-disabled btn-save"
+                : "button-blue btn-save"
+            }
             disabled={isButtonDisabled}
           />
         </div>
