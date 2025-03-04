@@ -46,6 +46,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [categoriasIds, setCategoriasIds] = useState([0]);
 
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
@@ -104,7 +105,36 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
   };
-  //useEffect para buscar actividad por Id y cargarla en el formulario
+
+  //Para manejar los cambios en el select de categorías
+  const handleCategoriaChange = (e) => {
+    const categoriaId = e.target.value;
+    console.log("categoriaId option value");
+    console.log(categoriaId);
+    setCategoriasIds([categoriaId]);
+  };
+  // useEffect para traer las categorias existentes
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categoria/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener las categorías: ${response.status}`);
+        }
+        const data = await response.json();
+        setCategories(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error cargando categorías:", error);
+        //setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // useEffect para buscar actividad por Id y cargarla en el formulario
   useEffect(() => {
     const fetchActivity = async () => {
       if (activityId) {
@@ -118,6 +148,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setTitulo(data.nombre);
           setDescripcion(data.descripcion);
           setValorTarifa(data.valorTarifa);
+          setCategories(data.categorias);
           setTipoTarifa(data.tipoTarifa);
           setIdioma(data.idioma);
           setHoraInicio(data.horaInicio);
@@ -193,6 +224,7 @@ const FormBasis = ({ isEditMode = false }) => {
       descripcion,
       valorTarifa: parseFloat(valorTarifa),
       tipoTarifa,
+      categoriasIds,
       idioma,
       horaInicio: `${horaInicio}:00`,
       horaFin: `${horaFin}:00`,
@@ -218,8 +250,6 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log(productoData);
     console.log("Enviando datos al backend...");
     console.log(endpoint);
-    console.log("FORMDATA para enviar: ")
-    console.info(formData);
     try {
       const response = await fetch(endpoint, {
         method,
@@ -427,15 +457,13 @@ const FormBasis = ({ isEditMode = false }) => {
       )}
       <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
-        <select id="category" name="categoria">
-          <option value="" disabled selected>
-            Selecciona la categoría
-          </option>
-          <option value="cultural">Cultural</option>
-          <option value="gastronomia">Gastronomía</option>
-          <option value="airelibre">Aire libre</option>
-          <option value="cuidadobienestar">Cuidado y Bienestar</option>
-        </select>
+        {categories.length > 0 &&
+          <select onChange={handleCategoriaChange}>
+            {categories.map((category) => (
+              <option id={category.id} key={category.id} value={category.id}>{category.nombre}</option>
+            ))}
+          </select>
+        }
       </div>
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
