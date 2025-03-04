@@ -26,8 +26,8 @@ const Register = () => {
     lastname: Yup.string().trim().required("El apellido es obligatorio."),
     email: Yup.string()
       .email("El email no es válido.")
-      .required("El email es obligatorio.")
-      .test(
+      .required("El email es obligatorio."),
+    /* .test(
         "check-email-available",
         "Este email ya está registrado.",
         async (value) => {
@@ -40,8 +40,7 @@ const Register = () => {
             return false;
           }
         }
-      ),
-    password: Yup.string()
+      ) */ password: Yup.string()
       .trim()
       .min(8, "La contraseña debe tener por lo menos 8 carácteres.")
       .matches(
