@@ -5,6 +5,7 @@ import PanelControl from "../components/PanelControl";
 import DashActividades from "../components/DashActividades";
 import DashCategorias from "../components/DashCategorias";
 import DashAjustes from "../components/DashAjustes";
+import AsignarRol from "../components/AsignarRol";
 import AddActivitie from "../components/AddActivitie";
 import ActivityDetail from "../pages/ActivityDetail";
 import AddCategory from "../components/AddCategory";
@@ -63,6 +64,14 @@ const AppRoutes = () => {
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />
         <Route path="ajustes" element={<DashAjustes />} />
+        <Route 
+          path="ajustes/asignar-rol" 
+          element={
+            <PrivateRoutes adminOnly={true}>
+              <AsignarRol />
+            </PrivateRoutes>
+          } 
+        />
       </Route>
 
       {/* Otras rutas */}
