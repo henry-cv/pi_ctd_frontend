@@ -74,7 +74,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const handleDescriptionChange = (e) => {
     const texto = e.target.value;
-    const maximo = 100;
+    const maximo = 200;
     if (!validarAreaTexto(texto, maximo)) {
       setErrorDescripcion(
         `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
