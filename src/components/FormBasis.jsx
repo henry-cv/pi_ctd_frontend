@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import { FaSave } from "react-icons/fa";
+import { FaParking } from "react-icons/fa";
+import { FaWifi } from "react-icons/fa";
+
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
@@ -458,13 +461,31 @@ const FormBasis = ({ isEditMode = false }) => {
       <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
         {categories.length > 0 &&
-          <select onChange={handleCategoriaChange}>
+          <select multiple onChange={handleCategoriaChange}>
+            <option value="" disabled>Selecciona una categoría</option>
             {categories.map((category) => (
               <option id={category.id} key={category.id} value={category.id}>{category.nombre}</option>
             ))}
           </select>
         }
       </div>
+      <div className="container-features">
+        <label htmlFor="features">Características:
+        </label>
+        <select name="caracteristicas" id="features" className="features-select">
+          <option value="" disabled> Selecciona la característica</option>
+          <option value="wifi" id="1"><FaWifi /> WiFi</option>
+          <option value="estacionamiento" id="2"><FaParking />Estacionamiento</option>
+          <option value="espacio-para-ninos" id="3">Espacios para niños
+          </option>
+          <option value="zona-de-picnic" id="4">Zona de picnic
+          </option>
+          <option value="transporte-ejecutivo" id="5">Transporte ejecutivo
+          </option>
+          <option value="admite-mascotas" id="6">Admite mascotas
+          </option>
+        </select>
+      </div >
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
         <select
@@ -482,7 +503,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
       {/* Componente ImageUploader actualizado */}
       <div className="container-images">
-        {existingImages &&
+        {isEditMode && existingImages &&
           <label>Imágenes Existentes:</label>}
         {existingImages.length > 0 &&
           <div className="existing-images">
@@ -493,7 +514,10 @@ const FormBasis = ({ isEditMode = false }) => {
             ))}
           </div>
         }
-        <label>Nuevas Imágenes:</label>
+        {isEditMode
+          ? <label>Nuevas Imágenes:</label>
+          : <label>Imágenes:</label>
+        }
         <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
           <p className="selected-count">
@@ -523,7 +547,7 @@ const FormBasis = ({ isEditMode = false }) => {
           {isEditMode ? "Actualizar" : "Guardar"}
         </ButtonBluePill>
       </div>
-    </form>
+    </form >
   );
 };
 FormBasis.propTypes = {
