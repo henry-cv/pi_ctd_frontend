@@ -18,7 +18,7 @@ import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 //import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
-
+import { useContextGlobal } from "../gContext/globalContext";
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
@@ -50,7 +50,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoriasIds, setCategoriasIds] = useState([0]);
-
+  const { state } = useContextGlobal();
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -254,8 +254,12 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log("Enviando datos al backend...");
     console.log(endpoint);
     try {
+      const token = state.token || localStorage.getItem("token");
       const response = await fetch(endpoint, {
         method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
