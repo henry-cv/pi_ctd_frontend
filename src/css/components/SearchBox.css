@@ -1,0 +1,179 @@
+/* Contenedor principal */
+.search-box-container {
+  position: absolute;  /* Cambiamos de fixed a absolute */
+  left: 50%;
+  bottom: 10%; /* Ajustamos la posición más abajo */
+  transform: translateX(-50%);
+  width: min(90%, 800px);
+  z-index: 10;
+  margin-bottom: 0; /* Quitamos el margin-bottom */
+}
+
+/* Wrapper del searchbox */
+.search-box-wrapper {
+  background-color: var(--Background-components);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  position: relative;
+  padding: 1.25rem;
+}
+
+/* Grid de campos */
+.search-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Campo individual */
+.search-field {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+}
+
+.search-field:hover {
+  background-color: var(--gray-200);
+}
+
+/* Título del campo */
+.field-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.field-title svg {
+  color: var(--Icons-gray);
+  font-size: 1rem;
+}
+
+.field-title span {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--Font-Background);
+}
+
+/* Botón de búsqueda */
+.search-button {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  background-color: var(--blue-base);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  padding: 0;
+}
+
+.search-button:hover {
+  background-color: var(--blue-hover);
+}
+
+/* Media Queries */
+@media screen and (max-width: 1024px) {
+  .search-box-container {
+    width: min(92%, 700px);
+    bottom: 10%; /* Mantener consistente */
+  }
+
+  .search-box-wrapper {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .search-box-container {
+    width: calc(100% - 3rem);
+    bottom: 10%; /* Mantener consistente */
+  }
+
+  .search-box-wrapper {
+    padding: 0.875rem;
+    border-radius: 12px;
+  }
+
+  .search-fields {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+      "destino categoria"
+      "fecha fecha";
+    gap: 0.75rem;
+  }
+
+  .search-field:nth-child(1) { grid-area: destino; }
+  .search-field:nth-child(2) { grid-area: categoria; }
+  .search-field:nth-child(3) { grid-area: fecha; }
+
+  .search-button {
+    left: auto;
+    right: 0.75rem;
+    bottom: 50%;
+    transform: translateY(50%);
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .search-box-container {
+    width: calc(100% - 2rem);
+    bottom: 10%; /* Mantener consistente */
+  }
+
+  .field-title {
+    gap: 0.5rem;
+  }
+
+  .field-title span {
+    font-size: 0.813rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .search-box-container {
+    width: calc(100% - 2rem);
+    bottom: 10%; /* Mantener consistente */
+  }
+
+  .search-box-wrapper {
+    padding: 0.75rem;
+  }
+
+  .field-title svg {
+    font-size: 0.875rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .search-box-container {
+    width: calc(100% - 1.5rem);
+    bottom: 10%; /* Mantener consistente */
+  }
+
+  .search-box-wrapper {
+    padding: 0.625rem;
+  }
+
+  .field-title span {
+    font-size: 0.75rem;
+  }
+
+  .field-title svg {
+    font-size: 0.75rem;
+  }
+}

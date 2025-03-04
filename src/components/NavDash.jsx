@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom"; // Añadimos import de Link
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,9 +10,11 @@ import Activities from "./Activities";
 import ButtonGral from "./ButtonGral";
 import BasicBreadcrumbs from "./BasicBreadcrumbs";
 import PropTypes from "prop-types";
-import "../css/NavDashHome.css";
+import "../css/components/NavDashHome.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import LogoImg from "./LogoImg";
+import AccountMenu from "./AccountMenu";
+import Skeleton from "@mui/material/Skeleton";
 
 const NavDash = ({ variant = "home" }) => {
   const { dispatch, state } = useContextGlobal();
@@ -24,18 +25,14 @@ const NavDash = ({ variant = "home" }) => {
         <div className="breadcrumb">
           <BasicBreadcrumbs />
         </div>
-        <div className="user-info">
+        <div className="user-info-nav">
           <button
             onClick={() => dispatch({ type: "CHANGE_THEME" })}
             className="icon-button"
           >
             <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
           </button>
-          <div className="user-details">
-            <p className="user-name">Luisa Lopez</p>
-            <p className="user-role">Propietaria</p>
-          </div>
-          <img src="../user_example.jpg" alt="Perfil" className="user-avatar" />
+          <AccountMenu />
         </div>
       </nav>
     );
@@ -44,18 +41,20 @@ const NavDash = ({ variant = "home" }) => {
   return (
     <nav className="navbarDash home">
       <div className="leftContainer">
-        <LogoImg inNavbar={true} />
+        <div className="show-mobile">
+          <button className="icon-button menu-button">
+            <FontAwesomeIcon icon={faBars} />
+          </button>
+        </div>
+        <Link to="/">
+          <LogoImg inNavbar={true} />
+        </Link>
         <div className="hide-mobile">
           <Activities />
-          <a href="#" className="nav-link">
-            Crea tu Actividad
-          </a>
         </div>
       </div>
       <div className="rightContainer">
         <div className="theme-globe-buttons">
-          {" "}
-          {/* Nuevo contenedor sin hide-mobile */}
           <button
             onClick={() => dispatch({ type: "CHANGE_THEME" })}
             className="icon-button"
@@ -66,23 +65,31 @@ const NavDash = ({ variant = "home" }) => {
             <FontAwesomeIcon icon={faGlobe} />
           </button>
         </div>
-        <div className="auth-buttons hide-mobile">
-          {" "}
-          {/* Movido hide-mobile aquí */}
-          <div className="hide-tablet">
-            <ButtonGral text="Registrar" color="transparent" />
+
+        {state.isLoading ? (
+          <div className="skeleton-container">
+            <Skeleton variant="text" width={100} height={34} animation="wave" />
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              width={40}
+              height={40}
+            />
           </div>
-          <Link to="/administrador">
-            {" "}
-            {/* Añadimos Link al botón de acceso */}
-            <ButtonGral text="Acceso" color="blue" />
-          </Link>
-        </div>
-        <div className="show-mobile">
-          <button className="icon-button menu-button">
-            <FontAwesomeIcon icon={faBars} />
-          </button>
-        </div>
+        ) : state.isAuthenticated ? (
+          <div>
+            <AccountMenu />
+          </div>
+        ) : (
+          <div className="auth-buttons">
+            <Link to={"/registro"} className="hide-tablet">
+              <ButtonGral text="Registrar" color="transparent" />
+            </Link>
+            <Link to="/entrar">
+              <ButtonGral text="Acceso" color="blue" />
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

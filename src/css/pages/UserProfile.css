@@ -1,0 +1,246 @@
+*{
+  box-sizing: border-box;
+}
+.profile-container {
+    margin: 0 ;
+    background-color: var(--BackgroundColor);
+    padding-top: 140px;
+    padding-bottom: 25px;
+  }
+
+  .profile-tabs{
+    max-width:  min(80%, 1142px); 
+    margin: 0 auto;
+  }
+  
+.profile-banner {
+    background-image: url("../../../public/marco_perfil_us_xl.webp");
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding: 30px;
+    position: relative;
+    height: 117px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+    max-width:  min(80%, 1142px); 
+}
+  
+  .user-info-profile {
+    height:90%;
+    display: flex;
+    align-items: start;
+    color:var(--BackgroundColor);
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .user-details-banner p , h2{
+    color:var(--white);
+    
+  }
+  
+  .avatar-container {
+    margin-right: 20px; 
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .user-details-banner h2  {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  .user-details-banner p {
+    margin: 5px 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+  }
+  
+  .profile-form {
+    padding: 30px 20px;
+    margin: 15px 20px;
+  }
+
+  .form-data-picture-columns{
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    
+  }
+
+  .form-data label{
+    color: var(--Font-Background);
+    font-size: var(--h6-size);
+  }
+
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  
+  .form-input {
+    width: 100%;;
+    margin-top: 8px;
+    padding: 12px 15px;
+    border: 1px solid var(--black-100);
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .form-input:focus {
+    border-color: var(--blue-base);
+  }
+  
+  .email-container {
+    display: flex;
+    align-items: center;
+    
+  }
+
+  .email-container input{
+    background: var(--black-300--opacity);
+    
+  }
+
+  .email-container input {
+    color: var(--Icons-gray);
+  }
+
+  .Change-Password-check input{
+    margin-left: 25px;
+  }
+
+  .Change-Password-check input[type="checkbox"]{
+    accent-color: var(--blue-base);
+  }
+  
+  .password-container {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+
+  .profile-picture-section {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .profile-picture-container {
+    position: relative;
+    height: 120px;
+  }
+  
+  .profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 72px;
+    object-fit: cover;
+  }
+  
+  .edit-picture-button {
+    padding: 10px 12px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background-color:var(--blue-base);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .edit-picture-button:hover {
+    background-color: var(--blue-hover);
+  }
+
+  .icon-pencil-edit{
+    width: 12px;
+  }
+  
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  
+  .delete-account-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    border-top: 1px solid var(--black-100);
+    max-width:  min(80%, 1142px); 
+    margin: 0 auto;
+  }
+  
+  .delete-account-button {
+    display: flex;
+    justify-content: center;
+    font-size: var(--h5-size);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+  }
+  
+  .trash-icon {
+    margin-right: 8px;
+  }
+
+
+ .error-message {
+    color: var(--color-error);
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  @media (max-width:768px){
+    .profile-banner{background-image:url("../../../public/marco_perfil_us_md.webp")}
+    .form-data{min-width: 480px;}
+    .form-row{flex-direction:column;gap:0}
+    .profile-tabs{margin-top:20px;overflow-x:auto}
+  }
+  @media (max-width:480px){
+    .form-data{min-width: 370px;}
+    .form-data-picture-columns{ flex-direction: column-reverse;}
+    .profile-banner{background-image:url("../../../public/marco_perfil_us_sm.webp")}
+    .profile-tabs{margin-top:60px}
+    .action-buttons{flex-direction:column;align-items:center;gap:10px}
+    .delete-account-container{justify-content:center}
+  }

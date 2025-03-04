@@ -1,0 +1,249 @@
+/* Estilos base del NavDash */
+.navbarDash.home {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--Background-components);
+  border-radius: 60px;
+  box-shadow: var(--shadow-md);
+  width: min(80%, 1142px);
+  height: 70px;
+  padding: 0 3rem;
+  margin: 1rem auto;
+  backdrop-filter: blur(8px);
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+.skeleton-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* Contenedores laterales */
+.home .leftContainer,
+.home .rightContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.home .leftContainer {
+  gap: 2.5rem;
+}
+
+.home .rightContainer {
+  gap: 0.4rem;
+}
+
+/* Elementos comunes */
+.home .hide-mobile,
+.home .theme-globe-buttons,
+.home .auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo */
+.home .logo {
+  height: 28px;
+  width: auto;
+}
+
+/* Dropdown */
+.home .dropdown {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.home .dropdown-button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--Font-Background);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.home .dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--Background-components);
+  min-width: 200px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  padding: 0.75rem;
+  z-index: 1500;
+  margin-top: 0.5rem;
+}
+
+.home .dropdown-content .list-categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.home .dropdown-content .list-categories li {
+  padding: 0.75rem 1rem;
+  color: var(--Font-Background);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+}
+
+.home .dropdown-content .list-categories li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Botones y enlaces */
+.home .nav-link {
+  color: var(--Font-Background);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.theme-globe-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Font-Background);
+  cursor: pointer;
+}
+
+.home .icon-button svg {
+  font-size: 1.125rem;
+}
+
+/* Utilidades de visibilidad */
+.home .mobile-menu,
+.home .show-sm,
+.show-mobile {
+  display: none;
+}
+
+/* Media Queries */
+@media screen and (max-width: 1200px) {
+  .navbarDash.home {
+    width: min(90%, 900px);
+    height: 65px;
+  }
+
+  .home .leftContainer,
+  .home .rightContainer {
+    gap: 1.5rem;
+  }
+
+  .hide-tablet {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbarDash.home {
+    width: calc(100% - 2rem);
+    height: 60px;
+    border-radius: 30px;
+  }
+
+  .home .leftContainer,
+  .home .rightContainer {
+    gap: 0.6rem;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile,
+  .home .mobile-menu {
+    display: flex !important;
+  }
+
+  .home .logo {
+    height: 24px;
+  }
+
+  .menu-button {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0.5rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--Color-base);
+    color: var(--Menu-Hamburger);
+    border-radius: 100%;
+  }
+
+  .menu-button svg {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbarDash.home {
+    width: calc(100% - 1.5rem);
+    height: 53px;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+  }
+
+  .home .logo {
+    height: 20px;
+  }
+
+  .menu-button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .navbarDash.home {
+    padding: 1rem;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .home .hide-sm {
+    display: flex;
+  }
+}
+
+/* Estilos del menú hamburguesa */
+
+.menu-button svg {
+  font-size: 1.5rem;
+}
+
+/* Añadir estos estilos */
+.auth-buttons a {
+  text-decoration: none;
+}
