@@ -308,7 +308,7 @@ const ActivityDetail = () => {
                 <div className="experience-section">
                   <h2>Sobre la experiencia</h2>
 
-                  <div className="info-card yellow">
+                  <div className="info-card-yellow">
                     <div className="info-item">
                       <FontAwesomeIcon icon={faCalendarCheck} className="info-icon" />
                       <p>
