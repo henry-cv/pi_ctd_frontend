@@ -13,7 +13,6 @@
   background: var(--BackgroundColor);
   margin: 0;
   padding: 0;
-  height: 100vh;
 }
 
 .admin_container2 {
@@ -396,7 +395,7 @@ button:focus-visible {
   color: #000;
 }
 
-.user-info {
+.user-info-nav {
   display: flex;
   align-items: center;
   gap: 1rem;
