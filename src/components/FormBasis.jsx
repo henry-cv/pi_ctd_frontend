@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useContextGlobal } from "../gContext/globalContext";
 
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
@@ -40,6 +41,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [fechaEvento, setFechaEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
+  const { state } = useContextGlobal();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -221,7 +223,15 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log("FORMDATA para enviar: ")
     console.info(formData);
     try {
+      const token = state.token || localStorage.getItem("token");
+        
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación");
+      }
       const response = await fetch(endpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         method,
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
