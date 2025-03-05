@@ -17,6 +17,7 @@ import ErrorPage from "../components/ErrorPage";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import PublicRoute from "./PublicRoute";
+import EditActivitie from "../components/EditActivitie";
 
 const AppRoutes = () => {
   return (
@@ -59,7 +60,7 @@ const AppRoutes = () => {
         <Route path="actividades/crearactividad" element={<AddActivitie />} />
         <Route
           path="/administrador/actividades/editarActividad"
-          element={<FormBasis isEditMode={true} />}
+          element={<EditActivitie />}
         />
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />

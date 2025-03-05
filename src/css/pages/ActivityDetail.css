@@ -184,7 +184,12 @@ max-height: 500px;
   gap: 1.5rem;
 }
 
-.location-title h1 {
+.categories-detail{
+  display: flex;
+  gap: 8px;
+}
+
+.activity-detail-title h1 {
   font-family: var(--font-archivo);
   font-size: 2.5rem;
   margin: 0 0 1rem;
@@ -518,7 +523,7 @@ max-height: 500px;
     height: 450px;
   }
 
-  .location-title h1 {
+  .activity-detail-title h1 {
     font-size: 2.2rem;
   }
 
@@ -538,7 +543,7 @@ max-height: 500px;
     height: 400px;
   }
 
-  .location-title h1 {
+  .activity-detail-title h1 {
     font-size: 2rem;
   }
 
@@ -612,7 +617,7 @@ max-height: 500px;
     gap: 1.5rem;
   }
 
-  .location-title h1 {
+  .activity-detail-title h1 {
     font-size: 1.8rem;
   }
 
@@ -692,10 +697,11 @@ max-height: 500px;
     flex-direction: column;
   }
   
-  .location-title h1 {
+  .activity-detail-title h1 {
     font-size: 1.5rem;
   }
-  
+
+ 
   .detail-section {
     margin-top: 0;
 
