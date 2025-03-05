@@ -16,7 +16,6 @@ import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
-//import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 const FormBasis = ({ isEditMode = false }) => {
@@ -50,7 +49,8 @@ const FormBasis = ({ isEditMode = false }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [categoriasIds, setCategoriasIds] = useState([0]);
+  const [categoriasIds, setCategoriasIds] = useState([]);
+  const [caracteristicasIds, setCaracteristicasIds] = useState([]);
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -111,11 +111,15 @@ const FormBasis = ({ isEditMode = false }) => {
 
   //Para manejar los cambios en el select de categorías
   const handleCategoriaChange = (e) => {
-    const categoriaId = e.target.value;
-    console.log("categoriaId option value");
-    console.log(categoriaId);
-    setCategoriasIds([categoriaId]);
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const categoriasIds = selectedOptions.map((option) => option.value);
+    setCategoriasIds(categoriasIds);
   };
+  const handleCaracteristicasChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const caracteristicasIds = selectedOptions.map((option) => option.value);
+    setCaracteristicasIds(caracteristicasIds);
+  }
   // useEffect para traer las categorias existentes
   useEffect(() => {
     const fetchCategories = async () => {
@@ -129,7 +133,6 @@ const FormBasis = ({ isEditMode = false }) => {
         console.log(data);
       } catch (error) {
         console.error("Error cargando categorías:", error);
-        //setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -160,9 +163,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setFechaEvento(data.fechaEvento || "");
           setSelectedImages(data.productoImagenesSalidaDto || []);
           setEventType(data.eventType || data.tipoEvento);
-          /* if (data.tipoEvento === "RECURRENTE") {
-            setDiasDisponible(data.diasDisponible || []);
-          } */
+
           // Cargar imágenes existentes
           const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
           setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
@@ -480,7 +481,7 @@ const FormBasis = ({ isEditMode = false }) => {
       <div className="container-features">
         <label htmlFor="features">Características:
         </label>
-        <select name="caracteristicas" id="features" className="features-select">
+        <select name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
           <option value="" disabled> Selecciona la característica</option>
           <option value="wifi" id="1"><FaWifi /> WiFi</option>
           <option value="estacionamiento" id="2"><FaParking />Estacionamiento</option>
