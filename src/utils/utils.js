@@ -8,9 +8,8 @@ export function validarTexto(texto, maximo) {
 }
 export function validarAreaTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  /* console.log(`Texto normalizado: ${texto}`);
-  console.log(`Texto validado: ${/^[a-záéíóúñ]{3,}$/i.test(texto)}`); */
-  const regex = new RegExp(`^[\\wáéíóúñ ,.;-]{4,${maximo}}$`, 'i');
+  const regex = new RegExp(`^[\\wáéíóúñ *:,.•\n\r-]{4,${maximo}}$`, 'ig');
+  //const regex = new RegExp(`^(?:[\\wáéíóúñ :*,.;-•]){4,${maximo}}(?:[\\n\\r]|[\\s])*$`);
   return regex.test(texto);
 }
 export function longitudPermitida(texto, maximo) {
