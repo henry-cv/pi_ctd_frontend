@@ -3,9 +3,12 @@ import "../css/pages/UserProfile.css";
 import UserProfileSectionsTabs from "../components/UserProfileSectionsTabs";
 import FormEditUser from "../components/FormEditUser";
 import { useContextGlobal } from "../gContext/globalContext";
+import Avatar from "@mui/material/Avatar";
 
 const UserProfile = () => {
   const { state } = useContextGlobal();
+
+
   const style = {
     display: "flex", 
     justifyContent: "center", 
@@ -16,20 +19,21 @@ const UserProfile = () => {
     textAlign: "center" 
   };
 
-  const [userData, setUserData] = useState({
-    nombre: "Sara",
-    apellido: "Mendez",
-    email: "saris@gmail.com",
-    contraseñaActual: "passwordExample123", 
-    profileImage: "../../public/user_example.webp",
-  });
+  const [userData, setUserData] = useState(state.user);
+
+  const getUserInitials = `${userData?.nombre?.[0] || "U"}${
+    userData?.apellido?.[0] || "U"
+  }`.toUpperCase();
 
   return (
     <div className="profile-container">
       <div className="profile-banner">
         <div className="user-info-profile">
           <div className="avatar-container">
-            <img src={userData.profileImage} alt="Avatar del usuario" className="avatar" />
+          <Avatar sx={{ width: 120, height: 120, background: "#f6d85f", color:"black", fontSize:"40px" }}>
+              {getUserInitials}
+            </Avatar>
+            {/* <img src={userData.profileImage} alt="Avatar del usuario" className="avatar" /> */}
           </div>
           <div className="user-details-banner">
             <h2>{userData.nombre} {userData.apellido}</h2>

@@ -43,6 +43,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [fechaEvento, setFechaEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
+  const { state } = useContextGlobal();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -255,7 +256,14 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log(endpoint);
     try {
       const token = state.token || localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación");
+      }
       const response = await fetch(endpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         method,
         headers: {
           Authorization: `Bearer ${token}`,

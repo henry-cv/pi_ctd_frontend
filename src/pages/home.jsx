@@ -130,7 +130,7 @@ const Home = () => {
             <h2 className="section-title">Actividades cercanas</h2>
             <div className="activities-grid mobile-activities-grid">
               {activities.length > 0 ? (
-                renderActivityCards(activities)
+                renderActivityCards(activities.slice(0, 10))
               ) : (
                 <p>Cargando actividades...</p>
               )}
@@ -144,7 +144,7 @@ const Home = () => {
             <h2 className="section-title">Los más populares</h2>
             <div className="activities-grid mobile-activities-grid">
               {popularActivities.length > 0 ? (
-                renderActivityCards(popularActivities)
+                renderActivityCards(popularActivities.slice(0, 10))
               ) : (
                 <p>Cargando actividades populares...</p>
               )}
