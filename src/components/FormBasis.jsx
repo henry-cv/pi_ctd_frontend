@@ -13,9 +13,8 @@ import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
-
+import { useContextGlobal } from "../gContext/globalContext";
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
@@ -40,13 +39,16 @@ const FormBasis = ({ isEditMode = false }) => {
   const [fechaEvento, setFechaEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
+  const { state } = useContextGlobal();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-
+  const [categories, setCategories] = useState([]);
+  const [categoriasIds, setCategoriasIds] = useState([]);
+  const [characteristics, setCharacteristics] = useState([]);
+  const [caracteristicasIds, setCaracteristicasIds] = useState([]);
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -73,7 +75,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const handleDescriptionChange = (e) => {
     const texto = e.target.value;
-    const maximo = 100;
+    const maximo = 200;
     if (!validarAreaTexto(texto, maximo)) {
       setErrorDescripcion(
         `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
@@ -105,6 +107,57 @@ const FormBasis = ({ isEditMode = false }) => {
     setSelectedImages(files);
   };
 
+  //Para manejar los cambios en el select de categorías
+  const handleCategoriaChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const categoriasIdsArray = selectedOptions.map((option) => option.value);
+    setCategoriasIds(categoriasIdsArray);
+  };
+  const handleCaracteristicasChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const caracteristicasIds = selectedOptions.map((option) => option.value);
+    setCaracteristicasIds(caracteristicasIds);
+  }
+  // useEffect para traer las categorias existentes
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categoria/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener las categorías: ${response.status}`);
+        }
+        const data = await response.json();
+        setCategories(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error cargando categorías:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // useEffect para traer las caracteristicas existentes
+  useEffect(() => {
+    const fetchCharacteristics = async () => {
+      try {
+        const response = await fetch("/api/caracteristica/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener las características: ${response.status}`);
+        }
+        const data = await response.json();
+        setCharacteristics(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error cargando características:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCharacteristics();
+  }, []);
+  // useEffect para buscar actividad por Id y cargarla en el formulario
   useEffect(() => {
     const fetchActivity = async () => {
       if (activityId) {
@@ -118,6 +171,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setTitulo(data.nombre);
           setDescripcion(data.descripcion);
           setValorTarifa(data.valorTarifa);
+          setCategories(data.categorias);
           setTipoTarifa(data.tipoTarifa);
           setIdioma(data.idioma);
           setHoraInicio(data.horaInicio);
@@ -126,9 +180,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setFechaEvento(data.fechaEvento || "");
           setSelectedImages(data.productoImagenesSalidaDto || []);
           setEventType(data.eventType || data.tipoEvento);
-          /* if (data.tipoEvento === "RECURRENTE") {
-            setDiasDisponible(data.diasDisponible || []);
-          } */
+
           // Cargar imágenes existentes
           const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
           setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
@@ -193,6 +245,8 @@ const FormBasis = ({ isEditMode = false }) => {
       descripcion,
       valorTarifa: parseFloat(valorTarifa),
       tipoTarifa,
+      categoriasIds,
+      caracteristicasIds,
       idioma,
       horaInicio: `${horaInicio}:00`,
       horaFin: `${horaFin}:00`,
@@ -218,11 +272,17 @@ const FormBasis = ({ isEditMode = false }) => {
     console.log(productoData);
     console.log("Enviando datos al backend...");
     console.log(endpoint);
-    console.log("FORMDATA para enviar: ")
-    console.info(formData);
     try {
+      const token = state.token || localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación");
+      }
       const response = await fetch(endpoint, {
         method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
@@ -425,7 +485,40 @@ const FormBasis = ({ isEditMode = false }) => {
           />
         </div>
       )}
-
+      <div className="container-categories">
+        <label htmlFor="category">Categorías:</label>
+        {categories.length > 0 &&
+          <select multiple onChange={handleCategoriaChange}>
+            <option value="" disabled>Selecciona una categoría</option>
+            {categories.map((category) => (
+              <option id={category.id} key={category.id} value={category.id}>{category.nombre}</option>
+            ))}
+          </select>
+        }
+      </div>
+      <div className="container-features">
+        <label htmlFor="features">Características:
+        </label>
+        {/* <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
+          <option value="" disabled> Selecciona la característica</option>
+          <option value="wifi" id="1"><FaWifi /> WiFi</option>
+          <option value="estacionamiento" id="2"><FaParking />Estacionamiento</option>
+          <option value="espacio-para-ninos" id="3">Espacios para niños
+          </option>
+          <option value="zona-de-picnic" id="4">Zona de picnic
+          </option>
+          <option value="transporte-ejecutivo" id="5">Transporte ejecutivo
+          </option>
+          <option value="admite-mascotas" id="6">Admite mascotas
+          </option>
+        </select> */}
+        <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
+          <option value="" disabled> Selecciona la característica</option>
+          {characteristics.map((caracteristica) => (
+            <option key={caracteristica.id} value={caracteristica.id}>{caracteristica.nombre}</option>
+          ))}
+        </select>
+      </div >
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
         <select
@@ -443,25 +536,21 @@ const FormBasis = ({ isEditMode = false }) => {
 
       {/* Componente ImageUploader actualizado */}
       <div className="container-images">
-        {existingImages &&
+        {isEditMode && existingImages &&
           <label>Imágenes Existentes:</label>}
         {existingImages.length > 0 &&
           <div className="existing-images">
             {existingImages.map((img) => (
               <div key={img.id} className="image-preview">
                 <img src={img.url} alt="Imagen existente" />
-                <button
-                  type="button"
-                  className="remove-button"
-                  onClick={() => handleRemoveExistingImage(img.id)}
-                >
-                  <FaTrash />
-                </button>
               </div>
             ))}
           </div>
         }
-        <label>Nuevas Imágenes:</label>
+        {isEditMode
+          ? <label>Nuevas Imágenes:</label>
+          : <label>Imágenes:</label>
+        }
         <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
           <p className="selected-count">
@@ -491,7 +580,7 @@ const FormBasis = ({ isEditMode = false }) => {
           {isEditMode ? "Actualizar" : "Guardar"}
         </ButtonBluePill>
       </div>
-    </form>
+    </form >
   );
 };
 FormBasis.propTypes = {
