@@ -171,7 +171,8 @@ const FormBasis = ({ isEditMode = false }) => {
           setTitulo(data.nombre);
           setDescripcion(data.descripcion);
           setValorTarifa(data.valorTarifa);
-          setCategories(data.categorias);
+          setCategoriasIds(data.categoriasIds);
+          setCaracteristicasIds(data.caracteristicasIds);
           setTipoTarifa(data.tipoTarifa);
           setIdioma(data.idioma);
           setHoraInicio(data.horaInicio);
@@ -253,6 +254,7 @@ const FormBasis = ({ isEditMode = false }) => {
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
+      imagenesExistentes: existingImages.map((img) => img.id),
     };
 
     // Agregar el objeto producto como una parte JSON
@@ -271,7 +273,7 @@ const FormBasis = ({ isEditMode = false }) => {
     });
     console.log(productoData);
     console.log("Enviando datos al backend...");
-    console.log(endpoint);
+    //console.log(endpoint);
     try {
       const token = state.token || localStorage.getItem("token");
 
@@ -499,19 +501,6 @@ const FormBasis = ({ isEditMode = false }) => {
       <div className="container-features">
         <label htmlFor="features">Características:
         </label>
-        {/* <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
-          <option value="" disabled> Selecciona la característica</option>
-          <option value="wifi" id="1"><FaWifi /> WiFi</option>
-          <option value="estacionamiento" id="2"><FaParking />Estacionamiento</option>
-          <option value="espacio-para-ninos" id="3">Espacios para niños
-          </option>
-          <option value="zona-de-picnic" id="4">Zona de picnic
-          </option>
-          <option value="transporte-ejecutivo" id="5">Transporte ejecutivo
-          </option>
-          <option value="admite-mascotas" id="6">Admite mascotas
-          </option>
-        </select> */}
         <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
           <option value="" disabled> Selecciona la característica</option>
           {characteristics.map((caracteristica) => (
