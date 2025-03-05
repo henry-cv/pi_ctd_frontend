@@ -5,9 +5,6 @@ import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import { FaSave } from "react-icons/fa";
-import { FaParking } from "react-icons/fa";
-import { FaWifi } from "react-icons/fa";
-
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
@@ -16,7 +13,6 @@ import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
-//import { FaTrash } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 const FormBasis = ({ isEditMode = false }) => {
@@ -50,7 +46,9 @@ const FormBasis = ({ isEditMode = false }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [categoriasIds, setCategoriasIds] = useState([0]);
+  const [categoriasIds, setCategoriasIds] = useState([]);
+  const [characteristics, setCharacteristics] = useState([]);
+  const [caracteristicasIds, setCaracteristicasIds] = useState([]);
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -111,11 +109,15 @@ const FormBasis = ({ isEditMode = false }) => {
 
   //Para manejar los cambios en el select de categorías
   const handleCategoriaChange = (e) => {
-    const categoriaId = e.target.value;
-    console.log("categoriaId option value");
-    console.log(categoriaId);
-    setCategoriasIds([categoriaId]);
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const categoriasIdsArray = selectedOptions.map((option) => option.value);
+    setCategoriasIds(categoriasIdsArray);
   };
+  const handleCaracteristicasChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const caracteristicasIds = selectedOptions.map((option) => option.value);
+    setCaracteristicasIds(caracteristicasIds);
+  }
   // useEffect para traer las categorias existentes
   useEffect(() => {
     const fetchCategories = async () => {
@@ -129,7 +131,6 @@ const FormBasis = ({ isEditMode = false }) => {
         console.log(data);
       } catch (error) {
         console.error("Error cargando categorías:", error);
-        //setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -137,6 +138,25 @@ const FormBasis = ({ isEditMode = false }) => {
     fetchCategories();
   }, []);
 
+  // useEffect para traer las caracteristicas existentes
+  useEffect(() => {
+    const fetchCharacteristics = async () => {
+      try {
+        const response = await fetch("/api/caracteristica/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener las características: ${response.status}`);
+        }
+        const data = await response.json();
+        setCharacteristics(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error cargando características:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCharacteristics();
+  }, []);
   // useEffect para buscar actividad por Id y cargarla en el formulario
   useEffect(() => {
     const fetchActivity = async () => {
@@ -160,9 +180,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setFechaEvento(data.fechaEvento || "");
           setSelectedImages(data.productoImagenesSalidaDto || []);
           setEventType(data.eventType || data.tipoEvento);
-          /* if (data.tipoEvento === "RECURRENTE") {
-            setDiasDisponible(data.diasDisponible || []);
-          } */
+
           // Cargar imágenes existentes
           const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
           setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
@@ -228,6 +246,7 @@ const FormBasis = ({ isEditMode = false }) => {
       valorTarifa: parseFloat(valorTarifa),
       tipoTarifa,
       categoriasIds,
+      caracteristicasIds,
       idioma,
       horaInicio: `${horaInicio}:00`,
       horaFin: `${horaFin}:00`,
@@ -480,7 +499,7 @@ const FormBasis = ({ isEditMode = false }) => {
       <div className="container-features">
         <label htmlFor="features">Características:
         </label>
-        <select name="caracteristicas" id="features" className="features-select">
+        {/* <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
           <option value="" disabled> Selecciona la característica</option>
           <option value="wifi" id="1"><FaWifi /> WiFi</option>
           <option value="estacionamiento" id="2"><FaParking />Estacionamiento</option>
@@ -492,6 +511,12 @@ const FormBasis = ({ isEditMode = false }) => {
           </option>
           <option value="admite-mascotas" id="6">Admite mascotas
           </option>
+        </select> */}
+        <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
+          <option value="" disabled> Selecciona la característica</option>
+          {characteristics.map((caracteristica) => (
+            <option key={caracteristica.id} value={caracteristica.id}>{caracteristica.nombre}</option>
+          ))}
         </select>
       </div >
       <div className="container-languages">
