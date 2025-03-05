@@ -51,7 +51,6 @@ const FormBasis = ({ isEditMode = false }) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoriasIds, setCategoriasIds] = useState([0]);
-  const { state } = useContextGlobal();
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -261,9 +260,6 @@ const FormBasis = ({ isEditMode = false }) => {
         throw new Error("No se encontró el token de autenticación");
       }
       const response = await fetch(endpoint, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
         method,
         headers: {
           Authorization: `Bearer ${token}`,
