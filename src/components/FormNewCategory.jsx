@@ -7,6 +7,7 @@ import FieldError from "./FieldError";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { useContextGlobal } from "../gContext/globalContext";
 
 const FormNewCategory = () => {
 
@@ -20,6 +21,7 @@ const FormNewCategory = () => {
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { state } = useContextGlobal();
 
   const handleCategoryBlur = (e) => {
     const texto = e.target.value;
@@ -93,8 +95,16 @@ const FormNewCategory = () => {
     console.log("Enviando datos al backend...");
 
     try {
+      const token = state.token || localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación");
+      }
       const response = await fetch("/api/categoria/registrar", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
