@@ -81,6 +81,16 @@ const Home = () => {
       <section className="features-section">
         <div className="content-wrapper">
           <div className="features-header">
+            <img
+              src="./detail_plane1.svg"
+              alt="img plane 1"
+              className="detailPlane1"
+            />
+            <img
+              src="./detail_plane2.svg"
+              alt="img plane 1"
+              className="detailPlane2"
+            />
             <h2 className="features-title">
               Cosas que debe <span className="highlight">hacer</span>
             </h2>
