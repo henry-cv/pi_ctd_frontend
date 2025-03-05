@@ -69,9 +69,13 @@ const Home = () => {
           <div className="content-wrapper">
             <NavDash variant="home" isLoggedIn={isLoggedIn} />
           </div>
+          <div className="header-text">
+            <h1>Descubre, reserva y vive nuevas experiencias</h1>
+            <p>Conéctate con la emoción de viajar, descubrir y disfrutar.</p>
+          </div>
+          <SearchBox />
         </header>
         <Carousel images={carouselImages} />
-        <SearchBox />
       </section>
 
       <section className="features-section">
