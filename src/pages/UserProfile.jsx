@@ -16,8 +16,10 @@ const UserProfile = () => {
     height: "50vh", 
     fontSize: "24px", 
     fontWeight: "bold", 
-    textAlign: "center" 
+    textAlign: "center",
+    color:"gray"
   };
+
 
   const [userData, setUserData] = useState(state.user);
 
