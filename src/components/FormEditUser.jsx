@@ -6,15 +6,18 @@ import ButtonGral from "../components/ButtonGral";
 import Swal from "sweetalert2";
 import ProfileImageUploader from "./ProfileImageUploader";
 import { useContextGlobal } from "../gContext/globalContext";
+import DeleteUSer from "./DeleteUSer";
 
-function FormEditUser({ setUserData }) {
-  const { state } = useContextGlobal();
+const FormEditUser = ({ setUserData })=> {
+  const { state,dispatch } = useContextGlobal();
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const userData = state.user;
   const [formData, setFormData] = useState({
     ...userData,
     contraseña: "",
     repetirContraseña: "",
-    currentPassword: "",
+    // currentPassword: "",
   });
   const [originalData, setOriginalData] = useState({ ...userData });
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -23,8 +26,6 @@ function FormEditUser({ setUserData }) {
   const [errors, setErrors] = useState({});
   const [changePassword, setChangePassword] = useState(false);
 
-  console.log("el usuario a editar", state.user);
-
   const imageUploaderRef = useRef(null);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ function FormEditUser({ setUserData }) {
       ...userData,
       contraseña: "",
       repetirContraseña: "",
-      currentPassword: "",
+      // currentPassword: "",
     });
     setOriginalData({ ...userData });
   }, [userData]);
@@ -42,8 +43,8 @@ function FormEditUser({ setUserData }) {
       formData.nombre !== originalData.nombre ||
       formData.apellido !== originalData.apellido ||
       profileImage !== null ||
-      (formData.currentPassword &&
-        formData.currentPassword !== userData.contraseñaActual) ||
+      // (formData.currentPassword &&
+      //   formData.currentPassword !== userData.contraseñaActual) ||
       formData.contraseña ||
       formData.repetirContraseña;
 
@@ -74,135 +75,146 @@ function FormEditUser({ setUserData }) {
       newErrors.apellido = "El apellido es requerido";
     }
     setErrors(newErrors);
-  }, [formData, originalData, profileImage, userData.contraseñaActual]);
+  }, [formData ]);
 
-  const handleProfileImageChange = (file, previewUrl) => {
-    setProfileImage(file);
-    setFormData((prev) => ({
-      ...prev,
-      profileImage: previewUrl,
-    }));
-  };
+  // const handleProfileImageChange = (file, previewUrl) => {
+  //   setProfileImage(file);
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     profileImage: previewUrl,
+  //   }));
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("usuario editado");
-    
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      Swal.fire({
+        title: "Error",
+        text: "Por favor, completa correctamente todos los campos requeridos.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+  
+    // if (formData.currentPassword && formData.currentPassword !== userData.contraseñaActual) {
+    //   setErrors((prevErrors) => ({
+    //     ...prevErrors,
+    //     currentPassword: "La contraseña actual no coincide",
+    //   }));
+    //   Swal.fire({
+    //     title: "Error",
+    //     text: "La contraseña actual no coincide.",
+    //     icon: "error",
+    //     confirmButtonText: "OK",
+    //   });
+    //   return;
+    // }
+  
+    // if (formData.currentPassword === userData.contraseñaActual) {
+    //   if (!formData.contraseña || !formData.repetirContraseña || formData.contraseña !== formData.repetirContraseña) {
+    //     setErrors((prevErrors) => ({
+    //       ...prevErrors,
+    //       password: "Las nuevas contraseñas deben estar llenas y coincidir",
+    //     }));
+    //     Swal.fire({
+    //       title: "Error",
+    //       text: "Las nuevas contraseñas deben estar llenas y coincidir.",
+    //       icon: "error",
+    //       confirmButtonText: "OK",
+    //     });
+    //     return;
+    //   }
+    // }
+  
+    const submitData = {
+      nombre: formData.nombre,
+      apellido: formData.apellido,
+      email: formData.email, 
+  
+    };
+  
+    try {
+      const response = await fetch("http://44.195.185.220:8080/usuario/modificarusuario", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${state.token}`
+        },
+        body: JSON.stringify(submitData),
+      });
 
-    // Cambiar la logica con el endpoint de editar usuario 
 
-  //   const newErrors = validateForm();
-  //   if (Object.keys(newErrors).length > 0) {
-  //     Swal.fire({
-  //       title: "Error",
-  //       text: "Por favor, completa correctamente todos los campos requeridos.",
-  //       icon: "error",
-  //       confirmButtonText: "OK",
-  //     });
-  //     return;
-  //   }
+  
+      if (!response.ok) {
+        throw new Error("Error al actualizar el usuario");
+      }
+  
+      const data = await response.json();
+      const token = state.token
 
-  //   if (
-  //     formData.currentPassword &&
-  //     formData.currentPassword !== userData.contraseñaActual
-  //   ) {
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       currentPassword: "La contraseña actual no coincide",
-  //     }));
-  //     Swal.fire({
-  //       title: "Error",
-  //       text: "La contraseña actual no coincide.",
-  //       icon: "error",
-  //       confirmButtonText: "OK",
-  //     });
-  //     return;
-  //   }
+            dispatch({
+              type: "LOGIN_USER",
+              payload: { user: data, token },
+            });
 
-  //   if (formData.currentPassword === userData.contraseñaActual) {
-  //     if (
-  //       !formData.contraseña ||
-  //       !formData.repetirContraseña ||
-  //       formData.contraseña !== formData.repetirContraseña
-  //     ) {
-  //       setErrors((prevErrors) => ({
-  //         ...prevErrors,
-  //         password: "Las nuevas contraseñas deben estar llenas y coincidir",
-  //       }));
-  //       Swal.fire({
-  //         title: "Error",
-  //         text: "Las nuevas contraseñas deben estar llenas y coincidir.",
-  //         icon: "error",
-  //         confirmButtonText: "OK",
-  //       });
-  //       return;
-  //     }
-  //   }
-
-  //   const submitData = new FormData();
-  //   submitData.append("nombre", formData.nombre);
-  //   submitData.append("apellido", formData.apellido);
-
-  //   if (
-  //     formData.contraseña &&
-  //     formData.contraseña !== originalData.contraseña
-  //   ) {
-  //     submitData.append("contraseña", formData.contraseña);
-  //   }
-
-  //   if (profileImage) {
-  //     submitData.append("profileImage", profileImage);
-  //   }
-
-  //   setUserData(formData);
-  //   setOriginalData({ ...formData });
-  //   setProfileImage(null);
-  //   setIsButtonDisabled(true);
-
-  //   Swal.fire({
-  //     title: "¡Datos guardados!",
-  //     text: "Los cambios se han guardado correctamente.",
-  //     icon: "success",
-  //     showConfirmButton: false,
-  //     timer: 1800,
-  //   });
-  // };
-
-  // const validateForm = () => {
-  //   const newErrors = {};
-
-  //   if (!formData.nombre?.trim()) {
-  //     newErrors.nombre = "El nombre es requerido";
-  //   }
-
-  //   if (!formData.apellido?.trim()) {
-  //     newErrors.apellido = "El apellido es requerido";
-  //   }
-
-  //   if (
-  //     formData.contraseña &&
-  //     formData.repetirContraseña &&
-  //     formData.contraseña !== formData.repetirContraseña
-  //   ) {
-  //     newErrors.password = "Las contraseñas no coinciden";
-  //   }
-
-  //   setErrors(newErrors);
-  //   return newErrors;
+      console.log("Usuario actualizado:", data);
+  
+      Swal.fire({
+        title: "¡Datos guardados!",
+        text: "Los cambios se han guardado correctamente.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1800,
+      });
+  
+      setUserData(formData);
+      setOriginalData({ ...formData });
+  
+    } catch (error) {
+      console.error("Error al actualizar usuario:", error);
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo actualizar el usuario. Inténtalo de nuevo.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
+  
+  const validateForm = () => {
+    const newErrors = {};
+  
+    if (!formData.nombre?.trim()) {
+      newErrors.nombre = "El nombre es requerido";
+    }
+  
+    if (!formData.apellido?.trim()) {
+      newErrors.apellido = "El apellido es requerido";
+    }
+  
+    if (formData.contraseña && formData.repetirContraseña && formData.contraseña !== formData.repetirContraseña) {
+      newErrors.password = "Las contraseñas no coinciden";
+    }
+  
+    setErrors(newErrors);
+    return newErrors;
+  };
+  
 
   const handleCancel = () => {
     setFormData({
       ...originalData,
       contraseña: "",
       repetirContraseña: "",
-      currentPassword: "",
+      // currentPassword: "",
     });
 
     if (imageUploaderRef.current) {
@@ -212,6 +224,11 @@ function FormEditUser({ setUserData }) {
     setProfileImage(null);
     setErrors({});
     setIsButtonDisabled(true);
+  };
+
+  const handleDeleteClick = (id) => {
+    setSelectedId(id);
+    setShowModal(true); 
   };
 
   return (
@@ -379,8 +396,12 @@ function FormEditUser({ setUserData }) {
           text={"Eliminar Cuenta"}
           color="yellow"
           icon={<FaTrash size={"1.5rem"} />}
+          onClick={() => handleDeleteClick(userData.id)}
         />
       </div>
+      {showModal && (
+        <DeleteUSer id={selectedId} onClose={() => setShowModal(false)} />
+      )}
     </>
   );
 }

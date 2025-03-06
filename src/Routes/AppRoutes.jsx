@@ -17,6 +17,10 @@ import ErrorPage from "../components/ErrorPage";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import PublicRoute from "./PublicRoute";
+import EditActivitie from "../components/EditActivitie";
+import DashCharacteristics from "../components/DashCharacteristics";
+import AddCharacteristic from "../components/AddCharacteristic";
+import EditCharacteristic from "../components/EditCharacteristic";
 
 const AppRoutes = () => {
   return (
@@ -59,7 +63,7 @@ const AppRoutes = () => {
         <Route path="actividades/crearactividad" element={<AddActivitie />} />
         <Route
           path="/administrador/actividades/editarActividad"
-          element={<FormBasis isEditMode={true} />}
+          element={<EditActivitie />}
         />
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />
@@ -71,7 +75,10 @@ const AppRoutes = () => {
               <AsignarRol />
             </PrivateRoutes>
           } 
-        />
+          />
+        <Route path="caracteristicas" element={<DashCharacteristics />} />
+        <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
+  
       </Route>
 
       {/* Otras rutas */}

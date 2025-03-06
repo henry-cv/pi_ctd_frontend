@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import "../css/pages/dashboard.css";
 
-const ButtonGral = ({ text, color = "transparent", icon = null }) => {
+const ButtonGral = ({ text, color = "transparent", icon = null , onClick}) => {
   const colorStyles = {
     yellow: "btn_yellow",
     blue: "btn_blue",
@@ -13,7 +13,10 @@ const ButtonGral = ({ text, color = "transparent", icon = null }) => {
   }`;
 
   return (
-    <button className={buttonClass}>
+    <button 
+    className={buttonClass}
+    onClick={onClick}
+    >
       {icon && <span>{icon}</span>}
       {text}
     </button>

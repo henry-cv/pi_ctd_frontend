@@ -488,3 +488,218 @@ button:focus-visible {
 .dark_activities {
   color: var(--Font-Background) !important;
 }
+.settings-menu-container {
+  position: relative;
+  width: 100%;
+}
+
+.settings-main-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  gap: 10px;
+  height: 45px;
+  cursor: pointer;
+  position: relative;
+  padding: 0 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.settings-main-item.isActiveDash {
+  background: #f1c40f;
+  color: black !important;
+  border-radius: 30px;
+  padding-left: 30px !important;
+  padding-right: 45px !important; 
+}
+
+.listDash2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+  height: 45px;
+  cursor: pointer;
+}
+
+.listDash2.isActiveDash2 {
+  background-color: #f1c40f;
+  color: black !important;
+  border-radius: 50px;
+  padding: 0 20px;
+}
+
+.settings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.7rem;
+  height: 1.7rem;
+  color: inherit;
+}
+
+.listDash2.isActiveDash2 .settings-icon {
+  color: black !important;
+}
+
+.settings-main-item .listNameSide {
+  flex: 1;
+  transform: none;
+  animation: none;
+}
+
+.arrow-container {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.settings-main-item.isActiveDash .arrow-container {
+  right: 10px; 
+}
+
+.settings-arrow {
+  color: inherit;
+  width: 16px;
+  height: 16px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.listDashHover:hover {
+  background-color: white;
+  color: var(--Background-sideBar) !important;
+  border-radius: 50px;
+  padding: 0 20px;
+}
+
+.listDashHover:hover .arrow-container {
+  right: 10px;
+}
+
+.isActiveDash {
+  background: #f1c40f;
+  color: black !important;
+  border-radius: 30px;
+  padding-left: 30px !important;
+}
+
+.isActiveDash svg, 
+.isActiveDash .settings-arrow {
+  color: black !important;
+}
+
+.settings-dropdown-menu {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 0;
+  overflow: hidden;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.settings-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-radius: 30px;
+  margin: 5px 0;
+  height: 45px;
+  font-weight: 500;
+  width: 100%;
+  background-color: transparent;
+}
+
+.settings-dropdown-item.active {
+  background-color: #f1c40f;
+  color: black !important;
+}
+
+.settings-dropdown-item:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.settings-dropdown-item svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.grid-2-cols {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.characteristic-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--Font-Background);
+}
+
+.infoCharacteristic {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.add-characteristic-container {
+  padding: 20px;
+  width: 100%;
+}
+
+.add-characteristic-container .section-title {
+  margin-bottom: 20px;
+  color: var(--Font-Background);
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.icon-instruction {
+  font-size: 0.9rem;
+  color: var(--Icons-gray);
+  margin-top: 5px;
+}
+
+.icon-preview-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed var(--black-300);
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.03);
+}
+
+.icon-preview-wrapper .icon {
+  font-size: 24px;
+  color: var(--blue-base);
+}
+
+.icon-name {
+  font-size: 0.9rem;
+  color: var(--Font-Background);
+}
