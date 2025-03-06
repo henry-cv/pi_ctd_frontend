@@ -47,6 +47,9 @@ const FormBasis = ({ isEditMode = false }) => {
   const [categoriasIds, setCategoriasIds] = useState([]);
   const [characteristics, setCharacteristics] = useState([]);
   const [caracteristicasIds, setCaracteristicasIds] = useState([]);
+  const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
+
+
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -103,6 +106,10 @@ const FormBasis = ({ isEditMode = false }) => {
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
+  };
+  //Manejador para permitir subir nuevas imágenes
+  const handleAllowImageUploadChange = (e) => {
+    setAllowImageUpload(e.target.checked);
   };
 
   //Para manejar los cambios en el select de categorías
@@ -177,8 +184,8 @@ const FormBasis = ({ isEditMode = false }) => {
           setHoraFin(data.horaFin);
           setDiasDisponible(data.diasDisponible || []);
           setFechaEvento(data.fechaEvento || "");
-          //setSelectedImages(data.productoImagenesSalidaDto || []);
-          setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
+          setSelectedImages(data.productoImagenesSalidaDto || []);
+          //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
 
           setEventType(data.eventType || data.tipoEvento);
 
@@ -229,7 +236,7 @@ const FormBasis = ({ isEditMode = false }) => {
       return;
     }
 
-    if (selectedImages.length === 0) {
+    if (!isEditMode && selectedImages.length === 0) {
       alert("Debe seleccionar al menos una imagen");
       return;
     }
@@ -254,7 +261,6 @@ const FormBasis = ({ isEditMode = false }) => {
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      //imagenesExistentes: existingImages.map((img) => img.id),
     };
 
     // Agregar el objeto producto como una parte JSON
@@ -263,9 +269,9 @@ const FormBasis = ({ isEditMode = false }) => {
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
     // Agregar imágenes nuevas al FormData
-    /*     selectedImages.forEach((file) => {
-          formData.append("imagenesNuevas", file);
-        }); */
+    /* selectedImages.forEach((file) => {
+      formData.append("imagenesNuevas", file);
+    }); */
 
     // Agregar cada imagen como una parte separada
     //Está es la válida
@@ -274,9 +280,9 @@ const FormBasis = ({ isEditMode = false }) => {
     });
 
     // Solo agregar imágenes nuevas si se han seleccionado
-    if (selectedImages.length > 0) {
+    /* if (selectedImages.length > 0) {
       selectedImages.forEach((file) => formData.append("imagenes", file));
-    }
+    } */
     console.log(productoData);
     console.log("Enviando datos al backend...");
     //console.log(endpoint);
@@ -360,6 +366,7 @@ const FormBasis = ({ isEditMode = false }) => {
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
           onBlur={handleTitleBlur}
+          autoComplete="on"
           required
         />
         {errorTitulo && <FieldError message={errorTitulo} />}
@@ -372,6 +379,7 @@ const FormBasis = ({ isEditMode = false }) => {
           placeholder="Describe tu actividad o evento y detalla lo que incluye para que las personas sepan qué recibirán."
           value={descripcion}
           onChange={handleDescriptionChange}
+          autoComplete="on"
           required
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
@@ -532,7 +540,7 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
 
       {/* Componente ImageUploader actualizado */}
-      <div className="container-images">
+      {/*  <div className="container-images">
         {isEditMode && existingImages &&
           <label>Imágenes Existentes:</label>}
         {existingImages.length > 0 &&
@@ -548,13 +556,51 @@ const FormBasis = ({ isEditMode = false }) => {
           ? <label>Nuevas Imágenes:</label>
           : <label>Imágenes:</label>
         }
-        {/*         <ImageUploader onImagesSelected={handleImagesSelected} /> */}
-        <ImageUploader onImagesSelected={setSelectedImages} />
-
+        <ImageUploader onImagesSelected={handleImagesSelected} />
         {selectedImages.length > 0 && (
           <p className="selected-count">
             {selectedImages.length} imagen(es) seleccionada(s)
           </p>
+        )}
+      </div> */}
+
+      <div className="container-images">
+        {isEditMode && existingImages.length > 0 && (
+          <>
+            <label>Imágenes Existentes:</label>
+            <div className="existing-images">
+              {existingImages.map((img) => (
+                <div key={img.id} className="image-preview">
+                  <img src={img.url} alt="Imagen existente" />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {isEditMode && (
+          <div className="allow-upload">
+            <label>
+              <input
+                type="checkbox"
+                checked={allowImageUpload}
+                onChange={handleAllowImageUploadChange}
+              />
+              Permitir agregar nuevas imágenes
+            </label>
+          </div>
+        )}
+
+        {(!isEditMode || allowImageUpload) && (
+          <>
+            <label>{isEditMode ? "Nuevas Imágenes:" : "Imágenes:"}</label>
+            <ImageUploader onImagesSelected={handleImagesSelected} />
+            {selectedImages.length > 0 && (
+              <p className="selected-count">
+                {selectedImages.length} imagen(es) seleccionada(s)
+              </p>
+            )}
+          </>
         )}
       </div>
 
