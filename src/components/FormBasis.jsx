@@ -110,14 +110,16 @@ const FormBasis = ({ isEditMode = false }) => {
   //Para manejar los cambios en el select de categorías
   const handleCategoriaChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
-    const categoriasIdsArray = selectedOptions.map((option) => option.value);
+    const categoriasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCategoriasIds(categoriasIdsArray);
+    console.log("Categorías seleccionadas:", categoriasIdsArray);
   };
   const handleCaracteristicasChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
-    const caracteristicasIds = selectedOptions.map((option) => option.value);
-    setCaracteristicasIds(caracteristicasIds);
-  }
+    const caracteristicasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
+    setCaracteristicasIds(caracteristicasIdsArray);
+    console.log("Características seleccionadas:", caracteristicasIdsArray);
+  };
   // useEffect para traer las categorias existentes
   useEffect(() => {
     const fetchCategories = async () => {
@@ -171,8 +173,12 @@ const FormBasis = ({ isEditMode = false }) => {
           setTitulo(data.nombre);
           setDescripcion(data.descripcion);
           setValorTarifa(data.valorTarifa);
-          setCategoriasIds(data.categoriasIds);
-          setCaracteristicasIds(data.caracteristicasIds);
+
+          const catIds = data.categorias ? data.categorias.map(cat => cat.id) : [];
+          setCategoriasIds(catIds);
+          const charIds = data.caracteristicas ? data.caracteristicas.map(char => char.id) : [];
+          setCaracteristicasIds(charIds);
+
           setTipoTarifa(data.tipoTarifa);
           setIdioma(data.idioma);
           setHoraInicio(data.horaInicio);
@@ -246,34 +252,29 @@ const FormBasis = ({ isEditMode = false }) => {
       descripcion,
       valorTarifa: parseFloat(valorTarifa),
       tipoTarifa,
-      categoriasIds,
-      caracteristicasIds,
+      categoriasIds: categoriasIds, // Ya son números según tu payload
+      caracteristicasIds: caracteristicasIds, // Ya son números según tu payload
       idioma,
-      horaInicio: `${horaInicio}:00`,
-      horaFin: `${horaFin}:00`,
+      horaInicio: horaInicio.includes(':00') ? horaInicio : `${horaInicio}:00`,
+      horaFin: horaFin.includes(':00') ? horaFin : `${horaFin}:00`,
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      imagenesExistentes: existingImages.map((img) => img.id),
     };
+    console.log("Datos a enviar:", JSON.stringify(productoData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
       "producto",
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
-    // Agregar imágenes nuevas al FormData
-    /*     selectedImages.forEach((file) => {
-          formData.append("imagenesNuevas", file);
-        }); */
-
     // Agregar cada imagen como una parte separada
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
+
     console.log(productoData);
     console.log("Enviando datos al backend...");
-    //console.log(endpoint);
     try {
       const token = state.token || localStorage.getItem("token");
 
@@ -490,24 +491,32 @@ const FormBasis = ({ isEditMode = false }) => {
       <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
         {categories.length > 0 &&
-          <select multiple onChange={handleCategoriaChange}>
+          <select multiple onChange={handleCategoriaChange}
+          value={categoriasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
+         >
             <option value="" disabled>Selecciona una categoría</option>
             {categories.map((category) => (
-              <option id={category.id} key={category.id} value={category.id}>{category.nombre}</option>
+              <option key={category.id} value={category.id}>{category.nombre}</option>
             ))}
           </select>
         }
       </div>
       <div className="container-features">
-        <label htmlFor="features">Características:
-        </label>
-        <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
-          <option value="" disabled> Selecciona la característica</option>
+        <label htmlFor="features">Características:</label>
+        <select 
+          multiple 
+          name="caracteristicas" 
+          id="features" 
+          className="features-select" 
+          onChange={handleCaracteristicasChange}
+          value={caracteristicasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
+        >
+          <option value="" disabled>Selecciona la característica</option>
           {characteristics.map((caracteristica) => (
             <option key={caracteristica.id} value={caracteristica.id}>{caracteristica.nombre}</option>
           ))}
         </select>
-      </div >
+      </div>
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
         <select

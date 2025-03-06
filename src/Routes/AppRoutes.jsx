@@ -18,6 +18,9 @@ import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import PublicRoute from "./PublicRoute";
 import EditActivitie from "../components/EditActivitie";
+import DashCharacteristics from "../components/DashCharacteristics";
+import AddCharacteristic from "../components/AddCharacteristic";
+import EditCharacteristic from "../components/EditCharacteristic";
 
 const AppRoutes = () => {
   return (
@@ -72,7 +75,11 @@ const AppRoutes = () => {
               <AsignarRol />
             </PrivateRoutes>
           } 
-        />
+          />
+        <Route path="caracteristicas" element={<DashCharacteristics />} />
+        <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
+        <Route path="caracteristicas/editarCaracteristica" element={<EditCharacteristic />} />
+  
       </Route>
 
       {/* Otras rutas */}
