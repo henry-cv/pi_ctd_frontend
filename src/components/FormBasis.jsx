@@ -545,29 +545,6 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
 
       {/* Componente ImageUploader actualizado */}
-      {/*  <div className="container-images">
-        {isEditMode && existingImages &&
-          <label>Imágenes Existentes:</label>}
-        {existingImages.length > 0 &&
-          <div className="existing-images">
-            {existingImages.map((img) => (
-              <div key={img.id} className="image-preview">
-                <img src={img.url} alt="Imagen existente" />
-              </div>
-            ))}
-          </div>
-        }
-        {isEditMode
-          ? <label>Nuevas Imágenes:</label>
-          : <label>Imágenes:</label>
-        }
-        <ImageUploader onImagesSelected={handleImagesSelected} />
-        {selectedImages.length > 0 && (
-          <p className="selected-count">
-            {selectedImages.length} imagen(es) seleccionada(s)
-          </p>
-        )}
-      </div> */}
 
       <div className="container-images">
         {isEditMode && existingImages.length > 0 && (
