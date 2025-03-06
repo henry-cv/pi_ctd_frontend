@@ -341,9 +341,9 @@
 }
 .detailPlane2 {
   position: absolute;
-  bottom: -3rem;
-  right: 0rem;
-  rotate: 50deg;
+  bottom: -2rem;
+  right: -8rem;
+  rotate: -30deg;
 }
 
 /* Media Queries */
@@ -369,6 +369,12 @@
   .second-banner-image {
     width: 80%; /* Un poco más grande en tablets */
     margin: 5% auto; /* Margen del 5% para tablets */
+  }
+  .detailPlane2 {
+    position: absolute;
+    bottom: -3rem;
+    right: 0rem;
+    rotate: 50deg;
   }
 }
 
