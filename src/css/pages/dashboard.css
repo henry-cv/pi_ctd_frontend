@@ -488,3 +488,178 @@ button:focus-visible {
 .dark_activities {
   color: var(--Font-Background) !important;
 }
+/* Estilos para el menú desplegable en la sidebar */
+.settings-menu-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Ajusta el estilo del botón de Ajustes para que coincida con los demás elementos */
+.settings-main-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  gap: 10px;
+  height: 45px;
+  cursor: pointer;
+  position: relative;
+  padding: 0 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Estilos específicos para el botón cuando está activo */
+.settings-main-item.isActiveDash {
+  background: #f1c40f;
+  color: black !important;
+  border-radius: 30px;
+  padding-left: 30px !important;
+  padding-right: 45px !important; /* Espacio extra a la derecha para la flecha */
+}
+
+/* Estilo para los íconos en el estado colapsado */
+.listDash2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+  height: 45px;
+  cursor: pointer;
+}
+
+/* Estilo para el botón activo en estado colapsado */
+.listDash2.isActiveDash2 {
+  background-color: #f1c40f;
+  color: black !important;
+  border-radius: 50px;
+  padding: 0 20px;
+}
+
+/* Asegura que el ícono sea visible en todos los estados */
+.settings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.7rem;
+  height: 1.7rem;
+  color: inherit;
+}
+
+/* Estilos específicos para cuando Ajustes está en modo colapsado y activo */
+.listDash2.isActiveDash2 .settings-icon {
+  color: black !important;
+}
+
+/* Modifica el contenedor de la etiqueta */
+.settings-main-item .listNameSide {
+  flex: 1;
+  transform: none;
+  animation: none;
+}
+
+/* Contenedor para la flecha - posición absoluta para evitar desbordes */
+.arrow-container {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Asegura que la flecha esté correctamente posicionada cuando el ítem está activo */
+.settings-main-item.isActiveDash .arrow-container {
+  right: 10px; /* Mantener la flecha en la misma posición */
+}
+
+/* Agrega estilo a la flecha del dropdown */
+.settings-arrow {
+  color: inherit;
+  width: 16px;
+  height: 16px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Efectos hover para el modo expandido */
+.listDashHover:hover {
+  background-color: white;
+  color: var(--Background-sideBar) !important;
+  border-radius: 50px;
+  padding: 0 20px;
+}
+
+/* Aseguramos que el hover no afecte la posición de la flecha */
+.listDashHover:hover .arrow-container {
+  right: 10px;
+}
+
+/* Estilo para cuando está activo */
+.isActiveDash {
+  background: #f1c40f;
+  color: black !important;
+  border-radius: 30px;
+  padding-left: 30px !important;
+}
+
+/* Asegurar que los íconos en estado activo también cambien de color */
+.isActiveDash svg, 
+.isActiveDash .settings-arrow {
+  color: black !important;
+}
+
+/* Estilo del menú desplegable */
+.settings-dropdown-menu {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 0;
+  overflow: hidden;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Estilo para los elementos del dropdown */
+.settings-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-radius: 30px;
+  margin: 5px 0;
+  height: 45px;
+  font-weight: 500;
+  width: 100%;
+  background-color: transparent;
+}
+
+/* Estilo para los elementos del dropdown cuando están activos */
+.settings-dropdown-item.active {
+  background-color: #f1c40f;
+  color: black !important;
+}
+
+/* Hover para elementos normales del dropdown */
+.settings-dropdown-item:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Asegurar que los íconos del dropdown tengan el tamaño correcto */
+.settings-dropdown-item svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+.colum 
