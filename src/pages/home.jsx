@@ -9,25 +9,24 @@ import Footer from "../components/Footer";
 import { useContextGlobal } from "../gContext/globalContext";
 import renderActivityCards from "../components/RenderActivityCards";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
 
 const Home = () => {
   // Agregamos el estado global
   const { state } = useContextGlobal();
   const [isLoggedIn] = useState(false);
   const [activities, setActivities] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [popularActivities, setPopularActivities] = useState([]); // Nuevo estado
 
   const carouselImages = [
     "/bkgd_slider1.webp",
     "/bkgd_slider2.webp",
     "/bkgd_slider3.webp",
-  ];
-
-  const categories = [
-    { image: "/Culture.webp", title: "Cultural" },
-    { image: "/Gastronomy.webp", title: "Gastronomía" },
-    { image: "/Outdoor.webp", title: "Aire libre" },
-    { image: "/Wellness.webp", title: "Bienestar" },
   ];
 
   const fetchActivities = async () => {
@@ -58,9 +57,24 @@ const Home = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("/api/categoria/listar");
+      if (!response.ok) {
+        throw new Error(`Error al obtener categorías: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Categorías obtenidas:", data);
+      setCategories(data);
+    } catch (error) {
+      console.error("Error cargando categorías:", error);
+    }
+  };
+
   useEffect(() => {
     fetchActivities();
     fetchPopularActivities();
+    fetchCategories();
   }, []);
 
   return (
@@ -89,7 +103,7 @@ const Home = () => {
             />
             <img
               src="./detail_plane2.svg"
-              alt="img plane 1"
+              alt="img plane 2"
               className="detailPlane2"
             />
             <h2 className="features-title">
@@ -131,16 +145,37 @@ const Home = () => {
       <main className="main-content">
         <section className="categories-section">
           <div className="content-wrapper">
-            <h2 className="section-title">
+            <h2 className="section-title title_categories">
               Categorías
               <Link to="/actividades" className="view-all-link">
                 Ver todas
               </Link>
             </h2>
             <div className="categories-grid">
-              {categories.map((category, index) => (
-                <CategoryCard key={index} {...category} />
-              ))}
+              <Swiper
+                modules={[Navigation, Pagination]}
+                slidesPerView={5}
+                spaceBetween={20}
+                breakpoints={{
+                  320: { slidesPerView: 2 },
+                  400: { slidesPerView: 3 },
+                  768: { slidesPerView: 4 },
+                  1024: { slidesPerView: 5 },
+                }}
+              >
+                {categories.length > 0 ? (
+                  categories.map((category) => (
+                    <SwiperSlide key={category.id}>
+                      <CategoryCard
+                        title={category.nombre}
+                        image={category.imagenCategoriaUrl}
+                      />
+                    </SwiperSlide>
+                  ))
+                ) : (
+                  <p>Cargando categorías...</p>
+                )}
+              </Swiper>
             </div>
           </div>
         </section>

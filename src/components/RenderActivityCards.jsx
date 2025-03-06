@@ -9,9 +9,6 @@ const renderActivityCards = (activities) => {
     <Swiper
       navigation={true}
       modules={[Navigation, Pagination]}
-      pagination={{
-        clickable: true,
-      }}
       slidesPerView={"auto"}
       spaceBetween={20}
     >
