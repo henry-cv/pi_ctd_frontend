@@ -15,12 +15,10 @@ import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
+
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
-
-
-  //const activityToEdit = location.state?.activity || null;
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
 
@@ -49,6 +47,9 @@ const FormBasis = ({ isEditMode = false }) => {
   const [categoriasIds, setCategoriasIds] = useState([]);
   const [characteristics, setCharacteristics] = useState([]);
   const [caracteristicasIds, setCaracteristicasIds] = useState([]);
+  const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
+
+
   const toggleExtraFields = () => {
     setShowExtraFields(!showExtraFields);
   };
@@ -105,6 +106,10 @@ const FormBasis = ({ isEditMode = false }) => {
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
+  };
+  //Manejador para permitir subir nuevas imágenes
+  const handleAllowImageUploadChange = (e) => {
+    setAllowImageUpload(e.target.checked);
   };
 
   //Para manejar los cambios en el select de categorías
@@ -186,6 +191,8 @@ const FormBasis = ({ isEditMode = false }) => {
           setDiasDisponible(data.diasDisponible || []);
           setFechaEvento(data.fechaEvento || "");
           setSelectedImages(data.productoImagenesSalidaDto || []);
+          //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
+
           setEventType(data.eventType || data.tipoEvento);
 
           // Cargar imágenes existentes
@@ -235,7 +242,7 @@ const FormBasis = ({ isEditMode = false }) => {
       return;
     }
 
-    if (selectedImages.length === 0) {
+    if (!isEditMode && selectedImages.length === 0) {
       alert("Debe seleccionar al menos una imagen");
       return;
     }
@@ -269,6 +276,7 @@ const FormBasis = ({ isEditMode = false }) => {
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
     // Agregar cada imagen como una parte separada
+    //Está es la válida
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
@@ -316,6 +324,8 @@ const FormBasis = ({ isEditMode = false }) => {
       setDescripcion("");
       setValorTarifa("");
       setTipoTarifa("");
+      setCategoriasIds([]);
+      setCaracteristicasIds([]);
       setIdioma("");
       setHoraInicio("");
       setHoraFin("");
@@ -353,6 +363,7 @@ const FormBasis = ({ isEditMode = false }) => {
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
           onBlur={handleTitleBlur}
+          autoComplete="on"
           required
         />
         {errorTitulo && <FieldError message={errorTitulo} />}
@@ -365,6 +376,7 @@ const FormBasis = ({ isEditMode = false }) => {
           placeholder="Describe tu actividad o evento y detalla lo que incluye para que las personas sepan qué recibirán."
           value={descripcion}
           onChange={handleDescriptionChange}
+          autoComplete="on"
           required
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
@@ -492,8 +504,8 @@ const FormBasis = ({ isEditMode = false }) => {
         <label htmlFor="category">Categorías:</label>
         {categories.length > 0 &&
           <select multiple onChange={handleCategoriaChange}
-          value={categoriasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
-         >
+            value={categoriasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
+          >
             <option value="" disabled>Selecciona una categoría</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>{category.nombre}</option>
@@ -503,17 +515,17 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
       <div className="container-features">
         <label htmlFor="features">Características:</label>
-        <select 
-          multiple 
-          name="caracteristicas" 
-          id="features" 
-          className="features-select" 
+        <select
+          multiple
+          name="caracteristicas"
+          id="features"
+          className="features-select"
           onChange={handleCaracteristicasChange}
           value={caracteristicasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
         >
           <option value="" disabled>Selecciona la característica</option>
           {characteristics.map((caracteristica) => (
-            <option key={caracteristica.id} value={caracteristica.id}>{caracteristica.nombre}</option>
+            <option key={caracteristica.id} value={caracteristica.id}>{`${caracteristica.icono} ${caracteristica.nombre}`}</option>
           ))}
         </select>
       </div>
@@ -533,27 +545,44 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
 
       {/* Componente ImageUploader actualizado */}
+
       <div className="container-images">
-        {isEditMode && existingImages &&
-          <label>Imágenes Existentes:</label>}
-        {existingImages.length > 0 &&
-          <div className="existing-images">
-            {existingImages.map((img) => (
-              <div key={img.id} className="image-preview">
-                <img src={img.url} alt="Imagen existente" />
-              </div>
-            ))}
+        {isEditMode && existingImages.length > 0 && (
+          <>
+            <label>Imágenes Existentes:</label>
+            <div className="existing-images">
+              {existingImages.map((img) => (
+                <div key={img.id} className="image-preview">
+                  <img src={img.url} alt="Imagen existente" />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {isEditMode && (
+          <div className="allow-upload">
+            <label>
+              <input
+                type="checkbox"
+                checked={allowImageUpload}
+                onChange={handleAllowImageUploadChange}
+              />
+              Permitir agregar nuevas imágenes
+            </label>
           </div>
-        }
-        {isEditMode
-          ? <label>Nuevas Imágenes:</label>
-          : <label>Imágenes:</label>
-        }
-        <ImageUploader onImagesSelected={handleImagesSelected} />
-        {selectedImages.length > 0 && (
-          <p className="selected-count">
-            {selectedImages.length} imagen(es) seleccionada(s)
-          </p>
+        )}
+
+        {(!isEditMode || allowImageUpload) && (
+          <>
+            <label>{isEditMode ? "Nuevas Imágenes:" : "Imágenes:"}</label>
+            <ImageUploader onImagesSelected={handleImagesSelected} />
+            {selectedImages.length > 0 && (
+              <p className="selected-count">
+                {selectedImages.length} imagen(es) seleccionada(s)
+              </p>
+            )}
+          </>
         )}
       </div>
 
