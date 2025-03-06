@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../css/pages/dashboard.css";
 import "../css/components/AsignarRol.css";
 import { useContextGlobal } from "../gContext/globalContext";
@@ -93,7 +93,7 @@ const AsignarRol = () => {
       
       // Realizamos la petición al backend
       const response = await fetch("/api/usuario/modificarusuariorole", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`

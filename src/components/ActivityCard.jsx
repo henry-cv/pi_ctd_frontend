@@ -32,7 +32,7 @@ const ActivityCard = ({
 
   return (
     <Link key={id} to={`/actividad/${id}`} className="activity-link">
-      <div className="activity-card">
+      <div className="activity-card card-container-fluid">
         <div className="activity-image-container">
           <img
             src={image || defaultImage}

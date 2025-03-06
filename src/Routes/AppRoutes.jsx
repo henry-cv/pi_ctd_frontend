@@ -11,12 +11,15 @@ import ActivityDetail from "../pages/ActivityDetail";
 import AddCategory from "../components/AddCategory";
 import UserProfile from "../pages/UserProfile";
 import UserLayout from "../Layouts/UserLayout";
-import FormBasis from "../components/FormBasis";
 import PrivateRoutes from "./PrivateRoutes";
 import ErrorPage from "../components/ErrorPage";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import PublicRoute from "./PublicRoute";
+import EditActivitie from "../components/EditActivitie";
+import DashCharacteristics from "../components/DashCharacteristics";
+import AddCharacteristic from "../components/AddCharacteristic";
+import FilterProducts from "../pages/FilterProducts";
 
 const AppRoutes = () => {
   return (
@@ -24,6 +27,7 @@ const AppRoutes = () => {
       {/* Rutas públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/" element={<UserLayout />}>
+        <Route path="/actividades" element={<FilterProducts />} />
         <Route path="/actividad/:id" element={<ActivityDetail />} />
       </Route>
       {/* Rutas de autenticación (públicas) */}
@@ -59,7 +63,7 @@ const AppRoutes = () => {
         <Route path="actividades/crearactividad" element={<AddActivitie />} />
         <Route
           path="/administrador/actividades/editarActividad"
-          element={<FormBasis isEditMode={true} />}
+          element={<EditActivitie />}
         />
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />
@@ -71,7 +75,10 @@ const AppRoutes = () => {
               <AsignarRol />
             </PrivateRoutes>
           } 
-        />
+          />
+        <Route path="caracteristicas" element={<DashCharacteristics />} />
+        <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
+  
       </Route>
 
       {/* Otras rutas */}

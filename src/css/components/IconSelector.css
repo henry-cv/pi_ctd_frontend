@@ -1,0 +1,150 @@
+.icon-selector-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .selected-icon-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border: 1px solid var(--black-300);
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--white);
+    color: var(--black-300);
+    font-family: var(--font-outfit);
+    font-size: var(--h5-size);
+  }
+  
+  .selected-icon-display:hover {
+    border-color: var(--blue-base);
+  }
+  
+  .selected-icon {
+    font-size: 1.5rem;
+  }
+  
+  .selected-icon-name {
+    flex-grow: 1;
+  }
+  
+  .placeholder {
+    color: var(--gray-400);
+  }
+  
+  .icon-dropdown {
+    position: absolute;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    background-color: var(--Background-components);
+    border: 1px solid var(--black-300);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+  }
+  
+  .search-container {
+    padding: 10px;
+    border-bottom: 1px solid var(--black-100);
+  }
+  
+  .icon-search {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--black-100);
+    border-radius: 5px;
+    font-family: var(--font-outfit);
+  }
+  
+  .icons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    text-align: center;
+  }
+  
+  .icon-item:hover {
+    background-color: rgba(62, 16, 218, 0.1);
+  }
+  
+  .icon-item.selected {
+    background-color: rgba(62, 16, 218, 0.2);
+    color: var(--blue-base);
+  }
+  
+  .icon {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+  }
+  
+  .icon-label {
+    font-size: 12px;
+    color: var(--Font-Background);
+  }
+  
+  .no-results {
+    padding: 20px;
+    text-align: center;
+    color: var(--Font-Background);
+    grid-column: 1 / -1;
+  }
+  
+  /* Estilos para modo oscuro */
+  .dark .icon-dropdown {
+    background-color: var(--Background-components);
+  }
+  
+  .dark .icon-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark .icon-item.selected {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--Color-base);
+  }
+  
+  .dark .icon-search {
+    background-color: var(--Background-components);
+    color: var(--Font-Background);
+    border-color: var(--black-300);
+  }
+  
+  .dark .icon-label {
+    color: var(--Font-Background);
+  }
+  
+  /* Ajustes responsivos */
+  @media (max-width: 768px) {
+    .icons-grid {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+    
+    .icon {
+      font-size: 1.5rem;
+    }
+    
+    .icon-label {
+      font-size: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .icons-grid {
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+  }

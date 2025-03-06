@@ -71,7 +71,7 @@ const Login = () => {
           }
         };
 
-        fetchUserData(); // Llamamos la función para obtener los datos del usuario
+        fetchUserData();
       } else {
         throw new Error("Credenciales incorrectas");
       }
@@ -79,7 +79,7 @@ const Login = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Credenciales incorrectas",
+        text: error.response.data.error || "Credenciales incorrectas",
         confirmButtonColor: "#D61B1B",
       });
     }
