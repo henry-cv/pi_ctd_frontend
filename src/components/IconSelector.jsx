@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import * as FaIcons from "react-icons/fa";
-import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
-import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
-import SchoolIcon from '@mui/icons-material/School';
-import KayakingIcon from '@mui/icons-material/Kayaking';
-import InsightsIcon from '@mui/icons-material/Insights';
+import * as FaSolidIcons from "react-icons/fa6";
+import * as MuiIcons from "@mui/icons-material";
 import '../css/components/IconSelector.css';
 
 // Array de iconos disponibles
 const availableIcons = [
+  // Iconos originales
   { name: 'FaCampground', component: FaIcons.FaCampground, label: 'Camping' },
   { name: 'FaWifi', component: FaIcons.FaWifi, label: 'WiFi' },
   { name: 'FaParking', component: FaIcons.FaParking, label: 'Parking' },
@@ -22,25 +20,29 @@ const availableIcons = [
   { name: 'FaWineGlassAlt', component: FaIcons.FaWineGlassAlt, label: 'Vino' },
   { name: 'FaLanguage', component: FaIcons.FaLanguage, label: 'Idioma' },
   { name: 'FaBus', component: FaIcons.FaBus, label: 'Transporte' },
-  // Nuevos iconos de FontAwesome
-  { name: 'FaCamera', component: FaIcons.FaCamera, label: 'Cámara' },
-  { name: 'FaBinoculars', component: FaIcons.FaBinoculars, label: 'Binoculares' },
-  { name: 'FaDumbbell', component: FaIcons.FaDumbbell, label: 'Pesas' },
-  { name: 'FaTelescope', component: FaIcons.FaTelescope, label: 'Telescopio' },
-  { name: 'FaSpa', component: FaIcons.FaSpa, label: 'Spa' },
-  { name: 'FaHiking', component: FaIcons.FaHiking, label: 'Senderismo' },
-  { name: 'FaCow', component: FaIcons.FaCow, label: 'Vaca' },
-  { name: 'FaTractor', component: FaIcons.FaTractor, label: 'Tractor' },
-  { name: 'FaBriefcaseMedical', component: FaIcons.FaBriefcaseMedical, label: 'Médico' },
-  { name: 'FaHorse', component: FaIcons.FaHorse, label: 'Caballo' },
-  { name: 'FaFilm', component: FaIcons.FaFilm, label: 'Cine' },
-  { name: 'FaWalking', component: FaIcons.FaWalking, label: 'Apto para ciegos' },
+  
+  // Nuevos iconos Font Awesome
+  { name: 'FaCamera', component: FaIcons.FaCamera, label: 'Fotografía' },
+  { name: 'FaBinoculars', component: FaIcons.FaBinoculars, label: 'Observación' },
+  
+  // Iconos de Font Awesome Solid (FA6)
+  { name: 'FaDumbbell', component: FaSolidIcons.FaDumbbell, label: 'Ejercicio' },
+  { name: 'FaTelescope', component: FaSolidIcons.FaTelescope, label: 'Astronomía' },
+  { name: 'FaSpa', component: FaSolidIcons.FaSpa, label: 'Spa' },
+  { name: 'FaPersonHiking', component: FaSolidIcons.FaPersonHiking, label: 'Senderismo' },
+  { name: 'FaCow', component: FaSolidIcons.FaCow, label: 'Ganadería' },
+  { name: 'FaTractor', component: FaSolidIcons.FaTractor, label: 'Agricultura' },
+  { name: 'FaBriefcaseMedical', component: FaSolidIcons.FaBriefcaseMedical, label: 'Asistencia médica' },
+  { name: 'FaHorse', component: FaSolidIcons.FaHorse, label: 'Equitación' },
+  { name: 'FaFilm', component: FaSolidIcons.FaFilm, label: 'Cine' },
+  { name: 'FaPersonWalkingWithCane', component: FaSolidIcons.FaPersonWalkingWithCane, label: 'Accesible para ciegos' },
+  
   // Iconos de Material UI
-  { name: 'FlashlightOn', component: FlashlightOnIcon, label: 'Linterna' },
-  { name: 'SelfImprovement', component: SelfImprovementIcon, label: 'Yoga' },
-  { name: 'School', component: SchoolIcon, label: 'Educación' },
-  { name: 'Kayaking', component: KayakingIcon, label: 'Kayak' },
-  { name: 'Insights', component: InsightsIcon, label: 'Constelaciones' }
+  { name: 'FlashlightOn', component: MuiIcons.FlashlightOn, label: 'Iluminación' },
+  { name: 'SelfImprovement', component: MuiIcons.SelfImprovement, label: 'Meditación' },
+  { name: 'School', component: MuiIcons.School, label: 'Educación' },
+  { name: 'Kayaking', component: MuiIcons.Kayaking, label: 'Kayak' },
+  { name: 'Insights', component: MuiIcons.Insights, label: 'Constelaciones' }
 ];
 
 const IconSelector = ({ onSelectIcon, selectedIcon }) => {
