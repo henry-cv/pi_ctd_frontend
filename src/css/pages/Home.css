@@ -184,6 +184,16 @@
   align-items: flex-start;
 }
 
+.title_categories {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.title_categories a {
+  font-size: 1.05rem;
+}
+
 .categories-section .section-title,
 .activities-section .section-title {
   text-align: left;
@@ -332,7 +342,8 @@
 .detailPlane2 {
   position: absolute;
   bottom: -3rem;
-  right: -6rem;
+  right: 0rem;
+  rotate: 50deg;
 }
 
 /* Media Queries */
@@ -515,7 +526,14 @@
   }
   .detailPlane2 {
     position: absolute;
-    bottom: -1rem;
-    right: -2rem;
+    bottom: -2rem;
+    left: 0rem;
+    transform: scaleX(-1);
+    rotate: -80deg;
   }
+}
+.categories-grid {
+  width: 100%;
+  /* Sin display: grid o flex que fuerce varias filas */
+  overflow: hidden; /* Para que no se vea scroll extra */
 }
