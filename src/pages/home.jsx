@@ -69,14 +69,28 @@ const Home = () => {
           <div className="content-wrapper">
             <NavDash variant="home" isLoggedIn={isLoggedIn} />
           </div>
+          <div className="header-text">
+            <h1>Descubre, reserva y vive nuevas experiencias</h1>
+            <p>Conéctate con la emoción de viajar, descubrir y disfrutar.</p>
+          </div>
+          <SearchBox />
         </header>
         <Carousel images={carouselImages} />
-        <SearchBox />
       </section>
 
       <section className="features-section">
         <div className="content-wrapper">
           <div className="features-header">
+            <img
+              src="./detail_plane1.svg"
+              alt="img plane 1"
+              className="detailPlane1"
+            />
+            <img
+              src="./detail_plane2.svg"
+              alt="img plane 1"
+              className="detailPlane2"
+            />
             <h2 className="features-title">
               Cosas que debe <span className="highlight">hacer</span>
             </h2>
@@ -130,7 +144,7 @@ const Home = () => {
             <h2 className="section-title">Actividades cercanas</h2>
             <div className="activities-grid mobile-activities-grid">
               {activities.length > 0 ? (
-                renderActivityCards(activities)
+                renderActivityCards(activities.slice(0, 10))
               ) : (
                 <p>Cargando actividades...</p>
               )}
@@ -144,7 +158,7 @@ const Home = () => {
             <h2 className="section-title">Los más populares</h2>
             <div className="activities-grid mobile-activities-grid">
               {popularActivities.length > 0 ? (
-                renderActivityCards(popularActivities)
+                renderActivityCards(popularActivities.slice(0, 10))
               ) : (
                 <p>Cargando actividades populares...</p>
               )}

@@ -8,14 +8,19 @@ export const reducer = (state, action) => {
     case "SET_ACTIVE_TAB":
       return { ...state, activeTab: action.payload };
     case "LOGIN_USER":
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
       return {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
         isAuthenticated: true,
         isLoading: false,
+        usuarioRoles: action.payload.user.usuarioRoles,
       };
     case "LOGOUT_USER":
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       return {
         ...state,
         user: null,
@@ -26,7 +31,7 @@ export const reducer = (state, action) => {
     case "STOP_LOADING":
       return {
         ...state,
-        isLoading: false, 
+        isLoading: false,
       };
     default:
       throw new Error("Acción no existente");

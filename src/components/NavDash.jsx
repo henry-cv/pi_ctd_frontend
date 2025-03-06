@@ -25,7 +25,7 @@ const NavDash = ({ variant = "home" }) => {
         <div className="breadcrumb">
           <BasicBreadcrumbs />
         </div>
-        <div className="user-info">
+        <div className="user-info-nav">
           <button
             onClick={() => dispatch({ type: "CHANGE_THEME" })}
             className="icon-button"

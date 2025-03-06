@@ -5,10 +5,11 @@ import axios from "axios";
 const initialState = {
   theme: "",
   activeTab: "edit-profile",
-  user: null,
-  token: null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  token: localStorage.getItem("token") || null,
   isAuthenticated: false,
   isLoading: true,
+  usuarioRoles: null,
 };
 
 export const ContextGlobal = createContext();
@@ -34,14 +35,11 @@ export const ContextProvider = ({ children }) => {
         if (sub) {
           const fetchUserData = async (email) => {
             try {
-              const response = await axios.get(
-                `http://44.195.185.220:8080/usuario/${email}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
+              const response = await axios.get(`/api/usuario/${email}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
               const userData = response.data;
               console.log("Datos del usuario obtenidos:", userData);
 

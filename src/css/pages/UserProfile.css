@@ -1,3 +1,6 @@
+*{
+  box-sizing: border-box;
+}
 .profile-container {
     margin: 0 ;
     background-color: var(--BackgroundColor);
@@ -75,6 +78,7 @@
 
   .form-data label{
     color: var(--Font-Background);
+    font-size: var(--h6-size);
   }
 
   
@@ -85,19 +89,15 @@
   }
   
   .form-group {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
   }
   
-  label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: var(--black-400);
-  }
   
   .form-input {
-    width: 100%;
+    width: 100%;;
+    margin-top: 8px;
     padding: 12px 15px;
     border: 1px solid var(--black-100);
     border-radius: 30px;
@@ -113,10 +113,24 @@
   .email-container {
     display: flex;
     align-items: center;
+    
+  }
+
+  .email-container input{
+    background: var(--black-300--opacity);
+    
   }
 
   .email-container input {
     color: var(--Icons-gray);
+  }
+
+  .Change-Password-check input{
+    margin-left: 25px;
+  }
+
+  .Change-Password-check input[type="checkbox"]{
+    accent-color: var(--blue-base);
   }
   
   .password-container {

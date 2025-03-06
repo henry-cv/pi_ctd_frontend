@@ -1,8 +1,8 @@
 /* Contenedor principal */
 .search-box-container {
-  position: absolute;  /* Cambiamos de fixed a absolute */
+  position: absolute; /* Cambiamos de fixed a absolute */
   left: 50%;
-  bottom: 10%; /* Ajustamos la posición más abajo */
+  bottom: 8rem; /* Ajustamos la posición más abajo */
   transform: translateX(-50%);
   width: min(90%, 800px);
   z-index: 10;
@@ -12,18 +12,18 @@
 /* Wrapper del searchbox */
 .search-box-wrapper {
   background-color: var(--Background-components);
-  border-radius: 16px;
+  border-radius: 20px;
   box-shadow: var(--shadow-md);
   width: 100%;
   position: relative;
-  padding: 1.25rem;
+  padding: 1rem 1.25rem;
 }
 
 /* Grid de campos */
 .search-fields {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -41,7 +41,6 @@
   background-color: var(--gray-200);
 }
 
-/* Título del campo */
 .field-title {
   display: flex;
   align-items: center;
@@ -49,8 +48,8 @@
 }
 
 .field-title svg {
-  color: var(--Icons-gray);
-  font-size: 1rem;
+  color: var(--black);
+  font-size: 1.5rem;
 }
 
 .field-title span {
@@ -58,6 +57,41 @@
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--Font-Background);
+}
+
+.title-input-search > span {
+  font-size: 18px;
+  font-family: var(--font-archivo);
+}
+.title-input-search {
+  display: flex;
+  flex-direction: column;
+  height: 4.2rem;
+  width: 190px;
+}
+.category_box_search {
+  height: 25px;
+  margin-left: -7px;
+  padding: 0;
+}
+.textselect_box > b {
+  font-family: var(--font-outfit);
+  font-size: 16px;
+  font-weight: 100 !important;
+}
+
+.title-input-search > span + input {
+  border: 0;
+  padding: 10px 0;
+  width: 90%;
+  background: none;
+  font-family: var(--font-outfit);
+  font-size: 16px;
+}
+
+.title-input-search > span + input:focus,
+.title-input-search > span + input:focus-visible {
+  outline: 0px auto -webkit-focus-ring-color;
 }
 
 /* Botón de búsqueda */
@@ -78,6 +112,7 @@
   cursor: pointer;
   transition: background-color 0.2s;
   padding: 0;
+  font-size: 18px;
 }
 
 .search-button:hover {
@@ -90,13 +125,18 @@
     width: min(92%, 700px);
     bottom: 10%; /* Mantener consistente */
   }
-
+  .title-input-search {
+    width: 100%;
+  }
   .search-box-wrapper {
     padding: 1rem;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .title-input-search {
+    width: 100%;
+  }
   .search-box-container {
     width: calc(100% - 3rem);
     bottom: 10%; /* Mantener consistente */
@@ -109,15 +149,21 @@
 
   .search-fields {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas: 
+    grid-template-areas:
       "destino categoria"
       "fecha fecha";
     gap: 0.75rem;
   }
 
-  .search-field:nth-child(1) { grid-area: destino; }
-  .search-field:nth-child(2) { grid-area: categoria; }
-  .search-field:nth-child(3) { grid-area: fecha; }
+  .search-field:nth-child(1) {
+    grid-area: destino;
+  }
+  .search-field:nth-child(2) {
+    grid-area: categoria;
+  }
+  .search-field:nth-child(3) {
+    grid-area: fecha;
+  }
 
   .search-button {
     left: auto;
@@ -132,7 +178,7 @@
 @media screen and (max-width: 480px) {
   .search-box-container {
     width: calc(100% - 2rem);
-    bottom: 10%; /* Mantener consistente */
+    bottom: 3.5rem; /* Mantener consistente */
   }
 
   .field-title {
@@ -162,7 +208,7 @@
 @media screen and (max-width: 320px) {
   .search-box-container {
     width: calc(100% - 1.5rem);
-    bottom: 10%; /* Mantener consistente */
+    bottom: .5rem; /* Mantener consistente */
   }
 
   .search-box-wrapper {

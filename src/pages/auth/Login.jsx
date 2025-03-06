@@ -28,10 +28,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const response = await axios.post(
-        "http://44.195.185.220:8080/auth/login",
-        values
-      );
+      const response = await axios.post("api/auth/login", values);
 
       if (response.status >= 200 && response.status < 300) {
         const { token } = response.data;
@@ -43,14 +40,11 @@ const Login = () => {
 
         const fetchUserData = async () => {
           try {
-            const userResponse = await axios.get(
-              `http://44.195.185.220:8080/usuario/${sub}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+            const userResponse = await axios.get(`api/usuario/${sub}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             const userData = userResponse.data;
             dispatch({
               type: "LOGIN_USER",
@@ -77,7 +71,7 @@ const Login = () => {
           }
         };
 
-        fetchUserData(); // Llamamos la función para obtener los datos del usuario
+        fetchUserData();
       } else {
         throw new Error("Credenciales incorrectas");
       }
@@ -85,7 +79,7 @@ const Login = () => {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Credenciales incorrectas",
+        text: error.response.data.error || "Credenciales incorrectas",
         confirmButtonColor: "#D61B1B",
       });
     }
@@ -164,11 +158,11 @@ const Login = () => {
           </div>
 
           <button type="submit" className="submit_auth">
-            Iniciar Sesión
+            Inicia Sesión
           </button>
           <button type="button" className="google_auth">
             <FcGoogle fontSize={"26px"} />
-            Iniciar sesión con Google
+            Inicia sesión con Google
           </button>
         </form>
         <div className="register_auth_text">

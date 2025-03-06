@@ -1,0 +1,21 @@
+
+.swal2-popup {
+    border-radius: 20px !important; 
+    color: var(--Font-Background) ;
+  }
+  
+
+  .custom-button, .swal2-cancel {
+    border-radius: 25px !important; 
+    padding: 10px 20px;
+    width: 145px !important;
+  }
+  
+ .custom-button{
+    background-color: var(--blue-base);
+    color: var(--white);
+ }
+  .swal2-cancel {
+    background-color: var(--yellow-base);
+    color: var(--black);
+  }

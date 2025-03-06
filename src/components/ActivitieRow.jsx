@@ -1,11 +1,17 @@
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { useContextGlobal } from "../gContext/globalContext";
 
 const ActivitieRow = ({ id, imagen, titulo, reservas, onDelete, onUpdate }) => {
+  const { state } = useContextGlobal();
   const handleDelete = async () => {
     if (window.confirm("¿Estás seguro de eliminar este producto?")) {
       try {
+        const token = state.token || localStorage.getItem("token");
         const response = await fetch(`/api/producto/eliminar?id=${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           method: "DELETE",
         });
         if (!response.ok) {

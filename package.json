@@ -21,11 +21,13 @@
     "@mui/material": "^6.4.6",
     "@mui/x-date-pickers": "^7.27.1",
     "@react-google-maps/api": "^2.20.6",
+    "@sendgrid/mail": "^8.1.4",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "formik": "^2.4.6",
     "framer-motion": "^12.4.3",
+    "jwt-decode": "^4.0.0",
     "mapbox-gl": "^3.10.0",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
@@ -52,7 +54,7 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.8",
+    "tailwindcss": "^4.0.9",
     "vite": "^6.1.0"
   }
 }
