@@ -67,11 +67,12 @@ const FormBasis = ({ isEditMode = false }) => {
     const texto = e.target.value;
     if (!validarTexto(texto, maximo)) {
       setErrorTitulo(
-        `Título debe tener entre 4 y máximo ${maximo}, sin números o caracteres especiales`
+        `Título debe tener entre 4 y máximo ${maximo} carácteres, sin números o caracteres especiales`
       );
     } else {
       setErrorTitulo("");
     }
+    setTitulo(texto);
   };
 
   const handleDescriptionChange = (e) => {
@@ -79,7 +80,7 @@ const FormBasis = ({ isEditMode = false }) => {
     const maximo = 200;
     if (!validarAreaTexto(texto, maximo)) {
       setErrorDescripcion(
-        `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
+        `La descripción debe tener entre 4 y máximo ${maximo} carácteres`
       );
     } else {
       setErrorDescripcion("");
@@ -106,8 +107,8 @@ const FormBasis = ({ isEditMode = false }) => {
     if (!timeString) return timeString;
     const colonCount = (timeString.match(/:/g) || []).length;
     if (colonCount === 2) return timeString;
-    
-      return `${timeString}:00`;
+
+    return `${timeString}:00`;
   };
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
@@ -367,8 +368,7 @@ const FormBasis = ({ isEditMode = false }) => {
           name="nombre"
           placeholder="Inserta un título"
           value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-          onBlur={handleTitleBlur}
+          onChange={handleTitleBlur}
           autoComplete="on"
           required
         />
