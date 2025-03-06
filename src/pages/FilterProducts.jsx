@@ -42,7 +42,7 @@ const FilterProducts = () => {
   // Nuevos estados para filtros adicionales
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
-  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [priceRange, setPriceRange] = useState([0, 50000]);
   const [ratingFilters, setRatingFilters] = useState({
     five: false,
     four: false,
@@ -207,7 +207,8 @@ const FilterProducts = () => {
 
     if (hasRatingFilter) {
       filtered = filtered.filter(item => {
-        const rating = item.puntuacion || 0;
+        // Usar 4.5 como valor por defecto ya que es el rating hardcodeado actual
+        const rating = item.puntuacion || 4.5;
         
         return (ratingFilters.five && rating >= 5) || 
                (ratingFilters.four && rating >= 4 && rating < 5) ||
@@ -243,17 +244,12 @@ const FilterProducts = () => {
     
     // Filtrar por idioma (si está disponible)
     const hasLanguageFilter = languageFilters.spanish || languageFilters.english;
-
+    
     if (hasLanguageFilter && activities.some(item => item.idioma)) {
-      filtered = filtered.filter(item => {
-        if (!item.idioma) return false;
-        
-        const idioma = item.idioma.toLowerCase(); // Normalizar el idioma a minúsculas
-        return (languageFilters.spanish && 
-                (idioma === 'español' || idioma === 'espanol' || idioma === 'spanish')) ||
-               (languageFilters.english && 
-                (idioma === 'inglés' || idioma === 'ingles' || idioma === 'english'));
-      });
+      filtered = filtered.filter(item => 
+        (languageFilters.spanish && item.idioma === 'español') ||
+        (languageFilters.english && item.idioma === 'inglés')
+      );
     }
     
     // Aplicar ordenamiento
@@ -326,32 +322,6 @@ const FilterProducts = () => {
     }));
   };
 
-  // Función para restablecer todos los filtros a sus valores iniciales
-  const handleResetFilters = () => {
-    setSearchTerm('');
-    setSelectedDate(null);
-    setPriceRange([0, 10000]);
-    setRatingFilters({
-      five: false,
-      four: false,
-      three: false,
-    });
-    setDurationFilters({
-      upToOneHour: false,
-      oneToFourHours: false,
-      fourHoursToOneDay: false,
-      oneDayToThreeDays: false,
-      moreThanThreeDays: false,
-    });
-    setLanguageFilters({
-      spanish: false,
-      english: false,
-    });
-    setSelectedCategories([]);
-    setSortType("relevance");
-    setCurrentPage(1);
-  };
-
   // Calcular actividades para la página actual
   const currentActivities = filteredActivities.slice(
     (currentPage - 1) * itemsPerPage,
@@ -398,29 +368,7 @@ const FilterProducts = () => {
           
           <div className="filter-content">
             <div className="filter-sidebar">
-              <div className="filter-header-section">
-                <h3>Filtrar por</h3>
-                <button 
-                  className="reset-filters-btn" 
-                  onClick={handleResetFilters}
-                >
-                  Limpiar
-                </button>
-              </div>
-              
-              {/* Campo de fecha (movido arriba) */}
-              <div className="filter-section">
-                <h4>Fecha</h4>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Seleccionar fecha"
-                    value={selectedDate}
-                    onChange={(newDate) => setSelectedDate(newDate)}
-                    renderInput={(params) => <TextField {...params} size="small" fullWidth />}
-                    className="date-picker"
-                  />
-                </LocalizationProvider>
-              </div>
+              <h3>Filtrar por</h3>
               
               {/* Campo de búsqueda */}
               <div className="filter-section">
@@ -448,6 +396,20 @@ const FilterProducts = () => {
                   )}
                   className="search-field"
                 />
+              </div>
+              
+              {/* Campo de fecha */}
+              <div className="filter-section">
+                <h4>Fecha</h4>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Seleccionar fecha"
+                    value={selectedDate}
+                    onChange={(newDate) => setSelectedDate(newDate)}
+                    renderInput={(params) => <TextField {...params} size="small" fullWidth />}
+                    className="date-picker"
+                  />
+                </LocalizationProvider>
               </div>
               
               {/* Campo de categorías */}
@@ -480,8 +442,8 @@ const FilterProducts = () => {
                     onChange={(event, newValue) => setPriceRange(newValue)}
                     valueLabelDisplay="auto"
                     min={0}
-                    max={10000}
-                    step={100}
+                    max={50000}
+                    step={1000}
                     color="primary"
                   />
                   <div className="price-range-labels">
@@ -648,9 +610,8 @@ const FilterProducts = () => {
                       <div className="activity-card">
                         <div className="activity-image-container">
                           <img 
-                            src={activity.productoImagenesSalidaDto && activity.productoImagenesSalidaDto.length > 0 
-                              ? activity.productoImagenesSalidaDto[0].rutaImagen 
-                              : defaultImage} 
+                            src={activity.productoImagenesSalidaDto?.[0]?.rutaImagen ||
+                              "/activitie.webp"} 
                             alt={activity.nombre} 
                             className="activity-image"
                             onError={handleImageError}
