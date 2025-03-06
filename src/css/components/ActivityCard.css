@@ -5,10 +5,13 @@
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  width: 335px;
   height: 373px;
   padding: 10px;
   border: var(--black-100) solid 1px;
+}
+
+.card-container-fluid {
+  width: 335px !important;
 }
 
 .activity-card:hover {
@@ -43,10 +46,10 @@
   font-weight: 600;
   color: var(--Font-Background);
   margin: 0;
-  white-space: nowrap;  
-  overflow: hidden;     
-  text-overflow: ellipsis; 
-  width: 100%;  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .activity-details {
@@ -83,7 +86,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #FFC107;
+  color: #ffc107;
   font-weight: 500;
   font-size: 16px;
 }
