@@ -9,10 +9,13 @@ import {
   faChevronLeft,
   faChevronRight,
   faArrowLeft,
+  faClock,
+  faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
-import { faCalendarCheck, faClock } from "@fortawesome/free-regular-svg-icons";
+import * as FaIcons from "react-icons/fa"
+// import { faCalendarCheck } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
-import { FaGlobe } from "react-icons/fa";
+import { FaGlobe, FaStar,} from "react-icons/fa";
 import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 import ButtonGral from "../components/ButtonGral";
 import "../css/pages/ActivityDetail.css";
@@ -401,17 +404,23 @@ const ActivityDetail = () => {
                       </div>
                     </div>
 
-                    <div className="caracteristic-detail">
-  <h4>Servicios y comodidades:</h4>
+                    <div className="feature-detail">
+  <h2>Servicios y comodidades:</h2>
   {activity.caracteristicas.map((caracteristica, index) => {
-    // const IconComponent = {caracteristica.icono} || faStar; 
-
+const IconComponent =
+caracteristica.icono.startsWith("Fa") && caracteristica.icono in FaIcons
+  ? FaIcons[caracteristica.icono] 
+  : FaStar; 
+  console.log(IconComponent);
+  
     return (
-      <span key={index} className="flex items-center gap-2">
+      <p key={index} className="feature-item">
+        <span>
+    <IconComponent />
+        </span>
         {caracteristica.nombre}
-        {/* <FontAwesomeIcon icon={caracteristica.icono} */}
         {index !== activity.caracteristicas.length - 1 ? ", " : "."}
-      </span>
+      </p>
     );
   })}
 </div>
