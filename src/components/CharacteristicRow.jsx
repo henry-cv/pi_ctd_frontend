@@ -2,20 +2,61 @@ import { useState } from 'react';
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import * as FaIcons from "react-icons/fa";
+import * as Fa6Icons from "react-icons/fa6";
+import * as IoIcons from "react-icons/io5";
+import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
+import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
+import SchoolIcon from '@mui/icons-material/School';
+import KayakingIcon from '@mui/icons-material/Kayaking';
+import InsightsIcon from '@mui/icons-material/Insights';
 import PropTypes from 'prop-types';
 import { useContextGlobal } from "../gContext/globalContext";
 import Swal from "sweetalert2";
+
+// Material UI icon mapping
+const muiIcons = {
+  'FlashlightOnIcon': FlashlightOnIcon,
+  'SelfImprovementIcon': SelfImprovementIcon,
+  'SchoolIcon': SchoolIcon,
+  'KayakingIcon': KayakingIcon,
+  'InsightsIcon': InsightsIcon
+};
 
 const CharacteristicRow = ({ id, nombre, icono, onDelete, onUpdate }) => {
   const { state } = useContextGlobal();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Determinar qué icono mostrar
-  let IconComponent = FaIcons.FaHeart; // Valor por defecto
+  // Get the correct icon component based on the icon name
+  const getIconComponent = (iconName) => {
+    if (!iconName) return FaIcons.FaHeart; // Default icon
+    
+    // Check for Font Awesome (FA) icons
+    if (iconName.startsWith("Fa") && !iconName.startsWith("Fa6")) {
+      return iconName in FaIcons ? FaIcons[iconName] : FaIcons.FaHeart;
+    }
+    
+    // Check for Font Awesome 6 (FA6) icons
+    if (iconName.startsWith("Fa6") || (iconName.startsWith("Fa") && !(iconName in FaIcons))) {
+      const fa6Name = iconName.startsWith("Fa6") ? iconName.substring(3) : iconName;
+      return fa6Name in Fa6Icons ? Fa6Icons[fa6Name] : FaIcons.FaHeart;
+    }
+    
+    // Check for Ionicons (IO5) icons
+    if (iconName.startsWith("Io")) {
+      return iconName in IoIcons ? IoIcons[iconName] : FaIcons.FaHeart;
+    }
+    
+    // Check for Material UI icons
+    if (iconName.endsWith("Icon")) {
+      return iconName in muiIcons ? muiIcons[iconName] : FaIcons.FaHeart;
+    }
+    
+    // Default to FaHeart if no match found
+    return FaIcons.FaHeart;
+  };
 
-  if (icono && typeof icono === 'string' && icono in FaIcons) {
-    IconComponent = FaIcons[icono];
-  }
+  // Determine which icon to show
+  const IconComponent = getIconComponent(icono);
 
   const handleDelete = async () => {
     // Confirmación con SweetAlert2

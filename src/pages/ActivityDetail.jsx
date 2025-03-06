@@ -12,7 +12,14 @@ import {
   faClock,
   faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
-import * as FaIcons from "react-icons/fa"
+import * as FaIcons from "react-icons/fa";
+import * as Fa6Icons from "react-icons/fa6";
+import * as IoIcons from "react-icons/io5";
+import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
+import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
+import SchoolIcon from '@mui/icons-material/School';
+import KayakingIcon from '@mui/icons-material/Kayaking';
+import InsightsIcon from '@mui/icons-material/Insights';
 // import { faCalendarCheck } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { FaGlobe, FaStar,} from "react-icons/fa";
@@ -22,6 +29,15 @@ import "../css/pages/ActivityDetail.css";
 import DurationInfo from "../components/DurationInfo";
 import ImageViewer from "../components/ImageViewer";
 import { useContextGlobal } from "../gContext/globalContext";
+
+// Define MUI icon mapping
+const muiIcons = {
+  'FlashlightOnIcon': FlashlightOnIcon,
+  'SelfImprovementIcon': SelfImprovementIcon,
+  'SchoolIcon': SchoolIcon,
+  'KayakingIcon': KayakingIcon,
+  'InsightsIcon': InsightsIcon
+};
 
 const ActivityDetail = () => {
   const { state } = useContextGlobal();
@@ -135,6 +151,35 @@ const ActivityDetail = () => {
       }
     }
     return stars;
+  };
+
+  // Get the correct icon component based on the icon name
+  const getIconComponent = (iconName) => {
+    if (!iconName) return FaStar; // Default icon
+    
+    // Check for Font Awesome (FA) icons
+    if (iconName.startsWith("Fa") && !iconName.startsWith("Fa6")) {
+      return iconName in FaIcons ? FaIcons[iconName] : FaStar;
+    }
+    
+    // Check for Font Awesome 6 (FA6) icons
+    if (iconName.startsWith("Fa6") || (iconName.startsWith("Fa") && !(iconName in FaIcons))) {
+      const fa6Name = iconName.startsWith("Fa6") ? iconName.substring(3) : iconName;
+      return fa6Name in Fa6Icons ? Fa6Icons[fa6Name] : FaStar;
+    }
+    
+    // Check for Ionicons (IO5) icons
+    if (iconName.startsWith("Io")) {
+      return iconName in IoIcons ? IoIcons[iconName] : FaStar;
+    }
+    
+    // Check for Material UI icons
+    if (iconName.endsWith("Icon")) {
+      return iconName in muiIcons ? muiIcons[iconName] : FaStar;
+    }
+    
+    // Default to FaStar if no match found
+    return FaStar;
   };
 
   // Placeholder para las imágenes en caso de error
@@ -405,25 +450,22 @@ const ActivityDetail = () => {
                     </div>
 
                     <div className="feature-detail">
-  <h2>Servicios y comodidades:</h2>
-  {activity.caracteristicas.map((caracteristica, index) => {
-const IconComponent =
-caracteristica.icono.startsWith("Fa") && caracteristica.icono in FaIcons
-  ? FaIcons[caracteristica.icono] 
-  : FaStar; 
-  console.log(IconComponent);
-  
-    return (
-      <p key={index} className="feature-item">
-        <span>
-    <IconComponent />
-        </span>
-        {caracteristica.nombre}
-        {index !== activity.caracteristicas.length - 1 ? ", " : "."}
-      </p>
-    );
-  })}
-</div>
+                      <h2>Servicios y comodidades:</h2>
+                      {activity.caracteristicas.map((caracteristica, index) => {
+                        // Get the correct icon component based on the icon name
+                        const IconComponent = getIconComponent(caracteristica.icono);
+                        
+                        return (
+                          <p key={index} className="feature-item">
+                            <span>
+                              <IconComponent />
+                            </span>
+                            {caracteristica.nombre}
+                            {index !== activity.caracteristicas.length - 1 ? ", " : "."}
+                          </p>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>

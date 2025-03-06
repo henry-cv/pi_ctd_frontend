@@ -35,8 +35,6 @@ const availableIcons = [
   { name: 'FaWineGlassAlt', component: FaIcons.FaWineGlassAlt, label: 'Vino' },
   { name: 'FaLanguage', component: FaIcons.FaLanguage, label: 'Idioma' },
   { name: 'FaBus', component: FaIcons.FaBus, label: 'Transporte' },
-  
-  // Nuevos iconos Font Awesome
   { name: 'FaCamera', component: FaIcons.FaCamera, label: 'Fotografía' },
   { name: 'FaBinoculars', component: FaIcons.FaBinoculars, label: 'Observación' },
   
@@ -52,14 +50,14 @@ const availableIcons = [
   { name: 'FaPersonWalkingWithCane', component: FaPersonWalkingWithCane, label: 'Accesible para ciegos' },
 
   // Iconos de Io5
-  { name: 'FaTelescope', component: IoTelescope, label: 'Astronomía' },
+  { name: 'IoTelescope', component: IoTelescope, label: 'Astronomía' },
 
   // Iconos de Material UI
-  { name: 'FlashlightOn', component: FlashlightOnIcon, label: 'Iluminación' },
-  { name: 'SelfImprovement', component: SelfImprovementIcon, label: 'Meditación' },
-  { name: 'School', component: SchoolIcon, label: 'Educación' },
-  { name: 'Kayaking', component: KayakingIcon, label: 'Kayak' },
-  { name: 'Insights', component: InsightsIcon, label: 'Constelaciones' }
+  { name: 'FlashlightOnIcon', component: FlashlightOnIcon, label: 'Iluminación' },
+  { name: 'SelfImprovementIcon', component: SelfImprovementIcon, label: 'Meditación' },
+  { name: 'SchoolIcon', component: SchoolIcon, label: 'Educación' },
+  { name: 'KayakingIcon', component: KayakingIcon, label: 'Kayak' },
+  { name: 'InsightsIcon', component: InsightsIcon, label: 'Constelaciones' }
 ];
 
 const IconSelector = ({ onSelectIcon, selectedIcon }) => {
