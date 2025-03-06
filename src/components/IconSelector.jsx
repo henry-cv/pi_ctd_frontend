@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import * as FaIcons from "react-icons/fa";
-import * as FaSolidIcons from "react-icons/fa";
 import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import SchoolIcon from '@mui/icons-material/School';
