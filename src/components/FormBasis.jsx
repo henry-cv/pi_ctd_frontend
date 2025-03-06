@@ -531,7 +531,7 @@ const FormBasis = ({ isEditMode = false }) => {
         >
           <option value="" disabled>Selecciona la característica</option>
           {characteristics.map((caracteristica) => (
-            <option key={caracteristica.id} value={caracteristica.id}>{`${caracteristica.icono} ${caracteristica.nombre}`}</option>
+            <option key={caracteristica.id} value={caracteristica.id}>{`${caracteristica.nombre}`}</option>
           ))}
         </select>
       </div>
