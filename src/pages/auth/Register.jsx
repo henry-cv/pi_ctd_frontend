@@ -22,14 +22,16 @@ const Register = () => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().trim().required("El nombre es obligatorio."),
-    lastname: Yup.string().trim().required("El apellido es obligatorio."),
+    name: Yup.string().trim().matches(/^[a-zA-Záéíóúñ]{4,20}$/, "El nombre debe tener entre 4 y 20 letras.").required("El nombre es obligatorio."),
+    lastname: Yup.string().trim().matches(/^[a-zA-Záéíóúñ]{4,20}$/, "El apellido debe tener entre 4 y 20 letras.").required("El apellido es obligatorio."),
     email: Yup.string()
       .email("El email no es válido.")
+      .matches(/^[\w._]{4,}@[a-z]{3,}\.[a-z]{2,4}$/, "Dirección de correo incorrecta.")
       .required("El email es obligatorio."),
     password: Yup.string()
       .trim()
       .min(8, "La contraseña debe tener por lo menos 8 carácteres.")
+      .max(60, "La contraseña debe tener un máximo de 60 carácteres.")
       .matches(
         /^(?=.*[A-Z])(?=.*\d)(?=.*\W)/,
         "La contraseña debe contener al menos una mayúscula, un número y un símbolo."
@@ -110,11 +112,10 @@ const Register = () => {
       <div className="form_register">
         <Link to={"/"}>
           <img
-            src={`${
-              state.theme === "dark"
-                ? "./GoBook_LOGO_LIGHT.svg"
-                : "./Property 1=BlackV1.svg"
-            }`}
+            src={`${state.theme === "dark"
+              ? "./GoBook_LOGO_LIGHT.svg"
+              : "./Property 1=BlackV1.svg"
+              }`}
             alt="Logo Gobook"
             width={168}
           />
