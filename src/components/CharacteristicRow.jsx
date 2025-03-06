@@ -83,13 +83,6 @@ const CharacteristicRow = ({ id, nombre, icono, onDelete, onUpdate }) => {
       </div>
       <div className="btn_action">
         <button 
-          className="btn_blueAction" 
-          onClick={onUpdate}
-          disabled={isDeleting}
-        >
-          <FaEdit size={"1.2rem"} />
-        </button>
-        <button 
           className="btn_redAction" 
           onClick={handleDelete}
           disabled={isDeleting}

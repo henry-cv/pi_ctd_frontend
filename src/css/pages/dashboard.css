@@ -660,3 +660,46 @@ button:focus-visible {
   align-items: center;
   gap: 10px;
 }
+.add-characteristic-container {
+  padding: 20px;
+  width: 100%;
+}
+
+.add-characteristic-container .section-title {
+  margin-bottom: 20px;
+  color: var(--Font-Background);
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.icon-instruction {
+  font-size: 0.9rem;
+  color: var(--Icons-gray);
+  margin-top: 5px;
+}
+
+.icon-preview-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed var(--black-300);
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.03);
+}
+
+.icon-preview-wrapper .icon {
+  font-size: 24px;
+  color: var(--blue-base);
+}
+
+.icon-name {
+  font-size: 0.9rem;
+  color: var(--Font-Background);
+}

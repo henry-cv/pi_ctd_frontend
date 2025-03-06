@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useContextGlobal } from "../gContext/globalContext";
 
-const FormNewCharacteristic = ({ isEditMode = false, initialData = null }) => {
+const FormNewCharacteristic = () => {
   const navigate = useNavigate();
   const { state } = useContextGlobal();
   
   const [formData, setFormData] = useState({
-    nombre: initialData?.nombre || "",
-    icono: initialData?.icono || ""
+    nombre: "",
+    icono: ""
   });
   
   const [errors, setErrors] = useState({
@@ -66,8 +66,15 @@ const FormNewCharacteristic = ({ isEditMode = false, initialData = null }) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleCancel = () => {
+    navigate("/administrador/caracteristicas");
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // Si viene de un evento del formulario, prevenimos el comportamiento por defecto
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     
     if (!validateForm()) {
       return;
@@ -82,14 +89,10 @@ const FormNewCharacteristic = ({ isEditMode = false, initialData = null }) => {
         throw new Error("No se encontró el token de autenticación");
       }
       
-      const endpoint = isEditMode 
-        ? `/api/caracteristica/actualizar/${initialData.id}` 
-        : "/api/caracteristica/registrar";
-      
-      const method = isEditMode ? "PUT" : "POST";
+      const endpoint = "/api/caracteristica/registrar";
       
       const response = await fetch(endpoint, {
-        method,
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
@@ -103,8 +106,8 @@ const FormNewCharacteristic = ({ isEditMode = false, initialData = null }) => {
       }
       
       Swal.fire({
-        title: isEditMode ? "¡Característica Actualizada!" : "¡Característica Creada!",
-        text: `La característica se ha ${isEditMode ? "actualizado" : "guardado"} correctamente.`,
+        title: "¡Característica Creada!",
+        text: "La característica se ha guardado correctamente.",
         icon: "success",
         showConfirmButton: false,
         timer: 2000
@@ -116,7 +119,7 @@ const FormNewCharacteristic = ({ isEditMode = false, initialData = null }) => {
       console.error("Error:", error.message);
       Swal.fire({
         title: "Error",
-        text: `Error al ${isEditMode ? "actualizar" : "crear"} la característica: ${error.message}`,
+        text: `Error al crear la característica: ${error.message}`,
         icon: "error",
         confirmButtonColor: "#D61B1B",
       });
@@ -126,48 +129,54 @@ const FormNewCharacteristic = ({ isEditMode = false, initialData = null }) => {
   };
 
   return (
-    <form 
-      className="form-base new-characteristic" 
-      onSubmit={handleSubmit}
-    >
-      <div className="container-title">
-        <label htmlFor="characteristic-name">Nombre Característica</label>
-        <input
-          id="characteristic-name"
-          type="text"
-          placeholder="Ingresa nombre de la característica"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleInputChange}
-          required 
-        />
-        {errors.nombre && <FieldError message={errors.nombre} />}
-      </div>
+    <div className="form-base-container">
+      <form 
+        className="form-base new-characteristic" 
+        onSubmit={handleSubmit}
+      >
+        <div className="container-title">
+          <label htmlFor="characteristic-name">Nombre Característica</label>
+          <input
+            id="characteristic-name"
+            type="text"
+            placeholder="Ingresa nombre de la característica"
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleInputChange}
+            required 
+          />
+          {errors.nombre && <FieldError message={errors.nombre} />}
+        </div>
+        
+        <div className="container-icon">
+          <label htmlFor="characteristic-icon">Icono</label>
+          <IconSelector 
+            onSelectIcon={handleIconSelect} 
+            selectedIcon={formData.icono} 
+          />
+          {errors.icono && <FieldError message={errors.icono} />}
+        </div>
+      </form>
       
-      <div className="container-icon">
-        <label htmlFor="characteristic-icon">Icono</label>
-        <IconSelector 
-          onSelectIcon={handleIconSelect} 
-          selectedIcon={formData.icono} 
-        />
-        {errors.icono && <FieldError message={errors.icono} />}
-      </div>
-      
-      <div className="div-submit">
-        <ButtonBluePill
-          text="Cancelar"
-          className="button-yellow btn-preview"
+      {/* Botones fuera del formulario para evitar conflictos */}
+      <div className="form-buttons">
+        <button
+          className="button button-yellow btn-preview"
           type="button"
-          onClick={() => navigate("/administrador/caracteristicas")}
-        />
-        <ButtonBluePill
-          text={isSubmitting ? "Guardando..." : isEditMode ? "Actualizar" : "Guardar"}
-          className="button-blue btn-save"
-          type="submit"
+          onClick={handleCancel}
+        >
+          Cancelar
+        </button>
+        <button
+          className="button button-blue btn-save"
+          type="button"
+          onClick={handleSubmit}
           disabled={isSubmitting}
-        />
+        >
+          {isSubmitting ? "Guardando..." : "Guardar"}
+        </button>
       </div>
-    </form>
+    </div>
   );
 };
 

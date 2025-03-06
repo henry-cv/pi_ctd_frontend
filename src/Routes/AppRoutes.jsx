@@ -78,7 +78,6 @@ const AppRoutes = () => {
           />
         <Route path="caracteristicas" element={<DashCharacteristics />} />
         <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
-        <Route path="caracteristicas/editarCaracteristica" element={<EditCharacteristic />} />
   
       </Route>
 
