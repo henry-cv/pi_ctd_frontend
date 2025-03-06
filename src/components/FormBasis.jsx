@@ -102,7 +102,13 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
-
+  const ensureTimeHasSeconds = (timeString) => {
+    if (!timeString) return timeString;
+    const colonCount = (timeString.match(/:/g) || []).length;
+    if (colonCount === 2) return timeString;
+    
+      return `${timeString}:00`;
+  };
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
@@ -262,8 +268,8 @@ const FormBasis = ({ isEditMode = false }) => {
       categoriasIds: categoriasIds, // Ya son números según tu payload
       caracteristicasIds: caracteristicasIds, // Ya son números según tu payload
       idioma,
-      horaInicio: horaInicio.includes(':00') ? horaInicio : `${horaInicio}:00`,
-      horaFin: horaFin.includes(':00') ? horaFin : `${horaFin}:00`,
+      horaInicio: ensureTimeHasSeconds(horaInicio),
+      horaFin: ensureTimeHasSeconds(horaFin),
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
