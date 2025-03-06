@@ -405,6 +405,14 @@
   color: #EEC52D !important;
 }
 
+.dark-theme .MuiSlider-root {
+  color: #EEC52D !important;
+}
+
+.dark-theme .MuiSlider-thumb {
+  color: #EEC52D !important;
+}
+
 /* Media queries */
 @media (max-width: 992px) {
   .filter-content {
@@ -432,4 +440,39 @@
   .sort-container {
     width: 100%;
   }
+}
+
+/* Añadir estos estilos al final del archivo */
+
+/* Estilos para el encabezado de la barra lateral con el botón de restablecer */
+.filter-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.reset-filters-btn {
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
+  border: 1px solid var(--gray-300);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-filters-btn:hover {
+  background-color: var(--gray-200);
+}
+
+.dark-theme .reset-filters-btn {
+  background-color: var(--Dark-background-components);
+  color: var(--Dark-Font-Background);
+  border: 1px solid var(--Dark-gray-200);
+}
+
+.dark-theme .reset-filters-btn:hover {
+  background-color: var(--Dark-gray-300);
 }
