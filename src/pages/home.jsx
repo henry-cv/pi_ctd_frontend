@@ -8,6 +8,7 @@ import "../css/components/ActivityCard.css";
 import Footer from "../components/Footer";
 import { useContextGlobal } from "../gContext/globalContext";
 import renderActivityCards from "../components/RenderActivityCards";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // Agregamos el estado global
@@ -130,7 +131,12 @@ const Home = () => {
       <main className="main-content">
         <section className="categories-section">
           <div className="content-wrapper">
-            <h2 className="section-title">Categorías</h2>
+            <h2 className="section-title">
+              Categorías
+              <Link to="/actividades" className="view-all-link">
+                Ver todas
+              </Link>
+            </h2>
             <div className="categories-grid">
               {categories.map((category, index) => (
                 <CategoryCard key={index} {...category} />
