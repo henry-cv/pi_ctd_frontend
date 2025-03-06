@@ -15,12 +15,10 @@ import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
+
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
-
-
-  //const activityToEdit = location.state?.activity || null;
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
 
@@ -179,7 +177,9 @@ const FormBasis = ({ isEditMode = false }) => {
           setHoraFin(data.horaFin);
           setDiasDisponible(data.diasDisponible || []);
           setFechaEvento(data.fechaEvento || "");
-          setSelectedImages(data.productoImagenesSalidaDto || []);
+          //setSelectedImages(data.productoImagenesSalidaDto || []);
+          setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
+
           setEventType(data.eventType || data.tipoEvento);
 
           // Cargar imágenes existentes
@@ -254,7 +254,7 @@ const FormBasis = ({ isEditMode = false }) => {
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      imagenesExistentes: existingImages.map((img) => img.id),
+      //imagenesExistentes: existingImages.map((img) => img.id),
     };
 
     // Agregar el objeto producto como una parte JSON
@@ -268,9 +268,15 @@ const FormBasis = ({ isEditMode = false }) => {
         }); */
 
     // Agregar cada imagen como una parte separada
+    //Está es la válida
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
+
+    // Solo agregar imágenes nuevas si se han seleccionado
+    if (selectedImages.length > 0) {
+      selectedImages.forEach((file) => formData.append("imagenes", file));
+    }
     console.log(productoData);
     console.log("Enviando datos al backend...");
     //console.log(endpoint);
@@ -315,6 +321,8 @@ const FormBasis = ({ isEditMode = false }) => {
       setDescripcion("");
       setValorTarifa("");
       setTipoTarifa("");
+      setCategoriasIds([]);
+      setCaracteristicasIds([]);
       setIdioma("");
       setHoraInicio("");
       setHoraFin("");
@@ -504,7 +512,7 @@ const FormBasis = ({ isEditMode = false }) => {
         <select multiple name="caracteristicas" id="features" className="features-select" onChange={handleCaracteristicasChange}>
           <option value="" disabled> Selecciona la característica</option>
           {characteristics.map((caracteristica) => (
-            <option key={caracteristica.id} value={caracteristica.id}>{caracteristica.nombre}</option>
+            <option key={caracteristica.id} value={caracteristica.id}>{`${caracteristica.icono} ${caracteristica.nombre}`}</option>
           ))}
         </select>
       </div >
@@ -540,7 +548,9 @@ const FormBasis = ({ isEditMode = false }) => {
           ? <label>Nuevas Imágenes:</label>
           : <label>Imágenes:</label>
         }
-        <ImageUploader onImagesSelected={handleImagesSelected} />
+        {/*         <ImageUploader onImagesSelected={handleImagesSelected} /> */}
+        <ImageUploader onImagesSelected={setSelectedImages} />
+
         {selectedImages.length > 0 && (
           <p className="selected-count">
             {selectedImages.length} imagen(es) seleccionada(s)
