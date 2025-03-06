@@ -142,7 +142,7 @@ const FormEditUser = ({ setUserData })=> {
     };
   
     try {
-      const response = await fetch("http://44.195.185.220:8080/usuario/modificarusuario", {
+      const response = await fetch("/api/usuario/modificarusuario", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
