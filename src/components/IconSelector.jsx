@@ -1,7 +1,22 @@
 import { useState } from 'react';
 import * as FaIcons from "react-icons/fa";
-import * as FaSolidIcons from "react-icons/fa6";
-import * as MuiIcons from "@mui/icons-material";
+import { 
+  FaDumbbell, 
+  FaTelescope, 
+  FaSpa, 
+  FaPersonHiking, 
+  FaCow, 
+  FaTractor, 
+  FaBriefcaseMedical, 
+  FaHorse, 
+  FaFilm, 
+  FaPersonWalkingWithCane 
+} from "react-icons/fa6";
+import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
+import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
+import SchoolIcon from '@mui/icons-material/School';
+import KayakingIcon from '@mui/icons-material/Kayaking';
+import InsightsIcon from '@mui/icons-material/Insights';
 import '../css/components/IconSelector.css';
 
 // Array de iconos disponibles
@@ -26,52 +41,52 @@ const availableIcons = [
   { name: 'FaBinoculars', component: FaIcons.FaBinoculars, label: 'Observación' },
   
   // Iconos de Font Awesome Solid (FA6)
-  { name: 'FaDumbbell', component: FaSolidIcons.FaDumbbell, label: 'Ejercicio' },
-  { name: 'FaTelescope', component: FaSolidIcons.FaTelescope, label: 'Astronomía' },
-  { name: 'FaSpa', component: FaSolidIcons.FaSpa, label: 'Spa' },
-  { name: 'FaPersonHiking', component: FaSolidIcons.FaPersonHiking, label: 'Senderismo' },
-  { name: 'FaCow', component: FaSolidIcons.FaCow, label: 'Ganadería' },
-  { name: 'FaTractor', component: FaSolidIcons.FaTractor, label: 'Agricultura' },
-  { name: 'FaBriefcaseMedical', component: FaSolidIcons.FaBriefcaseMedical, label: 'Asistencia médica' },
-  { name: 'FaHorse', component: FaSolidIcons.FaHorse, label: 'Equitación' },
-  { name: 'FaFilm', component: FaSolidIcons.FaFilm, label: 'Cine' },
-  { name: 'FaPersonWalkingWithCane', component: FaSolidIcons.FaPersonWalkingWithCane, label: 'Accesible para ciegos' },
+  { name: 'FaDumbbell', component: FaDumbbell, label: 'Ejercicio' },
+  { name: 'FaTelescope', component: FaTelescope, label: 'Astronomía' },
+  { name: 'FaSpa', component: FaSpa, label: 'Spa' },
+  { name: 'FaPersonHiking', component: FaPersonHiking, label: 'Senderismo' },
+  { name: 'FaCow', component: FaCow, label: 'Ganadería' },
+  { name: 'FaTractor', component: FaTractor, label: 'Agricultura' },
+  { name: 'FaBriefcaseMedical', component: FaBriefcaseMedical, label: 'Asistencia médica' },
+  { name: 'FaHorse', component: FaHorse, label: 'Equitación' },
+  { name: 'FaFilm', component: FaFilm, label: 'Cine' },
+  { name: 'FaPersonWalkingWithCane', component: FaPersonWalkingWithCane, label: 'Accesible para ciegos' },
   
   // Iconos de Material UI
-  { name: 'FlashlightOn', component: MuiIcons.FlashlightOn, label: 'Iluminación' },
-  { name: 'SelfImprovement', component: MuiIcons.SelfImprovement, label: 'Meditación' },
-  { name: 'School', component: MuiIcons.School, label: 'Educación' },
-  { name: 'Kayaking', component: MuiIcons.Kayaking, label: 'Kayak' },
-  { name: 'Insights', component: MuiIcons.Insights, label: 'Constelaciones' }
+  { name: 'FlashlightOn', component: FlashlightOnIcon, label: 'Iluminación' },
+  { name: 'SelfImprovement', component: SelfImprovementIcon, label: 'Meditación' },
+  { name: 'School', component: SchoolIcon, label: 'Educación' },
+  { name: 'Kayaking', component: KayakingIcon, label: 'Kayak' },
+  { name: 'Insights', component: InsightsIcon, label: 'Constelaciones' }
 ];
 
 const IconSelector = ({ onSelectIcon, selectedIcon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-
+  
   // Filtrar los iconos basados en el término de búsqueda
   const filteredIcons = searchTerm 
     ? availableIcons.filter(icon => 
         icon.label.toLowerCase().includes(searchTerm.toLowerCase()) || 
         icon.name.toLowerCase().includes(searchTerm.toLowerCase()))
     : availableIcons;
-
+  
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
+  
   const handleSelectIcon = (iconName) => {
     onSelectIcon(iconName);
     setIsOpen(false);
   };
-
+  
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
+  
   const selectedIconObj = availableIcons.find(icon => icon.name === selectedIcon);
   const IconComponent = selectedIconObj?.component || FaIcons.FaHeart;
-
+  
   return (
     <div className="icon-selector-container">
       <div 
@@ -87,7 +102,6 @@ const IconSelector = ({ onSelectIcon, selectedIcon }) => {
           <span className="placeholder">Selecciona un icono</span>
         )}
       </div>
-
       {isOpen && (
         <div className="icon-dropdown">
           <div className="search-container">
