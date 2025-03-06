@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import * as FaIcons from "react-icons/fa";
+import * as FaSolidIcons from "react-icons/fa";
+import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
+import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
+import SchoolIcon from '@mui/icons-material/School';
+import KayakingIcon from '@mui/icons-material/Kayaking';
+import InsightsIcon from '@mui/icons-material/Insights';
 import '../css/components/IconSelector.css';
 
 // Array de iconos disponibles
@@ -16,7 +22,26 @@ const availableIcons = [
   { name: 'FaUtensils', component: FaIcons.FaUtensils, label: 'Comida' },
   { name: 'FaWineGlassAlt', component: FaIcons.FaWineGlassAlt, label: 'Vino' },
   { name: 'FaLanguage', component: FaIcons.FaLanguage, label: 'Idioma' },
-  { name: 'FaBus', component: FaIcons.FaBus, label: 'Transporte' }
+  { name: 'FaBus', component: FaIcons.FaBus, label: 'Transporte' },
+  // Nuevos iconos de FontAwesome
+  { name: 'FaCamera', component: FaIcons.FaCamera, label: 'Cámara' },
+  { name: 'FaBinoculars', component: FaIcons.FaBinoculars, label: 'Binoculares' },
+  { name: 'FaDumbbell', component: FaSolidIcons.FaDumbbell, label: 'Pesas' },
+  { name: 'FaTelescope', component: FaSolidIcons.FaTelescope, label: 'Telescopio' },
+  { name: 'FaSpa', component: FaSolidIcons.FaSpa, label: 'Spa' },
+  { name: 'FaHiking', component: FaSolidIcons.FaHiking, label: 'Senderismo' },
+  { name: 'FaCow', component: FaSolidIcons.FaCow, label: 'Vaca' },
+  { name: 'FaTractor', component: FaSolidIcons.FaTractor, label: 'Tractor' },
+  { name: 'FaBriefcaseMedical', component: FaSolidIcons.FaBriefcaseMedical, label: 'Médico' },
+  { name: 'FaHorse', component: FaSolidIcons.FaHorse, label: 'Caballo' },
+  { name: 'FaFilm', component: FaSolidIcons.FaFilm, label: 'Cine' },
+  { name: 'FaWalking', component: FaSolidIcons.FaWalking, label: 'Apto para ciegos' },
+  // Iconos de Material UI
+  { name: 'FlashlightOn', component: FlashlightOnIcon, label: 'Linterna' },
+  { name: 'SelfImprovement', component: SelfImprovementIcon, label: 'Yoga' },
+  { name: 'School', component: SchoolIcon, label: 'Educación' },
+  { name: 'Kayaking', component: KayakingIcon, label: 'Kayak' },
+  { name: 'Insights', component: InsightsIcon, label: 'Constelaciones' }
 ];
 
 const IconSelector = ({ onSelectIcon, selectedIcon }) => {
