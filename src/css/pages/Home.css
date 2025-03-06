@@ -339,12 +339,6 @@
   top: 2rem;
   left: 10rem;
 }
-.detailPlane2 {
-  position: absolute;
-  bottom: -2rem;
-  right: -8rem;
-  rotate: -30deg;
-}
 
 /* Media Queries */
 @media (max-width: 1024px) {
@@ -369,12 +363,6 @@
   .second-banner-image {
     width: 80%; /* Un poco más grande en tablets */
     margin: 5% auto; /* Margen del 5% para tablets */
-  }
-  .detailPlane2 {
-    position: absolute;
-    bottom: -3rem;
-    right: 0rem;
-    rotate: 50deg;
   }
 }
 
@@ -529,13 +517,6 @@
     position: absolute;
     top: 2rem;
     left: 0rem;
-  }
-  .detailPlane2 {
-    position: absolute;
-    bottom: -2rem;
-    left: 0rem;
-    transform: scaleX(-1);
-    rotate: -80deg;
   }
 }
 .categories-grid {
