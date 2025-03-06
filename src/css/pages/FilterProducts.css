@@ -293,6 +293,118 @@
   height: 16px;
 }
 
+/* Estilos para categorías en formato burbuja */
+.category-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.category-bubble {
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+  border: 1px solid var(--gray-200);
+}
+
+.category-bubble.selected {
+  background-color: #3E10DA;
+  color: white;
+  border: 1px solid #3E10DA;
+}
+
+.dark-theme .category-bubble.selected {
+  background-color: #EEC52D;
+  color: black;
+  border: 1px solid #EEC52D;
+}
+
+.category-icon {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+/* Estilos para los sliders y datepickers */
+.search-field,
+.date-picker {
+  margin-top: 10px;
+}
+
+.price-slider-container {
+  padding: 0 10px;
+  margin-top: 15px;
+}
+
+.price-range-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 14px;
+  color: var(--Font-Background);
+}
+
+/* Estilos para los filtros de calificación */
+.rating-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rating-label {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para los filtros de duración */
+.duration-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Estilos para los filtros de idioma */
+.language-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Ajustes responsivos para la barra lateral */
+@media (max-width: 768px) {
+  .filter-content {
+    flex-direction: column;
+  }
+  
+  .filter-sidebar {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
+/* Personalización de los componentes MUI */
+.MuiRating-icon {
+  color: var(--blue-base) !important;
+}
+
+.dark-theme .MuiRating-icon {
+  color: #EEC52D !important;
+}
+
+.MuiCheckbox-root.Mui-checked {
+  color: var(--blue-base) !important;
+}
+
+.dark-theme .MuiCheckbox-root.Mui-checked {
+  color: #EEC52D !important;
+}
+
 /* Media queries */
 @media (max-width: 992px) {
   .filter-content {
