@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "../css/components/FormNewCharacteristic.css";
 import "../css/global/variables.css";
-import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
 import { validarTexto } from "../utils/utils";
 import IconSelector from "./IconSelector";
@@ -38,7 +37,6 @@ const FormNewCharacteristic = () => {
       ...formData,
       icono: iconName
     });
-    // Limpiar error si existía
     if (errors.icono) {
       setErrors({
         ...errors,
@@ -71,7 +69,6 @@ const FormNewCharacteristic = () => {
   };
 
   const handleSubmit = async (e) => {
-    // Si viene de un evento del formulario, prevenimos el comportamiento por defecto
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -158,7 +155,6 @@ const FormNewCharacteristic = () => {
         </div>
       </form>
       
-      {/* Botones fuera del formulario para evitar conflictos */}
       <div className="form-buttons">
         <button
           className="button button-yellow btn-preview"

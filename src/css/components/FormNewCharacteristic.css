@@ -1,15 +1,14 @@
 @import "../components/Form.css";
 
-/* Estilos específicos para el formulario de características */
 .form-base-container {
   display: flex;
   flex-direction: column;
-  gap: 0; /* Eliminamos el gap entre formulario y botones */
+  gap: 0; 
   width: 100%;
   max-width: 600px;
-  border: 1px solid var(--Font-Background); /* Movemos el borde al contenedor principal */
-  border-radius: 45px; /* Aplicamos el border-radius al contenedor completo */
-  overflow: hidden; /* Importante para que las esquinas internas se vean bien */
+  border: 1px solid var(--Font-Background); 
+  border-radius: 45px; 
+  overflow: hidden; 
 }
 
 .form-base.new-characteristic {
@@ -22,17 +21,16 @@
   padding: 30px;
   width: 100%;
   overflow-x: auto;
-  border: none; /* Quitamos el borde del formulario */
+  border: none; 
 }
-
 .form-buttons {
   display: flex;
   justify-content: center;
   gap: 40px;
   padding: 20px 30px;
   background-color: var(--Background-components);
-  border: none; /* Quitamos el borde de los botones */
-  border-top: 1px solid var(--Font-Background); /* Solo mantenemos una línea arriba */
+  border: none; 
+  border-top: 1px solid var(--Font-Background); 
 }
 
 .form-base.new-characteristic > div {
@@ -106,5 +104,3 @@
   white-space: nowrap;
   width: 100%;
 }
-
-
