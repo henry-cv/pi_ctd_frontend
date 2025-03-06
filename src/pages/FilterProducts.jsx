@@ -42,7 +42,7 @@ const FilterProducts = () => {
   // Nuevos estados para filtros adicionales
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
-  const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
   const [ratingFilters, setRatingFilters] = useState({
     five: false,
     four: false,
@@ -244,12 +244,17 @@ const FilterProducts = () => {
     
     // Filtrar por idioma (si está disponible)
     const hasLanguageFilter = languageFilters.spanish || languageFilters.english;
-    
+
     if (hasLanguageFilter && activities.some(item => item.idioma)) {
-      filtered = filtered.filter(item => 
-        (languageFilters.spanish && item.idioma === 'español') ||
-        (languageFilters.english && item.idioma === 'inglés')
-      );
+      filtered = filtered.filter(item => {
+        if (!item.idioma) return false;
+        
+        const idioma = item.idioma.toLowerCase(); // Normalizar el idioma a minúsculas
+        return (languageFilters.spanish && 
+                (idioma === 'español' || idioma === 'espanol' || idioma === 'spanish')) ||
+               (languageFilters.english && 
+                (idioma === 'inglés' || idioma === 'ingles' || idioma === 'english'));
+      });
     }
     
     // Aplicar ordenamiento
@@ -322,6 +327,32 @@ const FilterProducts = () => {
     }));
   };
 
+  // Función para restablecer todos los filtros a sus valores iniciales
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setSelectedDate(null);
+    setPriceRange([0, 10000]);
+    setRatingFilters({
+      five: false,
+      four: false,
+      three: false,
+    });
+    setDurationFilters({
+      upToOneHour: false,
+      oneToFourHours: false,
+      fourHoursToOneDay: false,
+      oneDayToThreeDays: false,
+      moreThanThreeDays: false,
+    });
+    setLanguageFilters({
+      spanish: false,
+      english: false,
+    });
+    setSelectedCategories([]);
+    setSortType("relevance");
+    setCurrentPage(1);
+  };
+
   // Calcular actividades para la página actual
   const currentActivities = filteredActivities.slice(
     (currentPage - 1) * itemsPerPage,
@@ -368,7 +399,15 @@ const FilterProducts = () => {
           
           <div className="filter-content">
             <div className="filter-sidebar">
-              <h3>Filtrar por</h3>
+              <div className="filter-header-section">
+                <h3>Filtrar por</h3>
+                <button 
+                  className="reset-filters-btn" 
+                  onClick={handleResetFilters}
+                >
+                  Limpiar
+                </button>
+              </div>
               
               {/* Campo de búsqueda */}
               <div className="filter-section">
@@ -442,8 +481,8 @@ const FilterProducts = () => {
                     onChange={(event, newValue) => setPriceRange(newValue)}
                     valueLabelDisplay="auto"
                     min={0}
-                    max={50000}
-                    step={1000}
+                    max={10000}
+                    step={100}
                     color="primary"
                   />
                   <div className="price-range-labels">
