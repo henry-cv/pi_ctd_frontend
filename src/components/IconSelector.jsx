@@ -43,7 +43,6 @@ const IconSelector = ({ onSelectIcon, selectedIcon }) => {
     setSearchTerm(e.target.value);
   };
 
-  // Encontrar el icono seleccionado para mostrarlo
   const selectedIconObj = availableIcons.find(icon => icon.name === selectedIcon);
   const IconComponent = selectedIconObj?.component || FaIcons.FaHeart;
 

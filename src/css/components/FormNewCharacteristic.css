@@ -1,18 +1,36 @@
 @import "../components/Form.css";
 
-/* Estilos específicos para el formulario de características */
+.form-base-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0; 
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid var(--Font-Background); 
+  border-radius: 45px; 
+  overflow: hidden; 
+}
+
 .form-base.new-characteristic {
   background-color: var(--Background-components);
   color: var(--Font-Background);
-  border-radius: 45px;
   display: flex;
   flex-direction: column;
   font-family: var(--font-archivo);
   row-gap: 20px;
   padding: 30px;
-  max-width: 600px;
   width: 100%;
   overflow-x: auto;
+  border: none; 
+}
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px 30px;
+  background-color: var(--Background-components);
+  border: none; 
+  border-top: 1px solid var(--Font-Background); 
 }
 
 .form-base.new-characteristic > div {
@@ -85,22 +103,4 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .form-base.new-characteristic {
-    padding: 20px;
-    border-radius: 30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .form-base.new-characteristic {
-    padding: 15px;
-    border-radius: 20px;
-  }
-  
-  .icon-options {
-    justify-content: center;
-  }
 }
