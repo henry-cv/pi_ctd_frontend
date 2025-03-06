@@ -2,7 +2,6 @@ import { useState } from 'react';
 import * as FaIcons from "react-icons/fa";
 import { 
   FaDumbbell, 
-  FaTelescope, 
   FaSpa, 
   FaPersonHiking, 
   FaCow, 
@@ -12,6 +11,7 @@ import {
   FaFilm, 
   FaPersonWalkingWithCane 
 } from "react-icons/fa6";
+import { IoTelescope } from "react-icons/io5";
 import FlashlightOnIcon from '@mui/icons-material/FlashlightOn';
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import SchoolIcon from '@mui/icons-material/School';
@@ -42,7 +42,6 @@ const availableIcons = [
   
   // Iconos de Font Awesome Solid (FA6)
   { name: 'FaDumbbell', component: FaDumbbell, label: 'Ejercicio' },
-  { name: 'FaTelescope', component: FaTelescope, label: 'Astronomía' },
   { name: 'FaSpa', component: FaSpa, label: 'Spa' },
   { name: 'FaPersonHiking', component: FaPersonHiking, label: 'Senderismo' },
   { name: 'FaCow', component: FaCow, label: 'Ganadería' },
@@ -51,7 +50,10 @@ const availableIcons = [
   { name: 'FaHorse', component: FaHorse, label: 'Equitación' },
   { name: 'FaFilm', component: FaFilm, label: 'Cine' },
   { name: 'FaPersonWalkingWithCane', component: FaPersonWalkingWithCane, label: 'Accesible para ciegos' },
-  
+
+  // Iconos de Io5
+  { name: 'FaTelescope', component: IoTelescope, label: 'Astronomía' },
+
   // Iconos de Material UI
   { name: 'FlashlightOn', component: FlashlightOnIcon, label: 'Iluminación' },
   { name: 'SelfImprovement', component: SelfImprovementIcon, label: 'Meditación' },
