@@ -29,6 +29,7 @@ import "../css/pages/ActivityDetail.css";
 import DurationInfo from "../components/DurationInfo";
 import ImageViewer from "../components/ImageViewer";
 import { useContextGlobal } from "../gContext/globalContext";
+import BookingModal from "../components/BookingModal";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -52,6 +53,7 @@ const ActivityDetail = () => {
   const galleryRef = useRef(null);
   const [currentMobileImageIndex, setCurrentMobileImageIndex] = useState(0);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [openBooking, setOpenBooking] = useState(false);
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
@@ -64,7 +66,7 @@ const ActivityDetail = () => {
         }
 
         const data = await response.json();
-        console.log("Detalles del producto:", data);
+        console.log("Detalles del producto:", {data});
         setActivity(data);
       } catch (error) {
         console.error("Error al obtener detalles:", error.message);
@@ -188,6 +190,19 @@ const ActivityDetail = () => {
   const handleImageError = (e) => {
     e.target.src = defaultImage;
   };
+
+  const handleOpenModalBooking = (id) => {
+    console.log("entre al open booking");
+    console.log("el id " + id);
+    
+    
+    setOpenBooking(true);
+  };
+
+  const handleCloseModalBooking = () => {
+    setOpenBooking(false);
+  };
+
 
   if (loading) {
     return (
@@ -496,6 +511,7 @@ const ActivityDetail = () => {
                     color="blue"
                     fullWidth={true}
                     url={`/reserva/${activity.id}`}
+                    onClick={() => handleOpenModalBooking(activity.id)}
                   />
                 </div>
               </div>
@@ -520,10 +536,18 @@ const ActivityDetail = () => {
             variant="primary"
             color="blue"
             fullWidth={true}
-            url={`/reserva/${activity.id}`}
+            // url={`/reserva/${activity.id}`}
+            onClick={() => handleOpenModalBooking(activity.id)}
           />
         </div>
       )}
+
+      {openBooking && (
+        <BookingModal
+        open={openBooking} 
+        handleClose={handleCloseModalBooking} 
+        activityId={activity.id}
+        />) }
 
       {/* Visor de imágenes */}
       {showImageViewer && !isMobileView && (

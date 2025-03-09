@@ -1,0 +1,61 @@
+
+.rdrDay {
+    position: relative;
+  }
+
+  .CardBooking-container{
+    background-color: var(--black-400) ;
+    color: white;
+  }
+
+  .CardBooking-container .rdrDay span {
+    color: white;
+  }
+
+  .rdrDay span{
+    color: black;
+    background-color: none;
+    width: 32px;
+    height: 32Px;
+
+  }
+
+
+
+   .rdrCalendarWrapper {
+    border-radius: 10px;
+    padding: 10px;
+  }
+  
+
+  .disabled-day{
+    background-color: #ff094669;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+  }
+
+  .available-day{
+    background-color: var(--blue-300);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    opacity: 0.5;
+  }
+  
+  .selected-day{
+    background-color: var(--blue-base) !important; 
+    color: white!important; 
+    border-radius: 50%;
+    width: 32px;
+
+  }
+
+
+  /* .rdrDayNumber{
+    background-color: red;
+  } */
+
+
+
+  
