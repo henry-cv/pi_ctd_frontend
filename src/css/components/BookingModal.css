@@ -1,0 +1,17 @@
+.Booking-principal-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:15px 0;
+}
+
+.Card-info-booking{
+    display: flex;
+    flex-direction: column;
+}
+
+.title-checkbox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
