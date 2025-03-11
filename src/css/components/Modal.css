@@ -1,0 +1,118 @@
+/* Overlay - Fondo oscuro que cubre toda la pantalla */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Contenedor principal del modal */
+.modal-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón de cerrar (X) */
+.modal-close-button {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: #333;
+}
+
+/* Título del modal */
+.modal-title {
+
+  color: #333;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+/* Área del mensaje principal */
+.modal-message-area {
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* Texto del mensaje */
+.modal-text {
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+  text-align: justify;
+  white-space: pre-line;
+}
+
+/* Contenedor del enlace */
+.modal-link-container {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+/* Estilo del enlace */
+.modal-link {
+  color: #2563eb;
+  /* text-decoration: underline; */
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-link:hover {
+  color: #1e40af;
+}
+
+/* Botón de Entendido */
+.modal-button {
+  width: 100%;
+  padding: 8px 16px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.modal-button:hover {
+  background-color: #1e40af;
+}
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 480px) {
+  .modal-container {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+  }
+
+  .modal-text {
+    font-size: 14px;
+  }
+}
