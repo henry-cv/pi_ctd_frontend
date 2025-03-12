@@ -1,0 +1,28 @@
+.policies-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-container {
+  border: solid 1px var(--black-100);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 16px;
+  padding: 6px 10px
+}
+
+input.input-search {
+  border: none;
+  padding: 6px 10px;
+  width: 100%;
+}
+
+input.input-search:focus,
+input.input-search:active {
+  border: none;
+  outline: none;
+
+}

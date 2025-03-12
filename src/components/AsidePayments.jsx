@@ -11,7 +11,7 @@ const AsidePayments = () => {
   };
 
   return (
-    <div className="sidebar">
+    <aside className="sidebar-policies">
       <h2 className='help-center-title'>Centro de Ayuda</h2>
       <div className="accordion">
         <div className="accordion-item" onClick={() => handleAccordionClick(1, 'planificar')}>
@@ -44,7 +44,7 @@ const AsidePayments = () => {
           )}
         </div>
       </div>
-    </div >
+    </aside >
   );
 };
 

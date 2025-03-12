@@ -8,7 +8,6 @@
   row-gap: 34px;
   font-family: "Archivo";
   max-width: 840px;
-  padding: 63px 50px;
 
   && p {
     text-align: justify;
