@@ -1,8 +1,13 @@
-import { useState } from "react";
 import DashSearch from "./DashSearch";
 import { LuListFilter } from "react-icons/lu";
+import { Article } from "./Article.jsx";
+import { articles } from "../constants/data/policiesInfo.js";
 const DashPolicies = () => {
-  const [policies, setPolicies] = useState([])
+
+  const payments = articles.pagos;
+  const handleSearch = (term) => {
+    console.log(term);
+  }
   return (
     <div className="policies-container">
       <header className="header_policies">
@@ -18,6 +23,7 @@ const DashPolicies = () => {
           </div>
         </div>
       </header>
+      <Article title={payments.title} content={payments.content} width="840" />
     </div>
   )
 }
