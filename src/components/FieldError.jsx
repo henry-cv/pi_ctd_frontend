@@ -1,4 +1,4 @@
-import "../css/FieldError.css"; // Importa el archivo FieldError.css
+import "../css/components/FieldError.css"; // Importa el archivo FieldError.css
 import PropTypes from "prop-types";
 
 const FieldError = ({ message }) => {

@@ -1,0 +1,473 @@
+/* Estructura básica de la página */
+.filter-products-page {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: var(--BackgroundColor);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header con navbar fijo */
+.header-filter {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--blue-base);
+}
+
+/* Contenedor principal ajustado para dejar espacio a la navbar */
+.filter-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 165px 20px 40px 20px;
+  flex: 1;
+  width: 100%;
+}
+
+/* Encabezado con título y selector de orden */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.results-title {
+  font-family: var(--font-archivo);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--Font-Background);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Estilos para categorías seleccionadas */
+.selected-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.category-tag {
+  background-color: white;
+  color: var(--blue-base);
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.category-tag button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue-base);
+}
+
+/* Selector de ordenamiento */
+.sort-container {
+  position: relative;
+  min-width: 200px;
+}
+
+.sort-select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  color: var(--Font-Background);
+  background-color: var(--Background-components);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+  cursor: pointer;
+}
+
+/* Layout principal de contenido */
+.filter-content {
+  display: flex;
+  gap: 30px;
+}
+
+/* Sidebar de filtros */
+.filter-sidebar {
+  width: 280px;
+  background-color: var(--Background-components);
+  border-radius: 12px;
+  padding: 20px;
+  align-self: flex-start;
+  position: sticky;
+  top: 100px;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-sidebar h3 {
+  font-family: var(--font-archivo);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--Font-Background);
+  margin-bottom: 20px;
+}
+
+/* Encabezado de sidebar con botón de limpiar */
+.filter-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.reset-filters-btn {
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
+  border: 1px solid var(--gray-300);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-filters-btn:hover {
+  background-color: var(--gray-200);
+}
+
+/* Secciones de filtros */
+.filter-section {
+  margin-bottom: 25px;
+}
+
+.filter-section h4 {
+  font-family: var(--font-archivo);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--Font-Background);
+  margin-bottom: 15px;
+}
+
+/* Lista de categorías (formato anterior) */
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-list li {
+  margin-bottom: 12px;
+}
+
+.category-list label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--font-outfit);
+  color: var(--Font-Background);
+}
+
+.category-list input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blue-base);
+}
+
+/* Cuadrícula de productos */
+.products-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.activities-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.activity-card-container {
+  cursor: pointer;
+}
+
+/* Mensajes de carga y sin resultados */
+.loading-message,
+.no-results {
+  text-align: center;
+  padding: 40px 0;
+  font-family: var(--font-outfit);
+  color: var(--Font-Background);
+  font-size: 18px;
+}
+
+/* Estilos de paginación */
+.pagination-container {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.custom-pagination .MuiPaginationItem-root {
+  color: var(--Font-Background);
+  opacity: 0.5;
+}
+
+.custom-pagination .MuiPaginationItem-page.Mui-selected {
+  background-color: var(--blue-base);
+  color: white;
+  opacity: 1;
+}
+
+/* Estilos de tarjetas de actividades */
+.activity-card {
+  background-color: var(--Background-components);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  width: 100%;
+  height: 373px;
+  padding: 10px;
+  border: var(--black-100) solid 1px;
+}
+
+.activity-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.activity-image-container {
+  width: 100%;
+  height: 55%;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.activity-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activity-content {
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-title {
+  font-family: var(--font-archivo);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--Font-Background);
+  margin: 0;
+  white-space: nowrap;  
+  overflow: hidden;     
+  text-overflow: ellipsis; 
+  width: 100%;  
+}
+
+.activity-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-location,
+.activity-duration {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--Icons-gray);
+  font-size: 14px;
+}
+
+.activity-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.activity-price {
+  font-family: var(--font-archivo);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--Font-Background);
+}
+
+.activity-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #FFC107;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.activity-location svg,
+.activity-duration svg,
+.activity-rating svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Categorías en formato burbuja */
+.category-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.category-bubble {
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+  border: 1px solid var(--gray-200);
+}
+
+.category-bubble.selected {
+  background-color: #3E10DA;
+  color: white;
+  border: 1px solid #3E10DA;
+}
+
+.category-icon {
+  margin-left: 8px;
+  font-size: 10px;
+}
+
+/* Campos de fecha y búsqueda */
+.search-field,
+.date-picker {
+  margin-top: 10px;
+}
+
+/* Bordes redondeados para inputs */
+.MuiOutlinedInput-root,
+.MuiAutocomplete-root .MuiOutlinedInput-root,
+.MuiDatePicker-root .MuiOutlinedInput-root {
+  border-radius: 72px !important;
+}
+
+/* Para el calendario del DatePicker */
+.MuiPaper-root.MuiPickersPopper-paper {
+  border-radius: 16px !important;
+}
+
+/* Ajuste de padding para inputs redondeados */
+.filter-section .MuiInputBase-root {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+/* Slider de precio */
+.price-slider-container {
+  padding: 0 10px;
+  margin-top: 15px;
+}
+
+.price-range-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 14px;
+  color: var(--Font-Background);
+}
+
+/* Filtros unificados con estructura similar */
+.rating-filters,
+.duration-filters,
+.language-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rating-label {
+  display: flex;
+  align-items: center;
+}
+
+/* Personalización de componentes MUI */
+.MuiRating-icon,
+.MuiCheckbox-root.Mui-checked {
+  color: var(--blue-base) !important;
+}
+
+/* Tema oscuro para componentes MUI */
+.dark-theme .category-bubble.selected {
+  background-color: #EEC52D;
+  color: black;
+  border: 1px solid #EEC52D;
+}
+
+.dark-theme .MuiRating-icon,
+.dark-theme .MuiCheckbox-root.Mui-checked,
+.dark-theme .MuiSlider-root,
+.dark-theme .MuiSlider-thumb {
+  color: #EEC52D !important;
+}
+
+.dark-theme .reset-filters-btn {
+  background-color: var(--Dark-background-components);
+  color: var(--Dark-Font-Background);
+  border: 1px solid var(--Dark-gray-200);
+}
+
+.dark-theme .reset-filters-btn:hover {
+  background-color: var(--Dark-gray-300);
+}
+
+/* Media queries consolidados */
+@media (max-width: 992px) {
+  .filter-content {
+    flex-direction: column;
+  }
+
+  .filter-sidebar {
+    width: 100%;
+    position: static;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .activities-container {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .sort-container {
+    width: 100%;
+  }
+}

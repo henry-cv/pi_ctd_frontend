@@ -1,0 +1,40 @@
+/* @import "./variables.css"; */
+
+:root {
+  --gray-200: #e5e7eb;
+  --black: #101828;
+  --white: #ffffff;
+  --gray-400: #606570;
+  --Border-Input-color: var(--gray-400);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fue necesario agregar el box-sizing:border-box, para el tamaño preciso de la caja del elemento, sería mejor agregar la regla al variables.css */
+
+.container-hours {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 330px;
+}
+
+.time-inputs {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.time-inputs > input.time-input {
+  position: relative;
+  border: 1px solid var(--Border-Input-color);
+  background: none;
+  background-color: var(--white);
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: 1rem;
+}

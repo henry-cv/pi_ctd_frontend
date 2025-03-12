@@ -1,11 +1,11 @@
-import React from 'react'
-import "../css/dashboard.css";
+import "../css/pages/dashboard.css";
+
 const DashAjustes = () => {
   return (
-    <div>
+    <div className="ajustes-container">
       <h1 className="titlePages">MUY PRONTO🤗</h1>
     </div>
-  )
-}
+  );
+};
 
-export default DashAjustes
+export default DashAjustes;

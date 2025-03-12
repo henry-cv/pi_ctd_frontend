@@ -1,7 +1,7 @@
-import "../css/Form.css";
-import "../css/variables.css";
+import "../css/components/Form.css";
+import "../css/global/variables.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import { FaSave } from "react-icons/fa";
@@ -10,19 +10,23 @@ import DateCalendar from "./DateCalendar";
 import Days from "./Days";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
+import { useContextGlobal } from "../gContext/globalContext";
 
-
-const FormBasis = () => {
+const FormBasis = ({ isEditMode = false }) => {
+  const location = useLocation();
+  const activityId = location.state?.activityId || null;
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
+
   const [titulo, setTitulo] = useState("");
   const [errorTitulo, setErrorTitulo] = useState("");
+
   const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
-  //const [direccion, setDireccion] = useState("");
-  //const [errorDireccion, setErrorDireccion] = useState("");
-  //const [nombreTarifa, setNombreTarifa] = useState("");
-  //const [errorNombreTarifa, setErrorNombreTarifa] = useState("");
 
   const [valorTarifa, setValorTarifa] = useState("");
   const [tipoTarifa, setTipoTarifa] = useState("");
@@ -31,8 +35,19 @@ const FormBasis = () => {
   const [horaFin, setHoraFin] = useState("");
   const [diasDisponible, setDiasDisponible] = useState([]);
   const [fechaEvento, setFechaEvento] = useState("");
-  //const [categoriasNombres, setCategoriasNombres] = useState(new Set());
-  //const [imagenes, setImagenes] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
+  const { state } = useContextGlobal();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [categoriasIds, setCategoriasIds] = useState([]);
+  const [characteristics, setCharacteristics] = useState([]);
+  const [caracteristicasIds, setCaracteristicasIds] = useState([]);
+  const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
 
 
   const toggleExtraFields = () => {
@@ -52,129 +67,300 @@ const FormBasis = () => {
     const texto = e.target.value;
     if (!validarTexto(texto, maximo)) {
       setErrorTitulo(
-        `Título debe tener entre 4 y máximo ${maximo}, sin números o caracteres especiales`
+        `Título debe tener entre 4 y máximo ${maximo} carácteres, sin números o caracteres especiales`
       );
     } else {
       setErrorTitulo("");
     }
+    setTitulo(texto);
   };
 
   const handleDescriptionChange = (e) => {
     const texto = e.target.value;
-    const maximo = 100;
+    const maximo = 200;
     if (!validarAreaTexto(texto, maximo)) {
-      setErrorDescripcion(`La desripción debe tener entre 4 y máximo ${maximo} carácteres`);
+      setErrorDescripcion(
+        `La descripción debe tener entre 4 y máximo ${maximo} carácteres`
+      );
     } else {
       setErrorDescripcion("");
     }
     setDescripcion(texto);
   };
-  const handleAddressBlur = (e) => {
-    const maximo = 60;
-    const texto = e.target.value;
-    if (!validarAreaTexto(texto, maximo)) {
-      setErrorDireccion(`La dirección debe tener entre 4 y máximo ${maximo} caracteres`);
-    } else {
-      setErrorDireccion("");
-    }
-    setDireccion(texto);
-  };
-  const handleRateNameBlur = (e) => {
-    const maximo = 50;
-    const texto = e.target.value;
-    if (!validarTexto(texto, maximo)) {
-      setErrorNombreTarifa(
-        `Nombre de tarifa debe tener entre 4 y máximo ${maximo}, sin números o caracteres especiales`
-      );
-    } else {
-      setErrorNombreTarifa("");
-    }
-  };
 
-  // const handleDateChange = (date) => {
-  //   setFechaEvento(date);
-  // };
-
-  // const handleHoursChange = (start, end) => {
-  //   setHoraInicio(start);
-  //   setHoraFin(end);
-  // };
   const handleDateChange = (e) => {
-    setFechaEvento(e.target.value);  // ✅ Captura correctamente la fecha seleccionada
-};
+    setFechaEvento(e.target.value);
+  };
 
-const handleHoraInicioChange = (e) => {
-    setHoraInicio(e.target.value);  // ✅ Captura correctamente la hora de inicio
-};
+  const handleHoraInicioChange = (e) => {
+    setHoraInicio(e.target.value);
+  };
 
-const handleHoraFinChange = (e) => {
-    setHoraFin(e.target.value);  // ✅ Captura correctamente la hora de fin
-};
+  const handleHoraFinChange = (e) => {
+    setHoraFin(e.target.value);
+  };
 
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
+  const ensureTimeHasSeconds = (timeString) => {
+    if (!timeString) return timeString;
+    const colonCount = (timeString.match(/:/g) || []).length;
+    if (colonCount === 2) return timeString;
 
-  const handleSubmit = async(e) =>{
+    return `${timeString}:00`;
+  };
+  // Nueva función para manejar las imágenes seleccionadas
+  const handleImagesSelected = (files) => {
+    setSelectedImages(files);
+  };
+  //Manejador para permitir subir nuevas imágenes
+  const handleAllowImageUploadChange = (e) => {
+    setAllowImageUpload(e.target.checked);
+  };
+
+  //Para manejar los cambios en el select de categorías
+  const handleCategoriaChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const categoriasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
+    setCategoriasIds(categoriasIdsArray);
+    console.log("Categorías seleccionadas:", categoriasIdsArray);
+  };
+  const handleCaracteristicasChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const caracteristicasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
+    setCaracteristicasIds(caracteristicasIdsArray);
+    console.log("Características seleccionadas:", caracteristicasIdsArray);
+  };
+  // useEffect para traer las categorias existentes
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categoria/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener las categorías: ${response.status}`);
+        }
+        const data = await response.json();
+        setCategories(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error cargando categorías:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // useEffect para traer las caracteristicas existentes
+  useEffect(() => {
+    const fetchCharacteristics = async () => {
+      try {
+        const response = await fetch("/api/caracteristica/listar");
+        if (!response.ok) {
+          throw new Error(`Error al obtener las características: ${response.status}`);
+        }
+        const data = await response.json();
+        setCharacteristics(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error cargando características:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCharacteristics();
+  }, []);
+  // useEffect para buscar actividad por Id y cargarla en el formulario
+  useEffect(() => {
+    const fetchActivity = async () => {
+      if (activityId) {
+        setLoading(true);
+        try {
+          const response = await fetch(`/api/producto/${activityId}`);
+          if (!response.ok) {
+            throw new Error(`Error al cargar la actividad: ${response.status}`);
+          }
+          const data = await response.json();
+          setTitulo(data.nombre);
+          setDescripcion(data.descripcion);
+          setValorTarifa(data.valorTarifa);
+
+          const catIds = data.categorias ? data.categorias.map(cat => cat.id) : [];
+          setCategoriasIds(catIds);
+          const charIds = data.caracteristicas ? data.caracteristicas.map(char => char.id) : [];
+          setCaracteristicasIds(charIds);
+
+          setTipoTarifa(data.tipoTarifa);
+          setIdioma(data.idioma);
+          setHoraInicio(data.horaInicio);
+          setHoraFin(data.horaFin);
+          setDiasDisponible(data.diasDisponible || []);
+          setFechaEvento(data.fechaEvento || "");
+          setSelectedImages(data.productoImagenesSalidaDto || []);
+          //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
+
+          setEventType(data.eventType || data.tipoEvento);
+
+          // Cargar imágenes existentes
+          const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
+          setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
+          console.log("data activityID obtenida:");
+          console.log(data);
+        } catch (error) {
+          console.error("Error cargando actividad:", error);
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la actividad.",
+            icon: "error",
+          });
+          navigate("/administrador/actividades");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchActivity();
+  }, [activityId, navigate]);
+
+  // Función handleSubmit dentro de FormBasis.jsx
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const endpoint = isEditMode
+      ? `/api/producto/editar/${activityId}`
+      : "/api/producto/registrar";
+
+    const method = isEditMode ? "PUT" : "POST";
+
+    // Validaciones
+    if (errorTitulo || errorDescripcion) {
+      alert("Por favor, corrige los errores en el formulario antes de enviar.");
+      return;
+    }
+
     if (tipoTarifa === "") {
       alert("Debe seleccionar un tipo de tarifa");
       return;
-  }
+    }
 
-  if (isNaN(valorTarifa) || valorTarifa <= 0) {
+    if (isNaN(valorTarifa) || valorTarifa <= 0) {
       alert("El valor de la tarifa debe ser un número positivo");
       return;
-  }
+    }
 
-    const formData = {
+    if (!isEditMode && selectedImages.length === 0) {
+      alert("Debe seleccionar al menos una imagen");
+      return;
+    }
+
+    // Prevenir múltiples envíos
+    setIsSubmitting(true);
+
+    // Crear FormData para enviar archivos y datos
+    const formData = new FormData();
+
+    // Datos del producto como JSON string
+    const productoData = {
       nombre: titulo,
       descripcion,
       valorTarifa: parseFloat(valorTarifa),
       tipoTarifa,
+      categoriasIds: categoriasIds, // Ya son números según tu payload
+      caracteristicasIds: caracteristicasIds, // Ya son números según tu payload
       idioma,
-      horaInicio: `${horaInicio}:00`,
-      horaFin: `${horaFin}:00`,
+      horaInicio: ensureTimeHasSeconds(horaInicio),
+      horaFin: ensureTimeHasSeconds(horaFin),
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
-      //categoriasNombres: Array.from(categoriasNombres),
-      //imagenes,
-    }
-    console.log("Enviando datos al backend:", JSON.stringify(formData, null, 2));
+    };
+    console.log("Datos a enviar:", JSON.stringify(productoData));
 
+    // Agregar el objeto producto como una parte JSON
+    formData.append(
+      "producto",
+      new Blob([JSON.stringify(productoData)], { type: "application/json" })
+    );
+    // Agregar cada imagen como una parte separada
+    //Está es la válida
+    selectedImages.forEach((file) => {
+      formData.append("imagenes", file);
+    });
+
+    console.log(productoData);
+    console.log("Enviando datos al backend...");
     try {
-      const response = await fetch("/api/producto/registrar", {
-        method: "POST",
+      const token = state.token || localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No se encontró el token de autenticación");
+      }
+      const response = await fetch(endpoint, {
+        method,
         headers: {
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: formData,
+        // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Error en la solicitud: ${response.status} - ${errorText}`);
+        throw new Error(
+          `Error en la solicitud: ${response.status} - ${errorText}`
+        );
       }
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      alert("Datos enviados correctamente");
+      // alert("Producto creado correctamente");
+
+      Swal.fire({
+        title: isEditMode ? "¡Actividad Actualizada!" : "¡Actividad Creada!",
+        text: "La actividad se guardó correctamente.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        navigate("/administrador/actividades");
+      });
+
+      // Limpiar formulario después de un envío exitoso
+      setTitulo("");
+      setDescripcion("");
+      setValorTarifa("");
+      setTipoTarifa("");
+      setCategoriasIds([]);
+      setCaracteristicasIds([]);
+      setIdioma("");
+      setHoraInicio("");
+      setHoraFin("");
+      setEventType("");
+      setDiasDisponible([]);
+      setFechaEvento("");
+      setSelectedImages([]);
     } catch (error) {
-      console.error("Error:", error.message);
-      alert(`Error al enviar los datos: ${error.message}`);
+      console.error("Error:", error.message, "Error completo: ", error);
+      //alert(`Error al enviar los datos: ${error.message}`);
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo completar la operación.",
+        icon: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
+
   };
-
-
-
-    
-  
-
-
+  if (loading) {
+    return <p>Cargando datos de la actividad...</p>;
+  }
   return (
     <form className="form-base" onSubmit={handleSubmit}>
       <div className="container-name">
+        <h2>{isEditMode ? "Editar Actividad" : "Agregar Actividad"}</h2>
+
         <label htmlFor="title">Título:</label>
         <input
           type="text"
@@ -182,8 +368,8 @@ const handleHoraFinChange = (e) => {
           name="nombre"
           placeholder="Inserta un título"
           value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-          onBlur={handleTitleBlur}
+          onChange={handleTitleBlur}
+          autoComplete="on"
           required
         />
         {errorTitulo && <FieldError message={errorTitulo} />}
@@ -196,64 +382,42 @@ const handleHoraFinChange = (e) => {
           placeholder="Describe tu actividad o evento y detalla lo que incluye para que las personas sepan qué recibirán."
           value={descripcion}
           onChange={handleDescriptionChange}
+          autoComplete="on"
           required
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
       </div>
-      {/* <div className="container-address">
-        <label htmlFor="address">Dirección:</label>
-        <input
-          type="text"
-          id="address"
-          name="direccion"
-          placeholder="Ingresa tu dirección"
-          value={direccion}
-          onChange={handleAddressBlur}
-          required
-        />
-        {errorDireccion && <FieldError message={errorDireccion} />}
-      </div>
-      <div className="container-city">
-        <label htmlFor="city">Ciudad:</label>
-        <select id="city" name="ciudad" required>
-          <option value="" disabled selected>
-            Selecciona tu ciudad
-          </option>
-          <option value="buenosaires">Buenos Aires</option>
-          <option value="lapaz">La paz</option>
-          <option value="lima">Lima</option>
-          <option value="quito">Quito</option>
-        </select>
-      </div> */}
+
       <div className="container-addrate">
         <button
           type="button"
           onClick={toggleExtraFields}
           className="hamburger-button"
         >
-          &#x2795; Añadir Tarifas {/* Icono de hamburguesa con label */}
+          &#x2795; Añadir Tarifas
         </button>
       </div>
       {showExtraFields && (
         <div className="extra-fields">
           <div>
-            <label htmlFor="rateName">Nombre Tarifa:</label>
-            <select 
-    id="rateType" 
-    value={tipoTarifa} 
-    onChange={(e) => setTipoTarifa(e.target.value)} // ✅ Captura correctamente el valor seleccionado
-    required
-  >
-    <option value="" disabled>Selecciona el tipo de tarifa</option>
-    <option value="POR_PERSONA">Por persona</option>
-    <option value="POR_PAREJA">Por pareja</option>
-    <option value="POR_GRUPO_6">Por grupo (6)</option>
-    <option value="POR_GRUPO_10">Por grupo (10)</option>
-  </select>
-            {/* {errorNombreTarifa && <FieldError message={errorNombreTarifa} />} */}
+            <label htmlFor="rateName">Valor tarifa:</label>
+            <select
+              id="rateType"
+              value={tipoTarifa}
+              onChange={(e) => setTipoTarifa(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Selecciona el tipo de tarifa
+              </option>
+              <option value="POR_PERSONA">Por persona</option>
+              <option value="POR_PAREJA">Por pareja</option>
+              <option value="POR_GRUPO_6">Por grupo (6)</option>
+              <option value="POR_GRUPO_10">Por grupo (10)</option>
+            </select>
           </div>
           <div>
-            <label htmlFor="ratePrice">Precio:</label>
+            <label htmlFor="ratePrice">Tarifa por:</label>
             <input
               type="number"
               id="ratePrice"
@@ -270,32 +434,35 @@ const handleHoraFinChange = (e) => {
         </div>
       )}
       <div className="rates">
-      <div>
-        <label htmlFor="rateValue">Valor tarifa:</label>
-        <input 
-            type="number" 
-            id="rateValue" 
-            value={valorTarifa} 
-            onChange={(e) => setValorTarifa(e.target.value)} 
-            required 
-        />
-    </div>
-    <div>
-        <label htmlFor="rateType">Tarifa por:</label>
-        <select 
-            id="rateType" 
-            name="tipoTarifa" 
-            value={tipoTarifa} // ✅ Se enlaza correctamente con el estado
-            onChange={(e) => setTipoTarifa(e.target.value)} // ✅ Captura el valor correctamente
+        <div>
+          <label htmlFor="rateValue">Valor tarifa:</label>
+          <input
+            type="number"
+            id="rateValue"
+            min="1"
+            value={valorTarifa}
+            onChange={(e) => setValorTarifa(e.target.value)}
             required
-        >
-            <option value="" disabled>Selecciona el tipo de tarifa</option>
+          />
+        </div>
+        <div>
+          <label htmlFor="rateType">Tarifa por:</label>
+          <select
+            id="rateType"
+            name="tipoTarifa"
+            value={tipoTarifa}
+            onChange={(e) => setTipoTarifa(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              Selecciona el tipo de tarifa
+            </option>
             <option value="POR_PERSONA">Por persona</option>
             <option value="POR_PAREJA">Por pareja</option>
             <option value="POR_GRUPO_6">Por grupo (6)</option>
             <option value="POR_GRUPO_10">Por grupo (10)</option>
-        </select>
-    </div>
+          </select>
+        </div>
         <button type="button" className="delete-button" onClick={handleDelete}>
           <i className="fas fa-trash-alt"></i>
         </button>
@@ -305,10 +472,11 @@ const handleHoraFinChange = (e) => {
         <select
           id="eventType"
           name="eventType"
+          value={eventType}
           onChange={handleEventTypeChange}
           required
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Selecciona tipo de evento
           </option>
           <option value="FECHA_UNICA">Fecha única</option>
@@ -317,37 +485,113 @@ const handleHoraFinChange = (e) => {
       </div>
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
-          <DateCalendar onChange={handleDateChange} />
-          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange}/>
-        </div>
-      )}
-      {eventType === "RECURRENTE" && (
-        <div className="container-days">
-          <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
-          <Horas onHoraInicioChange={handleHoraInicioChange} onHoraFinChange={handleHoraFinChange}/>
+          <DateCalendar onChange={handleDateChange} selectedDate={fechaEvento} />
+          <Horas
+            onHoraInicioChange={handleHoraInicioChange}
+            horaInicio={horaInicio}
+            onHoraFinChange={handleHoraFinChange}
+            horaFin={horaFin}
+          />
         </div>
       )}
 
-      {/* <div className="container-categories">
+      {eventType === "RECURRENTE" && (
+        <div className="container-days">
+          <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
+          <Horas
+            horaInicio={horaInicio}
+            horaFin={horaFin}
+            onHoraInicioChange={handleHoraInicioChange}
+            onHoraFinChange={handleHoraFinChange}
+          />
+        </div>
+      )}
+      <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
-        <select id="category" name="categoria">
-          <option value="" disabled selected>
-            Selecciona la categoría
-          </option>
-          <option value="cultural">Cultural</option>
-          <option value="gastronomia">Gastronomía</option>
-          <option value="airelibre">Aire libre</option>
-          <option value="cuidadobienestar">Cuidado y Bienestar</option>
+        {categories.length > 0 &&
+          <select multiple onChange={handleCategoriaChange}
+            value={categoriasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
+          >
+            <option value="" disabled>Selecciona una categoría</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>{category.nombre}</option>
+            ))}
+          </select>
+        }
+      </div>
+      <div className="container-features">
+        <label htmlFor="features">Características:</label>
+        <select
+          multiple
+          name="caracteristicas"
+          id="features"
+          className="features-select"
+          onChange={handleCaracteristicasChange}
+          value={caracteristicasIds.map(id => id.toString())} // Importante: convierte a string para HTML select
+        >
+          <option value="" disabled>Selecciona la característica</option>
+          {characteristics.map((caracteristica) => (
+            <option key={caracteristica.id} value={caracteristica.id}>{`${caracteristica.nombre}`}</option>
+          ))}
         </select>
-      </div> */}
+      </div>
       <div className="container-languages">
         <label htmlFor="language">Idioma:</label>
-        <select id="language" value={idioma} onChange={(e) => setIdioma(e.target.value)} required>
-          <option value="" disabled>Selecciona idioma</option>
+        <select
+          id="language"
+          value={idioma}
+          onChange={(e) => setIdioma(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Selecciona idioma
+          </option>
           <option value="Español">Español</option>
         </select>
       </div>
-      {/* <ImageUploader /> */}
+
+      {/* Componente ImageUploader actualizado */}
+
+      <div className="container-images">
+        {isEditMode && existingImages.length > 0 && (
+          <>
+            <label>Imágenes Existentes:</label>
+            <div className="existing-images">
+              {existingImages.map((img) => (
+                <div key={img.id} className="image-preview">
+                  <img src={img.url} alt="Imagen existente" />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {isEditMode && (
+          <div className="allow-upload">
+            <label>
+              <input
+                type="checkbox"
+                checked={allowImageUpload}
+                onChange={handleAllowImageUploadChange}
+              />
+              Permitir agregar nuevas imágenes
+            </label>
+          </div>
+        )}
+
+        {(!isEditMode || allowImageUpload) && (
+          <>
+            <label>{isEditMode ? "Nuevas Imágenes:" : "Imágenes:"}</label>
+            <ImageUploader onImagesSelected={handleImagesSelected} />
+            {selectedImages.length > 0 && (
+              <p className="selected-count">
+                {selectedImages.length} imagen(es) seleccionada(s)
+              </p>
+            )}
+          </>
+        )}
+      </div>
+
       <div className="div-p-preview">
         <p>
           Puedes previsualizar como quedará tu actividad dando click en el boton
@@ -358,11 +602,21 @@ const handleHoraFinChange = (e) => {
         <ButtonBluePill
           text="Vista Previa"
           className="button-yellow btn-preview"
+          type="button"
         />
-        <ButtonBluePill text="Guardar" className="button-blue btn-save" />
+        <ButtonBluePill
+          text={isSubmitting ? "Guardando..." : "Guardar"}
+          className="button-blue btn-save"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isEditMode ? "Actualizar" : "Guardar"}
+        </ButtonBluePill>
       </div>
-    </form>
+    </form >
   );
 };
-
+FormBasis.propTypes = {
+  isEditMode: PropTypes.bool,
+}
 export default FormBasis;

@@ -1,16 +1,12 @@
 /* ---------------------------------- texto --------------------------------- */
 export function validarTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  /* console.log(`Texto normalizado: ${texto}`);
-  console.log(`Texto validado: ${/^[a-záéíóúñ]{3,}$/i.test(texto)}`); */
   const regex = new RegExp(`^[a-záéíóúñ ]{4,${maximo}}$`, 'i');
   return regex.test(texto);
 }
 export function validarAreaTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  /* console.log(`Texto normalizado: ${texto}`);
-  console.log(`Texto validado: ${/^[a-záéíóúñ]{3,}$/i.test(texto)}`); */
-  const regex = new RegExp(`^[\\wáéíóúñ ]{4,${maximo}}$`, 'i');
+  const regex = new RegExp(`^[\\wáéíóúñ *:,.•\n\r-]{4,${maximo}}$`, 'ig');
   return regex.test(texto);
 }
 export function longitudPermitida(texto, maximo) {
@@ -31,12 +27,10 @@ export function normalizarTexto(texto) {
 /* ---------------------------------- email --------------------------------- */
 export function validarEmail(email) {
   email = normalizarEmail(email);
-  // console.log(`Email: *${email}*`);
   return /^[\w.]{4,}@[a-z]{3,}\.[a-z]{2,4}$/.test(email);
 }
 
 export function normalizarEmail(email) {
-  // console.log(`-->${email.trim()}<--`);
   return email.trim();
 }
 

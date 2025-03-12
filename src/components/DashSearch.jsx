@@ -1,13 +1,24 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import DirectionsIcon from "@mui/icons-material/Directions";
 
-export default function DashSearch() {
+import IconButton from "@mui/material/IconButton";
+
+import SearchIcon from "@mui/icons-material/Search";
+
+
+export default function DashSearch({ onSearch }) {
+  const [searchTerm, setSearchTerm] = React.useState(""); // Estado para el término de búsqueda
+
+  const handleChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    onSearch(searchTerm);
+  };
+
   return (
     <Paper
       component="form"
@@ -21,11 +32,17 @@ export default function DashSearch() {
         boxShadow: "5px 5px 10px -7px rgba(0, 0, 0, 0.67)",
         border: "1px solid #D6D6D6",
       }}
+      onSubmit={handleSearch}
     >
       <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
         <SearchIcon />
       </IconButton>
-      <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Buscar" />
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        placeholder="Buscar"
+        value={searchTerm}
+        onChange={handleChange}
+      />
     </Paper>
   );
 }

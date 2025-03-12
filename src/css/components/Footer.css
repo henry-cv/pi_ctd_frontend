@@ -1,0 +1,124 @@
+.footer {
+  background-color: var(--BackgroundColor-700);
+  padding: 2rem;
+  padding-top: 25px;
+  /* position: relative;
+  z-index: 2; */
+}
+/* .footer::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    height: 25px; 
+    background-color: var(--BackgroundColor-700);
+    z-index: -1;
+} */
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--black-300);
+  padding-bottom: 5px;
+}
+
+.tagline {
+  color: var(--Font-Background);
+  font-family: var(--font-archivo);
+}
+
+.logo-socialIcons {
+ gap: 10px;
+}
+
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+  color: var(--blue-base);
+}
+
+.social-icons {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+}
+
+.social-icons a {
+  width: 32px;
+  height: 32px;
+  background-color: var(--blue-base);
+  border-radius: 50%;
+  text-decoration: none;
+  color: var(--white);
+  font-size: var(--h6-size);
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-icons a:hover {
+  background-color: var(--blue-hover);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+}
+
+.footer-links a {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: var(--Font-Background);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  font-size: 0.9rem;
+  color: var(--Icons-gray);
+  display: flex;
+  justify-content: space-between;
+  margin: 15px auto;
+  gap: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 480px) {
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+
+  .logo-socialIcons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-container {
+    flex-direction: column;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .footer-bottom {
+    margin-top: 15px;
+    flex-direction: column;
+  }
+}
