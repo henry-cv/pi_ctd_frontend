@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import "./Article.css";
+import "../css/components/Article.css";
 const Article = ({ title, content, children, width }) => {
   return (
     <article style={{ width: `${width}px` }} className='payment-article'>

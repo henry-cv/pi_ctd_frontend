@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import "../css/Aside.css";
+import "../css/components/Aside.css";
 
 const AsidePayments = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
