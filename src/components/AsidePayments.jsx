@@ -16,7 +16,9 @@ const AsidePayments = ({ setSelectedPolicy }) => {
   const handlePolicyClick = (policy, index) => {
     setSelectedPolicy(policy);
     setSelectedPolicyIndex(index);
-
+    console.log("mensajes depurando")
+    console.log(policy);
+    console.log(index);
   };
   return (
     <aside className="sidebar-policies">
@@ -37,13 +39,11 @@ const AsidePayments = ({ setSelectedPolicy }) => {
           <h5 className={selectedTitle === 'pagos' ? 'title-selected' : ''} onClick={() => handlePolicyClick('pagos')}>Pagos <span className="caret"></span></h5>
           {activeAccordion === 2 && (
             <div className="sub-accordion" onClick={(e) => e.stopPropagation()}>
-              <p onClick={() =>
-                handlePolicyClick('pagoInmediato', 0)
-              } className={selectedPolicyIndex === 0 ? 'selected-policy' : ''}
+              <p onClick={() => handlePolicyClick('pagoInmediato', 0)}
+                className={selectedPolicyIndex === 0 ? 'selected-policy' : ''}
               >Pago inmediato y reserva confirmada</p>
-              <p onClick={() =>
-                handlePolicyClick('reserveAhora', 1)
-              } className={selectedPolicyIndex === 1 ? 'selected-policy' : ''}
+              <p onClick={() => handlePolicyClick('reserveAhora', 1)}
+                className={selectedPolicyIndex === 1 ? 'selected-policy' : ''}
               >Reserve ahora, pague después</p>
             </div>
           )}
@@ -53,17 +53,12 @@ const AsidePayments = ({ setSelectedPolicy }) => {
 
           {activeAccordion === 3 && (
             <div className="sub-accordion" onClick={(e) => e.stopPropagation()}>
-              {/* <p onClick={() => handlePolicyClick('reembolso7dias')} >Reembolso total hasta 7 días antes</p>
-              <p onClick={() => handlePolicyClick('reembolso24horas')} >Reembolso total hasta 24 horas antes</p>
-              <p onClick={() => handlePolicyClick('noReembolsable')} >No Reembolsable</p> */}
-              <p
-                onClick={() => handlePolicyClick('reembolso7dias', 0)}
+              <p onClick={() => handlePolicyClick('reembolso7dias', 0)}
                 className={selectedPolicyIndex === 0 ? 'selected-policy' : ''}
               >
                 Reembolso total hasta 7 días antes
               </p>
-              <p
-                onClick={() => handlePolicyClick('reembolso24horas', 1)}
+              <p onClick={() => handlePolicyClick('reembolso24horas', 1)}
                 className={selectedPolicyIndex === 1 ? 'selected-policy' : ''}
               >
                 Reembolso total hasta 24 horas antes

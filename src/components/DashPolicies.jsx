@@ -9,12 +9,14 @@ import PropTypes from "prop-types";
 
 const DashPolicies = ({ selectedPolicy }) => {
 
-  const payments = selectedPolicy ? articles[selectedPolicy] : null;
+  const payments = articles?.[selectedPolicy] ?? null;
+  // Operador existencia opcional y de coalescencia
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedArticleTitle, setSelectedArticleTitle] = useState(null);
+  const searchRef = useRef(null);
   const handleSearch = (term) => {
     console.log(`Se envió a buscar: ${term}`);
   }
-  const searchRef = useRef(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
@@ -69,7 +71,7 @@ const DashPolicies = ({ selectedPolicy }) => {
 }
 DashPolicies.propTypes = {
   selectedPolicy: PropTypes.string.isRequired,
-  setSelectedPolicy: PropTypes.func.isRequired
+  setSelectedPolicy: PropTypes.func
 }
 
 export default DashPolicies
