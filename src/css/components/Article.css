@@ -17,3 +17,13 @@
     font-size: var(--h5-size);
   }
 }
+
+.article-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+
+  && li {
+    text-align: justify;
+  }
+}

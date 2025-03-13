@@ -10,7 +10,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 160px;
+  margin-top: 10rem;
+  margin-bottom: 8rem;
 }
 
 .sidebar-policies {

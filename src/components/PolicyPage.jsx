@@ -1,3 +1,4 @@
+import "../css/global/variables.css";
 import NavDash from './NavDash';
 import AsidePayments from "./AsidePayments";
 import DashPolicies from './DashPolicies';

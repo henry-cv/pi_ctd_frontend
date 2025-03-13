@@ -34,13 +34,13 @@ export const articles = {
   },
   reserveAhora: {
     title: "Reserve ahora, pague después",
-    content: `
-    + Reserve ahora y pague más tarde 'le permite hacer una reserva confirmada para la mayoría de nuestros más de 200,000 tours y actividades sin pago por adelantado.
-+ No se requiere depósito, sin embargo, debe agregar una tarjeta de crédito autorizada al momento de hacer su reserva. Habrá una autorización única de un dólar (o la denominación entera más baja en cualquier moneda disponible) para validar su tarjeta de crédito.
-+ Una vez que haya completado su reserva, tendrá una reserva confirmada. Se enviará un recordatorio de pago final cinco (5) días antes de la fecha de su viaje y el pago completo deberá realizarse entre 2 y 9 * días antes de la fecha de viaje.
-+ Cuando utilice Reserve Now Pay Later, recibirá un correo electrónico de confirmación en el momento de la reserva; sin embargo, su boleto no estará disponible hasta que se haya realizado el pago completo. Tras el pago final, recibirá un correo electrónico con un enlace a su boleto.
-+ * La fecha de pago depende de la reserva / producto seleccionado.
-    `,
+    content: [
+    "Reserve ahora y pague más tarde 'le permite hacer una reserva confirmada para la mayoría de nuestros más de 200,000 tours y actividades sin pago por adelantado.",
+"No se requiere depósito, sin embargo, debe agregar una tarjeta de crédito autorizada al momento de hacer su reserva. Habrá una autorización única de un dólar (o la denominación entera más baja en cualquier moneda disponible) para validar su tarjeta de crédito.",
+"Una vez que haya completado su reserva, tendrá una reserva confirmada. Se enviará un recordatorio de pago final cinco (5) días antes de la fecha de su viaje y el pago completo deberá realizarse entre 2 y 9 * días antes de la fecha de viaje.",
+"Cuando utilice Reserve Now Pay Later, recibirá un correo electrónico de confirmación en el momento de la reserva; sin embargo, su boleto no estará disponible hasta que se haya realizado el pago completo. Tras el pago final, recibirá un correo electrónico con un enlace a su boleto.",
+"* La fecha de pago depende de la reserva / producto seleccionado."
+    ],
   },
   cancelaciones: {
     title: "Cancelaciones",
@@ -59,13 +59,13 @@ export const articles = {
   },
   pagoInmediato: {
     title: "Pago inmediato y reserva confirmada",
-    content: `+ Esta actividad requiere pago inmediato al momento de la reserva
-+ Solo se confirmará tu participación una vez que el pago se haya procesado con éxito.
-+ Asegura tu lugar ahora y recibe la confirmación de tu reserva al instante.
-+ No se permite el pago posterior.
-+ Cuando realizas el pago de una reserva, esta se confirma de inmediato y recibirás un correo electrónico con tu boleto al instante.
-+ No es necesario realizar pagos adicionales más adelante.
-+ Asegúrate de revisar los detalles de tu reserva antes de completar la transacción, ya que las políticas de cancelación y reembolso pueden variar según la experiencia seleccionada.`,
+    content: ["Esta actividad requiere pago inmediato al momento de la reserva.",
+"Solo se confirmará tu participación una vez que el pago se haya procesado con éxito.",
+"Asegura tu lugar ahora y recibe la confirmación de tu reserva al instante.",
+"No se permite el pago posterior.",
+"Cuando realizas el pago de una reserva, esta se confirma de inmediato y recibirás un correo electrónico con tu boleto al instante.",
+"No es necesario realizar pagos adicionales más adelante.",
+"Asegúrate de revisar los detalles de tu reserva antes de completar la transacción, ya que las políticas de cancelación y reembolso pueden variar según la experiencia seleccionada."]
   },
   reembolso7dias: {
     title: "Reembolso Total hasta 7 dias antes",

@@ -11,6 +11,7 @@ const AsidePayments = ({ setSelectedPolicy }) => {
     setActiveAccordion(prevIndex => prevIndex === index ? null : index);
     setSelectedTitle(title);
   };
+  //Manejador de política, establece la política según el elemento clicado
   const handlePolicyClick = (policy) => {
     setSelectedPolicy(policy);
   };
@@ -33,18 +34,19 @@ const AsidePayments = ({ setSelectedPolicy }) => {
           <h5 className={selectedTitle === 'pagos' ? 'title-selected' : ''} onClick={() => handlePolicyClick('pagos')}>Pagos <span className="caret"></span></h5>
           {activeAccordion === 2 && (
             <div className="sub-accordion">
-              <p onClick={() => handlePolicyClick('pago_inmediato')}>Pago inmediato y reserva confirmada</p>
-              <p onClick={() => handlePolicyClick('reserva_ahora')}>Reserve ahora, pague después</p>
+              <p onClick={() => handlePolicyClick('pagoInmediato')}>Pago inmediato y reserva confirmada</p>
+              <p onClick={() => handlePolicyClick('reserveAhora')}>Reserve ahora, pague después</p>
             </div>
           )}
         </div>
         <div className="accordion-item" onClick={() => handleAccordionClick(3, 'cancelaciones')}>
-          <h5 className={selectedTitle === 'cancelaciones' ? 'title-selected' : ''}>Cancelaciones <span className="caret"></span></h5>
+          <h5 className={selectedTitle === 'cancelaciones' ? 'title-selected' : ''} onClick={() => handlePolicyClick('cancelaciones')}>Cancelaciones <span className="caret"></span></h5>
 
           {activeAccordion === 3 && (
             <div className="sub-accordion">
-              <p>Reembolso total hasta 7 días antes</p>
-              <p>Reembolso total hast 25 horas antes</p>
+              <p onClick={() => handlePolicyClick('reembolso7dias')} >Reembolso total hasta 7 días antes</p>
+              <p onClick={() => handlePolicyClick('reembolso24horas')} >Reembolso total hast 25 horas antes</p>
+              <p onClick={() => handlePolicyClick('noReembolsable')} >No Reembolsable</p>
             </div>
           )}
         </div>
