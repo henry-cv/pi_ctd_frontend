@@ -7,17 +7,20 @@ import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
 
 
-const DashPolicies = ({ selectedPolicy }) => {
+const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
 
-  const payments = articles?.[selectedPolicy] ?? null;
+  const policy = articles?.[selectedPolicy] ?? null;
   // Operador existencia opcional y de coalescencia
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedArticleTitle, setSelectedArticleTitle] = useState(null);
-  const searchRef = useRef(null);
-  const handleSearch = (term) => {
-    console.log(`Se envió a buscar: ${term}`);
-  }
+  const [selectedArticleTitle, setSelectedArticleTitle] = useState("");
+  const [filteredPolicies, setFilteredPolicies] = useState(articles);
 
+  const searchRef = useRef(null);
+
+  const handleSearch = (term) => {
+    const filtered = articles.filter((article) => article.title.toLowerCase().includes(term.toLowerCase()));
+    setFilteredPolicies(filtered);
+  };
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
   useEffect(() => {
@@ -52,18 +55,20 @@ const DashPolicies = ({ selectedPolicy }) => {
         />
       </div>
       {selectedPolicy &&
-        <Article title={payments.title} content={payments.content} width="840">
+        <Article title={policy.title} content={policy.content} width="840">
 
-          {Object.keys(payments).map((key) => {
+          {Object.keys(policy).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <a href="http://">{payments[key].title}</a>
+                  <a href="http://" onClick={setSelectedPolicy(policy)}>{policy[key].title}</a>
                 </div>
               );
             }
             return null;
           })}
+          <button onClick={() => setSelectedPolicy(null)}>Volver a la lista de políticas</button>
+
         </Article >
       }
     </div >
