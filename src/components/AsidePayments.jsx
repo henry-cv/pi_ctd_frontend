@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import "../css/components/Aside.css";
+import PropTypes from 'prop-types';
 
-const AsidePayments = () => {
+
+const AsidePayments = ({ setSelectedPolicy }) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [selectedTitle, setSelectedTitle] = useState(null);
 
@@ -9,7 +11,9 @@ const AsidePayments = () => {
     setActiveAccordion(prevIndex => prevIndex === index ? null : index);
     setSelectedTitle(title);
   };
-
+  const handlePolicyClick = (policy) => {
+    setSelectedPolicy(policy);
+  };
   return (
     <aside className="sidebar-policies">
       <h2 className='help-center-title'>Centro de Ayuda</h2>
@@ -19,17 +23,18 @@ const AsidePayments = () => {
 
           {activeAccordion === 1 && (
             <div className="sub-accordion">
-              <p>Subtítulo 1</p>
-              <p>Subtítulo 2</p>
+              <p>Planificar</p>
+              <p>Buscar</p>
+              <p>Reservar</p>
             </div>
           )}
         </div>
         <div className="accordion-item" onClick={() => handleAccordionClick(2, 'pagos')}>
-          <h5 className={selectedTitle === 'pagos' ? 'title-selected' : ''}>Pagos <span className="caret"></span></h5>
+          <h5 className={selectedTitle === 'pagos' ? 'title-selected' : ''} onClick={() => handlePolicyClick('pagos')}>Pagos <span className="caret"></span></h5>
           {activeAccordion === 2 && (
             <div className="sub-accordion">
-              <p>Subtítulo 1</p>
-              <p>Subtítulo 2</p>
+              <p onClick={() => handlePolicyClick('pago_inmediato')}>Pago inmediato y reserva confirmada</p>
+              <p onClick={() => handlePolicyClick('reserva_ahora')}>Reserve ahora, pague después</p>
             </div>
           )}
         </div>
@@ -38,8 +43,8 @@ const AsidePayments = () => {
 
           {activeAccordion === 3 && (
             <div className="sub-accordion">
-              <p>Subtítulo 1</p>
-              <p>Subtítulo 2</p>
+              <p>Reembolso total hasta 7 días antes</p>
+              <p>Reembolso total hast 25 horas antes</p>
             </div>
           )}
         </div>
@@ -47,5 +52,7 @@ const AsidePayments = () => {
     </aside >
   );
 };
-
+AsidePayments.propTypes = {
+  setSelectedPolicy: PropTypes.func,
+}
 export default AsidePayments;

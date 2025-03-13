@@ -40,6 +40,9 @@ h5 {
 
 .title-selected {
   color: var(--blue-base);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .sub-accordion {
