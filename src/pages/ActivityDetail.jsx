@@ -30,6 +30,7 @@ import ImageViewer from "../components/ImageViewer";
 import { useContextGlobal } from "../gContext/globalContext";
 import BookingModal from "../components/BookingModal";
 import AccessRequiredModal from "../components/AccessRequiredModal";
+import Reviews from "../components/Reviews";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -164,36 +165,36 @@ const ActivityDetail = () => {
     return stars;
   };
 
-  // Get the correct icon component based on the icon name
+ 
   const getIconComponent = (iconName) => {
-    if (!iconName) return FaStar; // Default icon
+    if (!iconName) return FaStar; 
     
     // Check for Font Awesome (FA) icons
     if (iconName.startsWith("Fa") && !iconName.startsWith("Fa6")) {
       return iconName in FaIcons ? FaIcons[iconName] : FaStar;
     }
     
-    // Check for Font Awesome 6 (FA6) icons
+    
     if (iconName.startsWith("Fa6") || (iconName.startsWith("Fa") && !(iconName in FaIcons))) {
       const fa6Name = iconName.startsWith("Fa6") ? iconName.substring(3) : iconName;
       return fa6Name in Fa6Icons ? Fa6Icons[fa6Name] : FaStar;
     }
     
-    // Check for Ionicons (IO5) icons
+    
     if (iconName.startsWith("Io")) {
       return iconName in IoIcons ? IoIcons[iconName] : FaStar;
     }
     
-    // Check for Material UI icons
+
     if (iconName.endsWith("Icon")) {
       return iconName in muiIcons ? muiIcons[iconName] : FaStar;
     }
     
-    // Default to FaStar if no match found
+    
     return FaStar;
   };
 
-  // Placeholder para las imágenes en caso de error
+  
   const defaultImage = "/activitie.webp";
 
   const handleImageError = (e) => {
@@ -534,6 +535,9 @@ const ActivityDetail = () => {
             </div>
           </div>
         </section>
+
+        {/* Sección de Reseñas */}
+        <Reviews />
       </main>
 
       {/* Mobile booking card flotante */}
