@@ -7,12 +7,11 @@ import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
 
 
-const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
+const DashPolicies = ({ selectedPolicy }) => {
 
-  const policy = articles?.[selectedPolicy] ?? null;
+  const payments = articles?.[selectedPolicy] ?? null;
   // Operador existencia opcional y de coalescencia
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedArticleTitle, setSelectedArticleTitle] = useState("");
   const [filteredPolicies, setFilteredPolicies] = useState(articles);
 
   const searchRef = useRef(null);
@@ -55,20 +54,20 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
         />
       </div>
       {selectedPolicy &&
-        <Article title={policy.title} content={policy.content} width="840">
+        <Article title={payments.title} content={payments.content} width="840">
 
-          {Object.keys(policy).map((key) => {
+          {Object.keys(payments).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <a href="http://" onClick={setSelectedPolicy(policy)}>{policy[key].title}</a>
+                  <a href="#">
+                    {payments[key].title}
+                  </a>
                 </div>
               );
             }
             return null;
           })}
-          <button onClick={() => setSelectedPolicy(null)}>Volver a la lista de políticas</button>
-
         </Article >
       }
     </div >
