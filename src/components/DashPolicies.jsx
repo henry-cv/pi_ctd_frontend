@@ -8,16 +8,42 @@ import PropTypes from "prop-types";
 
 
 const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
-
+  console.log("selectedPolicy: -->", selectedPolicy);
   const article = articles?.[selectedPolicy] || null;
-  console.log("articulo", article);
   // Operador existencia opcional y de coalescencia
+  //console.log("article: -->", article);
+  const handleBackButton = (articleTitle) => {
+    console.log("articleTitle: -->", articleTitle);
+    switch (articleTitle) {
+      case "pagoInmediato" | "reserveAhora":
+        setArticulo(articles?.pagos);
+        break;
+      case "reembolso7dias" | "reembolso24horas" | "noReembolsable":
+        setArticulo(articles?.cancelaciones);
+        break;
+      default:
+        break;
+    }
+  }
+  const [articulo, setArticulo] = useState(null);
+  console.log("articulo: -->", articulo);
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef(null);
 
   const handleSearch = (term) => {
     console.log(`Se envió a buscar: ${term}`);
   }
+
+  useEffect(() => {
+    if (selectedPolicy) {
+      const policy = articles?.[selectedPolicy] || null;
+      setArticulo(policy);
+      console.log("seteado articulo: ", articulo);
+    } else {
+      setArticulo(null);
+      console.log("articulo en null: ", articulo);
+    }
+  }, [selectedPolicy]);
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
   useEffect(() => {
@@ -51,15 +77,17 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      {selectedPolicy && article &&
-        <Article title={article?.title} content={article?.content} width={840} setSelectedPolicy={setSelectedPolicy}>
+      {articulo &&
+        <Article title={articulo?.title} content={articulo?.content} width={840}>
 
-          {Object.keys(article).map((key) => {
+          {Object.keys(articulo).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <p onClick={() => setSelectedPolicy(article[key].title)}>
-                    {article[key].title}
+                  <p onClick={() =>
+                    setSelectedPolicy(articulo[key].value)
+                  }>
+                    {articulo[key].title}
                   </p>
                 </div>
               );
