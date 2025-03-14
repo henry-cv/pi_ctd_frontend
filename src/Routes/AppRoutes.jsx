@@ -20,7 +20,7 @@ import EditActivitie from "../components/EditActivitie";
 import DashCharacteristics from "../components/DashCharacteristics";
 import AddCharacteristic from "../components/AddCharacteristic";
 import FilterProducts from "../pages/FilterProducts";
-
+import PolicyPage from "../components/PolicyPage";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -68,26 +68,29 @@ const AppRoutes = () => {
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />
         <Route path="ajustes" element={<DashAjustes />} />
-        <Route 
-          path="ajustes/asignar-rol" 
+        <Route
+          path="ajustes/asignar-rol"
           element={
             <PrivateRoutes adminOnly={true}>
               <AsignarRol />
             </PrivateRoutes>
-          } 
-          />
+          }
+        />
         <Route path="caracteristicas" element={<DashCharacteristics />} />
         <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
-  
+
       </Route>
 
       {/* Otras rutas */}
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
+
       </Route>
 
       <Route path="*" element={<ErrorPage />} />
+      {/* Ruta para políticas de uso */}
+      <Route path="/politicasdeuso" element={<PolicyPage />} />
     </Routes>
   );
 };
