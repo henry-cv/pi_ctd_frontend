@@ -33,6 +33,23 @@ export const reducer = (state, action) => {
         ...state,
         isLoading: false,
       };
+    case "SET_ACTIVITY":
+      console.log("elpayload");
+      console.log(action.payload);
+      return { ...state, activity: action.payload };
+
+    case "SET_RESERVATION":
+      return {
+        ...state,
+        reservation: [...state.reservation, action.payload],
+      };
+
+    case "SET_URL_REDIRECTION":
+      return {
+        ...state,
+        urlRedirection: action.payload,
+      };
+
     default:
       throw new Error("Acción no existente");
   }
