@@ -13,7 +13,7 @@ const PolicyPage = () => {
       <NavDash variant="home" />
       <main className="main-policies">
         <AsidePayments setSelectedPolicy={setSelectedPolicy} />
-        {selectedPolicy && <DashPolicies selectedPolicy={selectedPolicy} setSelectedPolicy={setSelectedPolicy} />}
+        <DashPolicies selectedPolicy={selectedPolicy} setSelectedPolicy={setSelectedPolicy} />
       </main>
       <Footer />
     </div>
