@@ -1,5 +1,6 @@
 const Categories = () => {
   const categories = [
+    "Todos",
     "Cultural",
     "Gastronomía",
     "Aire libre",

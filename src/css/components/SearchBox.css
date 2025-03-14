@@ -8,7 +8,9 @@
   z-index: 10;
   margin-bottom: 0; /* Quitamos el margin-bottom */
 }
-
+.css-1tlcqt-MuiAutocomplete-root .MuiOutlinedInput-root.MuiInputBase-sizeSmall {
+  padding-right: 0 !important;
+}
 /* Wrapper del searchbox */
 .search-box-wrapper {
   background-color: var(--Background-components);
@@ -208,7 +210,7 @@
 @media screen and (max-width: 320px) {
   .search-box-container {
     width: calc(100% - 1.5rem);
-    bottom: .5rem; /* Mantener consistente */
+    bottom: 0.5rem; /* Mantener consistente */
   }
 
   .search-box-wrapper {
