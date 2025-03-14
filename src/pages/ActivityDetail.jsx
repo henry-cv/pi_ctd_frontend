@@ -20,7 +20,6 @@ import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import SchoolIcon from '@mui/icons-material/School';
 import KayakingIcon from '@mui/icons-material/Kayaking';
 import InsightsIcon from '@mui/icons-material/Insights';
-// import { faCalendarCheck } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { FaGlobe, FaStar,} from "react-icons/fa";
 import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
@@ -30,6 +29,7 @@ import DurationInfo from "../components/DurationInfo";
 import ImageViewer from "../components/ImageViewer";
 import { useContextGlobal } from "../gContext/globalContext";
 import BookingModal from "../components/BookingModal";
+import AccessRequiredModal from "../components/AccessRequiredModal";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -41,7 +41,7 @@ const muiIcons = {
 };
 
 const ActivityDetail = () => {
-  const { state } = useContextGlobal();
+  const { state, dispatch } = useContextGlobal();
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [expandedDescription, setExpandedDescription] = useState(false);
@@ -54,6 +54,10 @@ const ActivityDetail = () => {
   const [currentMobileImageIndex, setCurrentMobileImageIndex] = useState(0);
   const [isMobileView, setIsMobileView] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
+  const [openAccess, setOpenAccess] = useState(false);
+
+  console.log("La reserva: " + JSON.stringify(state.reservation));
+  
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
@@ -67,6 +71,11 @@ const ActivityDetail = () => {
 
         const data = await response.json();
         console.log("Detalles del producto:", {data});
+         dispatch({
+      type: "SET_ACTIVITY",
+      payload: {data},
+    });
+     
         setActivity(data);
       } catch (error) {
         console.error("Error al obtener detalles:", error.message);
@@ -192,16 +201,23 @@ const ActivityDetail = () => {
   };
 
   const handleOpenModalBooking = (id) => {
-    console.log("entre al open booking");
-    console.log("el id " + id);
+    if(!state.token){
+      console.log("el token no esta no esta logueado");
+      setOpenAccess(true)
+    }else{
+      console.log("usurio loggueado");
+      console.log(state.user.id);
+      
+      setOpenBooking(true);
+    }
     
-    
-    setOpenBooking(true);
   };
 
   const handleCloseModalBooking = () => {
     setOpenBooking(false);
   };
+
+  const handleCloseAccess = () => setOpenAccess(false);
 
 
   if (loading) {
@@ -357,7 +373,7 @@ const ActivityDetail = () => {
               <div className="detail-column">
                 <div className="activity-detail-title">
                   <h1>{activity.nombre}</h1>
-                  <div className="location-info">
+                  {/* <div className="location-info">
                     <FontAwesomeIcon
                       icon={faLocationDot}
                       className="location-icon"
@@ -366,7 +382,7 @@ const ActivityDetail = () => {
                       {activity.ubicacion?.ciudad || "Ciudad"},{" "}
                       {activity.ubicacion?.pais || "País"}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="categories-detail">
@@ -542,13 +558,17 @@ const ActivityDetail = () => {
         </div>
       )}
 
-      {openBooking && (
+     
         <BookingModal
         open={openBooking} 
         handleClose={handleCloseModalBooking} 
         activityId={activity.id}
-        />) }
+        />
 
+      <AccessRequiredModal
+      open={openAccess} 
+      onClose ={handleCloseAccess}
+      />
       {/* Visor de imágenes */}
       {showImageViewer && !isMobileView && (
         <ImageViewer
