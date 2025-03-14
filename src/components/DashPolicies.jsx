@@ -7,17 +7,17 @@ import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
 
 
-const DashPolicies = ({ selectedPolicy }) => {
+const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
 
-  const payments = articles?.[selectedPolicy] ?? null;
+  const article = articles?.[selectedPolicy] || null;
+  console.log("articulo", article);
   // Operador existencia opcional y de coalescencia
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedArticleTitle, setSelectedArticleTitle] = useState(null);
   const searchRef = useRef(null);
+
   const handleSearch = (term) => {
     console.log(`Se envió a buscar: ${term}`);
   }
-
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
   useEffect(() => {
@@ -51,14 +51,16 @@ const DashPolicies = ({ selectedPolicy }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      {selectedPolicy &&
-        <Article title={payments.title} content={payments.content} width="840">
+      {selectedPolicy && article &&
+        <Article title={article?.title} content={article?.content} width={840} setSelectedPolicy={setSelectedPolicy}>
 
-          {Object.keys(payments).map((key) => {
+          {Object.keys(article).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <a href="http://">{payments[key].title}</a>
+                  <p onClick={() => setSelectedPolicy(article[key].title)}>
+                    {article[key].title}
+                  </p>
                 </div>
               );
             }
