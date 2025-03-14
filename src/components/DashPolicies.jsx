@@ -9,22 +9,7 @@ import PropTypes from "prop-types";
 
 const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
   console.log("selectedPolicy: -->", selectedPolicy);
-  const article = articles?.[selectedPolicy] || null;
-  // Operador existencia opcional y de coalescencia
-  //console.log("article: -->", article);
-  const handleBackButton = (articleTitle) => {
-    console.log("articleTitle: -->", articleTitle);
-    switch (articleTitle) {
-      case "pagoInmediato" | "reserveAhora":
-        setArticulo(articles?.pagos);
-        break;
-      case "reembolso7dias" | "reembolso24horas" | "noReembolsable":
-        setArticulo(articles?.cancelaciones);
-        break;
-      default:
-        break;
-    }
-  }
+
   const [articulo, setArticulo] = useState(null);
   console.log("articulo: -->", articulo);
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,6 +79,7 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
             }
             return null;
           })}
+
         </Article >
       }
     </div >
