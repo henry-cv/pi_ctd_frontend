@@ -1,25 +1,3 @@
-export const cancelPolicies = [
-  {
-    timeBefore: "24 horas",
-    title: "Reembolso Total hasta 24 horas antes",
-    content:
-      "Para recibir un reembolso completo, debes cancelar la experiencia al menos 24 horas antes de su inicio. Si la cancelación se realiza con menos tiempo, no se realizará ningún reembolso. La hora límite se basa en la hora local del destino de la experiencia. Además, si las condiciones meteorológicas no permiten llevar a cabo la actividad, se te ofrecerá una nueva fecha o el reembolso total del importe pagado.",
-    link: {
-      title: "Más información",
-      text: "sobre las cancelaciones.",
-    },
-  },
-  {
-    timeBefore: "48 horas",
-    title: "Reembolso Parcial hasta 48 horas antes",
-    content:
-      "Para recibir un reembolso parcial, debes cancelar la experiencia al menos 48 horas antes de su inicio. Si la cancelación se realiza con menos tiempo, no se realizará ningún reembolso. La hora límite se basa en la hora local del destino de la experiencia.",
-    link: {
-      title: "Más información",
-      text: "sobre las cancelaciones.",
-    },
-  },
-];
 export const articles = {
   pagos: {
     title: "Pagos",
