@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import '../../css/Modal.css'; // Importamos los estilos
+import '../css/components/Modal.css';
 import propTypes from 'prop-types';
 
 const Modal = ({ title, content, link, maxWidth }) => {
