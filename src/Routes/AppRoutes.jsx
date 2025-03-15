@@ -21,6 +21,7 @@ import DashCharacteristics from "../components/DashCharacteristics";
 import AddCharacteristic from "../components/AddCharacteristic";
 import FilterProducts from "../pages/FilterProducts";
 import PolicyPage from "../components/PolicyPage";
+import Terms from "../pages/Terms";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -84,6 +85,7 @@ const AppRoutes = () => {
       {/* Otras rutas */}
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
+        <Route path="/terminosycondiciones" element={<Terms />} />
         <Route path="/perfil" element={<UserProfile />} />
 
       </Route>
