@@ -12,7 +12,8 @@ const initialState = {
   usuarioRoles: null,
   activity: null,
   reservation: JSON.parse(localStorage.getItem("reservation")) || [], 
-  urlRedirection: ""
+  urlRedirection: localStorage.getItem("urlRedirection") || "",
+  isAccessModal: false
 };
 
 export const ContextGlobal = createContext();

@@ -31,6 +31,7 @@ import { useContextGlobal } from "../gContext/globalContext";
 import BookingModal from "../components/BookingModal";
 import AccessRequiredModal from "../components/AccessRequiredModal";
 import Reviews from "../components/Reviews";
+import ActivityPolitics from "../components/ActivityPolitics";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -432,30 +433,7 @@ const ActivityDetail = () => {
 
                 <div className="experience-section">
                   <h2>Sobre la experiencia</h2>
-
-                  <div className="info-card-yellow">
-                    <div className="info-item">
-                      <FontAwesomeIcon
-                        icon={faCalendarCheck}
-                        className="info-icon"
-                      />
-                      <p>
-                        <strong>Cancelación gratis</strong> hasta 24 horas antes
-                        de la experiencia (hora local)
-                      </p>
-                    </div>
-                    <div className="info-item">
-                      <FontAwesomeIcon
-                        icon={faCalendarCheck}
-                        className="info-icon"
-                      />
-                      <p>
-                        <strong>Reserva ahora paga después</strong> planes
-                        flexibles aseguran tu reserva, sin que se te haga el
-                        cargo hoy.
-                      </p>
-                    </div>
-                  </div>
+                  <ActivityPolitics/>
 
                   <div className="experience-details">
                     <div className="detail-item">

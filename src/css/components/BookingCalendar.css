@@ -38,8 +38,8 @@
 
 
 
-.available-day:hover {
-  background-color: var(--blue-base);
+.available-day:hover , .overlay-class:hover{
+  background-color: var(--blue-base)!important;
 }
 
 .selected-day {
@@ -56,7 +56,7 @@
   width: 32px;
 }
 
-.available-day , .single-available-day{
+.available-day , .overlay-class {
   background-color: var(--blue-300) !important;
   border-radius: 50%;
   width: 32px;
@@ -76,7 +76,7 @@
 }
 
 .rdrDayHovered .rdrDayNumber,
-.rdrDaySelected .rdrDayNumber span:hover {
+.rdrDaySelected .rdrDayNumber span:hover  {
   background-color: var(--blue-base);
   color: var(--white);
   width: 32px;
@@ -94,10 +94,15 @@
 
 .calendar-legend ul li{
 padding: 8px;
+padding-bottom: 30px;
 font-size: 14px;
 list-style-type: none;
 }
 
+
+.selected-day:hover .overlay-class {
+  opacity: 0.7;
+}
 
 /* 
   estilos para dark  */
@@ -105,14 +110,25 @@ list-style-type: none;
 .CardBooking-container,
 .CardBooking-container .rdrNextPrevButton,
 .CardBooking-calendar {
-  background-color: var(--black);
+  background-color: var(--black-400);
   color: white !important;
 }
 
-.CardBooking-container .rdrDay span {
-  color: white;
+.CardBooking-container{
+  border: 1px solid var(--white);
+
 }
 
+.CardBooking-container .rdrDay span, .rdrMonthPicker {
+  color: white;
+}
+.CardBooking-container .rdrNextButton i{
+  border-color: transparent transparent #a6262600 var(--white);
+}
+
+.CardBooking-container .rdrPprevButton i{
+  border-color: transparent var(--white) transparent #a6262600;
+}
 .CardBooking-container .rdrNextPrevButton {
   background-color: transparent;
 }

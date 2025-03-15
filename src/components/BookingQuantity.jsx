@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Button, Box, Typography } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Button, Box, Typography, useMediaQuery } from "@mui/material";
 import { useContextGlobal } from "../gContext/globalContext";
+import  "../css/components/BookingQuantity.css"
+import ButtonBluePill from "./ButtonBluePill";
 
 function BookingQuantity({ open, onClose, quantity, setQuantity }) {
+
+  const isMobile = useMediaQuery("(max-width: 480px)");
 
   useEffect(() => {
     if (!quantity) {
@@ -13,16 +17,7 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
   const [tempQuantity, setTempQuantity] = useState(quantity);
   const{state}= useContextGlobal();
   const {
-    data: {
-      id,
-      nombre,
-      horaInicio,
-      tipoTarifa,
-      valorTarifa,
-      diasDisponible,
-      horaFin,
-    } = {},
-  } = state.activity || {};
+    data: {tipoTarifa,} = {},} = state.activity || {};
 
   const handleApply = () => {
     console.log("Aplicando cantidad:", tempQuantity);  
@@ -30,23 +25,34 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
     onClose(tempQuantity);  
   };
 
-  
-  const handleIncrease = () => {
-    console.log("entre a incrementar");
+  // const handleIncrease = () => {
+  //   console.log("entre a incrementar");
     
-    setTempQuantity((prev) => prev + 1);
-  };
+  //   setTempQuantity((prev) => prev + 1);
+  // };
 
-  const handleDecrease = () => {
-    setTempQuantity((prev) => Math.max(1, prev - 1));
+  // const handleDecrease = () => {
+  //   setTempQuantity((prev) => Math.max(0, prev - 1));
+  // };
+
+  const handleDecreaseAndIncrease = (operation) => {
+
+    if(operation === "add"){
+      setTempQuantity((prev) => prev + 1);
+    }else{
+      setTempQuantity((prev) => Math.max(0, prev - 1));}
+    
   };
+  
 
   return (
     <Dialog 
+    className={isMobile ? (state.theme ? "mobile dark" : "mobile") : (state.theme ? "quantity-container dark" : "quantity-container")}
     open={open} 
     onClose={onClose}
-    sx={{ "& .MuiPaper-rounded": { borderRadius: "25px" } }}
+    sx={{ "& .MuiPaper-rounded": { borderRadius: isMobile? "20px 20px 0px 0px" : "20px"} }}
     >
+      
       {/* <DialogTitle color="black">Selecciona el número de reservas</DialogTitle> */}
       <DialogContent>
       <Typography>
@@ -56,17 +62,22 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
         <Typography>
       Cantidad de reservas
       </Typography>
-          <IconButton onClick={handleDecrease}>
+          <IconButton onClick={() =>handleDecreaseAndIncrease("sustract")}>
             ➖
           </IconButton>
           <Typography variant="h6">{tempQuantity}</Typography>
-          <IconButton onClick={handleIncrease}>
+          <IconButton onClick={() =>handleDecreaseAndIncrease("add")}>
             ➕
           </IconButton>
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleApply}>Aplicar</Button>
+        <ButtonBluePill
+        text="Aplicar"
+        className={`btn-modal-quantity ${tempQuantity === 0 ? "btn-save btn-blue-disabled" : "button-blue btn-save"}`}
+        onClick={tempQuantity > 0 ? handleApply : undefined} 
+        />
+
       </DialogActions>
     </Dialog>
   );

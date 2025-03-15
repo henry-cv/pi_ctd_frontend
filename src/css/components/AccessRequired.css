@@ -1,0 +1,12 @@
+.access-container .MuiPaper-root{
+    background-color: var(--black-400);
+    color: var(--white);
+}
+
+.font-ligth{
+    color: var(--black);
+}
+
+.font-dark{
+    color: var(--white);
+}
