@@ -8,13 +8,16 @@ const Modal = ({ title, content, link, maxWidth }) => {
 
   const closeModal = () => {
     setIsOpen(false);
+    title = "";
+    content = "";
+    link = {};
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay">
-      <div className="modal-container" style={{ maxWidth: `${maxWidth}px` }} >
+      <div className="modal-container" style={{ maxWidth: maxWidth ? `${maxWidth}px` : "840px" }} >
         <button
           onClick={closeModal}
           className="modal-close-button"
