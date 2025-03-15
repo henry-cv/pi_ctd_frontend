@@ -21,20 +21,19 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { format } from "date-fns";
 import BookingCalendar from "./BookingCalendar";
-import {
-  IoCalendarClear,
-  IoTicket,
-} from "react-icons/io5";
+import { IoCalendarClear, IoTicket } from "react-icons/io5";
 import { FaCreditCard, FaHourglass } from "react-icons/fa";
 import ButtonBluePill from "./ButtonBluePill";
 import "../css/components/BookingModal.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import BookingQuantity from "./BookingQuantity";
 import Swal from "sweetalert2";
+import ActivityPolitics from "./ActivityPolitics";
+import { es } from "date-fns/locale";
 
 const BookingModal = ({ open, handleClose, activityId }) => {
   const [quantity, setQuantity] = useState(0);
-  const[errorsBooking, setErrorsBooking] = useState({});
+  const [errorsBooking, setErrorsBooking] = useState({});
   const isMobile = useMediaQuery("(max-width: 480px)");
   const [dateRange, setDateRange] = useState([
     {
@@ -44,60 +43,72 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     },
   ]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [priceQuantity, setPriceQuantity] = useState(0); //para guardar luego el precio total ese se iria a reserva
+  const [priceQuantity, setPriceQuantity] = useState(0); 
   const { state, dispatch } = useContextGlobal(null);
   const {
-    data: { id, nombre, horaInicio, tipoTarifa, valorTarifa, diasDisponible, horaFin, fechaEvento } = {},
+    data: {
+      id,
+      nombre,
+      horaInicio,
+      tipoTarifa,
+      valorTarifa,
+      diasDisponible,
+      horaFin,
+      fechaEvento,
+    } = {},
   } = state.activity || {};
   const parseTime = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
     return hours * 60 + minutes;
   };
   const [openQuantity, setOpenQuantity] = useState(false);
-  const[bookingDate, setBookingDate] = useState(null);
-
+  const [bookingDate, setBookingDate] = useState(null);
+  const [anchorElQuantity, setAnchorElQuantity] = useState(null);
   const totalMinutes = parseTime(horaFin) - parseTime(horaInicio);
   const horas = Math.floor(totalMinutes / 60);
   const minutos = totalMinutes % 60;
   const duration = `${horas} horas y ${minutos} minutos`;
-  const [isChecked, setIsChecked]=useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
-  console.log(state.activity);
-  
+  console.log(state.isAccessModal);
 
   const validateCreateBooking = () => {
     const newErrors = {};
-  
+
     if (!bookingDate) {
       newErrors.date = "Escoger la fecha es requerida";
     }
-  
+
     if (!quantity) {
       newErrors.slot = "La cantidad de reservas es requerido";
     }
-  
+
     setErrorsBooking(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-const handleCheckboxChange = (event) => {
-  if (validateCreateBooking()) {
-    setIsChecked(event.target.checked);
-  } else {
-    console.log("Validación fallida, no se puede hacer el check.");
-  }
-};
+  const handleCheckboxChange = (event) => {
+    if (validateCreateBooking()) {
+      setIsChecked(event.target.checked);
+    } else {
+      console.log("Validación fallida, no se puede hacer el check.");
+    }
+  };
   const handleOpenCalendar = (event) => setAnchorEl(event.currentTarget);
   const handleCloseCalendar = () => setAnchorEl(null);
 
+ const handleOpenBookingQuantity = (event) => {
+  setAnchorElQuantity(event.currentTarget);
+  setOpenQuantity(true);
+};
 
-  const handleOpenBookingQuantity = () => setOpenQuantity(true);
-  const handleCloseBookingQuantity = (newQuantity) => {
-    if (typeof newQuantity === "number") {
-      setPriceQuantity(newQuantity * valorTarifa);
-    }
-    setOpenQuantity(false);
-  };
+const handleCloseBookingQuantity = (newQuantity) => {
+  if (typeof newQuantity === "number") {
+    setPriceQuantity(newQuantity * valorTarifa);
+  }
+  setOpenQuantity(false);
+  setAnchorElQuantity(null);
+};
 
   const resetBookingData = () => {
     setBookingDate(null);
@@ -120,16 +131,16 @@ const handleCheckboxChange = (event) => {
     );
 
     if (existingReservation) {
-            Swal.fire({
-              icon: "error",
-              title: "Reserva existente",
-              text: "ya hiciste una reserva para esta actividad mira toda la información en tus reservas",
-              timer: 2000,
-              showConfirmButton: false
-            });
-      handleClose()
-      resetBookingData()
-      return; 
+      Swal.fire({
+        icon: "error",
+        title: "Reserva existente",
+        text: "ya hiciste una reserva para esta actividad mira toda la información en tus reservas",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      handleClose();
+      resetBookingData();
+      return;
     }
 
     dispatch({
@@ -141,34 +152,60 @@ const handleCheckboxChange = (event) => {
       title: "Reserva exitosa",
       text: "reserva exitosa mira toda la información en tus reservas",
       timer: 2000,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
-    resetBookingData()
-    handleClose()
+    resetBookingData();
+    handleClose();
   };
 
   const handleCloseBookingModal = () => {
     resetBookingData();
+    setErrorsBooking((prevErrors) => ({
+      ...prevErrors,
+      date: "",
+      slot: ""
+    }));
     handleClose();
   };
-  
-  
+
+  const handleSelectDate = (date) => {
+    setBookingDate(date);
+    if (errorsBooking.date) {
+      setErrorsBooking((prevErrors) => ({
+        ...prevErrors,
+        date: "",
+      }));
+    }
+  };
+
+  const handleSelectQuantity = (newQuantity) => {
+    setQuantity(newQuantity);
+    if (errorsBooking.slot) {
+      setErrorsBooking((prevErrors) => ({
+        ...prevErrors,
+        slot: "",
+      }));
+    }
+    setOpenQuantity(false);
+  };
+
   return (
     <Dialog
       open={open}
       onClose={handleCloseBookingModal}
       maxWidth="sm"
       fullWidth
-      sx={{ "& .MuiPaper-rounded": { borderRadius: "25px" } }}
+      sx={{ "& .MuiPaper-rounded": { borderRadius: isMobile ? "0" : "20px" } }}
+      className={state.theme ? "card-modal-container card-dark-modal-container" : "card-modal-container card-ligth-modal-container"}
     >
-      <DialogTitle color="black">
+      <DialogTitle className={state.theme ? "font-dark" : "font-ligth"}>
         {nombre}
         <IconButton
           aria-label="close"
           onClick={handleCloseBookingModal}
           sx={{ position: "absolute", right: 8, top: 8 }}
         >
-          <CloseIcon />
+          <CloseIcon className={state.theme ? "font-dark" : "font-ligth"} />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -178,30 +215,49 @@ const handleCheckboxChange = (event) => {
           cuántos cupos deseas .
         </Typography>
 
-        <Box display="flex" alignItems="center" mt={2} gap={1}>
-          <IconButton onClick={handleOpenCalendar}>
-            <CalendarTodayIcon />
-          </IconButton>
-          <Typography
-            variant="body2"
-            sx={{ cursor: "pointer" }}
-            onClick={handleOpenCalendar}
-          >
-            {format(bookingDate || new Date(), "EEE, dd MMM")}
-          </Typography>
+        <Box className="select-date-slot">
+          <div className="date">
+            <Box  className="select-item">
+              <IconButton onClick={handleOpenCalendar}>
+                <CalendarTodayIcon
+                  className={state.theme ? "font-dark" : "font-ligth"}
+                />
+              </IconButton>
+              <Typography
+                variant="body2"
+                gap={1}
+                sx={{ cursor: "pointer" }}
+                onClick={handleOpenCalendar}
+              >
+                {format(bookingDate || new Date(), "EEE, dd MMM", {
+                  locale: es,
+                })}
+              </Typography>
+            </Box>
+            {errorsBooking.date && (
+              <span className="error-message">{errorsBooking.date}</span>
+            )}
+          </div>
 
-          <Box display="flex" alignItems="center" gap={1}>
-            <IconButton onClick={handleOpenBookingQuantity}>
-              <IoTicket />
-            </IconButton>
-            <Typography
-              variant="body2"
-              sx={{ cursor: "pointer" }}
-              onClick={handleOpenBookingQuantity}
-            >
-              Selecciona tus cupos
-            </Typography>
-          </Box>
+          <div className="slot">
+  <Box display="flex" alignItems="center" className="select-item">
+    <IconButton onClick={handleOpenBookingQuantity}>
+      <IoTicket className={state.theme ? "font-dark" : "font-ligth"} />
+    </IconButton>
+    <Typography
+      variant="body2"
+      sx={{ cursor: "pointer" }}
+      onClick={handleOpenBookingQuantity}
+    >
+   {quantity === 0
+  ? (isMobile ? "tu cupo" : "Selecciona tus cupos") : `${quantity} 
+  ${quantity === 1 ? 
+  (isMobile ? "Cupo" : "Cupo seleccionado") : 
+  (isMobile ? "Cupos" : "Cupos seleccionados")}`}
+
+    </Typography>
+  </Box>
+</div>
         </Box>
 
         <BookingCalendar
@@ -209,16 +265,20 @@ const handleCheckboxChange = (event) => {
           handleClose={handleCloseCalendar}
           dateRange={dateRange}
           setDateRange={setDateRange}
-          availability={diasDisponible ? { type: "dias", data: diasDisponible } : { type: "fecha", data: [fechaEvento] }}
-          setBookingDate={setBookingDate}
-          bookingDate={bookingDate} 
+          availability={
+            diasDisponible
+              ? { type: "dias", data: diasDisponible }
+              : { type: "fecha", data: [fechaEvento] }
+          }
+          setBookingDate={handleSelectDate}
+          bookingDate={bookingDate}
         />
 
         <BookingQuantity
           open={openQuantity}
           onClose={handleCloseBookingQuantity}
           quantity={quantity}
-          setQuantity={setQuantity}
+          setQuantity={handleSelectQuantity}
         />
 
         {/* aqui se pone si hay menos de 3 reservas  */}
@@ -227,44 +287,26 @@ const handleCheckboxChange = (event) => {
           ¡Últimas 3 reservas disponibles para esta fecha!
         </Typography> */}
 
-        <Box bgcolor="#f1c40f" p={2} mt={2} borderRadius={2}>
-          <Typography fontWeight={600}>
-            <IoCalendarClear />
-              Cancelación gratis:{" "}
-            <span style={{ fontWeight: "normal" }}>
-              hasta 24 horas antes de la experiencia (hora local)
-            </span>
-          </Typography>
-          <Typography fontWeight={600} mt={1}>
-            <FaCreditCard />
-              Reserva ahora, paga después:{" "}
-            <span style={{ fontWeight: "normal" }}>
-              planes flexibles aseguran tu reserva, sin que se te haga el cargo
-              hoy.
-            </span>
-          </Typography>
-        </Box>
-        {errorsBooking.date && (
-                  <span className="error-message">{errorsBooking.date}</span>)}
+        <ActivityPolitics />
 
         <Box
           mt={3}
           p={2}
           border={1}
           borderRadius={2}
-          className="Card-info-booking"
         >
-                                    {errorsBooking.slot && (
-                  <span className="error-message">{errorsBooking.slot}</span>)}
           <div className="title-checkbox">
-            <Typography fontWeight={600}>
-            {nombre}
-            </Typography>
-            <FormControlLabel control={
-              <Checkbox 
-              checked ={isChecked}
-              onChange={handleCheckboxChange}
-              />} />
+            <Typography fontWeight={600}>{nombre}</Typography>
+            <FormControlLabel
+  control={
+    <Checkbox
+    className={state.theme ? "my-custom-checkbox" : ""}
+      checked={isChecked}
+      onChange={handleCheckboxChange}
+
+    />
+  }
+/>
           </div>
           {/* ubicacion oculta hasta que se pueda aplicar mapa  */}
           {/* <Box display="flex" alignItems="center" mt={1} gap={1}>
@@ -278,7 +320,9 @@ const handleCheckboxChange = (event) => {
           </Box>
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <AccessTimeIcon />
-            <Typography>Hora de inicio: {horaInicio.substring(0, 5)}</Typography>
+            <Typography>
+              Hora de inicio: {horaInicio.substring(0, 5)}
+            </Typography>
           </Box>
           <Typography mt={2}>
             {" "}
@@ -288,13 +332,15 @@ const handleCheckboxChange = (event) => {
         </Box>
       </DialogContent>
 
-      <DialogActions className= "Booking-principal-container">
+      <DialogActions className="Booking-principal-container">
         <ButtonBluePill
           text="Reservar Ahora"
-          className={isChecked ? "button-blue btn-save" : " btn-save btn-blue-disabled"}
+          className={
+            isChecked ? "button-blue btn-save" : " btn-save btn-blue-disabled"
+          }
           type="submit"
           onClick={BookingSubmit}
-          disabled = {isChecked ? false : true}
+          disabled={isChecked ? false : true}
         />
       </DialogActions>
     </Dialog>

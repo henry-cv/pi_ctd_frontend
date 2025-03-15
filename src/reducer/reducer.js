@@ -43,12 +43,17 @@ export const reducer = (state, action) => {
         ...state,
         reservation: [...state.reservation, action.payload],
       };
-
-    case "SET_URL_REDIRECTION":
-      return {
-        ...state,
-        urlRedirection: action.payload,
-      };
+      case "SET_URL_REDIRECTION":
+        localStorage.setItem("urlRedirection", action.payload);  
+        return {
+          ...state,
+          urlRedirection: action.payload,
+        };
+      case "ORIGIN_ACCESS":
+        return {
+          ...state,
+          isAccessModal: action.payload,
+        };
 
     default:
       throw new Error("Acción no existente");

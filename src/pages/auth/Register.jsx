@@ -76,8 +76,17 @@ const Register = () => {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          navigate("/");
-        });
+          if(state.isAccessModal){
+            dispatch({ 
+              type: "ORIGIN_ACCESS", 
+              payload: false 
+          });
+            navigate(state.urlRedirection);
+          }else{
+            navigate("/");
+          }
+          
+        })
       } else {
         throw new Error("Error al registrar el usuario");
       }
