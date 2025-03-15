@@ -11,7 +11,7 @@ const Terms = () => {
       <ol className='terms-list' >
         {literals.map((literal, index) => (
           <li key={index}>
-            <h5><b>{literal.title}</b></h5>
+            <h5>{literal.title}</h5>
             <p>{literal.text}</p>
           </li>
         ))}
