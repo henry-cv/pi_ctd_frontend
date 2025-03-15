@@ -16,9 +16,6 @@ const AsidePayments = ({ setSelectedPolicy }) => {
   const handlePolicyClick = (policy, index) => {
     setSelectedPolicy(policy);
     setSelectedPolicyIndex(index);
-    console.log("mensajes depurando")
-    console.log(policy);
-    console.log(index);
   };
   return (
     <aside className="sidebar-policies">

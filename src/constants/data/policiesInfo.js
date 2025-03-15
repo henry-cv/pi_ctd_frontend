@@ -27,9 +27,11 @@ export const articles = {
       "Los métodos y plazos de pago dependen de la experiencia elegida. Consulta los detalles antes de reservar para conocer las opciones disponibles.",
     link1: {
       title: "Pago inmediato y reserva confirmada",
+      value: "pagoInmediato",
     },
     link2: {
       title: "Reserve ahora, pague después",
+      value: "reserveAhora",
     },
   },
   reserveAhora: {
@@ -42,19 +44,6 @@ export const articles = {
       "* La fecha de pago depende de la reserva / producto seleccionado."
     ],
   },
-  cancelaciones: {
-    title: "Cancelaciones",
-    content: `Las políticas de cancelación varían según la experiencia. Verifica la política aplicable antes de reservar en la sección correspondiente de cada tour o en tu boleto si ya tienes una reserva. Cancela siguiendo las instrucciones aquí.`,
-    link1: {
-      title: "Reembolso Total hasta 7 días antes",
-    },
-    link2: {
-      title: "Reembolso Total hasta 24 horas antes",
-    },
-    link3: {
-      title: "No reembolsable",
-    },
-  },
   pagoInmediato: {
     title: "Pago inmediato y reserva confirmada",
     content: ["Esta actividad requiere pago inmediato al momento de la reserva.",
@@ -64,6 +53,22 @@ export const articles = {
       "Cuando realizas el pago de una reserva, esta se confirma de inmediato y recibirás un correo electrónico con tu boleto al instante.",
       "No es necesario realizar pagos adicionales más adelante.",
       "Asegúrate de revisar los detalles de tu reserva antes de completar la transacción, ya que las políticas de cancelación y reembolso pueden variar según la experiencia seleccionada."]
+  },
+  cancelaciones: {
+    title: "Cancelaciones",
+    content: `Las políticas de cancelación varían según la experiencia. Verifica la política aplicable antes de reservar en la sección correspondiente de cada tour o en tu boleto si ya tienes una reserva. Cancela siguiendo las instrucciones aquí.`,
+    link1: {
+      title: "Reembolso Total hasta 7 días antes",
+      value: "reembolso7dias"
+    },
+    link2: {
+      title: "Reembolso Total hasta 24 horas antes",
+      value: "reembolso24horas"
+    },
+    link3: {
+      title: "No reembolsable",
+      value: "noReembolsable"
+    },
   },
   reembolso7dias: {
     title: "Reembolso Total hasta 7 dias antes",

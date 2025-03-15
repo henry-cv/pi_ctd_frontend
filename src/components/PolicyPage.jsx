@@ -6,14 +6,14 @@ import Footer from "./Footer";
 import { useState } from "react";
 
 const PolicyPage = () => {
-  const [selectedPolicy, setSelectedPolicy] = useState(null);
+  const [selectedPolicy, setSelectedPolicy] = useState("pagos");
 
   return (
     <div className='page-policies-container'>
       <NavDash variant="home" />
       <main className="main-policies">
         <AsidePayments setSelectedPolicy={setSelectedPolicy} />
-        <DashPolicies selectedPolicy={selectedPolicy} />
+        <DashPolicies selectedPolicy={selectedPolicy} setSelectedPolicy={setSelectedPolicy} />
       </main>
       <Footer />
     </div>

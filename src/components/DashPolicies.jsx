@@ -7,17 +7,28 @@ import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
 
 
-const DashPolicies = ({ selectedPolicy }) => {
+const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
+  console.log("selectedPolicy: -->", selectedPolicy);
 
-  const payments = articles?.[selectedPolicy] ?? null;
-  // Operador existencia opcional y de coalescencia
+  const [articulo, setArticulo] = useState(null);
+  console.log("articulo: -->", articulo);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedArticleTitle, setSelectedArticleTitle] = useState(null);
   const searchRef = useRef(null);
+
   const handleSearch = (term) => {
     console.log(`Se envió a buscar: ${term}`);
   }
 
+  useEffect(() => {
+    if (selectedPolicy) {
+      const policy = articles?.[selectedPolicy] || null;
+      setArticulo(policy);
+      console.log("seteado articulo: ", articulo);
+    } else {
+      setArticulo(null);
+      console.log("articulo en null: ", articulo);
+    }
+  }, [selectedPolicy]);
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
   useEffect(() => {
@@ -51,19 +62,24 @@ const DashPolicies = ({ selectedPolicy }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      {selectedPolicy &&
-        <Article title={payments.title} content={payments.content} width="840">
+      {articulo &&
+        <Article title={articulo?.title} content={articulo?.content} width={840}>
 
-          {Object.keys(payments).map((key) => {
+          {Object.keys(articulo).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <a href="http://">{payments[key].title}</a>
+                  <p onClick={() =>
+                    setSelectedPolicy(articulo[key].value)
+                  }>
+                    {articulo[key].title}
+                  </p>
                 </div>
               );
             }
             return null;
           })}
+
         </Article >
       }
     </div >
