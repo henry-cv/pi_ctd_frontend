@@ -1,7 +1,2 @@
 Archivo de prueba para vercel.
-otra línea agredada.
-tercera línea agregada.
-cuarta línea agregada.
-quinta línea agregada.
-sexta línea agredada.
-séptima línea agregada
+línea desde windows
