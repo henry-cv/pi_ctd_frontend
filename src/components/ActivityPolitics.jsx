@@ -20,7 +20,10 @@ function ActivityPolitics() {
     setObjModal(modal[policy]);
     console.log("objModal: ", objModal);
   };
-
+  const onCloseModal = () => {
+    setSelectedPolicy(null);
+    setObjModal(null);
+  };
   useEffect(() => {
     const prev = prevState.current;
     prevState.current = selectedPolicy;
@@ -58,7 +61,8 @@ function ActivityPolitics() {
           cargo hoy.
         </p>
       </div>
-      {selectedPolicy && objModal && <Modal title={objModal.title} content={objModal.content} link={objModal.link} />}
+      {selectedPolicy && objModal &&
+        <Modal title={objModal.title} content={objModal.content} link={objModal.link} maxWidth={800} isOpen={true} onClose={onCloseModal} />}
 
     </div>
   )
