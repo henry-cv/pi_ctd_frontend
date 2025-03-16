@@ -123,7 +123,15 @@
 .user-info {
   display: flex;
   flex-direction: column;
-  margin-top: 0.25rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .user-name {
@@ -140,6 +148,7 @@
   color: var(--color-text);
   line-height: 1.5;
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .reviews-pagination {
