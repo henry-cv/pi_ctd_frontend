@@ -137,19 +137,21 @@ const Reviews = () => {
         {reviews.map((review) => (
           <div key={review.id} className="review-card">
             <div className="review-header">
-              <Stack direction="row" spacing={2} alignItems="center">
+              <Stack direction="row" spacing={2} alignItems="flex-start">
                 <CustomAvatar 
                   src={review.user.avatar} 
                   alt={review.user.name}
                 />
                 <div className="user-info">
                   <CustomRating value={review.rating} readOnly />
-                  <span className="user-name">{review.user.name}</span>
-                  <span className="review-date">{review.date}</span>
+                  <div className="user-details">
+                    <span className="user-name">{review.user.name}</span>
+                    <span className="review-date">{review.date}</span>
+                  </div>
+                  <p className="review-comment">{review.comment}</p>
                 </div>
               </Stack>
             </div>
-            <p className="review-comment">{review.comment}</p>
           </div>
         ))}
       </div>
