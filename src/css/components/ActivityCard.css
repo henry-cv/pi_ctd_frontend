@@ -98,3 +98,26 @@
   width: 16px;
   height: 16px;
 }
+
+.activity-image-container {
+  position: relative;
+}
+
+.container_card_category {
+  position: absolute;
+  display: flex;
+  right: 15px;
+  z-index: 999;
+  gap: 5px;
+  bottom: 10px;
+}
+
+.card-category {
+  background: var(--yellow-base);
+  color: black;
+  padding: 5px 15px;
+  border-radius: 30px;
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  transition: all 0.3s ease-in-out;
+}

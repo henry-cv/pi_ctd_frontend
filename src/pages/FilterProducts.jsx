@@ -733,6 +733,13 @@ const FilterProducts = () => {
                             className="activity-image"
                             onError={handleImageError}
                           />
+                          {/* <div className="container_card_category">
+                            {categories?.length > 0 && (
+                              <span className="card-category">
+                                {activity.categorias[0].nombre}
+                              </span>
+                            )}
+                          </div> */}
                         </div>
                         <div className="activity-content">
                           <h3 className="activity-title">{activity.nombre}</h3>

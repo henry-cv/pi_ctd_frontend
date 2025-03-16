@@ -29,6 +29,7 @@ const renderActivityCards = (activities) => {
             duration={activity.duracion}
             price={activity.valorTarifa}
             rating={4.5}
+            categories={activity.categorias}
           />
         </SwiperSlide>
       ))}

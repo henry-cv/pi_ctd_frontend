@@ -10,6 +10,7 @@ import "../css/components/ActivityCard.css";
 import DurationInfo from "./DurationInfo";
 import { duration } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const ActivityCard = ({
   id,
@@ -23,8 +24,11 @@ const ActivityCard = ({
   duration,
   price,
   rating,
+  categories,
 }) => {
   // Imagen por defecto en caso de error o sin imagen
+  const [extraCategories, setExtraCategories] = useState(false);
+  const hasExtracategories = categories?.length > 1;
   const defaultImage = "/activitie.webp";
   const handleImageError = (e) => {
     e.target.src = defaultImage;
@@ -40,6 +44,26 @@ const ActivityCard = ({
             className="activity-image"
             onError={handleImageError}
           />
+          <div className="container_card_category">
+            {categories?.length > 0 && (
+              <span className="card-category">{categories[0].nombre}</span>
+            )}
+
+            {hasExtracategories && (
+              <span
+                className="card-category"
+                onMouseEnter={() => setExtraCategories(true)}
+                onMouseLeave={() => setExtraCategories(false)}
+              >
+                {extraCategories
+                  ? categories
+                      .slice(1)
+                      .map((cat) => cat.nombre)
+                      .join(", ")
+                  : `+${categories.length - 1}`}
+              </span>
+            )}
+          </div>
         </div>
         <div className="activity-content">
           <h3 className="activity-title">{title}</h3>
