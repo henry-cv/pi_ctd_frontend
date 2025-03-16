@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { Checkbox } from "@mui/material";
 
 const Register = () => {
   const { state, dispatch } = useContextGlobal();
@@ -19,24 +20,46 @@ const Register = () => {
     lastname: "",
     email: "",
     password: "",
+    terms: false,
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().trim().matches(/^[a-zA-Záéíóúñ]{4,20}$/, "El nombre debe tener entre 4 y 20 letras.").required("El nombre es obligatorio."),
-    lastname: Yup.string().trim().matches(/^[a-zA-Záéíóúñ]{4,20}$/, "El apellido debe tener entre 4 y 20 letras.").required("El apellido es obligatorio."),
+    name: Yup.string()
+      .trim()
+      .matches(
+        /^[a-zA-Záéíóúñ\s]{4,20}$/,
+        "El nombre debe tener entre 4 y 20 letras."
+      )
+      .required("El nombre es obligatorio."),
+    lastname: Yup.string()
+      .trim()
+      .matches(
+        /^[a-zA-Záéíóúñ\s]{4,20}$/,
+        "El apellido debe tener entre 4 y 20 letras."
+      )
+      .required("El apellido es obligatorio."),
     email: Yup.string()
       .email("El email no es válido.")
-      .matches(/^[\w._]{4,}@[a-z]{3,}\.[a-z]{2,4}$/, "Dirección de correo incorrecta.")
+      .matches(
+        /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/,
+        "Dirección de correo incorrecta."
+      )
       .required("El email es obligatorio."),
     password: Yup.string()
       .trim()
       .min(8, "La contraseña debe tener por lo menos 8 carácteres.")
       .max(60, "La contraseña debe tener un máximo de 60 carácteres.")
       .matches(
-        /^(?=.*[A-Z])(?=.*\d)(?=.*\W)/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,60}$/,
         "La contraseña debe contener al menos una mayúscula, un número y un símbolo."
       )
       .required("La contraseña es obligatoria."),
+    terms: Yup.boolean()
+      .oneOf(
+        [true],
+        "Debes aceptar nuestros Términos y condiciones para registrarte en GoBook"
+      )
+      .required("Debes aceptar los Términos y condiciones"),
   });
 
   const onSubmit = async (values) => {
@@ -76,17 +99,16 @@ const Register = () => {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          if(state.isAccessModal){
-            dispatch({ 
-              type: "ORIGIN_ACCESS", 
-              payload: false 
-          });
+          if (state.isAccessModal) {
+            dispatch({
+              type: "ORIGIN_ACCESS",
+              payload: false,
+            });
             navigate(state.urlRedirection);
-          }else{
+          } else {
             navigate("/");
           }
-          
-        })
+        });
       } else {
         throw new Error("Error al registrar el usuario");
       }
@@ -121,10 +143,11 @@ const Register = () => {
       <div className="form_register">
         <Link to={"/"}>
           <img
-            src={`${state.theme === "dark"
-              ? "./GoBook_LOGO_LIGHT.svg"
-              : "./Property 1=BlackV1.svg"
-              }`}
+            src={`${
+              state.theme === "dark"
+                ? "./GoBook_LOGO_LIGHT.svg"
+                : "./Property 1=BlackV1.svg"
+            }`}
             alt="Logo Gobook"
             width={168}
           />
@@ -219,6 +242,25 @@ const Register = () => {
               />
               {touched.password && errors.password && (
                 <p className="error_mssg_register">{errors.password}</p>
+              )}
+              <div className="terms_register_container">
+                <Checkbox
+                  id="terms"
+                  name="terms"
+                  checked={values.terms}
+                  onChange={handleChange}
+                  defaultChecked
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+                />
+                <span className="terms_register">
+                  Acepto los{" "}
+                  <Link to={"/terminosycondiciones"} target="_blanck">
+                    términos y condiciones
+                  </Link>
+                </span>
+              </div>
+              {touched.terms && errors.terms && (
+                <p className="error_mssg_register">{errors.terms}</p>
               )}
             </div>
           </div>

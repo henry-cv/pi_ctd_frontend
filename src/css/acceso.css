@@ -297,3 +297,11 @@
 .css-sr2mjo-MuiButtonBase-root-MuiIconButton-root {
   margin-left: 6px !important;
 }
+
+.terms_register_container {
+  display: flex;
+  align-items: center;
+}
+.terms_register {
+  font-size: 14px;
+}
