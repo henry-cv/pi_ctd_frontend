@@ -1,20 +1,23 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import '../../css/Modal.css'; // Importamos los estilos
+import '../css/components/Modal.css';
 import propTypes from 'prop-types';
 
-const Modal = ({ title, content, link, maxWidth }) => {
-  const [isOpen, setIsOpen] = useState(true);
+const Modal = ({ title, content, link, maxWidth, isOpen, onClose }) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(isOpen);
 
   const closeModal = () => {
-    setIsOpen(false);
+    setIsModalOpen(false);
+    onClose();
   };
 
-  if (!isOpen) return null;
+  if (!isModalOpen) return null;
+
 
   return (
     <div className="modal-overlay">
-      <div className="modal-container" style={{ maxWidth: `${maxWidth}px` }} >
+      <div className="modal-container" style={{ maxWidth: maxWidth ? `${maxWidth}px` : "840px" }} >
         <button
           onClick={closeModal}
           className="modal-close-button"
@@ -35,7 +38,7 @@ const Modal = ({ title, content, link, maxWidth }) => {
         <div className="modal-link-container">
           <p>
             <a
-              href="/politicas"
+              href="/politicasdeuso"
               className="modal-link"
             >
               {link.title}
@@ -54,5 +57,7 @@ Modal.propTypes = {
     text: propTypes.string,
   }),
   maxWidth: propTypes.number.isRequired,
+  isOpen: propTypes.bool.isRequired,
+  onClose: propTypes.func.isRequired,
 }
 export default Modal;

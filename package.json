@@ -30,6 +30,7 @@
     "formik": "^2.4.6",
     "framer-motion": "^12.4.3",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.482.0",
     "mapbox-gl": "^3.10.0",
     "motion": "^12.5.0",
     "prop-types": "^15.8.1",
@@ -41,7 +42,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.1.5",
     "react-select": "^5.10.0",
-    "sweetalert2": "^11.17.2",
+    "sweetalert2": "^11.6.13",
     "swiper": "^11.2.4",
     "vite": "^6.1.0",
     "yup": "^1.6.1"
