@@ -1,0 +1,21 @@
+@import "../global/variables.css";
+
+.main-terms-and-conditions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 120px;
+  padding: 1rem;
+  text-align: justify;
+  width: 1090px;
+}
+.terms-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 1rem 2rem;
+  && h5 {
+    font-size: 1.2rem;
+  }
+}

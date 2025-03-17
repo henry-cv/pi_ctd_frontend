@@ -19,6 +19,7 @@ const Login = () => {
     password: "",
   };
 
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("El email no es válido")
@@ -27,6 +28,8 @@ const Login = () => {
   });
 
   const onSubmit = async (values) => {
+
+    
     try {
       const response = await axios.post("api/auth/login", values);
 
@@ -58,7 +61,16 @@ const Login = () => {
               showConfirmButton: false,
               timer: 2000,
             }).then(() => {
-              navigate("/");
+              if(state.isAccessModal){
+                dispatch({ 
+                  type: "ORIGIN_ACCESS", 
+                  payload: false 
+              });
+                navigate(state.urlRedirection);
+              }else{
+                navigate("/");
+              }
+              
             });
           } catch (error) {
             console.error("Error al obtener los datos del usuario:", error);
@@ -90,6 +102,8 @@ const Login = () => {
     validationSchema,
     onSubmit,
   });
+
+
 
   return (
     <div className="container_login">

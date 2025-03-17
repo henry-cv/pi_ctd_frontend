@@ -1,0 +1,20 @@
+.custom-rating {
+  color: #ffb400 !important;
+}
+
+.custom-rating svg {
+  color: #ffb400 !important;
+}
+
+.custom-rating .MuiRating-iconFilled {
+  color: #ffb400 !important;
+}
+
+.custom-rating .MuiRating-iconEmpty {
+  color: #ffb400 !important;
+  opacity: 0.4;
+}
+
+.custom-rating .MuiRating-iconHover {
+  color: #ffb400 !important;
+}
