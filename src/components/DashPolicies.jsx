@@ -29,7 +29,7 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
       setArticulo(null);
       console.log("articulo en null: ", articulo);
     }
-  }, [selectedPolicy]);
+  }, [selectedPolicy, articulo]);
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
   useEffect(() => {

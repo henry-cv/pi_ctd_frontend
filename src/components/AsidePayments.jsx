@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import "../css/components/Aside.css";
 import PropTypes from 'prop-types';
-
+import { Link } from "react-router-dom";
 
 const AsidePayments = ({ setSelectedPolicy }) => {
   const [activeAccordion, setActiveAccordion] = useState(-1);
@@ -26,9 +26,9 @@ const AsidePayments = ({ setSelectedPolicy }) => {
 
           {activeAccordion === 1 && (
             <div className="sub-accordion" onClick={(e) => e.stopPropagation()}>
-              <p>Planificar</p>
-              <p>Buscar</p>
-              <p>Reservar</p>
+              <p><Link to="/politicas/planificar">Planificar</Link></p>
+              <p><Link to="/politicas/buscar">Buscar</Link></p>
+              <p><Link to="/politicas/reservar">Reservar</Link></p>
             </div>
           )}
         </div>
@@ -38,10 +38,10 @@ const AsidePayments = ({ setSelectedPolicy }) => {
             <div className="sub-accordion" onClick={(e) => e.stopPropagation()}>
               <p onClick={() => handlePolicyClick('pagoInmediato', 0)}
                 className={selectedPolicyIndex === 0 ? 'selected-policy' : ''}
-              >Pago inmediato y reserva confirmada</p>
+              ><Link to="/politicasdeuso/pagoInmediato">Pago inmediato y reserva confirmada</Link></p>
               <p onClick={() => handlePolicyClick('reserveAhora', 1)}
                 className={selectedPolicyIndex === 1 ? 'selected-policy' : ''}
-              >Reserve ahora, pague después</p>
+              ><Link to="/politicasdeuso/reservaAhora">Reserve ahora, pague después</Link></p>
             </div>
           )}
         </div>
@@ -52,20 +52,14 @@ const AsidePayments = ({ setSelectedPolicy }) => {
             <div className="sub-accordion" onClick={(e) => e.stopPropagation()}>
               <p onClick={() => handlePolicyClick('reembolso7dias', 0)}
                 className={selectedPolicyIndex === 0 ? 'selected-policy' : ''}
-              >
-                Reembolso total hasta 7 días antes
-              </p>
+              ><Link to="/politicasdeuso/reembolso7dias">Reembolso total hasta 7 días antes</Link></p>
               <p onClick={() => handlePolicyClick('reembolso24horas', 1)}
                 className={selectedPolicyIndex === 1 ? 'selected-policy' : ''}
-              >
-                Reembolso total hasta 24 horas antes
-              </p>
+              ><Link to="/politicasdeuso/reembolso24horas">Reembolso total hasta 24 horas antes</Link></p>
               <p
                 onClick={() => handlePolicyClick('noReembolsable', 2)}
                 className={selectedPolicyIndex === 2 ? 'selected-policy' : ''}
-              >
-                No Reembolsable
-              </p>
+              ><Link to="/politicasdeuso/noReembolsable">No Reembolsable</Link></p>
             </div>
           )}
         </div>
