@@ -5,6 +5,7 @@ import { articles } from "../constants/data/policiesInfo.js";
 import { useRef, useState, useEffect } from "react";
 import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
+import { useParams, Link } from 'react-router-dom';
 
 
 const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
@@ -48,6 +49,8 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
       inputSearch.removeEventListener('keypress', handleKeyPress);
     };
   }, [searchQuery]);
+  const { article } = useParams();
+
 
   return (
     <div className="policies-container">
@@ -63,25 +66,22 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
         />
       </div>
       {articulo &&
-        <Article title={articulo?.title} content={articulo?.content} width={840}>
-
-          {Object.keys(articulo).map((key) => {
+        <Article title={articulo?.title || `Política de ${article}`} content={articulo?.content || articles[article]?.content} width={840}>
+          {Object.keys(articulo || articles[article]).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <p onClick={() =>
-                    setSelectedPolicy(articulo[key].value)
-                  }>
-                    {articulo[key].title}
-                  </p>
+                  <Link to={`/politicasdeuso/${(articulo || articles[article])[key].value}`} onClick={() => setSelectedPolicy((articulo || articles[article])[key].value)}>
+                    {(articulo || articles[article])[key].title}
+                  </Link>
                 </div>
               );
             }
             return null;
           })}
-
-        </Article >
+        </Article>
       }
+
     </div >
   )
 }
