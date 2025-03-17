@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { Checkbox } from "@mui/material";
+import { sendConfirmationEmail } from "../../services/emailService";
 
 const Register = () => {
   const { state, dispatch } = useContextGlobal();
@@ -99,15 +100,7 @@ const Register = () => {
           showConfirmButton: false,
           timer: 2000,
         }).then(() => {
-          if (state.isAccessModal) {
-            dispatch({
-              type: "ORIGIN_ACCESS",
-              payload: false,
-            });
-            navigate(state.urlRedirection);
-          } else {
-            navigate("/");
-          }
+          navigate("/");
         });
       } else {
         throw new Error("Error al registrar el usuario");
