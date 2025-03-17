@@ -94,9 +94,10 @@ const AppRoutes = () => {
       <Route path="*" element={<ErrorPage />} />
       {/* Ruta para políticas de uso */}
       <Route path="/politicasdeuso" element={<PolicyPage />} >
-        <Route path="/politicasdeuso/:article" element={<DashPolicies />} />
+        <Route path="/politicasdeuso/:article/:subarticle?" element={<DashPolicies />} />
       </Route>
-
+      {/* ruta /politicasdeuso/:article/:subarticle?", :subarticle?, toma como
+      opcional el argumento subarticle */}
     </Routes>
   );
 };
