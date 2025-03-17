@@ -57,6 +57,9 @@ const ActivityDetail = () => {
   const [isMobileView, setIsMobileView] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
   const [openAccess, setOpenAccess] = useState(false);
+  const [disponibilidad, setDisponibilidad]= useState([]);
+  
+  console.log("Actividad detalles montado")
 
   console.log("La reserva: " + JSON.stringify(state.reservation));
   
@@ -65,30 +68,59 @@ const ActivityDetail = () => {
     const fetchActivityDetails = async () => {
       try {
         setLoading(true);
+  
+        // Fetch de los detalles del producto
         const response = await fetch(`/api/producto/${id}`);
-
         if (!response.ok) {
-          throw new Error(`Error en la solicitud: ${response.status}`);
+          throw new Error(`Error en la solicitud de producto: ${response.status}`);
+        }
+        const data = await response.json();
+        setActivity(data);
+
+
+        try {
+          const disponibilidadResponse = await fetch(`/api/disponibilidad/${id}`);
+          
+          if (disponibilidadResponse.ok) {
+            const disponibilidadData = await disponibilidadResponse.json();
+            if (Array.isArray(disponibilidadData)) {
+              setDisponibilidad(disponibilidadData);
+              console.log("Detalles de disponibilidad:", disponibilidadData);
+              const theActivity = { ...disponibilidadData ,...data };
+              dispatch({
+                type: "SET_ACTIVITY",
+                payload: { theActivity },
+              });
+            } else {
+              console.warn("Advertencia: La disponibilidad no es un array");
+              setDisponibilidad([]);
+
+              
+            }
+          } else {
+            console.warn(`Advertencia: No se encontró disponibilidad para el ID ${id}`);
+            setDisponibilidad([]);
+          }
+        } catch (disponibilidadError) {
+          console.warn("Error al obtener disponibilidad:", disponibilidadError.message);
+          setDisponibilidad([]);
         }
 
-        const data = await response.json();
-        console.log("Detalles del producto:", {data});
-         dispatch({
-      type: "SET_ACTIVITY",
-      payload: {data},
-    });
-     
-        setActivity(data);
+
+
+  
       } catch (error) {
-        console.error("Error al obtener detalles:", error.message);
+        console.error("Error al obtener detalles del producto:", error.message);
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchActivityDetails();
   }, [id]);
+  
+  
 
   // Detectar scroll para mostrar la card de reserva en móvil
   useEffect(() => {
@@ -413,6 +445,7 @@ const ActivityDetail = () => {
                   <p className={expandedDescription ? "expanded" : ""}>
                     {activity.descripcion}
                   </p>
+                  <p> {activity.tipoEvento}</p>
                   {activity.descripcion &&
                     activity.descripcion.length > 200 && (
                       <button

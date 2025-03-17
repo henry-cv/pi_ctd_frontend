@@ -17,23 +17,13 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
   const [tempQuantity, setTempQuantity] = useState(quantity);
   const{state}= useContextGlobal();
   const {
-    data: {tipoTarifa,} = {},} = state.activity || {};
+    theActivity: {tipoTarifa,} = {},} = state.activity || {};
 
   const handleApply = () => {
     console.log("Aplicando cantidad:", tempQuantity);  
     setQuantity(tempQuantity); 
     onClose(tempQuantity);  
   };
-
-  // const handleIncrease = () => {
-  //   console.log("entre a incrementar");
-    
-  //   setTempQuantity((prev) => prev + 1);
-  // };
-
-  // const handleDecrease = () => {
-  //   setTempQuantity((prev) => Math.max(0, prev - 1));
-  // };
 
   const handleDecreaseAndIncrease = (operation) => {
 

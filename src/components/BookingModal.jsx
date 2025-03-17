@@ -46,7 +46,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const [priceQuantity, setPriceQuantity] = useState(0); 
   const { state, dispatch } = useContextGlobal(null);
   const {
-    data: {
+    theActivity: {
       id,
       nombre,
       horaInicio,
@@ -54,7 +54,11 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       valorTarifa,
       diasDisponible,
       horaFin,
-      fechaEvento,
+      ciudad,
+      pais,
+      0:{
+        fechaEvento,
+      } 
     } = {},
   } = state.activity || {};
   const parseTime = (timeString) => {
@@ -70,17 +74,20 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const duration = `${horas} horas y ${minutos} minutos`;
   const [isChecked, setIsChecked] = useState(false);
 
-  console.log(state.isAccessModal);
+  console.log(fechaEvento);
 
   const validateCreateBooking = () => {
     const newErrors = {};
 
     if (!bookingDate) {
       newErrors.date = "Escoger la fecha es requerida";
+      
     }
-
-    if (!quantity) {
+ 
+ 
+    if (quantity == 0) {
       newErrors.slot = "La cantidad de reservas es requerido";
+      console.log("quantity"+quantity);
     }
 
     setErrorsBooking(newErrors);
@@ -254,9 +261,11 @@ const handleCloseBookingQuantity = (newQuantity) => {
   ${quantity === 1 ? 
   (isMobile ? "Cupo" : "Cupo seleccionado") : 
   (isMobile ? "Cupos" : "Cupos seleccionados")}`}
-
     </Typography>
   </Box>
+  {errorsBooking.slot && (
+              <span className="error-message">{errorsBooking.slot}</span>
+            )}
 </div>
         </Box>
 
@@ -311,7 +320,7 @@ const handleCloseBookingQuantity = (newQuantity) => {
           {/* ubicacion oculta hasta que se pueda aplicar mapa  */}
           {/* <Box display="flex" alignItems="center" mt={1} gap={1}>
             <PlaceIcon />
-            <Typography>Cartagena, Colombia</Typography>
+            <Typography>{ciudad},{pais}</Typography>
           </Box> */}
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
@@ -321,7 +330,8 @@ const handleCloseBookingQuantity = (newQuantity) => {
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <AccessTimeIcon />
             <Typography>
-              Hora de inicio: {horaInicio.substring(0, 5)}
+              Hora de inicio:
+              {horaInicio.substring(0, 5)}
             </Typography>
           </Box>
           <Typography mt={2}>
