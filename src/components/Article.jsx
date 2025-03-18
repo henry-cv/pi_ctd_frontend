@@ -1,19 +1,12 @@
 import PropTypes from 'prop-types';
 import "../css/components/Article.css";
-import { useEffect, useRef } from 'react';
 
 const Article = ({ title, content, children, width }) => {
   const isContentArray = Array.isArray(content);
-  const articleIdRef = useRef(null);
 
-  useEffect(() => {
-    if (articleIdRef.current) {
-      articleIdRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
   return (
     <article style={{ width: `${width}px` }} className='payment-article'>
-      <h3 ref={articleIdRef} id="article-id" style={{ fontSize: "28px" }}>{title}</h3>
+      <h3 style={{ fontSize: "28px" }}>{title}</h3>
 
       {isContentArray ? (
         <ul className="article-list" >
