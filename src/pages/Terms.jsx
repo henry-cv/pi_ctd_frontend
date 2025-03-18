@@ -1,12 +1,15 @@
 import { terms } from '../constants/data/termsInfo.js';
 import "../css/pages/Terms.css";
+import { useContextGlobal } from "../gContext/globalContext";
+
 const Terms = () => {
   const literals = Object.keys(terms).filter(key => key.startsWith('literal')).map(key => terms[key]);
+  const { state } = useContextGlobal();
 
-  console.log(literals);
-
+  //console.log(literals);
+  console.log("state:", state)
   return (
-    <main className='main-terms-and-conditions'>
+    <main className={`main-terms-and-conditions ${state.theme}`} >
       <h3>{terms.title}</h3>
       <ol className='terms-list' >
         {literals.map((literal, index) => (
@@ -16,7 +19,7 @@ const Terms = () => {
           </li>
         ))}
       </ol>
-    </main>
+    </main >
   )
 }
 
