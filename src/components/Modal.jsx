@@ -3,13 +3,20 @@ import { X } from 'lucide-react';
 import '../css/components/Modal.css';
 import propTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useEffect } from "react";
 
 const Modal = ({ title, content, link, maxWidth, isOpen, onClose, path }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(isOpen);
   const navigate = useNavigate();
 
+  //debo consultar que hace este useEffect no me parece útil
+  useEffect(() => {
+    const articleId = document.getElementById('article-id');
+    if (articleId) {
+      articleId.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [path]);
   const closeModal = () => {
     setIsModalOpen(false);
     onClose();
@@ -40,16 +47,7 @@ const Modal = ({ title, content, link, maxWidth, isOpen, onClose, path }) => {
 
         <div className="modal-link-container">
           <p>
-            {/* <span className='modal-link' onClick={() => navigate(path)}>
-              {link.title}{" "}
-            </span> */}
-
-            {/* <span className='modal-link' onClick={() => { navigate(path); setTimeout(() => window.location.reload(), 300); }}>{link.title} {link.text}</span> */}
-            {/* <span onClick={() => { navigate(`${path}#article-id}`); setTimeout(() => window.location.reload(), 100); }}>{link.title} {link.text}</span> */}
-            <span onClick={() => { navigate(`${path}#article-id`); setTimeout(() => window.location.reload(), 100); }}>{link.title} {link.text}</span>
-
-
-
+            <span className='modal-link' onClick={() => { navigate(path); setTimeout(() => window.location.reload(), 300); }}>{link.title} {link.text}</span>
           </p>
         </div>
       </div>

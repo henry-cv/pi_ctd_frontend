@@ -16,9 +16,7 @@ function ActivityPolitics() {
 
   const handlePolicyClick = (policy) => {
     setSelectedPolicy(policy);
-    console.log("policy: ", policy);
     setObjModal(modal[policy]);
-    console.log("objModal: ", objModal);
   };
   const onCloseModal = () => {
     setSelectedPolicy(null);
@@ -56,14 +54,11 @@ function ActivityPolitics() {
           className="info-icon"
         />
         <p>
-          <strong ref={reserveRef} onClick={() => handlePolicyClick("pagoInmediato")}>Reserva ahora paga después</strong> planes
+          <strong ref={reserveRef} onClick={() => handlePolicyClick("reserveAhora")}>Reserva ahora paga después</strong> planes
           flexibles aseguran tu reserva, sin que se te haga el
           cargo hoy.
         </p>
       </div>
-      {console.log("objModal en return: ", objModal)}
-      {console.log("selectedPolicy: en return: ", selectedPolicy)
-      }
       {selectedPolicy && objModal &&
         <Modal title={objModal.title} content={objModal.content} link={objModal.link} maxWidth={800} isOpen={true} onClose={onCloseModal} path={objModal.path}>
 

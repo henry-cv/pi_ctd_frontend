@@ -9,7 +9,7 @@ export const modal = {
     },
     path: "/politicasdeuso/pagos/pagoInmediato"
   },
-  reservaAhora: {
+  reserveAhora: {
     timeBefore: "Reserva ahora",
     title: "Reserva ahora y paga después",
     content:
