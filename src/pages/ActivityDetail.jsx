@@ -57,38 +57,71 @@ const ActivityDetail = () => {
   const [isMobileView, setIsMobileView] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
   const [openAccess, setOpenAccess] = useState(false);
+  const [disponibilidad, setDisponibilidad]= useState([]);
+  
+  console.log("Actividad detalles montado")
 
   console.log("La reserva: " + JSON.stringify(state.reservation));
+  console.log("La activity " + JSON.stringify(state.activity));
   
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
       try {
         setLoading(true);
+  
+        // Fetch de los detalles del producto
         const response = await fetch(`/api/producto/${id}`);
-
         if (!response.ok) {
-          throw new Error(`Error en la solicitud: ${response.status}`);
+          throw new Error(`Error en la solicitud de producto: ${response.status}`);
+        }
+        const data = await response.json();
+        setActivity(data);
+
+
+        try {
+          const disponibilidadResponse = await fetch(`/api/disponibilidad/${id}`);
+          
+          if (disponibilidadResponse.ok) {
+            const disponibilidadData = await disponibilidadResponse.json();
+            if (Array.isArray(disponibilidadData)) {
+              setDisponibilidad(disponibilidadData);
+              console.log("Detalles de disponibilidad:", disponibilidadData);
+              const theActivity = { ...disponibilidadData ,...data };
+              dispatch({
+                type: "SET_ACTIVITY",
+                payload: { theActivity },
+              });
+            } else {
+              console.warn("Advertencia: La disponibilidad no es un array");
+              setDisponibilidad([]);
+
+              
+            }
+          } else {
+            console.warn(`Advertencia: No se encontró disponibilidad para el ID ${id}`);
+            setDisponibilidad([]);
+          }
+        } catch (disponibilidadError) {
+          console.warn("Error al obtener disponibilidad:", disponibilidadError.message);
+          setDisponibilidad([]);
         }
 
-        const data = await response.json();
-        console.log("Detalles del producto:", {data});
-         dispatch({
-      type: "SET_ACTIVITY",
-      payload: {data},
-    });
-     
-        setActivity(data);
+
+
+  
       } catch (error) {
-        console.error("Error al obtener detalles:", error.message);
+        console.error("Error al obtener detalles del producto:", error.message);
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchActivityDetails();
   }, [id]);
+  
+  
 
   // Detectar scroll para mostrar la card de reserva en móvil
   useEffect(() => {
@@ -375,26 +408,30 @@ const ActivityDetail = () => {
               <div className="detail-column">
                 <div className="activity-detail-title">
                   <h1>{activity.nombre}</h1>
-                  {/* <div className="location-info">
+                  <div className="location-info">
                     <FontAwesomeIcon
                       icon={faLocationDot}
                       className="location-icon"
                     />
                     <span>
-                      {activity.ubicacion?.ciudad || "Ciudad"},{" "}
-                      {activity.ubicacion?.pais || "País"}
+                      {activity.ciudad || "Ciudad"},{" "}
+                      {activity.pais || "País"}
                     </span>
-                  </div> */}
+                  </div>
                 </div>
 
                 <div className="categories-detail">
-                  <h4>Categorias:</h4>
-                  {activity.categorias.map((categoria, index) => (
-                    <>
-                      {categoria.nombre}
-                      {index !== activity.categorias.length - 1 ? ", " : "."}
-                    </>
-                  ))}
+                {activity.categorias.length > 0 && (
+  <>
+    <h4>Categorias:</h4>
+    {activity.categorias.map((categoria, index) => (
+      <span key={index}>
+        {categoria.nombre}
+        {index !== activity.categorias.length - 1 ? ", " : "."}
+      </span>
+    ))}
+  </>
+)}
                 </div>
 
                 <div className="rating-section">
