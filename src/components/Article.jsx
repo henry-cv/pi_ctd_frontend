@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import "../css/components/Article.css";
+
 const Article = ({ title, content, children, width }) => {
   const isContentArray = Array.isArray(content);
 

@@ -5,6 +5,7 @@ import { articles } from "../constants/data/policiesInfo.js";
 import { useRef, useState, useEffect } from "react";
 import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
+import { useParams, Link } from 'react-router-dom';
 
 
 const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
@@ -14,12 +15,14 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
   console.log("articulo: -->", articulo);
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef(null);
+  const { article, subarticle } = useParams();
+
 
   const handleSearch = (term) => {
     console.log(`Se envió a buscar: ${term}`);
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (selectedPolicy) {
       const policy = articles?.[selectedPolicy] || null;
       setArticulo(policy);
@@ -28,7 +31,19 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
       setArticulo(null);
       console.log("articulo en null: ", articulo);
     }
-  }, [selectedPolicy]);
+  }, [selectedPolicy, articulo]); */
+
+  useEffect(() => {
+    if (article && subarticle) {
+      const policy = articles?.[article]?.[subarticle] || null;
+      setArticulo(policy);
+    } else if (article) {
+      const policy = articles?.[article] || null;
+      setArticulo(policy);
+    } else {
+      setArticulo(null);
+    }
+  }, [article, subarticle]);
 
   //UseEffect para controlar el estado que guarda el criterio de búsqueda
   useEffect(() => {
@@ -49,6 +64,7 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
     };
   }, [searchQuery]);
 
+
   return (
     <div className="policies-container">
       <div className="search-container">
@@ -63,25 +79,22 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
         />
       </div>
       {articulo &&
-        <Article title={articulo?.title} content={articulo?.content} width={840}>
-
-          {Object.keys(articulo).map((key) => {
+        <Article title={articulo?.title || `Política de ${article}`} content={articulo?.content || articles[article]?.content} width={840}>
+          {Object.keys(articulo || articles[article]).map((key) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <p onClick={() =>
-                    setSelectedPolicy(articulo[key].value)
-                  }>
-                    {articulo[key].title}
-                  </p>
+                  <Link to={`/politicasdeuso/${article}/${(articulo || articles[article])[key].value}`} onClick={() => setSelectedPolicy((articulo || articles[article])[key].value)}>
+                    {(articulo || articles[article])[key].title}
+                  </Link>
                 </div>
               );
             }
             return null;
           })}
-
-        </Article >
+        </Article>
       }
+
     </div >
   )
 }
