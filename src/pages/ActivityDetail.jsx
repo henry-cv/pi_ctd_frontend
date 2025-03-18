@@ -421,13 +421,17 @@ const ActivityDetail = () => {
                 </div>
 
                 <div className="categories-detail">
-                  <h4>Categorias:</h4>
-                  {activity.categorias.map((categoria, index) => (
-                    <>
-                      {categoria.nombre}
-                      {index !== activity.categorias.length - 1 ? ", " : "."}
-                    </>
-                  ))}
+                {activity.categorias.length > 0 && (
+  <>
+    <h4>Categorias:</h4>
+    {activity.categorias.map((categoria, index) => (
+      <span key={index}>
+        {categoria.nombre}
+        {index !== activity.categorias.length - 1 ? ", " : "."}
+      </span>
+    ))}
+  </>
+)}
                 </div>
 
                 <div className="rating-section">
@@ -446,7 +450,6 @@ const ActivityDetail = () => {
                   <p className={expandedDescription ? "expanded" : ""}>
                     {activity.descripcion}
                   </p>
-                  <p> {activity.tipoEvento}</p>
                   {activity.descripcion &&
                     activity.descripcion.length > 200 && (
                       <button

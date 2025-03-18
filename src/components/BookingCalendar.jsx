@@ -16,7 +16,8 @@ const BookingCalendar = ({
   setBookingDate,
   bookingDate,
   resetCalendar,
-  setResetCalendar
+  setResetCalendar,
+  cupoDisponible
 }) => {
   const isMobile = useMediaQuery("(max-width: 480px)");
   const [selectedDate, setSelectedDate] = useState(bookingDate || dateRange[0]?.startDate);
@@ -24,7 +25,6 @@ const BookingCalendar = ({
   const [visibleYear, setVisibleYear] = useState(new Date().getFullYear());
   const [haHechoClicEnFechaUnica, setHaHechoClicEnFechaUnica] = useState(false);
   const [errors, setErrors] = useState("");
-  const [cupo, setCupo] = useState(0);
   const { state } = useContextGlobal();
   const dateRangeRef = useRef(null);
 
@@ -38,32 +38,21 @@ const BookingCalendar = ({
     "SABADO": 6,
   };
 
+  console.log("cupo dispo",cupoDisponible);
+  
+
   const normalizeDate = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
 
-  const getDiasDisponibles = (startDate, endDate, diasSemana) => {
-  let currentDate = new Date(startDate);
-  const availableDates = [];
-
-  while (currentDate <= endDate) {
-    const dayOfWeek = currentDate.getDay();
-    if (diasSemana.includes(dayOfWeek)) {
-      availableDates.push(new Date(currentDate));
-    }
-    currentDate.setDate(currentDate.getDate() + 1); // Siguiente día
-  }
-
-  return availableDates;
-};
 
   const handleMonthChange = (date) => {
     setVisibleMonth(date.getMonth());
     setVisibleYear(date.getFullYear());
   };
 
-  const extractDatesAndCupos = () => {
-    if (!state.activity?.theActivity) return { fechas: [], cupos: {} };
+  const extractDates = () => {
+    if (!state.activity?.theActivity) return { fechas: [] };
     
     const activityData = state.activity.theActivity;
     
@@ -75,19 +64,11 @@ const BookingCalendar = ({
 
     console.log("Fechas ordenadas:", fechas);
     
-    const cupos = {};
-    eventosArray.forEach(evento => {
-      cupos[evento.fechaEvento] = {
-        cuposTotales: evento.cuposTotales,
-        cuposReservados: evento.cuposReservados,
-        disponibles: evento.cuposTotales - evento.cuposReservados
-      };
-    });
     
-    return { fechas, cupos };
+    return { fechas };
   };
 
-  const { fechas, cupos } = extractDatesAndCupos();
+  const { fechas} = extractDates();
 
   
   useEffect(() => {
@@ -163,10 +144,6 @@ const BookingCalendar = ({
   }, []); 
   
   
-  const getCupoForDate = (date) => {
-    const dateStr = date.toISOString().split('T')[0];
-    return cupos[dateStr] || null;
-  };
 
   const getDayClass = (day) => {
     const isOutsideMonth = day.getMonth() !== visibleMonth || day.getFullYear() !== visibleYear;
@@ -180,13 +157,6 @@ const BookingCalendar = ({
     const isToday = normalizedDay.toDateString() === today.toDateString();
     
     let isAvailable = false;
-    let isCupoLleno = false;
-    
-    // Verificar si hay cupo disponible
-    const cupoInfo = getCupoForDate(normalizedDay);
-    if (cupoInfo && cupoInfo.disponibles <= 0) {
-      isCupoLleno = true;
-    }
     
     if (availability?.type === "dias") {
       isAvailable = availability.data.includes(dayName);
@@ -219,8 +189,6 @@ const BookingCalendar = ({
     // Fechas anteriores
     if (isPast) return "disabled-day-no-pointer";
     
-    // Día con cupo lleno
-    if (isCupoLleno && isAvailable) return "disabled-day";
   
     // Día actual no disponible
     if (isToday && !isAvailable) {
@@ -229,8 +197,12 @@ const BookingCalendar = ({
   
     // Para fecha única 
     if (isSingleDate) {
-      
-      return "selected-day overlay-class";
+      if (!cupoDisponible) {
+        console.log("no hay cupos")
+        return "disabled-day";
+      }
+      console.log("hay cupos")
+      return !haHechoClicEnFechaUnica ? "selected-day overlay-class" : "selected-day";
     }
   
     // Día seleccionado
@@ -239,7 +211,12 @@ const BookingCalendar = ({
     }
   
     // Días disponibles para fecha recurrente
-    if (isAvailable) return "available-day";
+    if (isAvailable){
+      if (!isCupoDisponible) {
+        return "disabled-day";
+      }
+    
+       return "available-day";}
   
     return "semi-available-day";
   };
@@ -359,6 +336,7 @@ const BookingCalendar = ({
   ranges={dateRange}
   onChange={(ranges) => {
     const selected = ranges.selection.startDate;
+
     handleDateSelection(selected);
     handleClose();
   }}

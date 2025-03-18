@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -8,20 +8,14 @@ import {
   Typography,
   IconButton,
   Box,
-  Select,
-  MenuItem,
-  FormControlLabel,
-  Radio,
-  Checkbox,
   useMediaQuery,
-  Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { format } from "date-fns";
 import BookingCalendar from "./BookingCalendar";
-import {  IoLocation, IoTicket } from "react-icons/io5";
+import { IoLocation, IoTicket } from "react-icons/io5";
 import { FaCreditCard, FaHourglass } from "react-icons/fa";
 import ButtonBluePill from "./ButtonBluePill";
 import "../css/components/BookingModal.css";
@@ -30,6 +24,8 @@ import BookingQuantity from "./BookingQuantity";
 import Swal from "sweetalert2";
 import ActivityPolitics from "./ActivityPolitics";
 import { es } from "date-fns/locale";
+import DurationInfo from "./DurationInfo";
+import { funtionsBookingModal } from '../constants/data/funtionsModalBooking';
 
 
 const BookingModal = ({ open, handleClose, activityId }) => {
@@ -46,12 +42,9 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [priceQuantity, setPriceQuantity] = useState(0);
   const { state, dispatch } = useContextGlobal(null);
-  
-  const {
-    theActivity,
-  } = state.activity || {};
-  
-  // Extraer valores necesarios del objeto theActivity de manera segura
+  const { theActivity } = state.activity || {};
+
+  // Extraer valores necesarios theActivity 
   const nombre = theActivity?.nombre || "";
   const horaInicio = theActivity?.horaInicio || "00:00:00";
   const tipoTarifa = theActivity?.tipoTarifa || "";
@@ -61,120 +54,53 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const ciudad = theActivity?.ciudad || "";
   const pais = theActivity?.pais || "";
   const id = theActivity?.id || "";
+  const cuposDisponibles = theActivity?.['0']?.cuposDisponibles || 0;
   const cuposTotales = theActivity?.cuposTotales || 0;
   const tipoEvento = theActivity?.tipoEvento || "";
   const availabilityType = tipoEvento === "FECHA_UNICA" ? "fecha" : "dias";
   const getEventDates = () => {
     if (!theActivity) return [];
-    
-    // Convertir de objeto a array
     return Object.keys(theActivity)
-      .filter(key => !isNaN(parseInt(key)))
-      .map(key => theActivity[key].fechaEvento);
+      .filter((key) => !isNaN(parseInt(key)))
+      .map((key) => theActivity[key].fechaEvento);
   };
-
   const fechasEvento = getEventDates();
-  
-  const parseTime = (timeString) => {
-    const [hours, minutes] = timeString.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
-
-  console.log("cupos totales", cuposTotales);
-  
-  const [cupoDisponible, setCupoDisponible] = useState(cuposTotales);
-  const [cupoReservados, setCupoReservados] = useState(0);
+  const [cupoDisponible, setCupoDisponible] = useState(cuposDisponibles);
   const [openQuantity, setOpenQuantity] = useState(false);
   const [bookingDate, setBookingDate] = useState(null);
   const [anchorElQuantity, setAnchorElQuantity] = useState(null);
-  const totalMinutes = parseTime(horaFin) - parseTime(horaInicio);
-  const horas = Math.floor(totalMinutes / 60);
-  const minutos = totalMinutes % 60;
-  const duration = `${horas} horas y ${minutos} minutos`;
-  const [isChecked, setIsChecked] = useState(false);
   const [resetCalendar, setResetCalendar] = useState(false);
 
+  //funciones para abrir , cerrar, resetear
+  const {
+    validateCreateBooking,
+    handleOpenCalendar,
+    handleCloseCalendar,
+    handleOpenBookingQuantity,
+    handleCloseBookingQuantity,
+    resetBookingData,
+    handleCloseBookingModal,
+    handleSelectDate,
+    handleSelectQuantity,
+  } = funtionsBookingModal({
+    setBookingDate,
+    setQuantity,
+    setPriceQuantity,
+    setErrorsBooking,
+    setResetCalendar,
+    handleClose,
+    setAnchorEl,
+    setAnchorElQuantity,
+    setOpenQuantity,
+    valorTarifa,
+    errorsBooking,
+  });
   
-  console.log(cupoDisponible ,"los sisponibless y los vendidos" ,cupoReservados);
-  console.log(state.activity);
-  
-  
-  const validateCreateBooking = () => {
-    const newErrors = {};
-
-    if (!bookingDate) {
-      newErrors.date = "Escoger la fecha es requerida";
-    }
-
-    if (quantity === 0) {
-      newErrors.slot = "La cantidad de reservas es requerido";
-    }
-
-    setErrorsBooking(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  
-  const handleOpenCalendar = (event) => setAnchorEl(event.currentTarget);
-  
-  const handleCloseCalendar = () => setAnchorEl(null);
-
-  const handleOpenBookingQuantity = (event) => {
-    setAnchorElQuantity(event.currentTarget);
-    setOpenQuantity(true);
-  };
-
-  const handleCloseBookingQuantity = (newQuantity) => {
-    if (typeof newQuantity === "number") {
-      setPriceQuantity(newQuantity * valorTarifa);
-    }
-    setOpenQuantity(false);
-    setAnchorElQuantity(null);
-  };
-
-  const resetBookingData = () => {
-    setBookingDate(null);
-    setQuantity(0);
-    setIsChecked(false);
-    setPriceQuantity(0);
-  };
-
+  //submit
   const BookingSubmit = () => {
-
     if (validateCreateBooking()) {
-      let cupoRestante = 0;
-      if (theActivity && bookingDate) {
-        const formattedDate = bookingDate.toISOString().split('T')[0];
-        
-        for (const key in theActivity) {
-          if (!isNaN(parseInt(key)) && theActivity[key].fechaEvento === formattedDate) {
-            cupoRestante = theActivity[key].cuposTotales - quantity;
-            setCupoDisponible(cupoRestante)
-            setCupoReservados(cupoReservados+quantity)
-            break;
-          }
-        }
-      }
-  
-  
-      // const existingReservation = state.reservation?.find(
-      //   (res) => res.idActivity === id && res.idUser === state.user.id
-      // );
-  
-      // if (existingReservation) {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Reserva existente",
-      //     text: "ya hiciste una reserva para esta actividad mira toda la información en tus reservas",
-      //     timer: 2000,
-      //     showConfirmButton: false,
-      //   });
-      //   handleClose();
-      //   resetBookingData();
-      //   return;
-      // }
-  
-  
+
+
       const reservationData = {
         idActivity: id,
         idUser: state.user.id,
@@ -183,12 +109,12 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         date: bookingDate,
         cuposReservados: quantity,
       };
-  
+
       dispatch({
         type: "SET_RESERVATION",
         payload: reservationData,
       });
-      
+
       Swal.fire({
         icon: "success",
         title: "Reserva exitosa",
@@ -196,79 +122,22 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         timer: 2000,
         showConfirmButton: false,
       });
-      
+
       resetBookingData();
       handleClose();
     } else {
-      console.log("Validación fallida, no se puede hacer el check.");
-    }
 
-    
- 
-  };
+      Swal.fire({
+        icon: "error",
+        title: "Reserva fallida",
+        text: "no se puede hacer la reserva",
+        timer: 2000,
+        showConfirmButton: false,
+      });
 
-  const handleCloseBookingModal = () => {
-    resetBookingData();
-    setErrorsBooking((prevErrors) => ({
-      ...prevErrors,
-      date: "",
-      slot: ""
-    }));
-    setResetCalendar(true)
-    handleClose();
-  };
-
-  const handleSelectDate = (date) => {
-    setBookingDate(date);
-    
-
-    if (theActivity) {
-      const formattedDate = date.toISOString().split('T')[0];
-      
-      for (const key in theActivity) {
-        if (!isNaN(parseInt(key)) && theActivity[key].fechaEvento === formattedDate) {
-          const cupoSelectDate = theActivity[key].cuposTotales - cupoDisponible;
-          console.log(cupoDisponible,"disponiblesss");
-          
-          if (cupoDisponible === 0) {
-            setCupoDisponible(theActivity[key].cuposTotales);
-          } else {
-            setCupoDisponible(cupoSelectDate); 
-          }
-          
-          
-
-          break;
-        }
-      }
-    }
-    
-    if (errorsBooking.date) {
-      setErrorsBooking((prevErrors) => ({
-        ...prevErrors,
-        date: "",
-      }));
     }
   };
 
-  const handleSelectQuantity = (newQuantity) => {
-    setQuantity(newQuantity);
-    if (errorsBooking.slot) {
-      setErrorsBooking((prevErrors) => ({
-        ...prevErrors,
-        slot: "",
-      }));
-    }
-    setOpenQuantity(false);
-  };
-
-  // Efecto para inicializar la fecha si es de tipo "fecha" única
-  useEffect(() => {
-    if (open && theActivity && availabilityType === "fecha" && fechasEvento.length > 0) {
-      const fechaUnica = new Date(fechasEvento[0]);
-      handleSelectDate(fechaUnica);
-    }
-  }, [open, theActivity, availabilityType]);
 
   return (
     <Dialog
@@ -277,7 +146,11 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       maxWidth="sm"
       fullWidth
       sx={{ "& .MuiPaper-rounded": { borderRadius: isMobile ? "0" : "20px" } }}
-      className={state.theme ? "card-modal-container card-dark-modal-container" : "card-modal-container card-ligth-modal-container"}
+      className={
+        state.theme
+          ? "card-modal-container card-dark-modal-container"
+          : "card-modal-container card-ligth-modal-container"
+      }
     >
       <DialogTitle className={state.theme ? "font-dark" : "font-ligth"}>
         {nombre}
@@ -310,8 +183,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
                 sx={{ cursor: "pointer" }}
                 onClick={handleOpenCalendar}
               >
-                {bookingDate 
-                  ? format(bookingDate, "EEE, dd MMM", { locale: es }) 
+                {bookingDate
+                  ? format(bookingDate, "EEE, dd MMM", { locale: es })
                   : format(new Date(), "EEE, dd MMM", { locale: es })}
               </Typography>
             </Box>
@@ -323,7 +196,9 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           <div className="slot">
             <Box display="flex" alignItems="center" className="select-item">
               <IconButton onClick={handleOpenBookingQuantity}>
-                <IoTicket className={state.theme ? "font-dark" : "font-ligth"} />
+                <IoTicket
+                  className={state.theme ? "font-dark" : "font-ligth"}
+                />
               </IconButton>
               <Typography
                 variant="body2"
@@ -331,10 +206,18 @@ const BookingModal = ({ open, handleClose, activityId }) => {
                 onClick={handleOpenBookingQuantity}
               >
                 {quantity === 0
-                  ? (isMobile ? "tu cupo" : "Selecciona tus cupos") 
-                  : `${quantity} ${quantity === 1 
-                      ? (isMobile ? "Cupo" : "Cupo seleccionado") 
-                      : (isMobile ? "Cupos" : "Cupos seleccionados")}`}
+                  ? isMobile
+                    ? "tu cupo"
+                    : "Selecciona tus cupos"
+                  : `${quantity} ${
+                      quantity === 1
+                        ? isMobile
+                          ? "Cupo"
+                          : "Cupo seleccionado"
+                        : isMobile
+                        ? "Cupos"
+                        : "Cupos seleccionados"
+                    }`}
               </Typography>
             </Box>
             {errorsBooking.slot && (
@@ -342,10 +225,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
             )}
           </div>
         </Box>
-{/* 
-        <>{renderModal()}</> */}
-
-        
 
         <BookingCalendar
           anchorEl={anchorEl}
@@ -354,14 +233,13 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           setDateRange={setDateRange}
           availability={{
             type: availabilityType,
-            data: availabilityType === "dias" 
-              ? diasDisponible 
-              : fechasEvento
+            data: availabilityType === "dias" ? diasDisponible : fechasEvento,
           }}
           setBookingDate={handleSelectDate}
           bookingDate={bookingDate}
-          resetCalendar ={resetCalendar}
-          setResetCalendar ={setResetCalendar}
+          resetCalendar={resetCalendar}
+          setResetCalendar={setResetCalendar}
+          cupoDisponible ={cupoDisponible}
         />
 
         <BookingQuantity
@@ -369,39 +247,55 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           onClose={handleCloseBookingQuantity}
           quantity={quantity}
           setQuantity={handleSelectQuantity}
-          cupoDisponible ={cupoDisponible}
+          cupoDisponible={cupoDisponible}
         />
 
-        {/* Mostrar alerta de pocos cupos si es necesario */}
-        {cupoDisponible > 0 && cupoDisponible <= 3 && (
-          <Typography color="error" mt={1}>
-            ¡Últimas {cupoDisponible} reservas disponibles para esta fecha!
-          </Typography>
+        {!bookingDate ? null : (
+          <>
+            {cupoDisponible === 3 ? (
+              <span style={{ color: "#FD6905" }}>¡Solo quedan 3 cupos!</span>
+            ) : cupoDisponible === 2 ? (
+              <span style={{ color: "red" }}>¡Solo quedan 2 cupos!</span>
+            ) : cupoDisponible === 1 ? (
+              <span style={{ color: "red" }}>¡Último cupo disponible!</span>
+            ) : cupoDisponible === 0 ? (
+              <span style={{ color: "red" }}>¡No hay cupos disponibles!</span>
+            ) : null}
+          </>
         )}
 
         <ActivityPolitics />
 
-        <Box
-          mt={3}
-          p={2}
-          border={1}
-          borderRadius={2}
-        >
-          
+        <Box mt={3} p={2} border={1} borderRadius={2}>
 
-
+          {/* //cuposs aqui */}
+          {cupoDisponible > 0 && (
+            <Typography mt={1} color="#3e10da">
+              Cupos disponibles: {cupoDisponible}
+            </Typography>
+          )}
           <div className="title-checkbox">
             <Typography fontWeight={600}>{nombre}</Typography>
           </div>
 
-                    <Box display="flex" alignItems="center" mt={1} gap={1}>
-             <IoLocation />
-             <Typography>{ciudad},{pais}</Typography>
-           </Box>
+          <Box display="flex" alignItems="center" mt={1} gap={1}>
+            <IoLocation />
+            <Typography>
+              {ciudad},{pais}
+            </Typography>
+          </Box>
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <FaHourglass />
-            <Typography>Duración: {duration}</Typography>
+            <Typography>
+              Duración:
+              <DurationInfo
+                tipoEvento={tipoEvento}
+                horaInicio={horaInicio}
+                horaFin={horaFin}
+                diasDisponible={diasDisponible}
+              />
+            </Typography>
           </Box>
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <AccessTimeIcon />
@@ -414,22 +308,19 @@ const BookingModal = ({ open, handleClose, activityId }) => {
             {tipoTarifa.toLowerCase().replace(/_/g, " ")} X {valorTarifa} USD
           </Typography>
           <Typography mt={2}>Total: ${priceQuantity} USD</Typography>
-          {bookingDate && cupoDisponible > 0 && (
-            <Typography mt={1} color="primary">
-              Cupos disponibles: {cupoDisponible}
-            </Typography>
-          )}
+       
         </Box>
       </DialogContent>
 
       <DialogActions className="Booking-principal-container">
         <ButtonBluePill
           text="Reservar Ahora"
-          className= "button-blue btn-save" 
+          className="button-blue btn-save"
           type="submit"
           onClick={BookingSubmit}
         />
       </DialogActions>
+
     </Dialog>
   );
 };

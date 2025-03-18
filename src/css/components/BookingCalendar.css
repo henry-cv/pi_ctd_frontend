@@ -10,24 +10,7 @@
   border-radius: 10px;
   padding: 10px;
 }
-.has-overlay {
-  position: relative;
-  cursor: pointer;
-  z-index: 1;
-}
 
-.has-overlay::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 123, 255, 0.25); /* Color azul semi-transparente */
-  border-radius: 50%;
-  z-index: 2;
-  pointer-events: none; /* Permite que los clics lleguen al elemento debajo */
-}
 
 
 .disabled-day {
