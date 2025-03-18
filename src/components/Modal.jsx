@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import '../css/components/Modal.css';
 import propTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const Modal = ({ title, content, link, maxWidth, isOpen, onClose }) => {
+const Modal = ({ title, content, link, maxWidth, isOpen, onClose, path }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(isOpen);
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -37,12 +40,16 @@ const Modal = ({ title, content, link, maxWidth, isOpen, onClose }) => {
 
         <div className="modal-link-container">
           <p>
-            <a
-              href="/politicasdeuso"
-              className="modal-link"
-            >
-              {link.title}
-            </a> {link.text}
+            {/* <span className='modal-link' onClick={() => navigate(path)}>
+              {link.title}{" "}
+            </span> */}
+
+            {/* <span className='modal-link' onClick={() => { navigate(path); setTimeout(() => window.location.reload(), 300); }}>{link.title} {link.text}</span> */}
+            {/* <span onClick={() => { navigate(`${path}#article-id}`); setTimeout(() => window.location.reload(), 100); }}>{link.title} {link.text}</span> */}
+            <span onClick={() => { navigate(`${path}#article-id`); setTimeout(() => window.location.reload(), 100); }}>{link.title} {link.text}</span>
+
+
+
           </p>
         </div>
       </div>
@@ -59,5 +66,6 @@ Modal.propTypes = {
   maxWidth: propTypes.number.isRequired,
   isOpen: propTypes.bool.isRequired,
   onClose: propTypes.func.isRequired,
+  path: propTypes.string
 }
 export default Modal;

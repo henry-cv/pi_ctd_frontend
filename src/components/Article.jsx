@@ -5,7 +5,7 @@ const Article = ({ title, content, children, width }) => {
 
   return (
     <article style={{ width: `${width}px` }} className='payment-article'>
-      <h3 style={{ fontSize: "28px" }}>{title}</h3>
+      <h3 id="article-id" style={{ fontSize: "28px" }}>{title}</h3>
 
       {isContentArray ? (
         <ul className="article-list" >

@@ -61,8 +61,14 @@ function ActivityPolitics() {
           cargo hoy.
         </p>
       </div>
+      {console.log("objModal en return: ", objModal)}
+      {console.log("selectedPolicy: en return: ", selectedPolicy)
+      }
       {selectedPolicy && objModal &&
-        <Modal title={objModal.title} content={objModal.content} link={objModal.link} maxWidth={800} isOpen={true} onClose={onCloseModal} />}
+        <Modal title={objModal.title} content={objModal.content} link={objModal.link} maxWidth={800} isOpen={true} onClose={onCloseModal} path={objModal.path}>
+
+        </Modal>
+      }
 
     </div>
   )
