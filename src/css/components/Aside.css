@@ -6,21 +6,28 @@
   font-size: 28px;
 }
 
-.main-policies {
+/* .main-policies {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-top: 10rem;
   margin-bottom: 8rem;
-}
+} */
 
 .sidebar-policies {
+  background-color: var(--Background-components);
+  border-radius: 1rem;
+  color: var(--Font-Background);
   display: flex;
   flex-direction: column;
+  padding: 10px 16px;
   row-gap: 20px;
   width: 320px;
 }
-
+.sidebar-policies.dark {
+  background-color: var(--black-700);
+  color: var(--black-100);
+}
 .accordion {
   display: flex;
   flex-direction: column;

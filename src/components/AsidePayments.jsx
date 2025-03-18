@@ -2,11 +2,14 @@ import { useState } from 'react';
 import "../css/components/Aside.css";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+import { useContextGlobal } from "../gContext/globalContext";
 
 const AsidePayments = ({ setSelectedPolicy }) => {
   const [activeAccordion, setActiveAccordion] = useState(-1);
   const [selectedTitle, setSelectedTitle] = useState("");
   const [selectedPolicyIndex, setSelectedPolicyIndex] = useState(-1);
+  const { state } = useContextGlobal();
+  const { theme } = state;
 
   const handleAccordionClick = (index, title) => {
     setActiveAccordion(prevIndex => prevIndex === index ? null : index);
@@ -18,7 +21,7 @@ const AsidePayments = ({ setSelectedPolicy }) => {
     setSelectedPolicyIndex(index);
   };
   return (
-    <aside className="sidebar-policies">
+    <aside className={`sidebar-policies ${theme}`}>
       <h2 className='help-center-title'>Centro de Ayuda</h2>
       <div className="accordion">
         <div className="accordion-item" onClick={() => handleAccordionClick(1, 'planificar')}>
