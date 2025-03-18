@@ -21,7 +21,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { format } from "date-fns";
 import BookingCalendar from "./BookingCalendar";
-import { IoCalendarClear, IoCloudDoneSharp, IoLocation, IoTicket } from "react-icons/io5";
+import {  IoLocation, IoTicket } from "react-icons/io5";
 import { FaCreditCard, FaHourglass } from "react-icons/fa";
 import ButtonBluePill from "./ButtonBluePill";
 import "../css/components/BookingModal.css";
@@ -30,9 +30,7 @@ import BookingQuantity from "./BookingQuantity";
 import Swal from "sweetalert2";
 import ActivityPolitics from "./ActivityPolitics";
 import { es } from "date-fns/locale";
-import BookingCalendarDays from "./BookingCalendarDays";
-import BookingCalendarDate from "./BookingCalendarDate";
-import { LocateIcon } from "lucide-react";
+
 
 const BookingModal = ({ open, handleClose, activityId }) => {
   const [quantity, setQuantity] = useState(0);
@@ -64,7 +62,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const pais = theActivity?.pais || "";
   const id = theActivity?.id || "";
   const cuposTotales = theActivity?.cuposTotales || 0;
-  const cuposReservados = theActivity?.cuposReservados || 0;
   const tipoEvento = theActivity?.tipoEvento || "";
   const availabilityType = tipoEvento === "FECHA_UNICA" ? "fecha" : "dias";
   const getEventDates = () => {
