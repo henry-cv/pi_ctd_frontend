@@ -3,7 +3,7 @@ import "../css/components/ActivityPolitics.css";
 import { faCalendarCheck, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { modal } from "../constants/data/modalsInfo.js";
 import Modal from "./Modal.jsx";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 function ActivityPolitics() {
 
@@ -11,8 +11,6 @@ function ActivityPolitics() {
   const [objModal, setObjModal] = useState(null);
   const cancelRef = useRef(null);
   const reserveRef = useRef(null);
-  const prevState = useRef(null);
-
 
   const handlePolicyClick = (policy) => {
     setSelectedPolicy(policy);
@@ -22,18 +20,6 @@ function ActivityPolitics() {
     setSelectedPolicy(null);
     setObjModal(null);
   };
-  useEffect(() => {
-    const prev = prevState.current;
-    prevState.current = selectedPolicy;
-
-    if (prev !== selectedPolicy) {
-      if (selectedPolicy) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
-      }
-    }
-  }, [selectedPolicy]);
 
   return (
 
