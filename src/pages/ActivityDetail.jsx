@@ -62,6 +62,7 @@ const ActivityDetail = () => {
   console.log("Actividad detalles montado")
 
   console.log("La reserva: " + JSON.stringify(state.reservation));
+  console.log("La activity " + JSON.stringify(state.activity));
   
 
   useEffect(() => {
@@ -407,26 +408,30 @@ const ActivityDetail = () => {
               <div className="detail-column">
                 <div className="activity-detail-title">
                   <h1>{activity.nombre}</h1>
-                  {/* <div className="location-info">
+                  <div className="location-info">
                     <FontAwesomeIcon
                       icon={faLocationDot}
                       className="location-icon"
                     />
                     <span>
-                      {activity.ubicacion?.ciudad || "Ciudad"},{" "}
-                      {activity.ubicacion?.pais || "País"}
+                      {activity.ciudad || "Ciudad"},{" "}
+                      {activity.pais || "País"}
                     </span>
-                  </div> */}
+                  </div>
                 </div>
 
                 <div className="categories-detail">
-                  <h4>Categorias:</h4>
-                  {activity.categorias.map((categoria, index) => (
-                    <>
-                      {categoria.nombre}
-                      {index !== activity.categorias.length - 1 ? ", " : "."}
-                    </>
-                  ))}
+                {activity.categorias.length > 0 && (
+  <>
+    <h4>Categorias:</h4>
+    {activity.categorias.map((categoria, index) => (
+      <span key={index}>
+        {categoria.nombre}
+        {index !== activity.categorias.length - 1 ? ", " : "."}
+      </span>
+    ))}
+  </>
+)}
                 </div>
 
                 <div className="rating-section">
@@ -445,7 +450,6 @@ const ActivityDetail = () => {
                   <p className={expandedDescription ? "expanded" : ""}>
                     {activity.descripcion}
                   </p>
-                  <p> {activity.tipoEvento}</p>
                   {activity.descripcion &&
                     activity.descripcion.length > 200 && (
                       <button

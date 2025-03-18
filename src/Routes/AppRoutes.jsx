@@ -22,6 +22,7 @@ import AddCharacteristic from "../components/AddCharacteristic";
 import FilterProducts from "../pages/FilterProducts";
 import PolicyPage from "../components/PolicyPage";
 import Terms from "../pages/Terms";
+import DashPolicies from "../components/DashPolicies";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -92,7 +93,11 @@ const AppRoutes = () => {
 
       <Route path="*" element={<ErrorPage />} />
       {/* Ruta para políticas de uso */}
-      <Route path="/politicasdeuso" element={<PolicyPage />} />
+      <Route path="/politicasdeuso" element={<PolicyPage />} >
+        <Route path="/politicasdeuso/:article/:subarticle?" element={<DashPolicies />} />
+      </Route>
+      {/* ruta /politicasdeuso/:article/:subarticle?", :subarticle?, toma como
+      opcional el argumento subarticle */}
     </Routes>
   );
 };
