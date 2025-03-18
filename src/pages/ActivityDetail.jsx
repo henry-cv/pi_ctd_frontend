@@ -62,6 +62,7 @@ const ActivityDetail = () => {
   console.log("Actividad detalles montado")
 
   console.log("La reserva: " + JSON.stringify(state.reservation));
+  console.log("La activity " + JSON.stringify(state.activity));
   
 
   useEffect(() => {
@@ -407,16 +408,16 @@ const ActivityDetail = () => {
               <div className="detail-column">
                 <div className="activity-detail-title">
                   <h1>{activity.nombre}</h1>
-                  {/* <div className="location-info">
+                  <div className="location-info">
                     <FontAwesomeIcon
                       icon={faLocationDot}
                       className="location-icon"
                     />
                     <span>
-                      {activity.ubicacion?.ciudad || "Ciudad"},{" "}
-                      {activity.ubicacion?.pais || "País"}
+                      {activity.ciudad || "Ciudad"},{" "}
+                      {activity.pais || "País"}
                     </span>
-                  </div> */}
+                  </div>
                 </div>
 
                 <div className="categories-detail">

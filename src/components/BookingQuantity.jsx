@@ -4,7 +4,7 @@ import { useContextGlobal } from "../gContext/globalContext";
 import  "../css/components/BookingQuantity.css"
 import ButtonBluePill from "./ButtonBluePill";
 
-function BookingQuantity({ open, onClose, quantity, setQuantity }) {
+function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible }) {
 
   const isMobile = useMediaQuery("(max-width: 480px)");
 
@@ -16,8 +16,8 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
 
   const [tempQuantity, setTempQuantity] = useState(quantity);
   const{state}= useContextGlobal();
-  const {
-    theActivity: {tipoTarifa,} = {},} = state.activity || {};
+  // const {
+  //   theActivity: {tipoTarifa,} = {},} = state.activity || {};
 
   const handleApply = () => {
     console.log("Aplicando cantidad:", tempQuantity);  
@@ -27,8 +27,11 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
 
   const handleDecreaseAndIncrease = (operation) => {
 
+    console.log(cupoDisponible);
+    
+
     if(operation === "add"){
-      setTempQuantity((prev) => prev + 1);
+      setTempQuantity((prev) => Math.min(prev + 1, cupoDisponible));
     }else{
       setTempQuantity((prev) => Math.max(0, prev - 1));}
     
@@ -46,7 +49,7 @@ function BookingQuantity({ open, onClose, quantity, setQuantity }) {
       {/* <DialogTitle color="black">Selecciona el número de reservas</DialogTitle> */}
       <DialogContent>
       <Typography>
-      Esta actividad es {tipoTarifa.toLowerCase().replace(/_/g, " ")}. Selecciona cuántas reservas deseas.
+      {/* Esta actividad es {tipoTarifa.toLowerCase().replace(/_/g, " ")}. Selecciona cuántas reservas deseas. */}
       </Typography>
         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
         <Typography>
