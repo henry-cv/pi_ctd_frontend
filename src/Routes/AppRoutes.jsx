@@ -86,11 +86,9 @@ const AppRoutes = () => {
       {/* Otras rutas */}
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
-        <Route path="/terminosycondiciones" element={<Terms />} />
         <Route path="/perfil" element={<UserProfile />} />
-
       </Route>
-
+      <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />
       {/* Ruta para políticas de uso */}
       <Route path="/politicasdeuso" element={<PolicyPage />} >
