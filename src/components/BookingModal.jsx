@@ -26,6 +26,9 @@ import ActivityPolitics from "./ActivityPolitics";
 import { es } from "date-fns/locale";
 import DurationInfo from "./DurationInfo";
 import { funtionsBookingModal } from '../constants/data/funtionsModalBooking';
+import { Calendar1Icon, CalendarCheck2 } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 
 
 const BookingModal = ({ open, handleClose, activityId }) => {
@@ -70,6 +73,10 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const [bookingDate, setBookingDate] = useState(null);
   const [anchorElQuantity, setAnchorElQuantity] = useState(null);
   const [resetCalendar, setResetCalendar] = useState(false);
+  const [showDate, setShowDate]=useState(false)
+
+  console.log(bookingDate);
+  
 
   //funciones para abrir , cerrar, resetear
   const {
@@ -94,11 +101,12 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     setOpenQuantity,
     valorTarifa,
     errorsBooking,
+    setShowDate,
   });
   
-  //submit
+  //submit por ahora quedó aqui 
   const BookingSubmit = () => {
-    if (validateCreateBooking()) {
+    if (validateCreateBooking( bookingDate, quantity)) {
 
 
       const reservationData = {
@@ -122,7 +130,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         timer: 2000,
         showConfirmButton: false,
       });
-
+      
       resetBookingData();
       handleClose();
     } else {
@@ -172,10 +180,16 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         <Box className="select-date-slot">
           <div className="date">
             <Box className="select-item">
+              
               <IconButton onClick={handleOpenCalendar}>
-                <CalendarTodayIcon
-                  className={state.theme ? "font-dark" : "font-ligth"}
-                />
+                {/* <CalendarCheck2                  
+                className={state.theme ? "font-dark" : "font-ligth"}
+                /> */}
+        <FontAwesomeIcon
+          icon={faCalendarCheck}
+          className={state.theme ? "font-dark" : "font-ligth"}
+        />
+                
               </IconButton>
               <Typography
                 variant="body2"
@@ -183,9 +197,12 @@ const BookingModal = ({ open, handleClose, activityId }) => {
                 sx={{ cursor: "pointer" }}
                 onClick={handleOpenCalendar}
               >
-                {bookingDate
-                  ? format(bookingDate, "EEE, dd MMM", { locale: es })
-                  : format(new Date(), "EEE, dd MMM", { locale: es })}
+
+{bookingDate
+      ? format(bookingDate, "EEE, dd MMM", { locale: es })
+      : "Selecciona tu fecha"
+  }
+
               </Typography>
             </Box>
             {errorsBooking.date && (
@@ -248,6 +265,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           quantity={quantity}
           setQuantity={handleSelectQuantity}
           cupoDisponible={cupoDisponible}
+          tipoTarifa = {tipoTarifa}
         />
 
         {!bookingDate ? null : (
@@ -268,15 +286,16 @@ const BookingModal = ({ open, handleClose, activityId }) => {
 
         <Box mt={3} p={2} border={1} borderRadius={2}>
 
-          {/* //cuposs aqui */}
-          {cupoDisponible > 0 && (
+          <div className="title-checkbox">
+            <Typography fontWeight={600}>{nombre}</Typography>
+          </div>
+
+            {/* //cuposs aqui */}
+            {cupoDisponible > 0 && (
             <Typography mt={1} color="#3e10da">
               Cupos disponibles: {cupoDisponible}
             </Typography>
           )}
-          <div className="title-checkbox">
-            <Typography fontWeight={600}>{nombre}</Typography>
-          </div>
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <IoLocation />
@@ -286,15 +305,13 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           </Box>
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
-            <FaHourglass />
+                <FontAwesomeIcon
+                     icon={faCalendarCheck}
+                     className="info-icon"
+                   />
             <Typography>
-              Duración:
-              <DurationInfo
-                tipoEvento={tipoEvento}
-                horaInicio={horaInicio}
-                horaFin={horaFin}
-                diasDisponible={diasDisponible}
-              />
+              Fecha Escogida: {bookingDate ? format(bookingDate, "EEE, dd MMM yyyy", { locale: es }) : "No seleccionada"}
+
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" mt={1} gap={1}>
