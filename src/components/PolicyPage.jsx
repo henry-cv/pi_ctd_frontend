@@ -22,7 +22,7 @@ const PolicyPage = () => {
   return (
     <div className={`page-policies-container ${theme}`} ref={rootRef}>
       <NavDash variant="home" />
-      <main className="main-policies">
+      <main className={`main-policies ${theme}`}>
         <AsidePayments setSelectedPolicy={setSelectedPolicy} />
         <DashPolicies selectedPolicy={selectedPolicy} setSelectedPolicy={setSelectedPolicy} />
       </main>
