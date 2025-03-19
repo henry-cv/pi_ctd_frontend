@@ -1,6 +1,15 @@
 @import "../global/variables.css";
 
+.main-terms-container {
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
 .main-terms-and-conditions {
+  background-color: var(--BackgroundColor);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,13 +18,24 @@
   padding: 1rem;
   text-align: justify;
   width: 1090px;
+
+  && .terms-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 1rem 2rem;
+
+    && h5 {
+      font-size: 1.2rem;
+    }
+  }
 }
-.terms-list {
-  display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
-  padding: 1rem 2rem;
+
+.main-terms-and-conditions.dark {
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+
   && h5 {
-    font-size: 1.2rem;
+    color: var(--Font-Background);
   }
 }

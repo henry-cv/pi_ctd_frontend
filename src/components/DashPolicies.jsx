@@ -6,7 +6,7 @@ import { useRef, useState, useEffect } from "react";
 import { FaSearch } from 'react-icons/fa';
 import PropTypes from "prop-types";
 import { useParams, Link } from 'react-router-dom';
-
+import { useContextGlobal } from "../gContext/globalContext";
 
 const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
   console.log("selectedPolicy: -->", selectedPolicy);
@@ -16,22 +16,13 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef(null);
   const { article, subarticle } = useParams();
+  const { state } = useContextGlobal();
+  const { theme } = state;
 
 
   const handleSearch = (term) => {
     console.log(`Se envió a buscar: ${term}`);
   }
-
-  /* useEffect(() => {
-    if (selectedPolicy) {
-      const policy = articles?.[selectedPolicy] || null;
-      setArticulo(policy);
-      console.log("seteado articulo: ", articulo);
-    } else {
-      setArticulo(null);
-      console.log("articulo en null: ", articulo);
-    }
-  }, [selectedPolicy, articulo]); */
 
   useEffect(() => {
     if (article && subarticle) {
@@ -66,11 +57,11 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
 
 
   return (
-    <div className="policies-container">
-      <div className="search-container">
+    <div className={`policies-container ${theme}`}>
+      <div className={`search-container ${theme}`}>
         <FaSearch />
         <input
-          className="input-search"
+          className={`input-search ${theme}`}
           type="search"
           placeholder="Ingrese política a buscar y presione Enter"
           value={searchQuery}
@@ -84,7 +75,7 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <Link to={`/politicasdeuso/${article}/${(articulo || articles[article])[key].value}`} onClick={() => setSelectedPolicy((articulo || articles[article])[key].value)}>
+                  <Link className={`${theme}`} to={`/politicasdeuso/${article}/${(articulo || articles[article])[key].value}`} onClick={() => setSelectedPolicy((articulo || articles[article])[key].value)}>
                     {(articulo || articles[article])[key].title}
                   </Link>
                 </div>
