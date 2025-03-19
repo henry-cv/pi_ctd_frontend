@@ -1,44 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import Pagination from "@mui/material/Pagination";
+import { useSearchParams } from "react-router-dom";
 import "../css/pages/FilterProducts.css";
 import NavDash from "../components/NavDash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStar,
-  faPlus,
-  faTimes,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faMap,
-  faCalendarAlt,
-  faClock,
-} from "@fortawesome/free-regular-svg-icons";
-import DurationInfo from "../components/DurationInfo";
-
-// MUI Components
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Rating from "@mui/material/Rating";
+import FilterHeader from "../components/FilterHeader";
+import FilterSidebar from "../components/FilterSidebar";
+import ProductsGrid from "../components/ProductsGrid";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-// Sistema de caché global compartido con todos los componentes
+// Sistema de caché global
 if (!window.apiCache) {
   window.apiCache = {
     categories: null,
     products: null,
     suggestions: {},
-    // Registro de tiempo de la última llamada a cada endpoint
     lastApiCall: {},
-    // Mínimo tiempo entre llamadas al mismo endpoint (ms)
     minCallInterval: 500
   };
 }
@@ -56,7 +31,6 @@ const FilterProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 8;
-  const navigate = useNavigate();
   const [isLoggedIn] = useState(false);
   const searchTermFromURL = searchParams.get("searchTerm") || "";
   const isInitialMount = useRef(true);
@@ -191,7 +165,7 @@ const FilterProducts = () => {
     fetchData();
   }, [fetchData]);
 
-  // Debounced search suggestions - con una sola fuente de verdad
+  // Debounced search suggestions
   const fetchSearchSuggestions = useCallback((query) => {
     // Skip if no query or less than 2 chars
     if (!query || query.trim().length < 2) return;
@@ -218,7 +192,7 @@ const FilterProducts = () => {
         const endpoint = `/api/producto/filtrar?query=${encodeURIComponent(query)}`;
         if (!shouldMakeApiCall(endpoint)) return;
         
-        activeSearchTerm.current = query; // Marcar esta consulta como activa
+        activeSearchTerm.current = query;
         
         const response = await fetch(endpoint);
         if (!response.ok) throw new Error("Error al filtrar productos");
@@ -235,15 +209,14 @@ const FilterProducts = () => {
         apiCache.suggestions[query] = formattedOptions;
         setSearchOptions(formattedOptions);
         
-        // Limpiar marca activa solo si esta búsqueda sigue siendo relevante
         if (activeSearchTerm.current === query) {
           activeSearchTerm.current = "";
         }
       } catch (error) {
         console.error("Error fetching suggestions:", error);
-        activeSearchTerm.current = ""; // Limpiar en caso de error
+        activeSearchTerm.current = "";
       }
-    }, 300); // 300ms delay
+    }, 300);
   }, []);
 
   // Apply filters - only called when needed
@@ -281,7 +254,6 @@ const FilterProducts = () => {
           }));
           apiCache.suggestions[searchTerm] = suggestions;
           
-          // Solo actualizar opciones si este término sigue siendo el actual
           if (searchTerm === activeSearchTerm.current || !activeSearchTerm.current) {
             setSearchOptions(suggestions);
           }
@@ -460,50 +432,7 @@ const FilterProducts = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Manejar cambio de ordenamiento
-  const handleSortChange = (e) => {
-    setSortType(e.target.value);
-  };
-
-  // Remover categoría seleccionada
-  const removeCategory = (category) => {
-    setSelectedCategories((prev) => prev.filter((cat) => cat !== category));
-  };
-
-  // Toggle categoría
-  const toggleCategory = (categoryName) => {
-    if (selectedCategories.includes(categoryName)) {
-      removeCategory(categoryName);
-    } else {
-      setSelectedCategories((prev) => [...prev, categoryName]);
-    }
-  };
-
-  // Manejar cambio en filtro de calificación
-  const handleRatingFilterChange = (filter) => {
-    setRatingFilters((prev) => ({
-      ...prev,
-      [filter]: !prev[filter],
-    }));
-  };
-
-  // Manejar cambio en filtro de duración
-  const handleDurationFilterChange = (filter) => {
-    setDurationFilters((prev) => ({
-      ...prev,
-      [filter]: !prev[filter],
-    }));
-  };
-
-  // Manejar cambio en filtro de idioma
-  const handleLanguageFilterChange = (filter) => {
-    setLanguageFilters((prev) => ({
-      ...prev,
-      [filter]: !prev[filter],
-    }));
-  };
-
-  // Manejar cambio en campo de búsqueda con protección adicional contra duplicación
+  // Manejar cambio en campo de búsqueda
   const handleSearchChange = (event, newValue) => {
     if (searchTerm === newValue) return; // Evitar actualizaciones innecesarias
     
@@ -527,7 +456,7 @@ const FilterProducts = () => {
     fetchSearchSuggestions(newValue);
   };
 
-  // Función para restablecer todos los filtros a sus valores iniciales
+  // Función para restablecer todos los filtros
   const handleResetFilters = () => {
     setSearchTerm("");
     setSelectedDate(null);
@@ -570,12 +499,6 @@ const FilterProducts = () => {
     currentPage * itemsPerPage
   );
 
-  // Imagen por defecto en caso de error o sin imagen
-  const defaultImage = "/activitie.webp";
-  const handleImageError = (e) => {
-    e.target.src = defaultImage;
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <div className="filter-products-page">
@@ -584,383 +507,45 @@ const FilterProducts = () => {
         </header>
 
         <div className="filter-container">
-          <div className="filter-header">
-            <h1 className="results-title">
-              {filteredActivities.length} resultados de
-              {selectedCategories.length > 0 ? (
-                <div className="selected-categories">
-                  {selectedCategories.map((cat) => (
-                    <span key={cat} className="category-tag">
-                      {cat}{" "}
-                      <button onClick={() => removeCategory(cat)}>×</button>
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                " todas las categorías"
-              )}
-            </h1>
-            <div className="sort-container">
-              <select
-                value={sortType}
-                onChange={handleSortChange}
-                className="sort-select"
-              >
-                <option value="relevance">Más relevantes</option>
-                <option value="highPrice">Mayor precio</option>
-                <option value="lowPrice">Menor precio</option>
-              </select>
-            </div>
-          </div>
+          <FilterHeader 
+            filteredActivities={filteredActivities}
+            selectedCategories={selectedCategories}
+            removeCategory={removeCategory}
+            sortType={sortType}
+            setSortType={setSortType}
+          />
 
           <div className="filter-content">
-            <div className="filter-sidebar">
-              <div className="filter-header-section">
-                <h3>Filtrar por</h3>
-                <button
-                  className="reset-filters-btn"
-                  onClick={handleResetFilters}
-                >
-                  Limpiar
-                </button>
-              </div>
+            <FilterSidebar
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+              searchOptions={searchOptions}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              categories={categories}
+              selectedCategories={selectedCategories}
+              toggleCategory={toggleCategory}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              ratingFilters={ratingFilters}
+              handleRatingFilterChange={handleRatingFilterChange}
+              durationFilters={durationFilters}
+              handleDurationFilterChange={handleDurationFilterChange}
+              languageFilters={languageFilters}
+              handleLanguageFilterChange={handleLanguageFilterChange}
+              handleResetFilters={handleResetFilters}
+            />
 
-              {/* Campo de búsqueda */}
-              <div className="filter-section">
-                <h4>Búsqueda</h4>
-                <Autocomplete
-                  freeSolo
-                  id="search-autocomplete"
-                  options={searchOptions}
-                  getOptionLabel={(option) =>
-                    typeof option === "string" ? option : option.label
-                  }
-                  inputValue={searchTerm}
-                  onInputChange={handleSearchChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder="Buscar actividades"
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      InputProps={{
-                        ...params.InputProps,
-                        startAdornment: (
-                          <FontAwesomeIcon
-                            icon={faSearch}
-                            style={{ marginRight: 8, color: "#3E10DA" }}
-                          />
-                        ),
-                      }}
-                    />
-                  )}
-                  className="search-field"
-                  openOnFocus={true}
-                />
-              </div>
-
-              {/* Campo de fecha */}
-              <div className="filter-section">
-                <h4>Fecha</h4>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Seleccionar fecha"
-                    value={selectedDate}
-                    onChange={(newDate) => setSelectedDate(newDate)}
-                    renderInput={(params) => (
-                      <TextField {...params} size="small" fullWidth />
-                    )}
-                    className="date-picker"
-                  />
-                </LocalizationProvider>
-              </div>
-
-              {/* Campo de categorías */}
-              <div className="filter-section">
-                <h4>Categorías</h4>
-                <div className="category-bubbles">
-                  {categories.map((category) => (
-                    <div
-                      key={category.id}
-                      className={`category-bubble ${
-                        selectedCategories.includes(category.nombre)
-                          ? "selected"
-                          : ""
-                      }`}
-                      onClick={() => toggleCategory(category.nombre)}
-                    >
-                      {category.nombre}
-                      {selectedCategories.includes(category.nombre) ? (
-                        <FontAwesomeIcon
-                          icon={faTimes}
-                          className="category-icon"
-                        />
-                      ) : (
-                        <FontAwesomeIcon
-                          icon={faPlus}
-                          className="category-icon"
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Campo de rango de precio */}
-              <div className="filter-section">
-                <h4>Precio</h4>
-                <Box className="price-slider-container">
-                  <Slider
-                    value={priceRange}
-                    onChange={(event, newValue) => setPriceRange(newValue)}
-                    valueLabelDisplay="auto"
-                    min={0}
-                    max={10000}
-                    step={100}
-                    color="primary"
-                  />
-                  <div className="price-range-labels">
-                    <span>${priceRange[0]}</span>
-                    <span>${priceRange[1]}</span>
-                  </div>
-                </Box>
-              </div>
-
-              {/* Campo de calificación */}
-              <div className="filter-section">
-                <h4>Calificación</h4>
-                <div className="rating-filters">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={ratingFilters.five}
-                        onChange={() => handleRatingFilterChange("five")}
-                        name="five-stars"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <div className="rating-label">
-                        <Rating value={5} readOnly size="small" />
-                      </div>
-                    }
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={ratingFilters.four}
-                        onChange={() => handleRatingFilterChange("four")}
-                        name="four-stars"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <div className="rating-label">
-                        <Rating value={4} readOnly size="small" />
-                      </div>
-                    }
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={ratingFilters.three}
-                        onChange={() => handleRatingFilterChange("three")}
-                        name="three-stars"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <div className="rating-label">
-                        <Rating value={3} readOnly size="small" />
-                      </div>
-                    }
-                  />
-                </div>
-              </div>
-
-              {/* Campo de duración */}
-              <div className="filter-section">
-                <h4>Duración</h4>
-                <div className="duration-filters">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.upToOneHour}
-                        onChange={() =>
-                          handleDurationFilterChange("upToOneHour")
-                        }
-                        name="up-to-one-hour"
-                        color="primary"
-                      />
-                    }
-                    label="Hasta 1 hora"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.oneToFourHours}
-                        onChange={() =>
-                          handleDurationFilterChange("oneToFourHours")
-                        }
-                        name="one-to-four-hours"
-                        color="primary"
-                      />
-                    }
-                    label="1 a 4 horas"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.fourHoursToOneDay}
-                        onChange={() =>
-                          handleDurationFilterChange("fourHoursToOneDay")
-                        }
-                        name="four-hours-to-one-day"
-                        color="primary"
-                      />
-                    }
-                    label="4 horas a 1 día"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.oneDayToThreeDays}
-                        onChange={() =>
-                          handleDurationFilterChange("oneDayToThreeDays")
-                        }
-                        name="one-day-to-three-days"
-                        color="primary"
-                      />
-                    }
-                    label="1 día a 3 días"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.moreThanThreeDays}
-                        onChange={() =>
-                          handleDurationFilterChange("moreThanThreeDays")
-                        }
-                        name="more-than-three-days"
-                        color="primary"
-                      />
-                    }
-                    label="+3 días"
-                  />
-                </div>
-              </div>
-
-              {/* Campo de idioma */}
-              <div className="filter-section">
-                <h4>Idioma</h4>
-                <div className="language-filters">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={languageFilters.spanish}
-                        onChange={() => handleLanguageFilterChange("spanish")}
-                        name="spanish"
-                        color="primary"
-                      />
-                    }
-                    label="Español"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={languageFilters.english}
-                        onChange={() => handleLanguageFilterChange("english")}
-                        name="english"
-                        color="primary"
-                      />
-                    }
-                    label="Inglés"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Contenido principal (actividades) */}
-            <div className="products-grid">
-              {loading || !dataLoaded.current ? (
-                <p className="loading-message">Cargando actividades...</p>
-              ) : currentActivities.length > 0 ? (
-                <div className="activities-container">
-                  {currentActivities.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="activity-card-container"
-                      onClick={() => navigate(`/actividad/${activity.id}`)}
-                    >
-                      <div className="activity-card">
-                        <div className="activity-image-container">
-                          <img
-                            src={
-                              activity.productoImagenesSalidaDto?.[0]
-                                ?.rutaImagen || "/activitie.webp"
-                            }
-                            alt={activity.nombre}
-                            className="activity-image"
-                            onError={handleImageError}
-                          />
-                        </div>
-                        <div className="activity-content">
-                          <h3 className="activity-title">{activity.nombre}</h3>
-                          <div className="activity-details">
-                            <span className="activity-location">
-                              <FontAwesomeIcon icon={faMap} />
-                              {activity.ubicacion || "Ubicación no disponible"}
-                            </span>
-                            <span className="activity-duration">
-                              {activity.tipoEvento === "FECHA_UNICA" ? (
-                                <FontAwesomeIcon icon={faClock} />
-                              ) : (
-                                <FontAwesomeIcon icon={faCalendarAlt} />
-                              )}
-                              <DurationInfo
-                                tipoEvento={activity.tipoEvento}
-                                horaInicio={activity.horaInicio}
-                                horaFin={activity.horaFin}
-                                diasDisponible={activity.diasDisponible}
-                              />
-                            </span>
-                          </div>
-                          <div className="activity-footer">
-                            <span className="activity-price">
-                              ${activity.valorTarifa}
-                            </span>
-                            <span className="activity-rating">
-                              <FontAwesomeIcon icon={faStar} />
-                              {activity.puntuacion || 4.5}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="no-results">
-                  No se encontraron actividades con los filtros seleccionados.
-                </p>
-              )}
-
-              {/* Paginación */}
-              {filteredActivities.length > itemsPerPage && (
-                <div className="pagination-container">
-                  <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    color="primary"
-                    size="large"
-                    shape="circular"
-                    className="custom-pagination"
-                  />
-                </div>
-              )}
-            </div>
+            <ProductsGrid
+              loading={loading}
+              dataLoaded={dataLoaded.current}
+              currentActivities={currentActivities}
+              filteredActivities={filteredActivities}
+              itemsPerPage={itemsPerPage}
+              totalPages={totalPages}
+              currentPage={currentPage}
+              handlePageChange={handlePageChange}
+            />
           </div>
         </div>
       </div>
