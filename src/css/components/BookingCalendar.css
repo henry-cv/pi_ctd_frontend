@@ -20,7 +20,7 @@
   height: 32px;
   pointer-events: none;
   cursor: default;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .rdrDay:has(.semi-available-day) , .rdrDay:has(.disabled-day),
@@ -72,7 +72,7 @@
 
 .rdrMonth {
   height: 300px;
-  max-height: 300px;
+  max-height: 285px;
 }
 
 .rdrDayHovered .rdrDayNumber,
@@ -83,20 +83,50 @@
   border-radius: 50%;
 }
 
-.calendar-legend ul{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
+.legend-text{
+  font-size: 14px;
+  padding: 8px;
 
 }
 
+.legend{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  max-width:350px;
 
-.calendar-legend ul li{
-padding: 8px;
-padding-bottom: 30px;
-font-size: 14px;
-list-style-type: none;
+}
+
+.legend-item {
+  padding: 8px;
+ padding-bottom: 30px;
+  font-size: 14px;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  width: 127px; 
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  margin-right: 8px;
+  width: 18px;
+  
+}
+
+.disabled{
+  background-color: var(--blue-300);
+}
+
+.full{
+  background-color: var(--color-error);
+  opacity: 0.6;
+}
+
+.selected{
+  background-color: var(--blue-base);
 }
 
 

@@ -28,6 +28,8 @@ const BookingCalendar = ({
   const { state } = useContextGlobal();
   const dateRangeRef = useRef(null);
 
+  console.log("labooking date",bookingDate);
+  
   const daysMap = {
     "DOMINGO": 0,
     "LUNES": 1,
@@ -212,7 +214,7 @@ const BookingCalendar = ({
   
     // Días disponibles para fecha recurrente
     if (isAvailable){
-      if (!isCupoDisponible) {
+      if (!cupoDisponible) {
         return "disabled-day";
       }
     
@@ -353,10 +355,19 @@ const BookingCalendar = ({
 
         <Typography className={isMobile ? "mobile-calendar-legend" : "calendar-legend"}>
           {errors && <p style={{ color: "red" }}>{errors}</p>}
-          <ul>
-            <li>Disponible</li>
-            <li>Cupo lleno</li>
-            <li>Dia Seleccionado</li>
+          <p className="legend-text">Estado de los días </p>
+          <ul class="legend">
+            <li class="legend-item">
+              <span className="legend-color disabled"></span>
+              Disponible</li>
+            <li class="legend-item">
+            <span className="legend-color full"></span>
+              Cupo lleno
+              </li>
+            <li class="legend-item">
+            <span className="legend-color selected"></span>
+            Seleccionado
+            </li>
           </ul>
         </Typography>
       </Box>
