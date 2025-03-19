@@ -65,22 +65,23 @@ h5.dark {
   flex-direction: column;
   row-gap: 10px;
 }
-a:link,
-a:visited {
+
+.accordion a:link,
+.accordion a:visited {
   color: var(--black-400);
 }
 
-a:hover,
-a:focus {
+.accordion a:hover,
+.accordion a:focus {
   color: var(--blue-hover);
 }
-a.dark,
-a.dark:link,
-a.dark:visited {
+.accordion a.dark,
+.accordion a.dark:link,
+.accordion a.dark:visited {
   color: var(--Font-Background);
 }
-a.dark:hover,
-a.dark:focus {
+.accordion a.dark:hover,
+.accordion a.dark:focus {
   color: var(--blue-hover);
 }
 

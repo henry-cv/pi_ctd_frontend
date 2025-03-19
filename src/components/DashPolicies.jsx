@@ -75,7 +75,7 @@ const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
             if (key.startsWith('link')) {
               return (
                 <div className="anchor" key={key}>
-                  <Link to={`/politicasdeuso/${article}/${(articulo || articles[article])[key].value}`} onClick={() => setSelectedPolicy((articulo || articles[article])[key].value)}>
+                  <Link className={`${theme}`} to={`/politicasdeuso/${article}/${(articulo || articles[article])[key].value}`} onClick={() => setSelectedPolicy((articulo || articles[article])[key].value)}>
                     {(articulo || articles[article])[key].title}
                   </Link>
                 </div>

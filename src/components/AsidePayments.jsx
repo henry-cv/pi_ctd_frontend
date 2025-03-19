@@ -25,7 +25,10 @@ const AsidePayments = ({ setSelectedPolicy }) => {
       <h2 className={`help-center-title ${theme}`}>Centro de Ayuda</h2>
       <div className={`accordion ${theme}`}>
         <div className={`accordion-item ${theme}`} onClick={() => handleAccordionClick(1, 'planificar')}>
-          <h5 className={selectedTitle === 'planificar' ? 'title-selected' : ''}>Planificar, buscar y reservar <span className="caret"></span></h5>
+          <h5 className={selectedTitle === 'planificar' ? 'title-selected' : ''} onClick={() => handlePolicyClick('planificar')}>
+            <Link className={`${theme}`} to="/politicasdeuso">Planificar, buscar y reservar</Link>
+
+            <span className="caret"></span></h5>
 
           {activeAccordion === 1 && (
             <div className="sub-accordion" onClick={(e) => e.stopPropagation()}>
