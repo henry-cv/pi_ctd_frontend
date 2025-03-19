@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .search-container {
   border: solid 1px var(--black-100);
   border-radius: 16px;
@@ -20,6 +21,7 @@ input.input-search {
   padding: 6px 10px;
   width: 100%;
 }
+
 input.input-search.dark {
   background-color: var(--black-400);
   color: var(--white);
@@ -30,10 +32,12 @@ input.input-search:active {
   border: none;
   outline: none;
 }
+
 .anchor a:link,
 .anchor a:visited {
   color: var(--black-400);
 }
+
 .anchor a:hover,
 .anchor a:focus {
   color: var(--blue-hover);
@@ -44,7 +48,10 @@ input.input-search:active {
 .anchor a.dark:visited {
   color: var(--Font-Background);
 }
+
 .anchor a.dark:hover,
 .anchor a.dark:focus {
-  color: var(--blue-700);
+  color: var(--yellow-base);
+  font-weight: bold;
+  ;
 }

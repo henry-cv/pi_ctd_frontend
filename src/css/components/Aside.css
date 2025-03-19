@@ -5,6 +5,7 @@
   font-family: Archivo;
   font-size: 28px;
 }
+
 .help-center-title.dark {
   color: var(--yellow-base);
 }
@@ -19,19 +20,23 @@
   row-gap: 20px;
   width: 320px;
 }
+
 .sidebar-policies.dark {
   background-color: var(--black-700);
   color: var(--black-100);
 }
+
 .accordion {
   color: var(--blue-base);
   display: flex;
   flex-direction: column;
   row-gap: 18px;
 }
+
 .accordion.dark {
   color: var(--Font-Background);
 }
+
 .accordion-item {
   background-color: var(--BackgroundColor);
   color: var(--black-400);
@@ -40,14 +45,17 @@
   row-gap: 10px;
   padding: 4px 10px;
 }
+
 .accordion-item.dark {
   color: var(--Font-Background);
   border-radius: 0.8rem;
 }
+
 h5 {
   color: var(--black-400);
   font-size: var(--h5-size);
 }
+
 h5.dark {
   color: var(--Font-Background);
 }
@@ -75,24 +83,29 @@ h5.dark {
 .accordion a:focus {
   color: var(--blue-hover);
 }
+
 .accordion a.dark,
 .accordion a.dark:link,
 .accordion a.dark:visited {
   color: var(--Font-Background);
 }
+
 .accordion a.dark:hover,
 .accordion a.dark:focus {
-  color: var(--blue-hover);
+  color: var(--yellow-base);
+  font-weight: bold;
 }
 
 .selected-policy {
   color: var(--blue-base);
   font-weight: bold;
 }
+
 .selected-policy.dark {
   background-color: var(--black-400);
   color: var(--Font-Background);
 }
+
 .caret {
   display: inline-block;
   width: 0;
