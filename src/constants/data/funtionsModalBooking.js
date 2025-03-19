@@ -10,9 +10,13 @@ export const funtionsBookingModal = ({
     setOpenQuantity,
     valorTarifa,
     errorsBooking,
+    setShowDate,
   }) => {
     const validateCreateBooking = (bookingDate, quantity) => {
       const newErrors = {};
+
+      console.log(bookingDate ,"y la ", quantity);
+      
   
       if (!bookingDate) {
         newErrors.date = "Escoger la fecha es requerida";
@@ -47,6 +51,7 @@ export const funtionsBookingModal = ({
       setBookingDate(null);
       setQuantity(0);
       setPriceQuantity(0);
+      setShowDate(false);
     };
   
     const handleCloseBookingModal = () => {
@@ -61,6 +66,9 @@ export const funtionsBookingModal = ({
     };
   
     const handleSelectDate = (date) => {
+      console.log(date);
+      setShowDate(true)
+      
       setBookingDate(date);
       if (errorsBooking.date) {
         setErrorsBooking((prevErrors) => ({

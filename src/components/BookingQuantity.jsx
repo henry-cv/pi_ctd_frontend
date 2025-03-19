@@ -4,7 +4,7 @@ import { useContextGlobal } from "../gContext/globalContext";
 import  "../css/components/BookingQuantity.css"
 import ButtonBluePill from "./ButtonBluePill";
 
-function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible }) {
+function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,tipoTarifa}) {
 
   const isMobile = useMediaQuery("(max-width: 480px)");
 
@@ -49,11 +49,11 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible }
       {/* <DialogTitle color="black">Selecciona el número de reservas</DialogTitle> */}
       <DialogContent>
       <Typography>
-      {/* Esta actividad es {tipoTarifa.toLowerCase().replace(/_/g, " ")}. Selecciona cuántas reservas deseas. */}
+      Esta actividad es {tipoTarifa.toLowerCase().replace(/_/g, " ")}. Selecciona cuántos cupos deseas reservar.
       </Typography>
         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
         <Typography>
-      Cantidad de reservas
+      Cantidad de cupos 
       </Typography>
           <IconButton onClick={() =>handleDecreaseAndIncrease("sustract")}>
             ➖

@@ -45,6 +45,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [horaFin, setHoraFin] = useState("");
   const [diasDisponible, setDiasDisponible] = useState([]);
   const [fechaEvento, setFechaEvento] = useState("");
+  const [fechaFinEvento, setFechaFinEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
   const { state } = useContextGlobal();
@@ -113,6 +114,12 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const handleDateChange = (e) => {
     setFechaEvento(e.target.value);
+
+  };
+
+  const handleDateEndChange = (e) => {
+    setFechaFinEvento(e.target.value);
+
   };
 
   const handleHoraInicioChange = (e) => {
@@ -356,7 +363,8 @@ const FormBasis = ({ isEditMode = false }) => {
       horaFin: ensureTimeHasSeconds(horaFin),
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
+      fechaEvento: fechaEvento ,
+      fechaFinEvento: fechaEvento || eventType === "FECHA_UNICA" ? fechaFinEvento : null,
       politicaPagos: paymentPolicyValue,
       politicaCancelacion: cancellationPolicyValue,
       pais: countryValue,
@@ -661,6 +669,7 @@ const FormBasis = ({ isEditMode = false }) => {
             onHoraInicioChange={handleHoraInicioChange}
             onHoraFinChange={handleHoraFinChange}
           />
+        <DateCalendar  dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType = {eventType} selectedDateEnd ={fechaFinEvento}  />
         </div>
       )}
       <div className="container-categories">

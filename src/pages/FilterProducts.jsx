@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import "../css/pages/FilterProducts.css";
@@ -30,6 +30,21 @@ import Checkbox from "@mui/material/Checkbox";
 import Rating from "@mui/material/Rating";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
+// Sistema de caché global compartido con todos los componentes
+if (!window.apiCache) {
+  window.apiCache = {
+    categories: null,
+    products: null,
+    suggestions: {},
+    // Registro de tiempo de la última llamada a cada endpoint
+    lastApiCall: {},
+    // Mínimo tiempo entre llamadas al mismo endpoint (ms)
+    minCallInterval: 500
+  };
+}
+
+const apiCache = window.apiCache;
+
 const FilterProducts = () => {
   const [searchParams] = useSearchParams();
   const [activities, setActivities] = useState([]);
@@ -44,14 +59,13 @@ const FilterProducts = () => {
   const navigate = useNavigate();
   const [isLoggedIn] = useState(false);
   const searchTermFromURL = searchParams.get("searchTerm") || "";
+  const isInitialMount = useRef(true);
+  const dataLoaded = useRef(false);
+  const searchTimeout = useRef(null);
+  const activeSearchTerm = useRef("");
+  const isFilteringRef = useRef(false);
 
-  useEffect(() => {
-    if (searchTermFromURL) {
-      setSearchTerm(searchTermFromURL);
-    }
-  }, [searchTermFromURL]);
-
-  // Nuevos estados para filtros adicionales
+  // Estados para filtros
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -87,108 +101,198 @@ const FilterProducts = () => {
     },
   });
 
-  // Cargar categorías
+  // Función de utilidad para verificar si una llamada API debe realizarse
+  const shouldMakeApiCall = (endpoint) => {
+    const now = Date.now();
+    const lastCall = apiCache.lastApiCall[endpoint] || 0;
+    
+    if (now - lastCall < apiCache.minCallInterval) {
+      return false;
+    }
+    
+    apiCache.lastApiCall[endpoint] = now;
+    return true;
+  };
+
+  // Set search term from URL on initial mount only
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("/api/categoria/listar");
-        if (!response.ok) {
+    if (isInitialMount.current && searchTermFromURL) {
+      setSearchTerm(searchTermFromURL);
+      isInitialMount.current = false;
+    }
+  }, [searchTermFromURL]);
+
+  // Fetch data function with cache
+  const fetchData = useCallback(async () => {
+    if (dataLoaded.current) return;
+    
+    try {
+      setLoading(true);
+      
+      // Fetch categories using cache
+      let categoriesData;
+      if (apiCache.categories) {
+        categoriesData = apiCache.categories;
+      } else {
+        if (!shouldMakeApiCall('/api/categoria/listar')) return;
+        
+        const categoriesResponse = await fetch("/api/categoria/listar");
+        if (!categoriesResponse.ok) {
           throw new Error("Error al obtener categorías");
         }
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error("Error:", error);
+        categoriesData = await categoriesResponse.json();
+        apiCache.categories = categoriesData;
       }
-    };
-
-    fetchCategories();
-  }, []);
-
-  // Cargar actividades (solo al inicio)
-  useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/producto/listar");
-        if (!response.ok) {
+      setCategories(categoriesData);
+      
+      // Fetch activities using cache
+      let activitiesData;
+      if (apiCache.products) {
+        activitiesData = apiCache.products;
+      } else {
+        if (!shouldMakeApiCall('/api/producto/listar')) return;
+        
+        const activitiesResponse = await fetch("/api/producto/listar");
+        if (!activitiesResponse.ok) {
           throw new Error("Error al obtener actividades");
         }
-        const data = await response.json();
-        setActivities(data);
-
-        // Crear opciones para el autocompletado
-        const options = [];
-        data.forEach((activity) => {
-          if (activity.nombre)
-            options.push({ label: activity.nombre, type: "nombre" });
-          if (activity.ubicacion) {
-            const parts = activity.ubicacion.split(", ");
-            if (parts.length > 1) {
-              options.push({ label: parts[0], type: "ciudad" });
-              options.push({ label: parts[1], type: "pais" });
-            } else {
-              options.push({ label: activity.ubicacion, type: "ubicacion" });
-            }
-          }
-        });
-
-        // Eliminar duplicados
-        const uniqueOptions = Array.from(
-          new Set(options.map((opt) => opt.label))
-        ).map((label) => options.find((opt) => opt.label === label));
-
-        setSearchOptions(uniqueOptions);
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
+        activitiesData = await activitiesResponse.json();
+        apiCache.products = activitiesData;
       }
-    };
-
-    fetchActivities();
-  }, []);
-
-  // Efecto para manejar parámetros de URL
-  useEffect(() => {
-    const categoryParam = searchParams.get("categoria");
-    if (categoryParam) {
-      const categoriesFromUrl = categoryParam.split(",");
-      setSelectedCategories(categoriesFromUrl);
+      
+      setActivities(activitiesData);
+      setFilteredActivities(activitiesData);
+      
+      // Set initial suggestions
+      const initialOptions = activitiesData.slice(0, 10).map((activity) => ({
+        label: activity.nombre,
+        id: activity.id,
+        categorias: activity.categorias || [],
+      }));
+      setSearchOptions(initialOptions);
+      
+      // Get category from URL parameter if any
+      const categoryParam = searchParams.get("categoria");
+      if (categoryParam) {
+        const categoriesFromUrl = categoryParam.split(",");
+        setSelectedCategories(categoriesFromUrl);
+      }
+      
+      dataLoaded.current = true;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   }, [searchParams]);
 
-  // Aplicar filtros cuando cambian las selecciones
+  // Initial data fetch
   useEffect(() => {
-    if (activities.length > 0) {
-      applyFilters();
-    }
-  }, [
-    activities,
-    selectedCategories,
-    sortType,
-    searchTerm,
-    selectedDate,
-    priceRange,
-    ratingFilters,
-    durationFilters,
-    languageFilters,
-  ]);
+    fetchData();
+  }, [fetchData]);
 
-  // Función para aplicar filtros
-  const applyFilters = () => {
+  // Debounced search suggestions - con una sola fuente de verdad
+  const fetchSearchSuggestions = useCallback((query) => {
+    // Skip if no query or less than 2 chars
+    if (!query || query.trim().length < 2) return;
+    
+    // Skip if already searching for this exact query
+    if (activeSearchTerm.current === query) return;
+    
+    // Check cache first
+    if (apiCache.suggestions[query]) {
+      setSearchOptions(apiCache.suggestions[query]);
+      return;
+    }
+    
+    // Clear previous timeout
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    // Set a new timeout
+    searchTimeout.current = setTimeout(async () => {
+      try {
+        if (isFilteringRef.current) return; // Skip if already filtering
+        
+        const endpoint = `/api/producto/filtrar?query=${encodeURIComponent(query)}`;
+        if (!shouldMakeApiCall(endpoint)) return;
+        
+        activeSearchTerm.current = query; // Marcar esta consulta como activa
+        
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error("Error al filtrar productos");
+        const data = await response.json();
+        
+        // Format options with label for Autocomplete
+        const formattedOptions = data.map((activity) => ({
+          label: activity.nombre,
+          id: activity.id,
+          categorias: activity.categorias || [],
+        }));
+        
+        // Save to cache
+        apiCache.suggestions[query] = formattedOptions;
+        setSearchOptions(formattedOptions);
+        
+        // Limpiar marca activa solo si esta búsqueda sigue siendo relevante
+        if (activeSearchTerm.current === query) {
+          activeSearchTerm.current = "";
+        }
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        activeSearchTerm.current = ""; // Limpiar en caso de error
+      }
+    }, 300); // 300ms delay
+  }, []);
+
+  // Apply filters - only called when needed
+  const applyFilters = useCallback(async () => {
+    if (!dataLoaded.current || activities.length === 0 || isFilteringRef.current) return;
+    
+    isFilteringRef.current = true;
+    setLoading(true);
     let filtered = [...activities];
 
     // Filtrar por término de búsqueda
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (item) =>
-          item.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.ubicacion?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+    if (searchTerm && searchTerm.trim().length >= 2) {
+      // Check cache
+      if (apiCache.suggestions[searchTerm]) {
+        const suggestionIds = apiCache.suggestions[searchTerm].map(opt => opt.id);
+        filtered = filtered.filter(item => suggestionIds.includes(item.id));
+      } else {
+        try {
+          const endpoint = `/api/producto/filtrar?query=${encodeURIComponent(searchTerm)}`;
+          if (!shouldMakeApiCall(endpoint)) {
+            isFilteringRef.current = false;
+            setLoading(false);
+            return;
+          }
+          
+          const response = await fetch(endpoint);
+          if (!response.ok) throw new Error("Error al filtrar productos");
+          filtered = await response.json();
+          
+          // Cache suggestions for future use
+          const suggestions = filtered.map(activity => ({
+            label: activity.nombre,
+            id: activity.id,
+            categorias: activity.categorias || [],
+          }));
+          apiCache.suggestions[searchTerm] = suggestions;
+          
+          // Solo actualizar opciones si este término sigue siendo el actual
+          if (searchTerm === activeSearchTerm.current || !activeSearchTerm.current) {
+            setSearchOptions(suggestions);
+          }
+        } catch (error) {
+          console.error("Error filtering products:", error);
+          filtered = [];
+        }
+      }
     }
 
-    // Filtrar por fecha (si se implementa en el backend)
+    // Filtrar por fecha
     if (selectedDate) {
       // Implementar lógica para filtrar por fecha cuando esté disponible
     }
@@ -269,7 +373,7 @@ const FilterProducts = () => {
       });
     }
 
-    // Filtrar por idioma (si está disponible)
+    // Filtrar por idioma
     const hasLanguageFilter =
       languageFilters.spanish || languageFilters.english;
 
@@ -277,7 +381,7 @@ const FilterProducts = () => {
       filtered = filtered.filter((item) => {
         if (!item.idioma) return false;
 
-        const idioma = item.idioma.toLowerCase(); // Normalizar el idioma a minúsculas
+        const idioma = item.idioma.toLowerCase();
         return (
           (languageFilters.spanish &&
             (idioma === "español" ||
@@ -308,7 +412,47 @@ const FilterProducts = () => {
     setFilteredActivities(filtered);
     setTotalPages(Math.ceil(filtered.length / itemsPerPage));
     setCurrentPage(1);
-  };
+    setLoading(false);
+    isFilteringRef.current = false;
+  }, [
+    activities,
+    selectedCategories,
+    sortType,
+    searchTerm,
+    selectedDate,
+    priceRange,
+    ratingFilters,
+    durationFilters,
+    languageFilters,
+  ]);
+
+  // Prevenir múltiples actualizaciones usando un debounce
+  const debouncedApplyFilters = useCallback(() => {
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+    
+    searchTimeout.current = setTimeout(() => {
+      applyFilters();
+    }, 100);
+  }, [applyFilters]);
+
+  // Only reapply filters when filter values change and data is loaded
+  useEffect(() => {
+    if (dataLoaded.current && !isFilteringRef.current) {
+      debouncedApplyFilters();
+    }
+  }, [
+    debouncedApplyFilters,
+    selectedCategories,
+    sortType,
+    searchTerm,
+    selectedDate,
+    priceRange,
+    ratingFilters,
+    durationFilters,
+    languageFilters,
+  ]);
 
   // Manejar cambio de página
   const handlePageChange = (event, value) => {
@@ -359,6 +503,30 @@ const FilterProducts = () => {
     }));
   };
 
+  // Manejar cambio en campo de búsqueda con protección adicional contra duplicación
+  const handleSearchChange = (event, newValue) => {
+    if (searchTerm === newValue) return; // Evitar actualizaciones innecesarias
+    
+    setSearchTerm(newValue);
+    
+    // No hacer nada para búsquedas vacías o muy cortas
+    if (!newValue || newValue.trim().length < 2) {
+      // Restaurar opciones iniciales si hay datos
+      if (apiCache.products) {
+        const initialOptions = apiCache.products.slice(0, 10).map((activity) => ({
+          label: activity.nombre,
+          id: activity.id,
+          categorias: activity.categorias || [],
+        }));
+        setSearchOptions(initialOptions);
+      }
+      return;
+    }
+    
+    // Fetch suggestions for 2+ character queries
+    fetchSearchSuggestions(newValue);
+  };
+
   // Función para restablecer todos los filtros a sus valores iniciales
   const handleResetFilters = () => {
     setSearchTerm("");
@@ -383,6 +551,17 @@ const FilterProducts = () => {
     setSelectedCategories([]);
     setSortType("relevance");
     setCurrentPage(1);
+    activeSearchTerm.current = "";
+    
+    // Restaurar opciones iniciales
+    if (apiCache.products) {
+      const initialOptions = apiCache.products.slice(0, 10).map((activity) => ({
+        label: activity.nombre,
+        id: activity.id,
+        categorias: activity.categorias || [],
+      }));
+      setSearchOptions(initialOptions);
+    }
   };
 
   // Calcular actividades para la página actual
@@ -456,15 +635,8 @@ const FilterProducts = () => {
                   getOptionLabel={(option) =>
                     typeof option === "string" ? option : option.label
                   }
-                  onChange={(event, value) =>
-                    setSearchTerm(
-                      value
-                        ? typeof value === "string"
-                          ? value
-                          : value.label
-                        : ""
-                    )
-                  }
+                  inputValue={searchTerm}
+                  onInputChange={handleSearchChange}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -484,6 +656,7 @@ const FilterProducts = () => {
                     />
                   )}
                   className="search-field"
+                  openOnFocus={true}
                 />
               </div>
 
@@ -710,8 +883,7 @@ const FilterProducts = () => {
 
             {/* Contenido principal (actividades) */}
             <div className="products-grid">
-              {/* El resto del código de actividades permanece igual */}
-              {loading ? (
+              {loading || !dataLoaded.current ? (
                 <p className="loading-message">Cargando actividades...</p>
               ) : currentActivities.length > 0 ? (
                 <div className="activities-container">
@@ -721,7 +893,6 @@ const FilterProducts = () => {
                       className="activity-card-container"
                       onClick={() => navigate(`/actividad/${activity.id}`)}
                     >
-                      {/* Contenido de las cards (mantiene el mismo) */}
                       <div className="activity-card">
                         <div className="activity-image-container">
                           <img
@@ -733,13 +904,6 @@ const FilterProducts = () => {
                             className="activity-image"
                             onError={handleImageError}
                           />
-                          {/* <div className="container_card_category">
-                            {categories?.length > 0 && (
-                              <span className="card-category">
-                                {activity.categorias[0].nombre}
-                              </span>
-                            )}
-                          </div> */}
                         </div>
                         <div className="activity-content">
                           <h3 className="activity-title">{activity.nombre}</h3>
