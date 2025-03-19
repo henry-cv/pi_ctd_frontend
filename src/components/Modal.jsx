@@ -42,7 +42,7 @@ const Modal = ({ title, content, link, maxWidth, isOpen, onClose, path }) => {
         <div className={`modal-link-container ${theme}`}>
           <p>
             {/* <span className='modal-link' onClick={() => { navigate(path); setTimeout(() => window.location.reload(), 300); }}>{link.title} {link.text}</span> */}
-            <span className='modal-link' onClick={() => { navigate(path); }}>{link.title} {link.text}</span>
+            <span className={`modal-link ${theme}`} onClick={() => { navigate(path); }}>{link.title} {link.text}</span>
           </p>
         </div>
       </div>

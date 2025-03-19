@@ -1,7 +1,7 @@
 @import "../global/variables.css";
 
 .main-terms-container {
-  background-color: var(--Background-components);
+  background-color: var(--BackgroundColor);
   color: var(--Font-Background);
   display: flex;
   min-height: 100vh;
@@ -9,7 +9,7 @@
 }
 
 .main-terms-and-conditions {
-  background-color: var(--Background-components);
+  background-color: var(--BackgroundColor);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,10 +32,10 @@
 }
 
 .main-terms-and-conditions.dark {
-  background-color: var(--black-400);
-  color: var(--white);
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
 
   && h5 {
-    color: var(--white);
+    color: var(--Font-Background);
   }
 }

@@ -5,7 +5,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  background-color: rgba(var(--Font-Background), 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,15 +15,16 @@
 
 /* Contenedor principal del modal */
 .modal-container {
-  background-color: white;
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
   border-radius: 8px;
   padding: 24px;
   position: relative;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .modal-container.dark {
-  background-color: var(--black-700);
-  color: var(--white);
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
 }
 /* Botón de cerrar (X) */
 .modal-close-button {
@@ -48,12 +50,13 @@
 
 /* Título del modal */
 .modal-title {
-  color: #333;
+  /* color: #333; */
+  color: var(--Font-Background);
   margin-bottom: 16px;
   margin-top: 16px;
 }
 .modal-title.dark {
-  color: var(--white);
+  color: var(--Font-Background);
 }
 /* Área del mensaje principal */
 .modal-message-area {
@@ -87,14 +90,18 @@
 
 /* Estilo del enlace */
 .modal-link {
-  color: #2563eb;
-  /* text-decoration: underline; */
+  color: var(--blue-base);
   cursor: pointer;
   transition: color 0.2s;
 }
-
+.modal-link.dark {
+  color: var(--yellow-base);
+}
 .modal-link:hover {
-  color: #1e40af;
+  color: var(--blue-hover);
+}
+.modal-link.dark:hover {
+  color: var(--yellow-hover);
 }
 
 /* Botón de Entendido */
