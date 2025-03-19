@@ -18,12 +18,12 @@
   flex-direction: column;
   padding: 10px 16px;
   row-gap: 20px;
-  width: 320px;
+  width: 330px;
 }
 
 .sidebar-policies.dark {
-  background-color: var(--black-700);
-  color: var(--black-100);
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
 }
 
 .accordion {
@@ -38,8 +38,8 @@
 }
 
 .accordion-item {
-  background-color: var(--BackgroundColor);
-  color: var(--black-400);
+  background-color: var(--Background-components);
+  color: var(--Font-Background);
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -93,7 +93,6 @@ h5.dark {
 .accordion a.dark:hover,
 .accordion a.dark:focus {
   color: var(--yellow-base);
-  font-weight: bold;
 }
 
 .selected-policy {
@@ -112,15 +111,21 @@ h5.dark {
   height: 0;
   border-style: solid;
   border-width: 5px 5px 0 5px;
-  border-color: #333 transparent transparent transparent;
+  /* border-color: #333 transparent transparent transparent; */
+  border-color: var(--Font-Background) transparent transparent transparent;
   margin-left: 10px;
 }
-
+.caret.dark {
+  border-color: var(--Font-Background) transparent transparent transparent;
+}
 .caret.down {
   border-width: 0 5px 5px 5px;
-  border-color: transparent transparent #333 transparent;
+  /* border-color: transparent transparent #333 transparent; */
+  border-color: transparent transparent var(--Font-Background) transparent;
 }
-
+.caret.down.dark {
+  border-color: transparent transparent var(--Font-Background) transparent;
+}
 .accordion-item h5 {
   cursor: pointer;
 }

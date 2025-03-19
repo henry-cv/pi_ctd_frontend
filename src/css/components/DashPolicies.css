@@ -1,5 +1,5 @@
 .policies-container {
-  background-color: var(--Background-components);
+  background-color: var(--BackgroundColor);
   color: var(--Font-Background);
   display: flex;
   flex-direction: column;
@@ -23,8 +23,8 @@ input.input-search {
 }
 
 input.input-search.dark {
-  background-color: var(--black-400);
-  color: var(--white);
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
 }
 
 input.input-search:focus,
@@ -53,5 +53,4 @@ input.input-search:active {
 .anchor a.dark:focus {
   color: var(--yellow-base);
   font-weight: bold;
-  ;
 }

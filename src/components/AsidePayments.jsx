@@ -26,7 +26,7 @@ const AsidePayments = ({ setSelectedPolicy }) => {
       <div className={`accordion ${theme}`}>
         <div className={`accordion-item ${theme}`} onClick={() => handleAccordionClick(1, 'planificar')}>
           <h5 className={selectedTitle === 'planificar' ? 'title-selected' : ''} onClick={() => handlePolicyClick('planificar')}>
-            <Link className={`${theme}`} to="/politicasdeuso">Planificar, buscar y reservar</Link>
+            <Link className={`${theme}`} to="/politicasdeuso/planificar">Planificar, buscar y reservar</Link>
 
             <span className="caret"></span></h5>
 

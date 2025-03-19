@@ -1,12 +1,12 @@
 @import "../global/variables.css";
 .page-policies-container {
-  background-color: var(--Background-components);
+  background-color: var(--BackgroundColor);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 .page-policies-container.dark {
-  background-color: var(--Background-components);
+  background-color: var(--BackgroundColor);
   color: var(--Font-Background);
 }
 .main-policies {
