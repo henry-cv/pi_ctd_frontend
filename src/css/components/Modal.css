@@ -132,80 +132,20 @@
   background-color: #1e40af;
 }
 
-/* Media query para pantallas más pequeñas */
-/* @media (max-width: 480px) {
-  .modal-container {
-    width: 95%;
-    padding: 16px;
-  }
-
-  .modal-title {
-    font-size: 18px;
-  }
-
-  .modal-text {
-    font-size: 14px;
-  }
-} */
-/* 1280 codeium */
-@media (min-width: 1280px) {
-  .modal-overlay {
-    top: 8rem;
-    left: 10%;
-    right: 10%;
-    bottom: 8rem;
-  }
-
-  .modal-container {
-    width: 80%;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-}
-
 @media screen and (max-width: 900px) {
   .modal-container {
     width: min(80%, 740px);
   }
 }
 
-/* 768 codeium */
-@media (min-width: 768px) and (max-width: 1279px) {
-  .modal-overlay {
-    top: 6rem;
-    left: 5%;
-    right: 5%;
-    bottom: 6rem;
-  }
-
-  .modal-container {
-    width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-}
-
-/* @media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {
   .modal-overlay {
     top: 2rem;
+    z-index: 2;
   }
 
   .modal-container {
     width: min(80%, 740px);
-  }
-}
-*/
-@media (max-width: 767px) {
-  .modal-overlay {
-    top: 4rem;
-    left: 0;
-    right: 0;
-    bottom: 4rem;
-  }
-
-  .modal-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
+    z-index: 2;
   }
 }
