@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1700 !important;
 }
 
 /* Contenedor principal del modal */
@@ -22,10 +22,12 @@
   position: relative;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .modal-container.dark {
   background-color: var(--Background-components);
   color: var(--Font-Background);
 }
+
 /* Botón de cerrar (X) */
 .modal-close-button {
   position: absolute;
@@ -41,9 +43,11 @@
   justify-content: center;
   transition: color 0.2s;
 }
+
 .modal-close-button.dark {
   color: var(--white);
 }
+
 .modal-close-button:hover {
   color: #333;
 }
@@ -55,9 +59,11 @@
   margin-bottom: 16px;
   margin-top: 16px;
 }
+
 .modal-title.dark {
   color: var(--Font-Background);
 }
+
 /* Área del mensaje principal */
 .modal-message-area {
   background-color: #f5f5f5;
@@ -65,6 +71,7 @@
   padding: 16px;
   margin-bottom: 16px;
 }
+
 .modal-message-area.dark {
   background-color: var(--black-400);
 }
@@ -77,6 +84,7 @@
   text-align: justify;
   white-space: pre-line;
 }
+
 .modal-text.dark {
   color: var(--Font-Background);
   background-color: var(--BackgroundColor-components);
@@ -94,12 +102,15 @@
   cursor: pointer;
   transition: color 0.2s;
 }
+
 .modal-link.dark {
   color: var(--yellow-base);
 }
+
 .modal-link:hover {
   color: var(--blue-hover);
 }
+
 .modal-link.dark:hover {
   color: var(--yellow-hover);
 }
@@ -122,7 +133,7 @@
 }
 
 /* Media query para pantallas más pequeñas */
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .modal-container {
     width: 95%;
     padding: 16px;
@@ -134,5 +145,67 @@
 
   .modal-text {
     font-size: 14px;
+  }
+} */
+/* 1280 codeium */
+@media (min-width: 1280px) {
+  .modal-overlay {
+    top: 8rem;
+    left: 10%;
+    right: 10%;
+    bottom: 8rem;
+  }
+
+  .modal-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .modal-container {
+    width: min(80%, 740px);
+  }
+}
+
+/* 768 codeium */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .modal-overlay {
+    top: 6rem;
+    left: 5%;
+    right: 5%;
+    bottom: 6rem;
+  }
+
+  .modal-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* @media screen and (max-width: 480px) {
+  .modal-overlay {
+    top: 2rem;
+  }
+
+  .modal-container {
+    width: min(80%, 740px);
+  }
+}
+*/
+@media (max-width: 767px) {
+  .modal-overlay {
+    top: 4rem;
+    left: 0;
+    right: 0;
+    bottom: 4rem;
+  }
+
+  .modal-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
   }
 }
