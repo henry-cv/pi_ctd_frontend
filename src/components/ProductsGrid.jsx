@@ -1,7 +1,8 @@
+// src/components/ProductsGrid.jsx - Versión mejorada
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import ActivityCard from './ActivityCard'; // Importar el componente existente
+import ActivityCard from './ActivityCard';
 
 const ProductsGrid = ({
   loading,
@@ -11,20 +12,17 @@ const ProductsGrid = ({
   itemsPerPage,
   totalPages,
   currentPage,
-  handlePageChange
+  handlePageChange,
+  searchTerm
 }) => {
   const navigate = useNavigate();
 
-  // Imagen por defecto en caso de error o sin imagen
-  const defaultImage = "/activitie.webp";
-  const handleImageError = (e) => {
-    e.target.src = defaultImage;
-  };
-
   return (
     <div className="products-grid">
-      {loading || !dataLoaded ? (
-        <p className="loading-message">Cargando actividades...</p>
+      {loading && searchTerm && searchTerm.trim().length >= 2 ? (
+        <p className="loading-message">Buscando "{searchTerm}"...</p>
+      ) : !dataLoaded ? (
+        <p className="loading-message">Esperando datos...</p>
       ) : currentActivities.length > 0 ? (
         <div className="activities-container">
           {currentActivities.map((activity) => (
@@ -33,7 +31,6 @@ const ProductsGrid = ({
               className="activity-card-container"
               onClick={() => navigate(`/actividad/${activity.id}`)}
             >
-              {/* Usando el componente ActivityCard existente */}
               <ActivityCard
                 id={activity.id}
                 image={
@@ -56,11 +53,13 @@ const ProductsGrid = ({
         </div>
       ) : (
         <p className="no-results">
-          No se encontraron actividades con los filtros seleccionados.
+          {searchTerm && searchTerm.trim().length >= 2 
+            ? `No se encontraron actividades con el término "${searchTerm}".`
+            : "No se encontraron actividades con los filtros seleccionados."}
         </p>
       )}
 
-      {/* Paginación */}
+      {/* Paginación - solo mostrar si hay más de una página */}
       {filteredActivities.length > itemsPerPage && (
         <div className="pagination-container">
           <Pagination
