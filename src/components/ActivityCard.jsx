@@ -1,3 +1,4 @@
+// src/components/ActivityCard.jsx
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -8,9 +9,9 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import "../css/components/ActivityCard.css";
 import DurationInfo from "./DurationInfo";
-import { duration } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import FavoriteButton from "./FavoriteButton";
 
 const ActivityCard = ({
   id,
@@ -38,6 +39,9 @@ const ActivityCard = ({
     <Link key={id} to={`/actividad/${id}`} className="activity-link">
       <div className="activity-card card-container-fluid">
         <div className="activity-image-container">
+          {/* Botón de favoritos */}
+          <FavoriteButton productoId={id} />
+          
           <img
             src={image || defaultImage}
             alt={title}
@@ -101,17 +105,24 @@ const ActivityCard = ({
 };
 
 ActivityCard.propTypes = {
+  id: PropTypes.number.isRequired,
   image: PropTypes.string,
   title: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
+  tipoEvento: PropTypes.string,
+  horaInicio: PropTypes.string,
+  horaFin: PropTypes.string,
+  diasDisponible: PropTypes.array,
   duration: PropTypes.string,
   price: PropTypes.number.isRequired,
   rating: PropTypes.number.isRequired,
+  categories: PropTypes.array,
 };
 
 ActivityCard.defaultProps = {
   image: "/activitie.webp",
   duration: undefined,
+  rating: 4.5,
 };
 
 export default ActivityCard;
