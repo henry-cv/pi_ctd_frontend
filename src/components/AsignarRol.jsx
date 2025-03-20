@@ -152,7 +152,10 @@ const AsignarRol = () => {
         title: "Rol actualizado",
         text: `El rol de ${usuario.nombre} ${usuario.apellido} ha sido cambiado a ${nuevoRol}`,
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
+        customClass: {
+          popup: ` ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
       
     } catch (error) {
@@ -162,6 +165,9 @@ const AsignarRol = () => {
         icon: "error",
         title: "Error",
         text: error.message || "Ocurrió un error al cambiar el rol del usuario",
+        customClass: {
+          popup: ` ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     } finally {
       setActionLoading(false);

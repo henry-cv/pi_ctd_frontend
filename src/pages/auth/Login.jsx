@@ -60,6 +60,9 @@ const Login = () => {
               text: "Bienvenido de nuevo",
               showConfirmButton: false,
               timer: 2000,
+              customClass: {
+                popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+              }
             }).then(() => {
               if(state.isAccessModal){
                 dispatch({ 
@@ -79,6 +82,9 @@ const Login = () => {
               title: "Oops...",
               text: "Algo salió mal. Vuelve a intentarlo más tarde.",
               confirmButtonColor: "#D61B1B",
+              customClass: {
+                popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+              }
             });
           }
         };
@@ -93,6 +99,9 @@ const Login = () => {
         title: "Oops...",
         text: error.response.data.error || "Credenciales incorrectas",
         confirmButtonColor: "#D61B1B",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     }
   };

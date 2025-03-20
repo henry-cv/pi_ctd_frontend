@@ -3,6 +3,16 @@
     color: var(--white);
 }
 
+.font-blue{
+    color: var(--blue-base);
+}
+
+.font-yellow{
+    color: var(--yellow-base);
+}
+
+
+
 .font-ligth{
     color: var(--black);
 }
@@ -62,6 +72,8 @@ padding: 2px 8px;
 .my-custom-checkbox.MuiCheckbox-root.Mui-checked {
     color: var(--yellow-base) !important; 
 }
+
+
 
 @media (max-width: 480px) {
     .select-date-slot {

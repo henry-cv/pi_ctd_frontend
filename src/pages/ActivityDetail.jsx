@@ -59,10 +59,10 @@ const ActivityDetail = () => {
   const [openAccess, setOpenAccess] = useState(false);
   const [disponibilidad, setDisponibilidad]= useState([]);
   
-  console.log("Actividad detalles montado")
 
-  console.log("La reserva: " + JSON.stringify(state.reservation));
-  console.log("La activity " + JSON.stringify(state.activity));
+
+  // console.log("La reserva: " + JSON.stringify(state.reservation));
+  // console.log("La activity " + JSON.stringify(state.activity));
   
 
   useEffect(() => {
@@ -78,6 +78,7 @@ const ActivityDetail = () => {
         const data = await response.json();
         setActivity(data);
 
+        console.log("la cancelación",data.politicaCancelacion);
 
         try {
           const disponibilidadResponse = await fetch(`/api/disponibilidad/${id}`);
@@ -121,7 +122,7 @@ const ActivityDetail = () => {
     fetchActivityDetails();
   }, [id]);
   
-  
+
 
   // Detectar scroll para mostrar la card de reserva en móvil
   useEffect(() => {
@@ -470,7 +471,7 @@ const ActivityDetail = () => {
 
                 <div className="experience-section">
                   <h2>Sobre la experiencia</h2>
-                  <ActivityPolitics/>
+                  <ActivityPolitics cancelation={activity.politicaCancelacion} payment={activity.politicaPagos}/>
 
                   <div className="experience-details">
                     <div className="detail-item">

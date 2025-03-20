@@ -21,6 +21,9 @@ const EditCharacteristic = () => {
         text: "No se ha proporcionado ID de característica a editar",
         icon: "error",
         confirmButtonColor: "#3e10da",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       }).then(() => {
         navigate('/administrador/caracteristicas');
       });
@@ -58,6 +61,9 @@ const EditCharacteristic = () => {
           text: `No se pudo cargar la característica: ${error.message}`,
           icon: "error",
           confirmButtonColor: "#3e10da",
+          customClass: {
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+          }
         }).then(() => {
           navigate('/administrador/caracteristicas');
         });
