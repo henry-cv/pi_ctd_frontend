@@ -65,43 +65,46 @@ export const searchProducts = async (query) => {
     // Crear una nueva promesa y guardarla
     console.log(`[API] Nueva llamada a API para: "${query}"`);
     
-    const promise = new Promise(async (resolve, reject) => {
-      try {
-        // Actualizar timestamp
-        window.apiCache.lastApiCall[endpoint] = now;
-        
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error("Error al filtrar productos");
-        const data = await response.json();
-        
-        // Guardar en caché de sugerencias para futuras referencias
-        window.apiCache.suggestions[query] = data.map(item => ({
-          label: item.nombre,
-          id: item.id,
-          categorias: item.categorias || []
-        }));
-        
-        // Si no hay resultados, agregar al conjunto de términos sin resultados
-        if (data.length === 0) {
-          window.apiCache.noResultsTerms.add(query);
+    const promise = new Promise((resolve, reject) => {
+      // Actualizar timestamp
+      window.apiCache.lastApiCall[endpoint] = now;
+      
+      fetch(endpoint)
+        .then(response => {
+          if (!response.ok) throw new Error("Error al filtrar productos");
+          return response.json();
+        })
+        .then(data => {
+          // Guardar en caché de sugerencias para futuras referencias
+          window.apiCache.suggestions[query] = data.map(item => ({
+            label: item.nombre,
+            id: item.id,
+            categorias: item.categorias || []
+          }));
           
-          // Limitar tamaño del conjunto
-          if (window.apiCache.noResultsTerms.size > 50) {
-            const iterator = window.apiCache.noResultsTerms.values();
-            window.apiCache.noResultsTerms.delete(iterator.next().value);
+          // Si no hay resultados, agregar al conjunto de términos sin resultados
+          if (data.length === 0) {
+            window.apiCache.noResultsTerms.add(query);
+            
+            // Limitar tamaño del conjunto
+            if (window.apiCache.noResultsTerms.size > 50) {
+              const iterator = window.apiCache.noResultsTerms.values();
+              window.apiCache.noResultsTerms.delete(iterator.next().value);
+            }
           }
-        }
-        
-        resolve(data);
-      } catch (error) {
-        console.error("Error en búsqueda de API:", error);
-        reject(error);
-      } finally {
-        // Limpiar la promesa activa cuando termine
-        setTimeout(() => {
-          delete window.apiCache.activePromises[query];
-        }, 100);
-      }
+          
+          resolve(data);
+        })
+        .catch(error => {
+          console.error("Error en búsqueda de API:", error);
+          reject(error);
+        })
+        .finally(() => {
+          // Limpiar la promesa activa cuando termine
+          setTimeout(() => {
+            delete window.apiCache.activePromises[query];
+          }, 100);
+        });
     });
     
     // Guardar la promesa activa
