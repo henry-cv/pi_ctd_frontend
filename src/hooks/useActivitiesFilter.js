@@ -1,5 +1,6 @@
 // src/hooks/useActivitiesFilter.js
 import { useState, useEffect, useRef, useCallback } from "react";
+import { searchProducts } from "../services/apiService";
 
 export const useActivitiesFilter = ({
   activities,
@@ -21,37 +22,10 @@ export const useActivitiesFilter = ({
   const filterTimeoutRef = useRef(null);
   const lastSearchTermRef = useRef("");
   
-  // Función para manejar búsqueda por API
+  // Función para buscar usando la API (ahora usa el servicio compartido)
   const searchByApi = useCallback(async (query) => {
-    try {
-      const endpoint = `/api/producto/filtrar?query=${encodeURIComponent(query)}`;
-      const now = Date.now();
-      const lastCall = window.apiCache?.lastApiCall?.[endpoint] || 0;
-      
-      // Control de tasa de llamadas a la API
-      if (now - lastCall < (window.apiCache?.minCallInterval || 500)) {
-        // Si tenemos resultados en cache, usarlos
-        if (window.apiCache?.suggestions?.[query]) {
-          const cachedIds = window.apiCache.suggestions[query].map(opt => opt.id);
-          return activities.filter(act => cachedIds.includes(act.id));
-        }
-        return []; // Si no hay cache, devolver lista vacía
-      }
-      
-      // Actualizar timestamp de última llamada
-      if (window.apiCache) {
-        window.apiCache.lastApiCall = window.apiCache.lastApiCall || {};
-        window.apiCache.lastApiCall[endpoint] = now;
-      }
-      
-      const response = await fetch(endpoint);
-      if (!response.ok) throw new Error("Error al filtrar productos");
-      return await response.json();
-    } catch (error) {
-      console.error("Error searching by API:", error);
-      return [];
-    }
-  }, [activities]);
+    return await searchProducts(query);
+  }, []);
   
   // Función para aplicar todos los filtros excepto búsqueda
   const applyOtherFilters = useCallback((items) => {
@@ -167,22 +141,8 @@ export const useActivitiesFilter = ({
     // Solo mostrar "cargando" si el término de búsqueda tiene al menos 2 caracteres
     const trimmedSearchTerm = searchTerm?.trim() || "";
     
-    // Verificar si el término actual comienza con algún prefijo sin resultados
+    // Si tiene suficiente longitud, mostrar estado de carga
     if (trimmedSearchTerm.length >= 2) {
-      // Verificamos si algún prefijo ya fue buscado sin resultados
-      // Usamos el conjunto global para compartir con otros hooks
-      const globalNoResultsTerms = window.apiCache?.noResultsTerms || new Set();
-      
-      for (const noResultTerm of globalNoResultsTerms) {
-        if (trimmedSearchTerm.startsWith(noResultTerm)) {
-          console.log(`Omitiendo búsqueda para "${trimmedSearchTerm}" porque "${noResultTerm}" ya no tuvo resultados`);
-          setFilteredActivities([]);
-          setTotalPages(1);
-          return;
-        }
-      }
-      
-      // Si llegamos aquí, vale la pena buscar
       setLoading(true);
     }
     
@@ -191,25 +151,10 @@ export const useActivitiesFilter = ({
     try {
       let result = [];
       
-      // Si hay término de búsqueda válido, usamos la API
+      // Si hay término de búsqueda válido, usamos la API a través del servicio compartido
       if (trimmedSearchTerm.length >= 2) {
         lastSearchTermRef.current = trimmedSearchTerm;
         result = await searchByApi(trimmedSearchTerm);
-        
-        // Si no hay resultados, guardar este término como un prefijo sin resultados
-        if (result.length === 0) {
-          // Guardar en el conjunto global
-          if (window.apiCache) {
-            window.apiCache.noResultsTerms = window.apiCache.noResultsTerms || new Set();
-            window.apiCache.noResultsTerms.add(trimmedSearchTerm);
-            
-            // Limitar el tamaño del conjunto para evitar consumo excesivo de memoria
-            if (window.apiCache.noResultsTerms.size > 50) {
-              const iterator = window.apiCache.noResultsTerms.values();
-              window.apiCache.noResultsTerms.delete(iterator.next().value);
-            }
-          }
-        }
       } 
       // Si no hay búsqueda, usamos todas las actividades
       else {

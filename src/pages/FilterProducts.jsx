@@ -8,7 +8,9 @@ if (!window.apiCache) {
     lastApiCall: {},
     minCallInterval: 500,
     // Agregamos un conjunto para términos sin resultados, compartido entre hooks
-    noResultsTerms: new Set()
+    noResultsTerms: new Set(),
+    // Sistema de promesas compartidas para evitar llamadas duplicadas
+    activePromises: {}
   };
 }
 import { useState, useEffect } from "react";

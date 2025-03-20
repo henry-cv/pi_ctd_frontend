@@ -1,5 +1,6 @@
 // src/hooks/useActivitiesData.js
 import { useState, useEffect, useRef, useCallback } from "react";
+import { searchProducts } from "../services/apiService";
 
 // API cache configuration
 const API_CACHE = {
@@ -113,26 +114,8 @@ export const useActivitiesData = (initialSearchTerm = "") => {
     
     const trimmedQuery = query.trim();
     
-    // Verificar si el término actual comienza con algún prefijo sin resultados conocido
-    const globalNoResultsTerms = window.apiCache?.noResultsTerms;
-    if (globalNoResultsTerms) {
-      for (const noResultTerm of globalNoResultsTerms) {
-        if (trimmedQuery.startsWith(noResultTerm)) {
-          console.log(`[Sugerencias] Omitiendo búsqueda para "${trimmedQuery}" porque "${noResultTerm}" ya no tuvo resultados`);
-          setSearchOptions([]);
-          return;
-        }
-      }
-    }
-    
     // Skip if already searching for this query
     if (activeSearchTerm.current === trimmedQuery) return;
-    
-    // Use cache if available
-    if (API_CACHE.suggestions[trimmedQuery]) {
-      setSearchOptions(API_CACHE.suggestions[trimmedQuery]);
-      return;
-    }
     
     // Clear previous timeout
     if (searchTimeout.current) {
@@ -142,14 +125,10 @@ export const useActivitiesData = (initialSearchTerm = "") => {
     // Set new timeout for debounce
     searchTimeout.current = setTimeout(async () => {
       try {
-        const endpoint = `/api/producto/filtrar?query=${encodeURIComponent(trimmedQuery)}`;
-        if (!shouldMakeApiCall(endpoint)) return;
-        
         activeSearchTerm.current = trimmedQuery;
         
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error("Error al filtrar productos");
-        const data = await response.json();
+        // Usar el servicio compartido que gestiona caché y promesas
+        const data = await searchProducts(trimmedQuery);
         
         // Format options for Autocomplete
         const formattedOptions = data.map((activity) => ({
@@ -158,15 +137,6 @@ export const useActivitiesData = (initialSearchTerm = "") => {
           categorias: activity.categorias || [],
         }));
         
-        // Save to cache
-        API_CACHE.suggestions[trimmedQuery] = formattedOptions;
-        
-        // Si no hay resultados, agregar al conjunto global de términos sin resultados
-        if (data.length === 0 && window.apiCache) {
-          window.apiCache.noResultsTerms = window.apiCache.noResultsTerms || new Set();
-          window.apiCache.noResultsTerms.add(trimmedQuery);
-        }
-        
         // Only update if this is still the active query
         if (activeSearchTerm.current === trimmedQuery) {
           setSearchOptions(formattedOptions);
@@ -174,10 +144,13 @@ export const useActivitiesData = (initialSearchTerm = "") => {
         }
       } catch (error) {
         console.error("Error fetching suggestions:", error);
-        activeSearchTerm.current = "";
+        if (activeSearchTerm.current === trimmedQuery) {
+          setSearchOptions([]);
+          activeSearchTerm.current = "";
+        }
       }
     }, 300);
-  }, [shouldMakeApiCall]);
+  }, []);
 
   // Fetch initial data on mount
   useEffect(() => {
