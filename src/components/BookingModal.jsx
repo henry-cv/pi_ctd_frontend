@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -57,30 +57,60 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const ciudad = theActivity?.ciudad || "";
   const pais = theActivity?.pais || "";
   const id = theActivity?.id || "";
-  const cuposDisponibles = theActivity?.['0']?.cuposDisponibles || 0;
-  const cuposTotales = theActivity?.cuposTotales || 0;
-  const tipoEvento = theActivity?.tipoEvento || "";
   const politicaCancelacion = theActivity?.politicaCancelacion || ""
   const politicaPagos = theActivity?.politicaPagos || ""
+  const tipoEvento = theActivity?.tipoEvento || "";
   const availabilityType = tipoEvento === "FECHA_UNICA" ? "fecha" : "dias";
+  
+  // State for available spots by date
+  const [availabilityMap, setAvailabilityMap] = useState({});
+  
   const getEventDates = () => {
     if (!theActivity) return [];
     return Object.keys(theActivity)
       .filter((key) => !isNaN(parseInt(key)))
       .map((key) => theActivity[key].fechaEvento);
   };
+  
   const fechasEvento = getEventDates();
-  const [cupoDisponible, setCupoDisponible] = useState(cuposDisponibles);
+  
+  // Generate availability map from theActivity
+  useEffect(() => {
+    if (theActivity) {
+      const map = {};
+      
+      // Process each numbered key which contains availability data
+      Object.keys(theActivity).forEach(key => {
+        if (!isNaN(parseInt(key))) {
+          const entry = theActivity[key];
+          // Map date to available spots
+          if (entry.fechaEvento) {
+            map[entry.fechaEvento] = entry.cuposDisponibles || 0;
+          }
+        }
+      });
+      
+      setAvailabilityMap(map);
+    }
+  }, [theActivity]);
+
   const [openQuantity, setOpenQuantity] = useState(false);
   const [bookingDate, setBookingDate] = useState(null);
   const [anchorElQuantity, setAnchorElQuantity] = useState(null);
   const [resetCalendar, setResetCalendar] = useState(false);
-  const [showDate, setShowDate]=useState(false)
-
-  // console.log(bookingDate);
+  const [showDate, setShowDate] = useState(false);
   
+  // Get availability for current selected date
+  const getAvailabilityForDate = (date) => {
+    if (!date) return 0;
+    
+    const dateStr = date.toISOString().split('T')[0];
+    return availabilityMap[dateStr] || 0;
+  };
+  
+  const currentDateAvailability = getAvailabilityForDate(bookingDate);
 
-  //funciones para abrir , cerrar, resetear
+  //funciones para abrir, cerrar, resetear
   const {
     validateCreateBooking,
     handleOpenCalendar,
@@ -108,9 +138,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   
   //submit por ahora quedó aqui 
   const BookingSubmit = () => {
-    if (validateCreateBooking( bookingDate, quantity)) {
-
-
+    if (validateCreateBooking(bookingDate, quantity)) {
       const reservationData = {
         idActivity: id,
         idUser: state.user.id,
@@ -139,7 +167,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       resetBookingData();
       handleClose();
     } else {
-
       Swal.fire({
         icon: "error",
         title: "Reserva fallida",
@@ -150,10 +177,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
         }
       });
-
     }
   };
-
 
   return (
     <Dialog
@@ -188,16 +213,11 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         <Box className="select-date-slot">
           <div className="date">
             <Box className="select-item">
-              
               <IconButton onClick={handleOpenCalendar}>
-                {/* <CalendarCheck2                  
-                className={state.theme ? "font-dark" : "font-ligth"}
-                /> */}
-        <FontAwesomeIcon
-          icon={faCalendarCheck}
-          className={state.theme ? "font-dark" : "font-ligth"}
-        />
-                
+                <FontAwesomeIcon
+                  icon={faCalendarCheck}
+                  className={state.theme ? "font-dark" : "font-ligth"}
+                />
               </IconButton>
               <Typography
                 variant="body2"
@@ -205,12 +225,10 @@ const BookingModal = ({ open, handleClose, activityId }) => {
                 sx={{ cursor: "pointer" }}
                 onClick={handleOpenCalendar}
               >
-
-{bookingDate
-      ? format(bookingDate, "EEE, dd MMM", { locale: es })
-      : "Selecciona tu fecha"
-  }
-
+                {bookingDate
+                  ? format(bookingDate, "EEE, dd MMM", { locale: es })
+                  : "Selecciona tu fecha"
+                }
               </Typography>
             </Box>
             {errorsBooking.date && (
@@ -264,7 +282,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           bookingDate={bookingDate}
           resetCalendar={resetCalendar}
           setResetCalendar={setResetCalendar}
-          cupoDisponible ={cupoDisponible}
+          availabilityMap={availabilityMap}
         />
 
         <BookingQuantity
@@ -272,68 +290,64 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           onClose={handleCloseBookingQuantity}
           quantity={quantity}
           setQuantity={handleSelectQuantity}
-          cupoDisponible={cupoDisponible}
-          tipoTarifa = {tipoTarifa}
+          cupoDisponible={currentDateAvailability}
+          tipoTarifa={tipoTarifa}
         />
 
         {!bookingDate ? null : (
           <>
-            {cupoDisponible === 3 ? (
+            {currentDateAvailability === 3 ? (
               <span style={{ color: "#FD6905" }}>¡Solo quedan 3 cupos!</span>
-            ) : cupoDisponible === 2 ? (
+            ) : currentDateAvailability === 2 ? (
               <span style={{ color: "red" }}>¡Solo quedan 2 cupos!</span>
-            ) : cupoDisponible === 1 ? (
+            ) : currentDateAvailability === 1 ? (
               <span style={{ color: "red" }}>¡Último cupo disponible!</span>
-            ) : cupoDisponible === 0 ? (
+            ) : currentDateAvailability === 0 ? (
               <span style={{ color: "red" }}>¡No hay cupos disponibles!</span>
             ) : null}
           </>
         )}
 
-        <ActivityPolitics  cancelation={politicaCancelacion} payment={politicaPagos} />
+        <ActivityPolitics cancelation={politicaCancelacion} payment={politicaPagos} />
 
         <Box mt={3} p={2} border={1} borderRadius={2}>
-
           <div className="title-checkbox">
             <Typography fontWeight={600}>{nombre}</Typography>
           </div>
 
-            {/* //cuposs aqui */}
-            {cupoDisponible > 0 && (
-            <Typography  className={!state.theme ? "font-blue" : "font-yellow"}>
-              Cupos disponibles: {cupoDisponible}
+          {/* Cupos disponibles para la fecha seleccionada */}
+          {bookingDate && currentDateAvailability > 0 && (
+            <Typography className={!state.theme ? "font-blue" : "font-yellow"}>
+              Cupos disponibles: {currentDateAvailability}
             </Typography>
           )}
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <IoLocation />
             <Typography>
-              {ciudad},{pais}
+              {ciudad}, {pais}
             </Typography>
           </Box>
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
-                <FontAwesomeIcon
-                     icon={faCalendarCheck}
-                     className="info-icon"
-                   />
+            <FontAwesomeIcon
+              icon={faCalendarCheck}
+              className="info-icon"
+            />
             <Typography>
               Fecha Escogida: {bookingDate ? format(bookingDate, "EEE, dd MMM yyyy", { locale: es }) : "No seleccionada"}
-
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <AccessTimeIcon />
             <Typography>
-              Hora de inicio:
-              {horaInicio.substring(0, 5)}
+              Hora de inicio: {horaInicio.substring(0, 5)}
             </Typography>
           </Box>
           <Typography mt={2}>
             {tipoTarifa.toLowerCase().replace(/_/g, " ")} X {valorTarifa} USD
           </Typography>
           <Typography mt={2}>Total: ${priceQuantity} USD</Typography>
-       
         </Box>
       </DialogContent>
 
@@ -345,7 +359,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           onClick={BookingSubmit}
         />
       </DialogActions>
-
     </Dialog>
   );
 };
