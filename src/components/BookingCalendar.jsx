@@ -2,7 +2,7 @@ import { Popover, Box, Typography, useMediaQuery } from "@mui/material";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { useEffect, useState, useRef , useCallback} from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import "../css/components/BookingCalendar.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import { es } from "date-fns/locale";
@@ -17,7 +17,7 @@ const BookingCalendar = ({
   bookingDate,
   resetCalendar,
   setResetCalendar,
-  cupoDisponible
+  availabilityMap = {}
 }) => {
   const isMobile = useMediaQuery("(max-width: 480px)");
   const [selectedDate, setSelectedDate] = useState(bookingDate || dateRange[0]?.startDate);
@@ -27,8 +27,6 @@ const BookingCalendar = ({
   const [errors, setErrors] = useState("");
   const { state } = useContextGlobal();
   const dateRangeRef = useRef(null);
-
-  // console.log("labooking date",bookingDate);
   
   const daysMap = {
     "DOMINGO": 0,
@@ -40,17 +38,11 @@ const BookingCalendar = ({
     "SABADO": 6,
   };
 
-  console.log("cupo dispo",cupoDisponible);
-  
-
   const normalizeDate = (date) => {
-    
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
 
-
   const handleMonthChange = (date) => {
-    
     setVisibleMonth(date.getMonth());
     setVisibleYear(date.getFullYear());
   };
@@ -65,23 +57,17 @@ const BookingCalendar = ({
       .map(key => activityData[key]);
     
     const fechas = eventosArray.map(evento => evento.fechaEvento);
-
-    console.log("Fechas ordenadas:", fechas);
-    
     
     return { fechas };
   };
 
-  const { fechas} = extractDates();
-
+  const { fechas } = extractDates();
   
   useEffect(() => {
     if (availability?.type === "dias" && fechas.length > 0 && dateRangeRef.current) {
       try {
         const primerFecha = new Date(fechas[0]);
-        console.log("entré  tipo fecha la primera fecha del array",primerFecha);
         
-
         if (dateRangeRef.current.setShownDate) {
           dateRangeRef.current.setShownDate(primerFecha);
         }
@@ -94,14 +80,10 @@ const BookingCalendar = ({
   useEffect(() => {
     setErrors("");
     const today = normalizeDate(new Date());
-    console.log("entro a ussefect de fecha unica");
     
-  
     if (availability?.type === "fecha" && availability.data.length > 0) {
       const otra = normalizeDate(new Date(availability.data[0] + "T00:00:00"));
 
-      console.log("fecha unica esta " , otra);
-  
       if (otra < today) {
         setErrors("Esta actividad ya pasó");
         return;
@@ -119,20 +101,6 @@ const BookingCalendar = ({
     }
     
   }, [availability]);
-  
-  // const generarDiasDisponibles = useCallback((start, end, diasPermitidos) => {
-  //   let fechasDisponibles = [];
-  //   let currentDate = new Date(start);
-  
-  //   while (currentDate <= end) {
-  //     if (diasPermitidos.includes(currentDate.getDay())) {
-  //       fechasDisponibles.push(new Date(currentDate));
-  //     }
-  //     currentDate.setDate(currentDate.getDate() + 1);
-  //   }
-  
-  //   return fechasDisponibles;
-  // }, []);
   
   useEffect(() => {
     if (availability?.type === "dias" && fechas.length > 0) {
@@ -153,11 +121,7 @@ const BookingCalendar = ({
     }
   }, []); 
   
-  
-
   const getDayClass = (day) => {
-    console.log(day,"day");
-    
     const isOutsideMonth = day.getMonth() !== visibleMonth || day.getFullYear() !== visibleYear;
     if (isOutsideMonth) return "";
   
@@ -168,23 +132,20 @@ const BookingCalendar = ({
     const isPast = normalizedDay < today;
     const isToday = normalizedDay.toDateString() === today.toDateString();
     
+    // Check availability for this specific date
+    const dateString = normalizedDay.toISOString().split('T')[0];
+    const cuposDisponibles = availabilityMap[dateString] || 0;
+    
     let isAvailable = false;
     
     if (availability?.type === "dias") {
       isAvailable = availability.data.includes(dayName);
-
-      // console.log("las fechas",fechas[fechas.length-1]);
-      // console.log("Tipo de dato:", typeof fechas[fechas.length - 1]);
-      
       
       if (isAvailable && fechas.length > 0) {
         const primerFecha = new Date(fechas[0]);
         const ultimaFecha = new Date(fechas[fechas.length - 1]+"T00:00:00");
         const normalizedPrimerFecha = normalizeDate(primerFecha);
         const normalizedUltimaFecha = normalizeDate(ultimaFecha);
-
-        console.log(normalizeDate(ultimaFecha));
-        
         
         isAvailable = normalizedDay >= normalizedPrimerFecha && normalizedDay <= normalizedUltimaFecha;
       }
@@ -203,19 +164,16 @@ const BookingCalendar = ({
     // Fechas anteriores
     if (isPast) return "disabled-day-no-pointer";
     
-  
     // Día actual no disponible
-    if (isToday ) {
-      return  "transparent-day";
+    if (isToday) {
+      return "transparent-day";
     }
   
     // Para fecha única 
     if (isSingleDate) {
-      if (!cupoDisponible) {
-        console.log("no hay cupos")
+      if (cuposDisponibles <= 0) {
         return "disabled-day";
       }
-      console.log("hay cupos")
       return !haHechoClicEnFechaUnica ? "selected-day overlay-class" : "selected-day";
     }
   
@@ -225,12 +183,12 @@ const BookingCalendar = ({
     }
   
     // Días disponibles para fecha recurrente
-    if (isAvailable){
-      if (!cupoDisponible) {
+    if (isAvailable) {
+      if (cuposDisponibles <= 0) {
         return "disabled-day";
       }
-    
-       return "available-day";}
+      return "available-day";
+    }
   
     return "semi-available-day";
   };
@@ -248,7 +206,6 @@ const BookingCalendar = ({
       setVisibleMonth(bookingDate.getMonth());
       setVisibleYear(bookingDate.getFullYear());
   
- 
       setTimeout(() => {
         if (dateRangeRef.current && dateRangeRef.current.setShownDate) {
           try {
@@ -261,7 +218,6 @@ const BookingCalendar = ({
     }
   }, [anchorEl, bookingDate]);
   
-
   const resetCalendarState = () => {
     setHaHechoClicEnFechaUnica(false);
     setSelectedDate(null);
@@ -291,7 +247,6 @@ const BookingCalendar = ({
       setVisibleMonth(primerFecha.getMonth());
       setVisibleYear(primerFecha.getFullYear());
       
-
       setTimeout(() => {
         if (dateRangeRef.current && dateRangeRef.current.setShownDate) {
           try {
@@ -321,7 +276,14 @@ const BookingCalendar = ({
   };
 
   const handleDateSelection = (selected) => {
-
+    const dateString = selected.toISOString().split('T')[0];
+    const cuposDisponibles = availabilityMap[dateString] || 0;
+    
+    // Don't allow selection of dates with no available spots
+    if (cuposDisponibles <= 0) {
+      return;
+    }
+    
     setHaHechoClicEnFechaUnica(true);
     setSelectedDate(selected);
     setDateRange([{ startDate: selected, endDate: selected, key: "selection" }]);
@@ -344,42 +306,39 @@ const BookingCalendar = ({
     >
       <Box p={2} className={state.theme === "dark" ? "CardBooking-container" : ""}>
       <DateRange
-  ref={dateRangeRef}
-  className={`${state.theme === "dark" ? "CardBooking-calendar" : ""} ${isMobile ? "mobile-calendar" : ""}`}
-  locale={es}
-  ranges={dateRange}
-  onChange={(ranges) => {
-    const selected = ranges.selection.startDate;
-
-    handleDateSelection(selected);
-    handleClose();
-  }}
-  onShownDateChange={(date) => handleMonthChange(date)}
-  
-  shownDate={bookingDate ? new Date(bookingDate) : (availability?.type === "dias" && fechas.length > 0 ? new Date(fechas[0]) : new Date())}
-  months={1}
-  direction={isMobile ? "vertical" : "horizontal"}
-  showDateDisplay={false}
-  dayContentRenderer={(date) => (
-    <div className={getDayClass(date)}>{date.getDate()}</div>
-  )}
-/>
+        ref={dateRangeRef}
+        className={`${state.theme === "dark" ? "CardBooking-calendar" : ""} ${isMobile ? "mobile-calendar" : ""}`}
+        locale={es}
+        ranges={dateRange}
+        onChange={(ranges) => {
+          const selected = ranges.selection.startDate;
+          handleDateSelection(selected);
+          handleClose();
+        }}
+        onShownDateChange={(date) => handleMonthChange(date)}
+        shownDate={bookingDate ? new Date(bookingDate) : (availability?.type === "dias" && fechas.length > 0 ? new Date(fechas[0]) : new Date())}
+        months={1}
+        direction={isMobile ? "vertical" : "horizontal"}
+        showDateDisplay={false}
+        dayContentRenderer={(date) => (
+          <div className={getDayClass(date)}>{date.getDate()}</div>
+        )}
+      />
 
         <Typography className={isMobile ? "mobile-calendar-legend" : "calendar-legend"}>
           {errors && <p style={{ color: "red" }}>{errors}</p>}
           <p className="legend-text">Estado de los días </p>
-          <ul class="legend">
-            <li class="legend-item">
+          <ul className="legend">
+            <li className="legend-item">
               <span className="legend-color disabled"></span>
               Disponible</li>
-            <li class="legend-item">
-            <span className="legend-color full"></span>
+            <li className="legend-item">
+              <span className="legend-color full"></span>
               Cupo lleno
-              </li>
-            <li class="legend-item">
-            <span className="legend-color selected"></span>
-
-            Seleccionado
+            </li>
+            <li className="legend-item">
+              <span className="legend-color selected"></span>
+              Seleccionado
             </li>
           </ul>
         </Typography>
