@@ -1,8 +1,13 @@
 // src/components/UserFavorites.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { useContextGlobal } from "../gContext/globalContext";
 import ActivityCard from "./ActivityCard";
 import "../css/components/UserFavorites.css";
+
+// Contexto para actualizar la lista de favoritos
+export const FavoritesContext = createContext();
+
+export const useFavoritesContext = () => useContext(FavoritesContext);
 
 const UserFavorites = () => {
   const { state } = useContextGlobal();
@@ -67,28 +72,37 @@ const UserFavorites = () => {
     );
   }
 
+  // Función para actualizar la lista de favoritos cuando se elimina uno
+  const handleFavoriteRemoved = (removedProductId) => {
+    setFavorites(prevFavorites => 
+      prevFavorites.filter(favorite => favorite.producto.id !== removedProductId)
+    );
+  };
+
   return (
-    <div className="user-favorites-container">
-      <h2>Mis Favoritos</h2>
-      <div className="user-favorites-grid">
-        {favorites.map((favorite) => (
-          <ActivityCard
-            key={favorite.id}
-            id={favorite.producto.id}
-            image={favorite.producto.productoImagenesSalidaDto?.[0]?.rutaImagen}
-            title={favorite.producto.nombre}
-            location={`${favorite.producto.ciudad}, ${favorite.producto.pais}`}
-            tipoEvento={favorite.producto.tipoEvento}
-            horaInicio={favorite.producto.horaInicio}
-            horaFin={favorite.producto.horaFin}
-            diasDisponible={favorite.producto.diasDisponible}
-            price={favorite.producto.valorTarifa}
-            rating={4.5} // Valor predeterminado si no hay calificación
-            categories={favorite.producto.categorias}
-          />
-        ))}
+    <FavoritesContext.Provider value={{ onFavoriteRemoved: handleFavoriteRemoved }}>
+      <div className="user-favorites-container">
+        <h2>Mis Favoritos</h2>
+        <div className="user-favorites-grid">
+          {favorites.map((favorite) => (
+            <ActivityCard
+              key={favorite.id}
+              id={favorite.producto.id}
+              image={favorite.producto.productoImagenesSalidaDto?.[0]?.rutaImagen}
+              title={favorite.producto.nombre}
+              location={`${favorite.producto.ciudad}, ${favorite.producto.pais}`}
+              tipoEvento={favorite.producto.tipoEvento}
+              horaInicio={favorite.producto.horaInicio}
+              horaFin={favorite.producto.horaFin}
+              diasDisponible={favorite.producto.diasDisponible}
+              price={favorite.producto.valorTarifa}
+              rating={4.5} // Valor predeterminado si no hay calificación
+              categories={favorite.producto.categorias}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </FavoritesContext.Provider>
   );
 };
 
