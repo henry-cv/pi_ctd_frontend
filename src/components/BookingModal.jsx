@@ -77,7 +77,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const [resetCalendar, setResetCalendar] = useState(false);
   const [showDate, setShowDate]=useState(false)
 
-  console.log(bookingDate);
+  // console.log(bookingDate);
   
 
   //funciones para abrir , cerrar, resetear

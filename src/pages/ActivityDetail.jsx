@@ -87,7 +87,7 @@ const ActivityDetail = () => {
             const disponibilidadData = await disponibilidadResponse.json();
             if (Array.isArray(disponibilidadData)) {
               setDisponibilidad(disponibilidadData);
-              console.log("Detalles de disponibilidad:", disponibilidadData);
+              // console.log("Detalles de disponibilidad:", disponibilidadData);
               const theActivity = { ...disponibilidadData ,...data };
               dispatch({
                 type: "SET_ACTIVITY",

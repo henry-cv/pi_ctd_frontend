@@ -30,7 +30,9 @@ export const funtionsBookingModal = ({
       return Object.keys(newErrors).length === 0;
     };
   
-    const handleOpenCalendar = (event) => setAnchorEl(event.currentTarget);
+    const handleOpenCalendar = (event) => {
+      setAnchorEl(event.currentTarget)
+    };
   
     const handleCloseCalendar = () => setAnchorEl(null);
   
@@ -66,7 +68,7 @@ export const funtionsBookingModal = ({
     };
   
     const handleSelectDate = (date) => {
-      console.log(date);
+      console.log("la fecha que me mandan dessde el calendario",date);
       setShowDate(true)
       
       setBookingDate(date);
