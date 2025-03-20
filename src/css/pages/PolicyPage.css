@@ -16,3 +16,10 @@
   margin-top: 10rem;
   margin-bottom: 8rem;
 }
+
+@media screen and (max-width: 768px) {
+  .main-policies {
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+}

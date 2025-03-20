@@ -7,7 +7,7 @@
   flex-direction: column;
   row-gap: 34px;
   font-family: "Archivo";
-  max-width: 840px;
+  max-width: 100%;
 
   && p {
     text-align: justify;
@@ -25,5 +25,11 @@
 
   && li {
     text-align: justify;
+  }
+}
+@media screen and (max-width: 1280px) {
+  .payment-article {
+    width: 100%;
+    align-self: center;
   }
 }

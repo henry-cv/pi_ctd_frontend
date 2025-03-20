@@ -3,6 +3,7 @@
   color: var(--Font-Background);
   display: flex;
   flex-direction: column;
+  order: 2;
 }
 
 .search-container {
@@ -53,4 +54,34 @@ input.input-search:active {
 .anchor a.dark:focus {
   color: var(--yellow-base);
   font-weight: bold;
+}
+@media screen and (max-width: 1280px) {
+  .policies-container {
+    width: min(60%, 700px);
+  }
+  .search-container {
+    width: 92%;
+    align-self: center;
+  }
+}
+@media screen and (max-width: 768px) {
+  .policies-container {
+    width: 80%;
+    align-self: center;
+  }
+  .search-container {
+    display: none;
+  }
+}
+@media screen and (max-width: 640px) {
+  .policies-container {
+    width: 80%;
+    align-self: center;
+  }
+}
+@media screen and (max-width: 480px) {
+  .policies-container {
+    width: 90%;
+    align-self: center;
+  }
 }
