@@ -18,15 +18,27 @@
   padding: 1rem;
   text-align: justify;
   width: 1090px;
-
+  && h3 {
+    font-size: 1.4rem;
+    margin: 1.6rem auto;
+  }
   && .terms-list {
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+    row-gap: 1.6rem;
     padding: 1rem 2rem;
-
+    && li {
+      list-style-type: decimal;
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.4rem;
+    }
     && h5 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+    }
+    && p {
+      font-size: 1rem;
     }
   }
 }
@@ -37,5 +49,30 @@
 
   && h5 {
     color: var(--Font-Background);
+  }
+}
+@media screen and (max-width: 1200px) {
+  .main-terms-and-conditions {
+    width: min(92%, 1100px);
+    padding: 0.7rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .main-terms-and-conditions {
+    width: min(94%, 732px);
+    padding: 0.3rem 0rem;
+    && .terms-list {
+      padding: 1rem;
+    }
+  }
+}
+@media screen and (max-width: 480px) {
+  .main-terms-and-conditions {
+    padding: 0;
+    width: min(94%, 440px);
+    && .terms-list {
+      padding: 0.3rem;
+      width: 96%;
+    }
   }
 }
