@@ -60,6 +60,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const cuposDisponibles = theActivity?.['0']?.cuposDisponibles || 0;
   const cuposTotales = theActivity?.cuposTotales || 0;
   const tipoEvento = theActivity?.tipoEvento || "";
+  const politicaCancelacion = theActivity?.politicaCancelacion || ""
+  const politicaPagos = theActivity?.politicaPagos || ""
   const availabilityType = tipoEvento === "FECHA_UNICA" ? "fecha" : "dias";
   const getEventDates = () => {
     if (!theActivity) return [];
@@ -129,6 +131,9 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         text: "reserva exitosa mira toda la información en tus reservas",
         timer: 2000,
         showConfirmButton: false,
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
       
       resetBookingData();
@@ -141,6 +146,9 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         text: "no se puede hacer la reserva",
         timer: 2000,
         showConfirmButton: false,
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
 
     }
@@ -282,7 +290,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           </>
         )}
 
-        <ActivityPolitics />
+        <ActivityPolitics  cancelation={politicaCancelacion} payment={politicaPagos} />
 
         <Box mt={3} p={2} border={1} borderRadius={2}>
 
@@ -292,7 +300,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
 
             {/* //cuposs aqui */}
             {cupoDisponible > 0 && (
-            <Typography mt={1} color="#3e10da">
+            <Typography  className={!state.theme ? "font-blue" : "font-yellow"}>
               Cupos disponibles: {cupoDisponible}
             </Typography>
           )}

@@ -5,7 +5,7 @@ import { useContextGlobal } from "../gContext/globalContext";
 import { useNavigate } from "react-router-dom";
 
 const DeleteUSer = ({ id, onClose }) => {
-    const { dispatch } = useContextGlobal();
+    const {state, dispatch } = useContextGlobal();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -23,7 +23,7 @@ const DeleteUSer = ({ id, onClose }) => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
       customClass: {
-        popup: "swal2-popup", 
+        popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
         confirmButton: "custom-button", 
         cancelButton: "swal2-cancel", 
     }
@@ -37,7 +37,7 @@ const DeleteUSer = ({ id, onClose }) => {
           confirmButtonText: "Ok",
           icon: "success",
           customClass: {
-            popup: "swal2-popup",
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
             confirmButton: "custom-button",}
         });
         handleLogout();

@@ -303,6 +303,9 @@ const FormBasis = ({ isEditMode = false }) => {
             title: "Error",
             text: "No se pudo cargar la actividad.",
             icon: "error",
+            customClass: {
+              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+            }
           });
           navigate("/administrador/actividades");
         } finally {
@@ -419,6 +422,9 @@ const FormBasis = ({ isEditMode = false }) => {
         icon: "success",
         showConfirmButton: false,
         timer: 2000,
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       }).then(() => {
         navigate("/administrador/actividades");
       });
@@ -450,6 +456,9 @@ const FormBasis = ({ isEditMode = false }) => {
         title: "Error",
         text: "No se pudo completar la operación.",
         icon: "error",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     } finally {
       setIsSubmitting(false);

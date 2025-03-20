@@ -99,6 +99,9 @@ const Register = () => {
           text: "Bienvenido a Gobook",
           showConfirmButton: false,
           timer: 2000,
+          customClass: {
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+          }
         }).then(() => {
           navigate("/");
         });
@@ -113,6 +116,9 @@ const Register = () => {
         confirmButtonColor: "#D61B1B",
         showConfirmButton: false,
         timer: 2000,
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     }
   };
