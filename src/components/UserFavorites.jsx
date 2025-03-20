@@ -16,7 +16,7 @@ const UserFavorites = () => {
 
       try {
         setLoading(true);
-        const response = await fetch("/favoritos/listar", {
+        const response = await fetch("/api/favoritos/listar", {
           headers: {
             Authorization: `Bearer ${state.token}`
           }

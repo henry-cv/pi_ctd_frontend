@@ -39,15 +39,15 @@ const ActivityCard = ({
     <Link key={id} to={`/actividad/${id}`} className="activity-link">
       <div className="activity-card card-container-fluid">
         <div className="activity-image-container">
-          {/* Botón de favoritos */}
-          <FavoriteButton productoId={id} />
-          
           <img
             src={image || defaultImage}
             alt={title}
             className="activity-image"
             onError={handleImageError}
           />
+          
+          {/* Botón de favoritos */}
+          <FavoriteButton productoId={id} />
           <div className="container_card_category">
             {categories?.length > 0 && (
               <span className="card-category">{categories[0].nombre}</span>

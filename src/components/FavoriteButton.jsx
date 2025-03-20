@@ -17,7 +17,7 @@ const FavoriteButton = ({ productoId }) => {
       if (!state.token) return;
       
       try {
-        const response = await fetch(`/favoritos/verificar/${productoId}`, {
+        const response = await fetch(`/api/favoritos/verificar/${productoId}`, {
           headers: {
             Authorization: `Bearer ${state.token}`
           }
@@ -50,7 +50,7 @@ const FavoriteButton = ({ productoId }) => {
     try {
       if (isFavorite) {
         // Eliminar de favoritos
-        const response = await fetch(`/favoritos/eliminar/${productoId}`, {
+        const response = await fetch(`/api/favoritos/eliminar/${productoId}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${state.token}`
@@ -62,7 +62,7 @@ const FavoriteButton = ({ productoId }) => {
         }
       } else {
         // Agregar a favoritos
-        const response = await fetch("/favoritos/agregar", {
+        const response = await fetch("/api/favoritos/agregar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

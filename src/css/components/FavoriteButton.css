@@ -1,8 +1,5 @@
 /* src/css/components/FavoriteButton.css */
 .favorite-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     background-color: rgba(255, 255, 255, 0.8);
     border: none;
     border-radius: 50%;
@@ -17,8 +14,65 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
   
+  /* Para la tarjeta de actividad */
+  .activity-card .favorite-button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #6200ee; /* Fondo morado */
+  }
+  
+  .activity-card .favorite-button .favorite-icon {
+    color: white; /* Icono blanco */
+  }
+  
+  .activity-card .favorite-button:hover {
+    background-color: #7c43d9; /* Morado más claro al pasar el mouse */
+  }
+  
+  .activity-card .favorite-button.is-favorite {
+    background-color: #6200ee; /* Mantener fondo morado */
+  }
+  
+  .activity-card .favorite-button.is-favorite .favorite-icon {
+    color: #ffffff; /* Icono rojo/rosa cuando es favorito */
+  }
+  
+  /* Para la página de detalle */
+  .activity-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .activity-detail-header .favorite-button {
+    flex-shrink: 0;
+    background-color: #6200ee;
+  }
+  
+  .activity-detail-header .favorite-button .favorite-icon {
+    color: white;
+  }
+  
+  .activity-detail-header .favorite-button.is-favorite .favorite-icon {
+    color: #ffffff;
+  }
+  
+  /* Booking card favorite button */
+  .booking-card .favorite-button {
+    background-color: #6200ee;
+  }
+  
+  .booking-card .favorite-button .favorite-icon {
+    color: white;
+  }
+  
+  .booking-card .favorite-button.is-favorite .favorite-icon {
+    color: #ffffff;
+  }
+  
   .favorite-button:hover {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #7c43d9;
     transform: scale(1.05);
   }
   
@@ -29,12 +83,12 @@
   }
   
   .favorite-button.is-favorite .favorite-icon {
-    color: #ff385c;
+    color: #ffffff;
     transform: scale(1.1);
   }
   
   .favorite-button:hover .favorite-icon {
-    color: #ff385c;
+    color: #ffffff;
   }
   
   .favorite-button.loading {

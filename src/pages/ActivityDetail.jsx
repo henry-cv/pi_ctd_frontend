@@ -32,6 +32,7 @@ import BookingModal from "../components/BookingModal";
 import AccessRequiredModal from "../components/AccessRequiredModal";
 import Reviews from "../components/Reviews";
 import ActivityPolitics from "../components/ActivityPolitics";
+import FavoriteButton from "../components/FavoriteButton";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -407,6 +408,7 @@ const ActivityDetail = () => {
             <div className="detail-grid">
               {/* Columna izquierda: detalles principales */}
               <div className="detail-column">
+              <div className="activity-detail-header">
                 <div className="activity-detail-title">
                   <h1>{activity.nombre}</h1>
                   <div className="location-info">
@@ -420,6 +422,8 @@ const ActivityDetail = () => {
                     </span>
                   </div>
                 </div>
+                <FavoriteButton productoId={activity.id} />
+              </div>
 
                 <div className="categories-detail">
                 {activity.categorias.length > 0 && (
