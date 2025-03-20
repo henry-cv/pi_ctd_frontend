@@ -4,17 +4,19 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputBase from "@mui/material/InputBase";
 
-export default function SelectCategoryBox() {
-  const [age, setAge] = React.useState("");
-
+export default function SelectCategoryBox({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+}) {
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSelectedCategory(event.target.value);
   };
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }}>
       <Select
-        value={age}
+        value={selectedCategory || ""}
         onChange={handleChange}
         displayEmpty
         input={<InputBase sx={{ border: "none" }} />}
@@ -37,10 +39,15 @@ export default function SelectCategoryBox() {
         <MenuItem value="">
           <em>Todos</em>
         </MenuItem>
-        <MenuItem value={10}>Cultural</MenuItem>
-        <MenuItem value={20}>Gastronomía</MenuItem>
-        <MenuItem value={30}>Aire Libre</MenuItem>
-        <MenuItem value={30}>Cuidado y Bienestar</MenuItem>
+        {categories.map((category) => (
+          <MenuItem
+            key={category.id}
+            value={category.nombre}
+            disabled={selectedCategory && selectedCategory !== category.nombre}
+          >
+            {category.nombre}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

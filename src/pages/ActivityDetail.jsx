@@ -20,7 +20,6 @@ import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import SchoolIcon from '@mui/icons-material/School';
 import KayakingIcon from '@mui/icons-material/Kayaking';
 import InsightsIcon from '@mui/icons-material/Insights';
-// import { faCalendarCheck } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { FaGlobe, FaStar,} from "react-icons/fa";
 import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
@@ -29,6 +28,10 @@ import "../css/pages/ActivityDetail.css";
 import DurationInfo from "../components/DurationInfo";
 import ImageViewer from "../components/ImageViewer";
 import { useContextGlobal } from "../gContext/globalContext";
+import BookingModal from "../components/BookingModal";
+import AccessRequiredModal from "../components/AccessRequiredModal";
+import Reviews from "../components/Reviews";
+import ActivityPolitics from "../components/ActivityPolitics";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -40,7 +43,7 @@ const muiIcons = {
 };
 
 const ActivityDetail = () => {
-  const { state } = useContextGlobal();
+  const { state, dispatch } = useContextGlobal();
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [expandedDescription, setExpandedDescription] = useState(false);
@@ -52,30 +55,73 @@ const ActivityDetail = () => {
   const galleryRef = useRef(null);
   const [currentMobileImageIndex, setCurrentMobileImageIndex] = useState(0);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [openBooking, setOpenBooking] = useState(false);
+  const [openAccess, setOpenAccess] = useState(false);
+  const [disponibilidad, setDisponibilidad]= useState([]);
+  
+  console.log("Actividad detalles montado")
+
+  console.log("La reserva: " + JSON.stringify(state.reservation));
+  console.log("La activity " + JSON.stringify(state.activity));
+  
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
       try {
         setLoading(true);
+  
+        // Fetch de los detalles del producto
         const response = await fetch(`/api/producto/${id}`);
-
         if (!response.ok) {
-          throw new Error(`Error en la solicitud: ${response.status}`);
+          throw new Error(`Error en la solicitud de producto: ${response.status}`);
+        }
+        const data = await response.json();
+        setActivity(data);
+
+
+        try {
+          const disponibilidadResponse = await fetch(`/api/disponibilidad/${id}`);
+          
+          if (disponibilidadResponse.ok) {
+            const disponibilidadData = await disponibilidadResponse.json();
+            if (Array.isArray(disponibilidadData)) {
+              setDisponibilidad(disponibilidadData);
+              console.log("Detalles de disponibilidad:", disponibilidadData);
+              const theActivity = { ...disponibilidadData ,...data };
+              dispatch({
+                type: "SET_ACTIVITY",
+                payload: { theActivity },
+              });
+            } else {
+              console.warn("Advertencia: La disponibilidad no es un array");
+              setDisponibilidad([]);
+
+              
+            }
+          } else {
+            console.warn(`Advertencia: No se encontró disponibilidad para el ID ${id}`);
+            setDisponibilidad([]);
+          }
+        } catch (disponibilidadError) {
+          console.warn("Error al obtener disponibilidad:", disponibilidadError.message);
+          setDisponibilidad([]);
         }
 
-        const data = await response.json();
-        console.log("Detalles del producto:", data);
-        setActivity(data);
+
+
+  
       } catch (error) {
-        console.error("Error al obtener detalles:", error.message);
+        console.error("Error al obtener detalles del producto:", error.message);
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchActivityDetails();
   }, [id]);
+  
+  
 
   // Detectar scroll para mostrar la card de reserva en móvil
   useEffect(() => {
@@ -153,41 +199,61 @@ const ActivityDetail = () => {
     return stars;
   };
 
-  // Get the correct icon component based on the icon name
+ 
   const getIconComponent = (iconName) => {
-    if (!iconName) return FaStar; // Default icon
+    if (!iconName) return FaStar; 
     
     // Check for Font Awesome (FA) icons
     if (iconName.startsWith("Fa") && !iconName.startsWith("Fa6")) {
       return iconName in FaIcons ? FaIcons[iconName] : FaStar;
     }
     
-    // Check for Font Awesome 6 (FA6) icons
+    
     if (iconName.startsWith("Fa6") || (iconName.startsWith("Fa") && !(iconName in FaIcons))) {
       const fa6Name = iconName.startsWith("Fa6") ? iconName.substring(3) : iconName;
       return fa6Name in Fa6Icons ? Fa6Icons[fa6Name] : FaStar;
     }
     
-    // Check for Ionicons (IO5) icons
+    
     if (iconName.startsWith("Io")) {
       return iconName in IoIcons ? IoIcons[iconName] : FaStar;
     }
     
-    // Check for Material UI icons
+
     if (iconName.endsWith("Icon")) {
       return iconName in muiIcons ? muiIcons[iconName] : FaStar;
     }
     
-    // Default to FaStar if no match found
+    
     return FaStar;
   };
 
-  // Placeholder para las imágenes en caso de error
+  
   const defaultImage = "/activitie.webp";
 
   const handleImageError = (e) => {
     e.target.src = defaultImage;
   };
+
+  const handleOpenModalBooking = (id) => {
+    if(!state.token){
+      console.log("el token no esta no esta logueado");
+      setOpenAccess(true)
+    }else{
+      console.log("usurio loggueado");
+      console.log(state.user.id);
+      
+      setOpenBooking(true);
+    }
+    
+  };
+
+  const handleCloseModalBooking = () => {
+    setOpenBooking(false);
+  };
+
+  const handleCloseAccess = () => setOpenAccess(false);
+
 
   if (loading) {
     return (
@@ -348,20 +414,24 @@ const ActivityDetail = () => {
                       className="location-icon"
                     />
                     <span>
-                      {activity.ubicacion?.ciudad || "Ciudad"},{" "}
-                      {activity.ubicacion?.pais || "País"}
+                      {activity.ciudad || "Ciudad"},{" "}
+                      {activity.pais || "País"}
                     </span>
                   </div>
                 </div>
 
                 <div className="categories-detail">
-                  <h4>Categorias:</h4>
-                  {activity.categorias.map((categoria, index) => (
-                    <>
-                      {categoria.nombre}
-                      {index !== activity.categorias.length - 1 ? ", " : "."}
-                    </>
-                  ))}
+                {activity.categorias.length > 0 && (
+  <>
+    <h4>Categorias:</h4>
+    {activity.categorias.map((categoria, index) => (
+      <span key={index}>
+        {categoria.nombre}
+        {index !== activity.categorias.length - 1 ? ", " : "."}
+      </span>
+    ))}
+  </>
+)}
                 </div>
 
                 <div className="rating-section">
@@ -400,30 +470,7 @@ const ActivityDetail = () => {
 
                 <div className="experience-section">
                   <h2>Sobre la experiencia</h2>
-
-                  <div className="info-card-yellow">
-                    <div className="info-item">
-                      <FontAwesomeIcon
-                        icon={faCalendarCheck}
-                        className="info-icon"
-                      />
-                      <p>
-                        <strong>Cancelación gratis</strong> hasta 24 horas antes
-                        de la experiencia (hora local)
-                      </p>
-                    </div>
-                    <div className="info-item">
-                      <FontAwesomeIcon
-                        icon={faCalendarCheck}
-                        className="info-icon"
-                      />
-                      <p>
-                        <strong>Reserva ahora paga después</strong> planes
-                        flexibles aseguran tu reserva, sin que se te haga el
-                        cargo hoy.
-                      </p>
-                    </div>
-                  </div>
+                  <ActivityPolitics/>
 
                   <div className="experience-details">
                     <div className="detail-item">
@@ -496,12 +543,16 @@ const ActivityDetail = () => {
                     color="blue"
                     fullWidth={true}
                     url={`/reserva/${activity.id}`}
+                    onClick={() => handleOpenModalBooking(activity.id)}
                   />
                 </div>
               </div>
             </div>
           </div>
         </section>
+
+        {/* Sección de Reseñas */}
+        <Reviews />
       </main>
 
       {/* Mobile booking card flotante */}
@@ -520,11 +571,23 @@ const ActivityDetail = () => {
             variant="primary"
             color="blue"
             fullWidth={true}
-            url={`/reserva/${activity.id}`}
+            // url={`/reserva/${activity.id}`}
+            onClick={() => handleOpenModalBooking(activity.id)}
           />
         </div>
       )}
 
+     
+        <BookingModal
+        open={openBooking} 
+        handleClose={handleCloseModalBooking} 
+        activityId={activity.id}
+        />
+
+      <AccessRequiredModal
+      open={openAccess} 
+      onClose ={handleCloseAccess}
+      />
       {/* Visor de imágenes */}
       {showImageViewer && !isMobileView && (
         <ImageViewer

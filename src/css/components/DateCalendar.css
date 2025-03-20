@@ -11,6 +11,12 @@
   width: 330px;
 }
 
+.current-dates{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .date-picker-container {
   position: relative;
   border: solid 1px var(--black-300);

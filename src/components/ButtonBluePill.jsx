@@ -1,11 +1,12 @@
 import '../css/components/BluePill.css';
 import PropTypes from 'prop-types';
 
-const ButtonBluePill = ({ text = "Button", className = "button-blue", size = "default", disabled = false }) => {
+const ButtonBluePill = ({ text = "Button", className = "button-blue", size = "default", disabled = false, onClick = () => {} }) => {
   return (
     <button
       className={`button ${className} button-${size}`}
       disabled={disabled}
+      onClick={onClick}
     >
       {text}
     </button>

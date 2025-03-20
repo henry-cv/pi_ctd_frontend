@@ -10,6 +10,10 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   usuarioRoles: null,
+  activity: null,
+  reservation: JSON.parse(localStorage.getItem("reservation")) || [], 
+  urlRedirection: localStorage.getItem("urlRedirection") || "",
+  isAccessModal: false
 };
 
 export const ContextGlobal = createContext();
@@ -70,6 +74,12 @@ export const ContextProvider = ({ children }) => {
       dispatch({ type: "STOP_LOADING" });
     }
   }, []);
+
+  useEffect(() => {
+    if (state.reservation) {
+      localStorage.setItem("reservation", JSON.stringify(state.reservation));
+    }
+  }, [state.reservation]);
 
   return (
     <ContextGlobal.Provider value={{ state, dispatch }}>

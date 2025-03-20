@@ -13,10 +13,7 @@ export function longitudPermitida(texto, maximo) {
   texto = normalizarTexto(texto);
   return texto.length <= maximo;
 }
-export function direccionMaxCaracteres(texto) {
-  texto = normalizarTexto(texto);
-  return texto.length <= 60;
-}
+
 export function normalizarTexto(texto) {
   // Agrega Capitalización a texto
   texto = texto.trim();

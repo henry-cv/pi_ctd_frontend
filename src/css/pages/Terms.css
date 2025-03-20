@@ -1,0 +1,41 @@
+@import "../global/variables.css";
+
+.main-terms-container {
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.main-terms-and-conditions {
+  background-color: var(--BackgroundColor);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 120px;
+  padding: 1rem;
+  text-align: justify;
+  width: 1090px;
+
+  && .terms-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 1rem 2rem;
+
+    && h5 {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.main-terms-and-conditions.dark {
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+
+  && h5 {
+    color: var(--Font-Background);
+  }
+}

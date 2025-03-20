@@ -21,7 +21,7 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange, horaInicio, horaFin }) => 
   return (
     <div className="container-hours">
       <label>Hora:</label>
-      <div className="time-inputs">
+      <div className="time-inputs"  >
         <input
           type="time"
           id="startTime"

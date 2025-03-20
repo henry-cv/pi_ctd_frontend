@@ -1,0 +1,247 @@
+.rdrDay span {
+  color: black;
+  background-color: transparent;
+  width: 32px;
+  height: 32px;
+  border: transparent;
+}
+
+.rdrCalendarWrapper {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+
+
+.disabled-day {
+  background-color:var(--color-error);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.rdrDay:has(.semi-available-day) , .rdrDay:has(.disabled-day),
+.rdrDay:has(.selected-day-no-pointer), .rdrDay:has(.disabled-day-no-pointer)  {
+  pointer-events: none !important;
+  user-select: none !important;
+  cursor: not-allowed;
+}
+
+.disabled-day-no-pointer{
+   text-decoration: line-through;
+   color: var(--black-300);
+}
+
+
+
+
+.available-day:hover , .overlay-class:hover{
+  background-color: var(--blue-base)!important;
+}
+
+.selected-day {
+  background-color: var(--blue-base) !important;
+  color: white !important;
+  border-radius: 50%;
+  width: 32px;
+}
+
+ .selected-day-no-pointer {
+  background-color: var(--blue-base);
+  color: white !important;
+  border-radius: 50%;
+  width: 32px;
+}
+
+.available-day , .overlay-class {
+  background-color: var(--blue-300) !important;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: var(--white);
+}
+
+.transparent-day {
+  background-color:transparent !important;
+  pointer-events: none;
+  color: black !important;
+}
+
+.rdrMonth {
+  height: 300px;
+  max-height: 285px;
+}
+
+.rdrDayHovered .rdrDayNumber,
+.rdrDaySelected .rdrDayNumber span:hover  {
+  background-color: var(--blue-base);
+  color: var(--white);
+  width: 32px;
+  border-radius: 50%;
+}
+
+.legend-text{
+  font-size: 14px;
+  padding: 8px;
+
+}
+
+.legend{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  max-width:350px;
+
+}
+
+.legend-item {
+  padding: 8px;
+ padding-bottom: 30px;
+  font-size: 14px;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  width: 127px; 
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  margin-right: 8px;
+  width: 18px;
+  
+}
+
+.disabled{
+  background-color: var(--blue-300);
+}
+
+.full{
+  background-color: var(--color-error);
+  opacity: 0.6;
+}
+
+.selected{
+  background-color: var(--blue-base);
+}
+
+
+.selected-day:hover .overlay-class {
+  opacity: 0.7;
+}
+
+/* 
+  estilos para dark  */
+
+.CardBooking-container,
+.CardBooking-container .rdrNextPrevButton,
+.CardBooking-calendar {
+  background-color: var(--black-400);
+  color: white !important;
+}
+
+.CardBooking-container{
+  border: 1px solid var(--white);
+
+}
+
+.CardBooking-container .rdrDay span, .rdrMonthPicker {
+  color: white;
+}
+.CardBooking-container .rdrNextButton i{
+  border-color: transparent transparent #a6262600 var(--white);
+}
+
+.CardBooking-container .rdrPprevButton i{
+  border-color: transparent var(--white) transparent #a6262600;
+}
+.CardBooking-container .rdrNextPrevButton {
+  background-color: transparent;
+}
+
+.CardBooking-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.CardBooking-container .rdrMonthAndYearPickers select {
+  color: white;
+}
+
+.rdrDayPassive .rdrDayNumber span {
+  background-color: transparent !important;
+  color: var(--gray) !important;
+  pointer-events: none; 
+}
+
+
+
+@media (max-width: 480px) {
+
+  
+  .mobile-calendar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-height: 400px;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    animation: slide-up 0.3s ease-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .CardBooking-container {
+    background-color: var(--black-400);
+  }
+
+  .CardBooking-container {
+    position: fixed;
+    top: 8px;
+    left: -88px;
+    background-color: blueviolet;
+  }
+
+  .MuiPopover-paper {
+    top: -50px !important; /* Cambia el valor según lo necesites */
+    left: 20px !important;
+  }
+
+  .mobile-calendar-legend {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .mobile-calendar-legend ul {
+    margin-top: 8px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  .mobile-calendar-legend li {
+    margin-bottom: 30px;
+    padding: 0px 10px;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

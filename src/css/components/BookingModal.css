@@ -1,0 +1,121 @@
+.card-dark-modal-container .MuiPaper-root {
+    background-color: var(--black-400);
+    color: var(--white);
+}
+
+.font-ligth{
+    color: var(--black);
+}
+
+.font-dark{
+    color: var(--white);
+}
+
+.Booking-principal-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important; 
+    margin: 15px 0;
+    width: 100%; 
+}
+
+.MuiCheckbox-colorPrimary { 
+   background-color: #d32f2f;
+}
+
+.title-checkbox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.select-date-slot{
+    margin-top: 15px;
+    display: flex;
+    justify-content:space-between;
+    width: 100%;
+    gap: 10px;  
+}
+
+.select-item{
+
+display: flex;
+align-items: center;
+ border-radius: 20px;
+ flex: 1;
+ min-width: 230px;
+ border: 2px solid var(--Icons-gray) ;
+ margin: 0 5px;
+box-sizing: border-box;
+padding: 2px 8px;
+}
+
+.date, .slot {
+    width: 50%; 
+}
+
+.custom-checkbox .MuiSvgIcon-root {
+    font-size: 1.8rem; 
+    color: gray; 
+  }
+
+.my-custom-checkbox.MuiCheckbox-root.Mui-checked {
+    color: var(--yellow-base) !important; 
+}
+
+@media (max-width: 480px) {
+    .select-date-slot {
+        gap: 8px; 
+        width: 100%;
+    }
+
+    .select-item {
+  
+        min-width: 120px; 
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+
+    .card-modal-container {
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .card-modal-container .MuiDialog-container {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-modal-container .MuiDialog-paper {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    .card-modal-container .MuiDialogContent-root {
+        padding: 16px;
+        height: calc(100vh - 120px); /* Ajuste para contenido dinámico */
+        overflow-y: auto;
+    }
+
+    .card-modal-container .MuiDialogTitle-root,
+    .card-modal-container .MuiDialogActions-root {
+        padding: 16px;
+    }
+
+
+
+
+}
+

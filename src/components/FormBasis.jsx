@@ -8,13 +8,14 @@ import { FaSave } from "react-icons/fa";
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
-import { validarTexto, validarAreaTexto } from "../utils/utils";
+import { validarTexto, validarAreaTexto, longitudPermitida } from "../utils/utils";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
+import { paymentPolicies, cancellationPolicies } from "../constants/data/policiesDataInfo";
 
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
@@ -31,10 +32,20 @@ const FormBasis = ({ isEditMode = false }) => {
   const [valorTarifa, setValorTarifa] = useState("");
   const [tipoTarifa, setTipoTarifa] = useState("");
   const [idioma, setIdioma] = useState("");
+  const [paymentPolicyValue, setPaymentPolicy] = useState("");
+  const [cancellationPolicyValue, setCancellationPolicy] = useState("");
+  const [countryValue, setCountry] = useState("");
+  const [countries, setCountries] = useState([]);
+  const [cityValue, setCity] = useState("");
+  const [cities, setCities] = useState([]);
+  const [address, setAddress] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [quota, setQuota] = useState("");
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
   const [diasDisponible, setDiasDisponible] = useState([]);
   const [fechaEvento, setFechaEvento] = useState("");
+  const [fechaFinEvento, setFechaFinEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
   const { state } = useContextGlobal();
@@ -75,6 +86,19 @@ const FormBasis = ({ isEditMode = false }) => {
     setTitulo(texto);
   };
 
+  const handleAddress = (e) => {
+    const maximo = 60;
+    const texto = e.target.value;
+    if (!longitudPermitida(texto, maximo)) {
+      setAddressError(
+        `Dirección debe tener máximo ${maximo} carácteres.`
+      );
+    } else {
+      setAddressError("");
+    }
+    setAddress(texto);
+  };
+
   const handleDescriptionChange = (e) => {
     const texto = e.target.value;
     const maximo = 200;
@@ -90,6 +114,12 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const handleDateChange = (e) => {
     setFechaEvento(e.target.value);
+
+  };
+
+  const handleDateEndChange = (e) => {
+    setFechaFinEvento(e.target.value);
+
   };
 
   const handleHoraInicioChange = (e) => {
@@ -171,6 +201,60 @@ const FormBasis = ({ isEditMode = false }) => {
     };
     fetchCharacteristics();
   }, []);
+
+  // GetCountries
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
+        if (!response.ok) {
+          throw new Error(`Error al obtener los paises: ${response.status}`);
+        }
+        const data = await response.json();
+        setCountries(data.data);
+        // console.log("Countries", data.data);
+      } catch (error) {
+        console.error("Error cargando paises:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+
+  // GetCities
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        if (countryValue == "")
+          return;
+        console.log("Selected Country", countryValue);
+
+        const response = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ country: countryValue })
+        },
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error al obtener las ciudades: ${response.status}`);
+        }
+        const data = await response.json();
+        setCities(data.data);
+        // console.log("Cities", data.data);
+      } catch (error) {
+        console.error("Error cargando ciudades:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCities();
+  }, [countryValue]);
+
   // useEffect para buscar actividad por Id y cargarla en el formulario
   useEffect(() => {
     const fetchActivity = async () => {
@@ -193,6 +277,12 @@ const FormBasis = ({ isEditMode = false }) => {
 
           setTipoTarifa(data.tipoTarifa);
           setIdioma(data.idioma);
+          setPaymentPolicy(data.politicaPagos);
+          setCancellationPolicy(data.politicaCancelacion);
+          setCountry(data.pais);
+          setCity(data.ciudad);
+          setAddress(data.direccion);
+          setQuota(data.cuposTotales);
           setHoraInicio(data.horaInicio);
           setHoraFin(data.horaFin);
           setDiasDisponible(data.diasDisponible || []);
@@ -273,7 +363,14 @@ const FormBasis = ({ isEditMode = false }) => {
       horaFin: ensureTimeHasSeconds(horaFin),
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: eventType === "FECHA_UNICA" ? fechaEvento : null,
+      fechaEvento: fechaEvento ,
+      fechaFinEvento: fechaEvento || eventType === "FECHA_UNICA" ? fechaFinEvento : null,
+      politicaPagos: paymentPolicyValue,
+      politicaCancelacion: cancellationPolicyValue,
+      pais: countryValue,
+      ciudad: cityValue,
+      direccion: address,
+      cuposTotales: quota
     };
     console.log("Datos a enviar:", JSON.stringify(productoData));
 
@@ -334,6 +431,12 @@ const FormBasis = ({ isEditMode = false }) => {
       setCategoriasIds([]);
       setCaracteristicasIds([]);
       setIdioma("");
+      setPaymentPolicy("");
+      setCancellationPolicy("");
+      setCountry("");
+      setCity("");
+      setAddress("");
+      setQuota(1);
       setHoraInicio("");
       setHoraFin("");
       setEventType("");
@@ -386,6 +489,53 @@ const FormBasis = ({ isEditMode = false }) => {
           required
         ></textarea>
         {errorDescripcion && <FieldError message={errorDescripcion} />}
+      </div>
+
+      <div className="container-country">
+        <label htmlFor="country">País:</label>
+        <select
+          id="country"
+          value={countryValue}
+          onChange={(e) => setCountry(e.target.value)}
+          required>
+          <option value="" disabled>
+            Selecciona el País
+          </option>
+          {countries.map((country) => (
+            <option style={{ backgroundImage: "url(" + country.flag + ")" }} key={country.name} value={country.name}> {country.name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="container-city">
+        <label htmlFor="city">Ciudad:</label>
+        <select
+          id="city"
+          value={cityValue}
+          onChange={(e) => setCity(e.target.value)}
+          required>
+          <option value="" disabled>
+            Selecciona la ciudad
+          </option>
+          {cities.map((city) => (
+            <option key={city} value={city}>{city}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="container-address">
+        <label htmlFor="address">Dirección:</label>
+        <input
+          type="text"
+          id="address"
+          name="Dirección"
+          placeholder="Escriba la dirección"
+          value={address}
+          onChange={handleAddress}
+          autoComplete="on"
+          required
+        />
+        {addressError && <FieldError message={addressError} />}
       </div>
 
       <div className="container-addrate">
@@ -467,6 +617,21 @@ const FormBasis = ({ isEditMode = false }) => {
           <i className="fas fa-trash-alt"></i>
         </button>
       </div>
+      <div className="container-quota">
+        <label htmlFor="quota">Cupos:</label>
+        <input
+          type="number"
+          id="quota"
+          name="Cupos"
+          placeholder="Cantidad de Cupos totales"
+          value={quota}
+          onChange={(e) => setQuota(e.target.value)}
+          min="1"
+          autoComplete="off"
+          required
+        />
+      </div>
+
       <div className="container-events">
         <label htmlFor="eventType">Tipo de evento:</label>
         <select
@@ -504,6 +669,7 @@ const FormBasis = ({ isEditMode = false }) => {
             onHoraInicioChange={handleHoraInicioChange}
             onHoraFinChange={handleHoraFinChange}
           />
+        <DateCalendar  dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType = {eventType} selectedDateEnd ={fechaFinEvento}  />
         </div>
       )}
       <div className="container-categories">
@@ -547,6 +713,38 @@ const FormBasis = ({ isEditMode = false }) => {
             Selecciona idioma
           </option>
           <option value="Español">Español</option>
+        </select>
+      </div>
+
+      <div className="container-paymentPolicy">
+        <label htmlFor="paymentPolicy">Política de Pago:</label>
+        <select
+          id="paymentPolicy"
+          value={paymentPolicyValue}
+          onChange={(e) => setPaymentPolicy(e.target.value)}
+          required>
+          <option value="" disabled>
+            Selecciona la Política
+          </option>
+          {paymentPolicies.map((policy) => (
+            <option key={policy.id} value={policy.id}>{policy.selectText}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="container-cancellationPolicy">
+        <label htmlFor="cancellationPolicy">Política de Cancelación:</label>
+        <select
+          id="cancellationPolicy"
+          value={cancellationPolicyValue}
+          onChange={(e) => setCancellationPolicy(e.target.value)}
+          required>
+          <option value="" disabled>
+            Selecciona la Política
+          </option>
+          {cancellationPolicies.map((policy) => (
+            <option key={policy.id} value={policy.id}>{policy.selectText}</option>
+          ))}
         </select>
       </div>
 
