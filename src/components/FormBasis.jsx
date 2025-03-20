@@ -659,7 +659,7 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
       {eventType === "FECHA_UNICA" && (
         <div className="container-dates">
-          <DateCalendar onChange={handleDateChange} selectedDate={fechaEvento} />
+          <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
           <Horas
             onHoraInicioChange={handleHoraInicioChange}
             horaInicio={horaInicio}
