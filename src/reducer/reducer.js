@@ -54,7 +54,6 @@ export const reducer = (state, action) => {
           ...state,
           isAccessModal: action.payload,
         };
-
     default:
       throw new Error("Acción no existente");
   }
