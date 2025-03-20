@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchFilter from './filters/SearchFilter';
-import DateFilter from './filters/DateFilter';
+import DateRangeFilter from './filters/DateRangeFilter';
 import CategoryFilter from './filters/CategoryFilter';
 import PriceRangeFilter from './filters/PriceRangeFilter';
 import RatingFilter from './filters/RatingFilter';
@@ -11,8 +11,8 @@ const FilterSidebar = ({
   searchTerm,
   handleSearchChange,
   searchOptions,
-  selectedDate,
-  setSelectedDate,
+  dateRange,
+  setDateRange,
   categories,
   selectedCategories,
   toggleCategory,
@@ -44,9 +44,9 @@ const FilterSidebar = ({
         searchOptions={searchOptions}
       />
 
-      <DateFilter 
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
+        <DateRangeFilter 
+        dateRange={dateRange}
+        setDateRange={setDateRange}
       />
 
       <CategoryFilter 

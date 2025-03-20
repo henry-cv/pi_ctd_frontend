@@ -6,7 +6,7 @@ export const useActivitiesFilter = ({
   activities,
   searchTerm,
   selectedCategories,
-  selectedDate,
+  dateRange,
   priceRange,
   ratingFilters,
   durationFilters,
@@ -49,6 +49,56 @@ export const useActivitiesFilter = ({
       });
     }
     
+     // Filtrar por rango de fechas
+     if (dateRange && dateRange[0] && dateRange[1]) {
+      const startDate = new Date(dateRange[0]);
+      const endDate = new Date(dateRange[1]);
+      
+      // Asegurarnos que las fechas sean válidas
+      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+        console.log("Filtrando por fechas:", startDate, "hasta", endDate);
+        
+        result = result.filter(item => {
+          // Para actividades de fecha única
+          if (item.tipoEvento === 'FECHA_UNICA') {
+            // Verificar si tenemos disponibilidad conocida
+            // Nota: Esto asume que el frontend tiene acceso a los datos de disponibilidad
+            // Si no es así, debemos mostrar todas las actividades de fecha única por defecto
+            return true;
+          }
+          
+          // Para actividades recurrentes, verificar si hay días disponibles en el rango
+          if (item.tipoEvento === 'RECURRENTE' && Array.isArray(item.diasDisponible)) {
+            const dayMap = {
+              'LUNES': 1, 'MARTES': 2, 'MIERCOLES': 3, 'JUEVES': 4, 
+              'VIERNES': 5, 'SABADO': 6, 'DOMINGO': 0
+            };
+            
+            // Convertir días disponibles a números
+            const availableDays = item.diasDisponible.map(day => dayMap[day]);
+            
+            // Verificar si hay al menos un día de la semana disponible en el rango
+            // Vamos día por día en el rango
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+              const dayOfWeek = currentDate.getDay(); // 0-6
+              if (availableDays.includes(dayOfWeek)) {
+                return true; // Al menos un día coincide
+              }
+              currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            return false; // Ningún día disponible coincide con el rango
+          }
+          
+          // Por defecto, mostrar la actividad si no podemos determinar claramente
+          return true;
+        });
+        
+        console.log(`Actividades después del filtro de fechas: ${result.length}`);
+      }
+    }
+
     // Filtrar por rango de precio
     result = result.filter(
       (item) =>
@@ -163,7 +213,7 @@ export const useActivitiesFilter = ({
       }
       
       // Aplicar el resto de filtros
-      const finalResult = applyOtherFilters(result);
+      const finalResult = await applyOtherFilters(result);
       
       // Verificar que el término de búsqueda no haya cambiado durante el procesamiento
       if (lastSearchTermRef.current === trimmedSearchTerm) {
@@ -242,7 +292,7 @@ export const useActivitiesFilter = ({
     }
   }, [
     selectedCategories,
-    selectedDate,
+    dateRange,
     priceRange,
     ratingFilters,
     durationFilters,
