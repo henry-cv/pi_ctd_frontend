@@ -18,7 +18,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
   
   const handleDateEndChange = (event) => {
     const dateValue = event.target.value;
-    console.log("Fecha seleccionada:", dateValue);
+    // console.log("Fecha seleccionada:", dateValue);
   
     setDateEnd(dateValue);
     dateEndChange(event);
@@ -28,6 +28,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
 
   const handleDateChange = (event) => {
     const dateValue = event.target.value;
+    console.log("Fecha seleccionada date:", dateValue);
 
    setDate(dateValue);
 
@@ -76,7 +77,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
               className="date-input"
               required
               ref={dateEndInputRef}
-              onChange={(e) => handleDateEndChange(e, true)}
+              onChange={(e) => handleDateEndChange(e)}
               value={dateEnd}
             />
           </div>
@@ -89,10 +90,11 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
 };
 
 DateCalendar.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  dateChange: PropTypes.func.isRequired,
+  dateEndChange: PropTypes.func,
   selectedDate: PropTypes.string,
+  selectedDateEnd: PropTypes.string,
   eventType: PropTypes.string,
-  selectedDateEnd: PropTypes.string
 };
 
 export default DateCalendar;

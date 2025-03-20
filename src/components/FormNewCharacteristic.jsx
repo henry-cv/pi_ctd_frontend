@@ -107,7 +107,10 @@ const FormNewCharacteristic = () => {
         text: "La característica se ha guardado correctamente.",
         icon: "success",
         showConfirmButton: false,
-        timer: 2000
+        timer: 2000,
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       }).then(() => {
         navigate("/administrador/caracteristicas");
       });
@@ -119,6 +122,9 @@ const FormNewCharacteristic = () => {
         text: `Error al crear la característica: ${error.message}`,
         icon: "error",
         confirmButtonColor: "#D61B1B",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     } finally {
       setIsSubmitting(false);

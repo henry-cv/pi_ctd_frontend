@@ -97,7 +97,7 @@ const CharacteristicRow = ({ id, nombre, icono, onDelete, onUpdate }) => {
         Swal.fire(
           "Eliminado",
           "La característica ha sido eliminada correctamente",
-          "success"
+          "success",
         );
       } catch (error) {
         console.error("Error eliminando la característica:", error);

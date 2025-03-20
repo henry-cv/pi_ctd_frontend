@@ -28,7 +28,7 @@ const BookingCalendar = ({
   const { state } = useContextGlobal();
   const dateRangeRef = useRef(null);
 
-  console.log("labooking date",bookingDate);
+  // console.log("labooking date",bookingDate);
   
   const daysMap = {
     "DOMINGO": 0,
@@ -44,11 +44,13 @@ const BookingCalendar = ({
   
 
   const normalizeDate = (date) => {
+    
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
 
 
   const handleMonthChange = (date) => {
+    
     setVisibleMonth(date.getMonth());
     setVisibleYear(date.getFullYear());
   };
@@ -77,6 +79,8 @@ const BookingCalendar = ({
     if (availability?.type === "dias" && fechas.length > 0 && dateRangeRef.current) {
       try {
         const primerFecha = new Date(fechas[0]);
+        console.log("entré  tipo fecha la primera fecha del array",primerFecha);
+        
 
         if (dateRangeRef.current.setShownDate) {
           dateRangeRef.current.setShownDate(primerFecha);
@@ -90,41 +94,45 @@ const BookingCalendar = ({
   useEffect(() => {
     setErrors("");
     const today = normalizeDate(new Date());
+    console.log("entro a ussefect de fecha unica");
+    
   
     if (availability?.type === "fecha" && availability.data.length > 0) {
-      const firstAvailableDate = normalizeDate(new Date(availability.data[0]));
+      const otra = normalizeDate(new Date(availability.data[0] + "T00:00:00"));
+
+      console.log("fecha unica esta " , otra);
   
-      if (firstAvailableDate < today) {
+      if (otra < today) {
         setErrors("Esta actividad ya pasó");
         return;
       }
   
-      setVisibleMonth(firstAvailableDate.getMonth());
-      setVisibleYear(firstAvailableDate.getFullYear());
+      setVisibleMonth(otra.getMonth());
+      setVisibleYear(otra.getFullYear());
   
       if (availability.data.length === 1 && !bookingDate) {
-        setSelectedDate(firstAvailableDate);
-        setDateRange([{ startDate: firstAvailableDate, endDate: firstAvailableDate, key: "selection" }]);
+        setSelectedDate(otra);
+        setDateRange([{ startDate: otra, endDate: otra, key: "selection" }]);
         setHaHechoClicEnFechaUnica(true);
-        setBookingDate(firstAvailableDate);
+        setBookingDate(otra);
       }
     }
     
   }, [availability]);
   
-  const generarDiasDisponibles = useCallback((start, end, diasPermitidos) => {
-    let fechasDisponibles = [];
-    let currentDate = new Date(start);
+  // const generarDiasDisponibles = useCallback((start, end, diasPermitidos) => {
+  //   let fechasDisponibles = [];
+  //   let currentDate = new Date(start);
   
-    while (currentDate <= end) {
-      if (diasPermitidos.includes(currentDate.getDay())) {
-        fechasDisponibles.push(new Date(currentDate));
-      }
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+  //   while (currentDate <= end) {
+  //     if (diasPermitidos.includes(currentDate.getDay())) {
+  //       fechasDisponibles.push(new Date(currentDate));
+  //     }
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
   
-    return fechasDisponibles;
-  }, []);
+  //   return fechasDisponibles;
+  // }, []);
   
   useEffect(() => {
     if (availability?.type === "dias" && fechas.length > 0) {
@@ -148,6 +156,8 @@ const BookingCalendar = ({
   
 
   const getDayClass = (day) => {
+    console.log(day,"day");
+    
     const isOutsideMonth = day.getMonth() !== visibleMonth || day.getFullYear() !== visibleYear;
     if (isOutsideMonth) return "";
   
@@ -163,12 +173,13 @@ const BookingCalendar = ({
     if (availability?.type === "dias") {
       isAvailable = availability.data.includes(dayName);
 
-      console.log(fechas[fechas.length -1]);
+      // console.log("las fechas",fechas[fechas.length-1]);
+      // console.log("Tipo de dato:", typeof fechas[fechas.length - 1]);
       
       
       if (isAvailable && fechas.length > 0) {
         const primerFecha = new Date(fechas[0]);
-        const ultimaFecha = new Date(fechas[fechas.length - 1]);
+        const ultimaFecha = new Date(fechas[fechas.length - 1]+"T00:00:00");
         const normalizedPrimerFecha = normalizeDate(primerFecha);
         const normalizedUltimaFecha = normalizeDate(ultimaFecha);
 
@@ -178,9 +189,10 @@ const BookingCalendar = ({
         isAvailable = normalizedDay >= normalizedPrimerFecha && normalizedDay <= normalizedUltimaFecha;
       }
     } else if (availability?.type === "fecha") {
-      isAvailable = availability.data.some(
-        (dateStr) => normalizeDate(new Date(dateStr)).toDateString() === normalizedDay.toDateString()
-      );
+      isAvailable = availability.data.some((dateStr) => {
+        const normalizedAvailableDate = normalizeDate(new Date(dateStr + "T00:00:00"));
+        return normalizedAvailableDate.toDateString() === normalizedDay.toDateString();
+      });
     }
 
     const isSingleDate =
@@ -193,8 +205,8 @@ const BookingCalendar = ({
     
   
     // Día actual no disponible
-    if (isToday && !isAvailable) {
-      return bookingDate ? "selected-day-no-pointer transparent-day" : "selected-day-no-pointer";
+    if (isToday ) {
+      return  "transparent-day";
     }
   
     // Para fecha única 
@@ -255,23 +267,23 @@ const BookingCalendar = ({
     setSelectedDate(null);
 
     if (availability?.type === "fecha" && availability.data.length > 0) {
-      const firstAvailableDate = normalizeDate(new Date(availability.data[0]));
+      const otra = normalizeDate(new Date(availability.data[0] + "T00:00:00"));
       const today = normalizeDate(new Date());
       
-      if (firstAvailableDate >= today) {
-        setVisibleMonth(firstAvailableDate.getMonth());
-        setVisibleYear(firstAvailableDate.getFullYear());
+      if (otra >= today) {
+        setVisibleMonth(otra.getMonth());
+        setVisibleYear(otra.getFullYear());
         
         if (availability.data.length === 1) {
-          setSelectedDate(firstAvailableDate);
+          setSelectedDate(otra);
           setDateRange([{ 
-            startDate: firstAvailableDate, 
-            endDate: firstAvailableDate, 
+            startDate: otra, 
+            endDate: otra, 
             key: "selection" 
           }]);
 
           setHaHechoClicEnFechaUnica(true);
-          setBookingDate(firstAvailableDate);
+          setBookingDate(otra);
         }
       }
     } else if (availability?.type === "dias" && fechas.length > 0) {
@@ -366,6 +378,7 @@ const BookingCalendar = ({
               </li>
             <li class="legend-item">
             <span className="legend-color selected"></span>
+
             Seleccionado
             </li>
           </ul>
