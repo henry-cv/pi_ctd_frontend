@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { useContextGlobal } from "../gContext/globalContext";
+import { useFavoritesContext } from "./UserFavorites";
 import "../css/components/FavoriteButton.css";
 
 const FavoriteButton = ({ productoId }) => {
   const { state } = useContextGlobal();
+  const favoritesContext = useFavoritesContext();
   const [isFavorite, setIsFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,6 +61,10 @@ const FavoriteButton = ({ productoId }) => {
         
         if (response.ok) {
           setIsFavorite(false);
+          // Notificar al contexto de favoritos que este item ha sido eliminado
+          if (favoritesContext?.onFavoriteRemoved) {
+            favoritesContext.onFavoriteRemoved(productoId);
+          }
         }
       } else {
         // Agregar a favoritos
