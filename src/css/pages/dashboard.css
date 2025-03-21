@@ -483,17 +483,9 @@ button:focus-visible {
 }
 
 /* Comentada porque usa !important*/
-/*
+
 .breadcrumbs {
   color: var(--Font-Background) !important;
-}
-*/
-
-/* Está línea hace lo mismo que la de arriba comentada.
-Solo que aquí está más específica, por eso se aplica
-*/
-.MuiTypography-root.MuiTypography-body1.MuiBreadcrumbs-root.breadcrumbs.breadcrumbs-mobile.css-5cvx94-MuiTypography-root-MuiBreadcrumbs-root {
-  color: var(--Font-Background);
 }
 
 .dark_activities {
