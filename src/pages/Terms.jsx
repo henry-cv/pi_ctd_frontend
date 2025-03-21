@@ -13,6 +13,7 @@ const Terms = () => {
     <div className="main-terms-container">
       <NavDash variant="home" />
       <main className={`main-terms-and-conditions ${theme}`} >
+        <BasicBreadcrumbs />
         <h3>{terms.title}</h3>
         <ol className={`terms-list ${theme}`} >
           {literals.map((literal, index) => (
