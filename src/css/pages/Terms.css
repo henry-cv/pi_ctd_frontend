@@ -8,6 +8,12 @@
   flex-direction: column;
 }
 
+/* Fue necesaria la siguiente línea específica para alinear al inicio
+el breadcrumbs como en otros componentes que lo usan */
+.main-terms-and-conditions>.breadcrumbs {
+  align-self: flex-start;
+}
+
 .main-terms-and-conditions {
   background-color: var(--BackgroundColor);
   display: flex;
@@ -88,7 +94,11 @@
 }
 
 @media screen and (max-width: 400px) {
-  h5 {
+  .main-terms-and-conditions>h3 {
+    text-align: center;
+  }
+
+  .main-terms-and-conditions>h5 {
     text-align: left;
   }
 }
