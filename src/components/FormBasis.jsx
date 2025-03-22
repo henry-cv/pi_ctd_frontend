@@ -17,6 +17,7 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 import { paymentPolicies, cancellationPolicies } from "../constants/data/policiesDataInfo";
+import { parsePhoneNumber, isValidPhoneNumber, getExampleNumber, formatIncompletePhoneNumber } from 'libphonenumber-js';
 
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
