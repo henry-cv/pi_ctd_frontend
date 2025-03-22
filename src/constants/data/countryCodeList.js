@@ -1,78 +1,78 @@
 export const countryCodeList = [
     {
-      "nombre": "Argentina",
-      "codigo": "+54"
+      "name": "Argentina",
+      "code": "+54"
     },
     {
-      "nombre": "Brasil",
-      "codigo": "+55"
+      "name": "Brasil",
+      "code": "+55"
     },
     {
-      "nombre": "Chile",
-      "codigo": "+56"
+      "name": "Chile",
+      "code": "+56"
     },
     {
-      "nombre": "Colombia",
-      "codigo": "+57"
+      "name": "Colombia",
+      "code": "+57"
     },
     {
-      "nombre": "Venezuela",
-      "codigo": "+58"
+      "name": "Venezuela",
+      "code": "+58"
     },
     {
-      "nombre": "Ecuador",
-      "codigo": "+593"
+      "name": "Ecuador",
+      "code": "+593"
     },
     {
-      "nombre": "Paraguay",
-      "codigo": "+595"
+      "name": "Paraguay",
+      "code": "+595"
     },
     {
-      "nombre": "Perú",
-      "codigo": "+596"
+      "name": "Perú",
+      "code": "+596"
     },
     {
-      "nombre": "Uruguay",
-      "codigo": "+597"
+      "name": "Uruguay",
+      "code": "+597"
     },
     {
-      "nombre": "Bolivia",
-      "codigo": "+598"
+      "name": "Bolivia",
+      "code": "+598"
     },
     {
-      "nombre": "Belice",
-      "codigo": "+501"
+      "name": "Belice",
+      "code": "+501"
     },
     {
-      "nombre": "Guatemala",
-      "codigo": "+502"
+      "name": "Guatemala",
+      "code": "+502"
     },
     {
-      "nombre": "El Salvador",
-      "codigo": "+503"
+      "name": "El Salvador",
+      "code": "+503"
     },
     {
-      "nombre": "Honduras",
-      "codigo": "+504"
+      "name": "Honduras",
+      "code": "+504"
     },
     {
-      "nombre": "Nicaragua",
-      "codigo": "+505"
+      "name": "Nicaragua",
+      "code": "+505"
     },
     {
-      "nombre": "Costa Rica",
-      "codigo": "+506"
+      "name": "Costa Rica",
+      "code": "+506"
     },
     {
-      "nombre": "Panamá",
-      "codigo": "+507"
+      "name": "Panamá",
+      "code": "+507"
     },
     {
-      "nombre": "República Dominicana",
-      "codigo": "+509"
+      "name": "República Dominicana",
+      "code": "+509"
     },
     {
-      "nombre": "Cuba",
-      "codigo": "+591"
+      "name": "Cuba",
+      "code": "+591"
     }
   ]

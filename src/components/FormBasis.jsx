@@ -9,6 +9,7 @@ import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
 import { validarTexto, validarAreaTexto, longitudPermitida } from "../utils/utils";
+import { countryCodeList } from "../constants/data/countryCodeList.js";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -113,7 +114,9 @@ const FormBasis = ({ isEditMode = false }) => {
     }
     setDescripcion(texto);
   };
-
+  const handleCountryCodeChange = (e) => {
+    setCountryCode(e.target.value);
+  }
   const handleDateChange = (e) => {
     setFechaEvento(e.target.value);
 
@@ -550,8 +553,16 @@ const FormBasis = ({ isEditMode = false }) => {
       </div>
       <div className="activity-phonenumber-container">
         <label htmlFor="countrycode"></label>
-        <input type="text" id="countrycode" className="input-country-code" name="codigoPais" value={countryCode} onChange={handleCountryCodeChange} autoComplete="on" required />
-
+        {countryCodeList.length > 0 &&
+          <select onChange={(e) => handleCountryCodeChange(e)}
+            value={countryCodeList.map(country => country.code)} // Importante: convierte a string para HTML select
+          >
+            <option value="" disabled>Selecciona el código</option>
+            {countryCodeList.map((country, index) => (
+              <option key={index} value={country.code}>{`${country.name}`}</option>
+            ))}
+          </select>
+        }
       </div>
       <div className="container-addrate">
         <button
