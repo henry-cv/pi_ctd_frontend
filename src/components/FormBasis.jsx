@@ -117,6 +117,9 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleCountryCodeChange = (e) => {
     setCountryCode(e.target.value);
   }
+  const handleNumberPhoneChange = (e) => {
+    setMobileNumber(e.target.value);
+  }
   const handleDateChange = (e) => {
     setFechaEvento(e.target.value);
 
@@ -380,7 +383,9 @@ const FormBasis = ({ isEditMode = false }) => {
       direccion: address,
       cuposTotales: quota
     };
-    console.log("Datos a enviar:", JSON.stringify(productoData));
+    //console.log("Datos a enviar:", JSON.stringify(productoData));
+    console.log("Country Code seleecionado: ", countryCode);
+    console.log("Número de móvil: ", mobileNumber);
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -552,17 +557,22 @@ const FormBasis = ({ isEditMode = false }) => {
         {addressError && <FieldError message={addressError} />}
       </div>
       <div className="activity-phonenumber-container">
-        <label htmlFor="countrycode"></label>
+        <label htmlFor="countrycode">Código</label>
         {countryCodeList.length > 0 &&
-          <select onChange={(e) => handleCountryCodeChange(e)}
-            value={countryCodeList.map(country => country.code)} // Importante: convierte a string para HTML select
+          <select name="codigoPais" id="country-code" onChange={(e) => handleCountryCodeChange(e)}
+            value={countryCode} // Importante: convierte a string para HTML select
+            onBlur={console.log("countryCode: ", countryCode)}
           >
             <option value="" disabled>Selecciona el código</option>
             {countryCodeList.map((country, index) => (
-              <option key={index} value={country.code}>{`${country.name}`}</option>
+              <option key={index} value={country.code}>{`${country.name} ${country.code}`}</option>
             ))}
           </select>
         }
+        <label htmlFor="phonenumber">Teléfono:</label>
+        <input id="phonenumber" name="telefono" type="tel" className="tel" placeholder="9912345670" onClick={(e => handleNumberPhoneChange(e))}
+          onBlur={console.log("mobileNumber: ", mobileNumber)}
+        />
       </div>
       <div className="container-addrate">
         <button
