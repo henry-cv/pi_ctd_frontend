@@ -35,6 +35,8 @@ const FormBasis = ({ isEditMode = false }) => {
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
   const [countryValue, setCountry] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [countries, setCountries] = useState([]);
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
@@ -304,7 +306,7 @@ const FormBasis = ({ isEditMode = false }) => {
             text: "No se pudo cargar la actividad.",
             icon: "error",
             customClass: {
-              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
             }
           });
           navigate("/administrador/actividades");
@@ -366,7 +368,7 @@ const FormBasis = ({ isEditMode = false }) => {
       horaFin: ensureTimeHasSeconds(horaFin),
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: fechaEvento ,
+      fechaEvento: fechaEvento,
       fechaFinEvento: fechaEvento || eventType === "FECHA_UNICA" ? fechaFinEvento : null,
       politicaPagos: paymentPolicyValue,
       politicaCancelacion: cancellationPolicyValue,
@@ -423,7 +425,7 @@ const FormBasis = ({ isEditMode = false }) => {
         showConfirmButton: false,
         timer: 2000,
         customClass: {
-          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
         }
       }).then(() => {
         navigate("/administrador/actividades");
@@ -457,7 +459,7 @@ const FormBasis = ({ isEditMode = false }) => {
         text: "No se pudo completar la operación.",
         icon: "error",
         customClass: {
-          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
         }
       });
     } finally {
@@ -546,7 +548,11 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
+      <div className="activity-phonenumber-container">
+        <label htmlFor="countrycode"></label>
+        <input type="text" id="countrycode" className="input-country-code" name="codigoPais" value={countryCode} onChange={handleCountryCodeChange} autoComplete="on" required />
 
+      </div>
       <div className="container-addrate">
         <button
           type="button"
@@ -678,7 +684,7 @@ const FormBasis = ({ isEditMode = false }) => {
             onHoraInicioChange={handleHoraInicioChange}
             onHoraFinChange={handleHoraFinChange}
           />
-        <DateCalendar  dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType = {eventType} selectedDateEnd ={fechaFinEvento}  />
+          <DateCalendar dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType={eventType} selectedDateEnd={fechaFinEvento} />
         </div>
       )}
       <div className="container-categories">

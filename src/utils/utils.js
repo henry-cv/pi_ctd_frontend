@@ -39,3 +39,7 @@ export function validarContrasenia(contrasenia) {
 export function compararContrasenias(contrasenia_1, contrasenia_2) {
   return contrasenia_1 === contrasenia_2;
 }
+export function validateCountryCode (countryCode){
+  const regex = /^\+[1-9]{1}[0-9]{1,2}$/;
+  return regex.test(countryCode);
+};
