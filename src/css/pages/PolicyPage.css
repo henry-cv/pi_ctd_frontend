@@ -1,14 +1,25 @@
 @import "../global/variables.css";
+
 .page-policies-container {
   background-color: var(--BackgroundColor);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
+
+.page-policies-container>.breadcrumbs {
+
+  display: block;
+  position: absolute;
+  left: 2rem;
+  top: 8rem;
+}
+
 .page-policies-container.dark {
   background-color: var(--BackgroundColor);
   color: var(--Font-Background);
 }
+
 .main-policies {
   display: flex;
   flex-direction: row;

@@ -4,6 +4,7 @@ import NavDash from './NavDash';
 import AsidePayments from "./AsidePayments";
 import DashPolicies from './DashPolicies';
 import Footer from "./Footer";
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 import { useState } from "react";
 import { useEffect, useRef } from 'react';
 import { useContextGlobal } from "../gContext/globalContext";
@@ -22,6 +23,7 @@ const PolicyPage = () => {
   return (
     <div className={`page-policies-container ${theme}`} ref={rootRef}>
       <NavDash variant="home" />
+      <BasicBreadcrumbs />
       <main className={`main-policies ${theme}`}>
         <AsidePayments setSelectedPolicy={setSelectedPolicy} />
         <DashPolicies selectedPolicy={selectedPolicy} setSelectedPolicy={setSelectedPolicy} />
