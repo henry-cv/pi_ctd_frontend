@@ -37,8 +37,11 @@ const FormBasis = ({ isEditMode = false }) => {
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
   const [countryValue, setCountry] = useState("");
+
   const [countryCode, setCountryCode] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
+
   const [countries, setCountries] = useState([]);
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
@@ -116,11 +119,36 @@ const FormBasis = ({ isEditMode = false }) => {
     setDescripcion(texto);
   };
   const handleCountryCodeChange = (e) => {
-    setCountryCode(e.target.value);
-  }
-  const handleNumberPhoneChange = (e) => {
-    setMobileNumber(e.target.value);
-  }
+    const countryCodeValue = e.target.value;
+    setCountryCode(countryCodeValue);
+    const exampleNumber = getExampleNumber(countryCodeValue) || 0;
+    // Obtiene un número de teléfono de ejemplo para el código de país seleccionado.
+    setPhoneNumber(exampleNumber);
+  };
+  const handlePhoneNumberChange = (e) => {
+    const phoneNumberValue = e.target.value;
+    console.log("countrycode: ", countryCode);
+    console.log("inputPhone number target.value: ", phoneNumberValue);
+
+    if (!phoneNumberValue || typeof phoneNumberValue !== 'string') {
+      return console.error('El número de teléfono es inválido');
+    }
+
+    setPhoneNumber(phoneNumberValue);
+
+    try {
+      const parsedPhoneNumber = parsePhoneNumber(String(phoneNumberValue));
+      if (parsedPhoneNumber) {
+        setCountryCode(parsedPhoneNumber.country);
+        setFormattedPhoneNumber(parsedPhoneNumber.formatInternational());
+      }
+    } catch (error) {
+      console.error('Error al procesar el número de teléfono:', error);
+    }
+  };
+  const phoneNumberString = String(phoneNumber);
+  const isValidPhoneNumberValue = isValidPhoneNumber(phoneNumberString, countryCode);
+
   const handleDateChange = (e) => {
     setFechaEvento(e.target.value);
 
@@ -386,7 +414,7 @@ const FormBasis = ({ isEditMode = false }) => {
     };
     //console.log("Datos a enviar:", JSON.stringify(productoData));
     console.log("Country Code seleecionado: ", countryCode);
-    console.log("Número de móvil: ", mobileNumber);
+    console.log("Número de móvil: ", phoneNumber);
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -558,23 +586,39 @@ const FormBasis = ({ isEditMode = false }) => {
         {addressError && <FieldError message={addressError} />}
       </div>
       <div className="activity-phonenumber-container">
-        <label htmlFor="countrycode">Código</label>
-        {countryCodeList.length > 0 &&
-          <select name="codigoPais" id="country-code" onChange={(e) => handleCountryCodeChange(e)}
-            value={countryCode} // Importante: convierte a string para HTML select
-            onBlur={console.log("countryCode: ", countryCode)}
-          >
-            <option value="" disabled>Selecciona el código</option>
-            {countryCodeList.map((country, index) => (
-              <option key={index} value={country.code}>{`${country.name} ${country.code}`}</option>
-            ))}
-          </select>
-        }
-        <label htmlFor="phonenumber">Teléfono:</label>
-        <input id="phonenumber" name="telefono" type="tel" className="tel" placeholder="9912345670" onClick={(e => handleNumberPhoneChange(e))}
-          onBlur={console.log("mobileNumber: ", mobileNumber)}
-        />
+        <div className="div-country-code" >
+          <label htmlFor="countrycode">Código</label>
+          {countryCodeList.length > 0 &&
+            <select name="codigoPais" id="country-code" onChange={handleCountryCodeChange}
+              value={countryCode}
+              onBlur={() => console.log("countryCode: ", countryCode)}
+            >
+              <option value="" disabled>Selecciona el código</option>
+              {countryCodeList.map((country, index) => (
+                <option key={index} value={country.code}>{`${country.name} (${country.code})`}</option>
+              ))}
+            </select>
+          }
+        </div>
+        <div className="phone-number">
+          <label htmlFor="phonenumber">Teléfono:</label>
+          <input id="phonenumber" name="telefono" type="tel" className="input-phone" value={phoneNumber} placeholder="9912345670" onChange={handlePhoneNumberChange}
+            onBlur={() => console.log("mobileNumber: ", phoneNumber)}
+          />
+          {isValidPhoneNumberValue ? (
+            <span className="valid-phone-number">El número de teléfono es válido</span> // Corrección: Agregué una clase para dar estilo al mensaje
+
+          ) : (
+            <span className="invalid-phone-number">El número de teléfono no es válido</span> // Corrección: Agregué una clase para dar estilo al mensaje
+
+          )}
+        </div>
+        <div className="formatted-phone-number">
+          <label>Número de teléfono formateado:</label>
+          <input type="text" value={formattedPhoneNumber} readOnly />
+        </div>
       </div>
+
       <div className="container-addrate">
         <button
           type="button"
@@ -584,42 +628,44 @@ const FormBasis = ({ isEditMode = false }) => {
           &#x2795; Añadir Tarifas
         </button>
       </div>
-      {showExtraFields && (
-        <div className="extra-fields">
-          <div>
-            <label htmlFor="rateName">Valor tarifa:</label>
-            <select
-              id="rateType"
-              value={tipoTarifa}
-              onChange={(e) => setTipoTarifa(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Selecciona el tipo de tarifa
-              </option>
-              <option value="POR_PERSONA">Por persona</option>
-              <option value="POR_PAREJA">Por pareja</option>
-              <option value="POR_GRUPO_6">Por grupo (6)</option>
-              <option value="POR_GRUPO_10">Por grupo (10)</option>
-            </select>
+      {
+        showExtraFields && (
+          <div className="extra-fields">
+            <div>
+              <label htmlFor="rateName">Valor tarifa:</label>
+              <select
+                id="rateType"
+                value={tipoTarifa}
+                onChange={(e) => setTipoTarifa(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Selecciona el tipo de tarifa
+                </option>
+                <option value="POR_PERSONA">Por persona</option>
+                <option value="POR_PAREJA">Por pareja</option>
+                <option value="POR_GRUPO_6">Por grupo (6)</option>
+                <option value="POR_GRUPO_10">Por grupo (10)</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ratePrice">Tarifa por:</label>
+              <input
+                type="number"
+                id="ratePrice"
+                min="1"
+                placeholder="Inserta el precio"
+                required
+              />
+            </div>
+            <div className="centered-button">
+              <button type="button" className="save-rate-button">
+                <FaSave />
+              </button>
+            </div>
           </div>
-          <div>
-            <label htmlFor="ratePrice">Tarifa por:</label>
-            <input
-              type="number"
-              id="ratePrice"
-              min="1"
-              placeholder="Inserta el precio"
-              required
-            />
-          </div>
-          <div className="centered-button">
-            <button type="button" className="save-rate-button">
-              <FaSave />
-            </button>
-          </div>
-        </div>
-      )}
+        )
+      }
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
@@ -685,30 +731,34 @@ const FormBasis = ({ isEditMode = false }) => {
           <option value="RECURRENTE">Recurrente</option>
         </select>
       </div>
-      {eventType === "FECHA_UNICA" && (
-        <div className="container-dates">
-          <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
-          <Horas
-            onHoraInicioChange={handleHoraInicioChange}
-            horaInicio={horaInicio}
-            onHoraFinChange={handleHoraFinChange}
-            horaFin={horaFin}
-          />
-        </div>
-      )}
+      {
+        eventType === "FECHA_UNICA" && (
+          <div className="container-dates">
+            <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
+            <Horas
+              onHoraInicioChange={handleHoraInicioChange}
+              horaInicio={horaInicio}
+              onHoraFinChange={handleHoraFinChange}
+              horaFin={horaFin}
+            />
+          </div>
+        )
+      }
 
-      {eventType === "RECURRENTE" && (
-        <div className="container-days">
-          <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
-          <Horas
-            horaInicio={horaInicio}
-            horaFin={horaFin}
-            onHoraInicioChange={handleHoraInicioChange}
-            onHoraFinChange={handleHoraFinChange}
-          />
-          <DateCalendar dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType={eventType} selectedDateEnd={fechaFinEvento} />
-        </div>
-      )}
+      {
+        eventType === "RECURRENTE" && (
+          <div className="container-days">
+            <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
+            <Horas
+              horaInicio={horaInicio}
+              horaFin={horaFin}
+              onHoraInicioChange={handleHoraInicioChange}
+              onHoraFinChange={handleHoraFinChange}
+            />
+            <DateCalendar dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType={eventType} selectedDateEnd={fechaFinEvento} />
+          </div>
+        )
+      }
       <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
         {categories.length > 0 &&
