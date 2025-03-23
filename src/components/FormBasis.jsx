@@ -9,7 +9,6 @@ import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
 import { validarTexto, validarAreaTexto, longitudPermitida } from "../utils/utils";
-import { countryCodeList } from "../constants/data/countryCodeList.js";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -17,7 +16,7 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 import { paymentPolicies, cancellationPolicies } from "../constants/data/policiesDataInfo";
-import { parsePhoneNumber, isValidPhoneNumber, getExampleNumber, formatIncompletePhoneNumber } from 'libphonenumber-js';
+import PhoneInput from "./PhoneInput.jsx";
 
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
@@ -38,7 +37,6 @@ const FormBasis = ({ isEditMode = false }) => {
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
   const [countryValue, setCountry] = useState("");
 
-  const [countryCode, setCountryCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
 
@@ -118,36 +116,6 @@ const FormBasis = ({ isEditMode = false }) => {
     }
     setDescripcion(texto);
   };
-  const handleCountryCodeChange = (e) => {
-    const countryCodeValue = e.target.value;
-    setCountryCode(countryCodeValue);
-    const exampleNumber = getExampleNumber(countryCodeValue) || 0;
-    // Obtiene un número de teléfono de ejemplo para el código de país seleccionado.
-    setPhoneNumber(exampleNumber);
-  };
-  const handlePhoneNumberChange = (e) => {
-    const phoneNumberValue = e.target.value;
-    console.log("countrycode: ", countryCode);
-    console.log("inputPhone number target.value: ", phoneNumberValue);
-
-    if (!phoneNumberValue || typeof phoneNumberValue !== 'string') {
-      return console.error('El número de teléfono es inválido');
-    }
-
-    setPhoneNumber(phoneNumberValue);
-
-    try {
-      const parsedPhoneNumber = parsePhoneNumber(String(phoneNumberValue));
-      if (parsedPhoneNumber) {
-        setCountryCode(parsedPhoneNumber.country);
-        setFormattedPhoneNumber(parsedPhoneNumber.formatInternational());
-      }
-    } catch (error) {
-      console.error('Error al procesar el número de teléfono:', error);
-    }
-  };
-  const phoneNumberString = String(phoneNumber);
-  const isValidPhoneNumberValue = isValidPhoneNumber(phoneNumberString, countryCode);
 
   const handleDateChange = (e) => {
     setFechaEvento(e.target.value);
@@ -585,40 +553,7 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
-      <div className="activity-phonenumber-container">
-        <div className="div-country-code" >
-          <label htmlFor="countrycode">Código</label>
-          {countryCodeList.length > 0 &&
-            <select name="codigoPais" id="country-code" onChange={handleCountryCodeChange}
-              value={countryCode}
-              onBlur={() => console.log("countryCode: ", countryCode)}
-            >
-              <option value="" disabled>Selecciona el código</option>
-              {countryCodeList.map((country, index) => (
-                <option key={index} value={country.code}>{`${country.name} (${country.code})`}</option>
-              ))}
-            </select>
-          }
-        </div>
-        <div className="phone-number">
-          <label htmlFor="phonenumber">Teléfono:</label>
-          <input id="phonenumber" name="telefono" type="tel" className="input-phone" value={phoneNumber} placeholder="9912345670" onChange={handlePhoneNumberChange}
-            onBlur={() => console.log("mobileNumber: ", phoneNumber)}
-          />
-          {isValidPhoneNumberValue ? (
-            <span className="valid-phone-number">El número de teléfono es válido</span> // Corrección: Agregué una clase para dar estilo al mensaje
-
-          ) : (
-            <span className="invalid-phone-number">El número de teléfono no es válido</span> // Corrección: Agregué una clase para dar estilo al mensaje
-
-          )}
-        </div>
-        <div className="formatted-phone-number">
-          <label>Número de teléfono formateado:</label>
-          <input type="text" value={formattedPhoneNumber} readOnly />
-        </div>
-      </div>
-
+      <PhoneInput />
       <div className="container-addrate">
         <button
           type="button"
