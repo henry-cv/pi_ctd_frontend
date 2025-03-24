@@ -3,96 +3,96 @@ export const countryCodeList = [
   {
     "name": "Argentina",
     "code": "AR",
-    "dialCode": "+54"
+    "dial_code": "+54"
   },
   {
     "name": "Brasil",
     "code": "BR",
-    "dialCode": "+55"
+    "dial_code": "+55"
   },
   {
     "name": "Chile",
     "code": "CL",
-    "dialCode": "+56"
+    "dial_code": "+56"
   },
   {
     "name": "Colombia",
     "code": "CO",
-    "dialCode": "+57"
+    "dial_code": "+57"
   },
   {
     "name": "Venezuela",
     "code": "VE",
-    "dialCode": "+58"
+    "dial_code": "+58"
   },
   {
     "name": "Ecuador",
     "code": "EC",
-    "dialCode": "+593"
+    "dial_code": "+593"
   },
   {
     "name": "Paraguay",
     "code": "PY",
-    "dialCode": "+595"
+    "dial_code": "+595"
   },
   {
     "name": "Perú",
     "code": "PE",
-    "dialCode": "+51"
+    "dial_code": "+51"
   },
   {
     "name": "Uruguay",
     "code": "UY",
-    "dialCode": "+598"
+    "dial_code": "+598"
   },
   {
     "name": "Bolivia",
     "code": "BO",
-    "dialCode": "+591"
+    "dial_code": "+591"
   },
   {
     "name": "Belice",
     "code": "BZ",
-    "dialCode": "+501"
+    "dial_code": "+501"
   },
   {
     "name": "Guatemala",
     "code": "GT",
-    "dialCode": "+502"
+    "dial_code": "+502"
   },
   {
     "name": "El Salvador",
     "code": "SV",
-    "dialCode": "+503"
+    "dial_code": "+503"
   },
   {
     "name": "Honduras",
     "code": "HN",
-    "dialCode": "+504"
+    "dial_code": "+504"
   },
   {
     "name": "Nicaragua",
     "code": "NI",
-    "dialCode": "+505"
+    "dial_code": "+505"
   },
   {
     "name": "Costa Rica",
     "code": "CR",
-    "dialCode": "+506"
+    "dial_code": "+506"
   },
   {
     "name": "Panamá",
     "code": "PA",
-    "dialCode": "+507"
+    "dial_code": "+507"
   },
   {
     "name": "República Dominicana",
     "code": "DO",
-    "dialCode": "+1 809 y +1 829"
+    "dial_code": "+1 809 y +1 829"
   },
   {
     "name": "Cuba",
     "code": "CU",
-    "dialCode": "+53"
+    "dial_code": "+53"
   }
 ]

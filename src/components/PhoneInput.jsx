@@ -1,33 +1,34 @@
 import { useState } from 'react';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import '../css/components/PhoneInput.css';
-import { countryCodeList } from "../constants/data/countryCodeList.js";
+//import { countryCodeList } from "../constants/data/countryCodeList.js";
+import PropTypes from 'prop-types';
 
-const PhoneInput = () => {
-  const [selectedCountry, setSelectedCountry] = useState(countryCodeList[0]);
+const PhoneInput = ({ country }) => {
+  //  const [selectedCountry, setSelectedCountry] = useState(countryCodeList[0]);
   const [phone, setPhone] = useState('');
   const [isValid, setIsValid] = useState(null);
 
   // Maneja cambio en el select de país
-  const handleCountryChange = (e) => {
+  /* const handleCountryChange = (e) => {
     const country = countryCodeList.find(c => c.code === e.target.value);
     console.log("Country encontrado: ", country)
     setSelectedCountry(country);
     setIsValid(null); // Reinicia validez
-  };
+  }; */
 
   // Maneja el input del número
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     setPhone(value);
     console.log("phoneNumber: ", phone)
-    const fullNumber = `${selectedCountry.dialCode}${value}`;
+    const fullNumber = `${country.dial_code}${value}`;
     console.log("fullNumber: ", fullNumber);
     const parsedNumber = parsePhoneNumberFromString(fullNumber);
     console.log("parsedNumber: ", parsedNumber);
 
     // Verifica si el número es válido para el país seleccionado
-    if (parsedNumber && parsedNumber.isValid() && parsedNumber.country === selectedCountry.code) {
+    if (parsedNumber && parsedNumber.isValid() && parsedNumber.country === country.code) {
       setIsValid(true);
     } else {
       setIsValid(false);
@@ -36,21 +37,10 @@ const PhoneInput = () => {
 
   return (
     <div className="container-whatsapp-number">
-      <div className="country-code" >
-        <label htmlFor="country-select">País:</label>
-        <select id="country-select" onChange={handleCountryChange} value={selectedCountry.code}>
-          <option value="" disabled>Selecciona el código</option>
-          {countryCodeList.map((country, index) => (
-            <option key={index} value={country.code}>
-              {country.name} ({country.dialCode})
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="phone-number">
         <label htmlFor="phone-number">Teléfono:</label>
         <div className="phone-field">
-          <span className="dial-code">{selectedCountry.dialCode}</span>
+          <span className="dial-code">{country.dial_code}</span>
           <input
             type="tel"
             name="telefono"
@@ -66,5 +56,7 @@ const PhoneInput = () => {
     </div>
   );
 };
-
+PhoneInput.propTypes = {
+  country: PropTypes.object,
+}
 export default PhoneInput;

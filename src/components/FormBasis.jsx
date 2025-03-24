@@ -40,6 +40,11 @@ const FormBasis = ({ isEditMode = false }) => {
   //const [phoneNumber, setPhoneNumber] = useState("");
 
   const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState({
+    "name": "United States",
+    "code": "US",
+    "dial_code": "+1"
+  },);
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
   const [address, setAddress] = useState("");
@@ -208,15 +213,18 @@ const FormBasis = ({ isEditMode = false }) => {
 
   // GetCountries
   useEffect(() => {
+    const UrlCountriesAPI = 'https://countriesnow.space/api/v0.1/countries/codes';
+    // Está Url también trae los dial-code de cada país
     const fetchCountries = async () => {
       try {
-        const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
+        //const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
+        const response = await fetch(UrlCountriesAPI);
         if (!response.ok) {
           throw new Error(`Error al obtener los paises: ${response.status}`);
         }
         const data = await response.json();
         setCountries(data.data);
-        // console.log("Countries", data.data);
+        console.log("Countries", data.data);
       } catch (error) {
         console.error("Error cargando paises:", error);
       } finally {
