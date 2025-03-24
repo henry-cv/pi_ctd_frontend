@@ -19,6 +19,7 @@
   padding: 10px 16px;
   row-gap: 20px;
   width: 330px;
+  order: 1;
 }
 
 .sidebar-policies.dark {
@@ -136,4 +137,27 @@ h5.dark {
 
 .accordion-item h5 .caret.down {
   transform: rotate(180deg);
+}
+@media screen and (max-width: 1000px) {
+  .sidebar-policies {
+    width: min(30%, 300px);
+  }
+}
+@media screen and (max-width: 768px) {
+  .sidebar-policies {
+    width: 60%;
+    align-self: center;
+  }
+}
+@media screen and (max-width: 640px) {
+  .sidebar-policies {
+    width: 80%;
+    align-self: center;
+  }
+}
+@media screen and (max-width: 480px) {
+  .sidebar-policies {
+    width: 90%;
+    align-self: center;
+  }
 }

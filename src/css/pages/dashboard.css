@@ -47,7 +47,7 @@
   gap: 30px;
 }
 
-.list_sidebar > .listDash {
+.list_sidebar>.listDash {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -82,7 +82,7 @@
   }
 }
 
-.list_sidebar > .listDash2 {
+.list_sidebar>.listDash2 {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -96,7 +96,7 @@
   margin: 0 auto;
 }
 
-.list_sidebar > .listDashHover:hover {
+.list_sidebar>.listDashHover:hover {
   background-color: white;
   color: var(--Background-sideBar) !important;
   /* se le agregó el color de la sideBar porque la fuente es del mismo color del background mirar figma */
@@ -229,7 +229,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 
-.btn_style > span {
+.btn_style>span {
   margin-right: 10px;
   line-height: 0;
 }
@@ -476,10 +476,13 @@ button:focus-visible {
   .admin_container {
     display: none;
   }
+
   .admin_container2 {
     display: none;
   }
 }
+
+/* Comentada porque usa !important*/
 
 .breadcrumbs {
   color: var(--Font-Background) !important;
@@ -488,6 +491,7 @@ button:focus-visible {
 .dark_activities {
   color: var(--Font-Background) !important;
 }
+
 .settings-menu-container {
   position: relative;
   width: 100%;
@@ -513,7 +517,7 @@ button:focus-visible {
   color: black !important;
   border-radius: 30px;
   padding-left: 30px !important;
-  padding-right: 45px !important; 
+  padding-right: 45px !important;
 }
 
 .listDash2 {
@@ -566,7 +570,7 @@ button:focus-visible {
 }
 
 .settings-main-item.isActiveDash .arrow-container {
-  right: 10px; 
+  right: 10px;
 }
 
 .settings-arrow {
@@ -596,7 +600,7 @@ button:focus-visible {
   padding-left: 30px !important;
 }
 
-.isActiveDash svg, 
+.isActiveDash svg,
 .isActiveDash .settings-arrow {
   color: black !important;
 }
@@ -660,6 +664,7 @@ button:focus-visible {
   align-items: center;
   gap: 10px;
 }
+
 .add-characteristic-container {
   padding: 20px;
   width: 100%;
@@ -691,7 +696,7 @@ button:focus-visible {
   padding: 10px;
   border: 1px dashed var(--black-300);
   border-radius: 10px;
-  background-color: rgba(0,0,0,0.03);
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .icon-preview-wrapper .icon {

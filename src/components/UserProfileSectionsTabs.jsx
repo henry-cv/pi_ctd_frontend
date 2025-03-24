@@ -1,36 +1,45 @@
+// src/components/UserProfileSectionsTabs.jsx
+import React from "react";
 import "../css/components/UserProfileSectionsTabs.css";
 import { useContextGlobal } from "../gContext/globalContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faCalendarAlt, faHeart } from "@fortawesome/free-regular-svg-icons";
 
-function UserProfileSectionsTabs() {
-    const { state, dispatch } = useContextGlobal();
- 
-    function handleActive(tab) {
-        dispatch({ type: "SET_ACTIVE_TAB", payload: tab });
-      }
-      
+const UserProfileSectionsTabs = () => {
+  const { state, dispatch } = useContextGlobal();
+
+  const handleTabChange = (tab) => {
+    dispatch({
+      type: "SET_ACTIVE_TAB",
+      payload: tab,
+    });
+  };
+
   return (
     <div className="profile-tabs">
-      <button 
-        className={`tab-button ${state.activeTab === "edit-profile" ? "active" : ""}`} 
-        onClick={() => handleActive("edit-profile")}
+      <button
+        className={`tab-button ${state.activeTab === "edit-profile" ? "active" : ""}`}
+        onClick={() => handleTabChange("edit-profile")}
       >
-        Editar Perfil
+        <FontAwesomeIcon icon={faUser} />
+        <span>Editar Perfil</span>
       </button>
-      <button 
-        className={`tab-button ${state.activeTab === "reservations" ? "active" : ""}`} 
-        onClick={() => handleActive("reservations")}
+      <button
+        className={`tab-button ${state.activeTab === "reservations" ? "active" : ""}`}
+        onClick={() => handleTabChange("reservations")}
       >
-        Mis Reservas
+        <FontAwesomeIcon icon={faCalendarAlt} />
+        <span>Mis reservas</span>
       </button>
-      <button 
-        className={`tab-button ${state.activeTab === "favorites" ? "active" : ""}`} 
-        onClick={() => handleActive("favorites")}
+      <button
+        className={`tab-button ${state.activeTab === "favorites" ? "active" : ""}`}
+        onClick={() => handleTabChange("favorites")}
       >
-        Mis Favoritos
+        <FontAwesomeIcon icon={faHeart} />
+        <span>Mis favoritos</span>
       </button>
-  </div>
+    </div>
+  );
+};
 
-  )
-}
-
-export default UserProfileSectionsTabs
+export default UserProfileSectionsTabs;

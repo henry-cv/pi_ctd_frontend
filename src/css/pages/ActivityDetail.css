@@ -491,6 +491,50 @@ max-height: 500px;
 .back-button:hover {
   background: var(--blue-hover);
 }
+.detail-favorite-button-container {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.detail-favorite-button-container .favorite-button {
+  position: relative;
+  top: auto;
+  right: auto;
+  width: 42px;
+  height: 42px;
+}
+
+.detail-favorite-button-container .favorite-button .favorite-icon {
+  font-size: 22px;
+}
+.activity-detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.activity-detail-title {
+  flex-grow: 1;
+}
+
+.activity-detail-header .favorite-button {
+  margin-top: 5px;
+  width: 42px;
+  height: 42px;
+}
+
+.activity-detail-header .favorite-button .favorite-icon {
+  font-size: 22px;
+}
+
+/* Estilos para la tarjeta en la columna derecha */
+.booking-card .favorite-button {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
 /* Media queries */
 /* @media (max-width: 1200px) {
   .gallery-section {

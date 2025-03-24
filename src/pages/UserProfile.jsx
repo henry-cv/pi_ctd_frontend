@@ -1,13 +1,14 @@
+// src/pages/UserProfile.jsx
 import React, { useState } from "react";
 import "../css/pages/UserProfile.css";
 import UserProfileSectionsTabs from "../components/UserProfileSectionsTabs";
 import FormEditUser from "../components/FormEditUser";
+import UserFavorites from "../components/UserFavorites";
 import { useContextGlobal } from "../gContext/globalContext";
 import Avatar from "@mui/material/Avatar";
 
 const UserProfile = () => {
   const { state } = useContextGlobal();
-
 
   const style = {
     display: "flex", 
@@ -20,22 +21,34 @@ const UserProfile = () => {
     color:"gray"
   };
 
-
   const [userData, setUserData] = useState(state.user);
 
   const getUserInitials = `${userData?.nombre?.[0] || "U"}${
     userData?.apellido?.[0] || "U"
   }`.toUpperCase();
 
+  // Determinar qué contenido mostrar según la pestaña activa
+  const renderActiveTabContent = () => {
+    switch(state.activeTab) {
+      case "edit-profile":
+        return <FormEditUser userData={userData} setUserData={setUserData} />;
+      case "reservations":
+        return <p style={style}>Lista de reservas</p>;
+      case "favorites":
+        return <UserFavorites />;
+      default:
+        return <FormEditUser userData={userData} setUserData={setUserData} />;
+    }
+  };
+
   return (
     <div className="profile-container">
       <div className="profile-banner">
         <div className="user-info-profile">
           <div className="avatar-container">
-          <Avatar sx={{ width: 120, height: 120, background: "#f6d85f", color:"black", fontSize:"40px" }}>
+            <Avatar sx={{ width: 120, height: 120, background: "#f6d85f", color:"black", fontSize:"40px" }}>
               {getUserInitials}
             </Avatar>
-            {/* <img src={userData.profileImage} alt="Avatar del usuario" className="avatar" /> */}
           </div>
           <div className="user-details-banner">
             <h2>{userData.nombre} {userData.apellido}</h2>
@@ -45,14 +58,8 @@ const UserProfile = () => {
       </div>
 
       <UserProfileSectionsTabs />
-
-      {state.activeTab === "edit-profile" ? (
-        <FormEditUser userData={userData} setUserData={setUserData} />
-      ) : state.activeTab === "reservations" ? (
-        <p style={style}>Lista de reservas</p>
-      ) : (
-        <p style={style}>Lista de favoritos</p>
-      )}
+      
+      {renderActiveTabContent()}
     </div>
   );
 };
