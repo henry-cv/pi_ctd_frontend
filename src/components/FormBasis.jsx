@@ -37,8 +37,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
   const [countryValue, setCountry] = useState("");
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('');
+  //const [phoneNumber, setPhoneNumber] = useState("");
 
   const [countries, setCountries] = useState([]);
   const [cityValue, setCity] = useState("");
@@ -381,8 +380,6 @@ const FormBasis = ({ isEditMode = false }) => {
       cuposTotales: quota
     };
     //console.log("Datos a enviar:", JSON.stringify(productoData));
-    console.log("Country Code seleecionado: ", countryCode);
-    console.log("Número de móvil: ", phoneNumber);
 
     // Agregar el objeto producto como una parte JSON
     formData.append(

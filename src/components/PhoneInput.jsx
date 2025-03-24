@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import '../css/PhoneInput.css';
+import '../css/components/PhoneInput.css';
 import { countryCodeList } from "../constants/data/countryCodeList.js";
 
 const PhoneInput = () => {
