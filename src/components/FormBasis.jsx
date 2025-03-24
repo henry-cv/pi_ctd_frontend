@@ -35,18 +35,19 @@ const FormBasis = ({ isEditMode = false }) => {
   const [idioma, setIdioma] = useState("");
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
-  const [countryValue, setCountry] = useState("");
 
-  //const [phoneNumber, setPhoneNumber] = useState("");
-
+  const [countryValue, setCountryValue] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState({
-    "name": "United States",
-    "code": "US",
-    "dial_code": "+1"
+    name: "United States",
+    code: "US",
+    dial_code: "+1"
   },);
+  const [countryDialCode, setCountryDialCode] = useState("+1");
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
+  //const [phoneNumber, setPhoneNumber] = useState("");
+
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
   const [quota, setQuota] = useState("");
@@ -171,6 +172,17 @@ const FormBasis = ({ isEditMode = false }) => {
     setCaracteristicasIds(caracteristicasIdsArray);
     console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
+  const handleCountryChange = (e) => {
+    console.log("valor de e.target en handleCountryChange")
+    console.log(e.target)
+    console.log("valor de e.target.value en handleCountryChange")
+    console.log(e.target.value)
+    const country = countries.find(c => c.name === e.target.value);
+    console.log("Country encontrado: ", country)
+    setSelectedCountry(country);
+    setCountryValue(country.name);
+    setCountryDialCode(country.dial_code);
+  };
   // useEffect para traer las categorias existentes
   useEffect(() => {
     const fetchCategories = async () => {
@@ -291,7 +303,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setIdioma(data.idioma);
           setPaymentPolicy(data.politicaPagos);
           setCancellationPolicy(data.politicaCancelacion);
-          setCountry(data.pais);
+          setCountryValue(data.pais);
           setCity(data.ciudad);
           setAddress(data.direccion);
           setQuota(data.cuposTotales);
@@ -451,7 +463,7 @@ const FormBasis = ({ isEditMode = false }) => {
       setIdioma("");
       setPaymentPolicy("");
       setCancellationPolicy("");
-      setCountry("");
+      setCountryValue("");
       setCity("");
       setAddress("");
       setQuota(1);
@@ -517,13 +529,13 @@ const FormBasis = ({ isEditMode = false }) => {
         <select
           id="country"
           value={countryValue}
-          onChange={(e) => setCountry(e.target.value)}
+          onChange={(e) => handleCountryChange(e)}
           required>
           <option value="" disabled>
             Selecciona el País
           </option>
           {countries.map((country) => (
-            <option style={{ backgroundImage: "url(" + country.flag + ")" }} key={country.name} value={country.name}> {country.name}</option>
+            <option data-dial={country.dial_code} key={country.name} value={country.name}> {country.name}</option>
           ))}
         </select>
       </div>
@@ -558,7 +570,7 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
-      <PhoneInput />
+      <PhoneInput country={selectedCountry} />
       <div className="container-addrate">
         <button
           type="button"

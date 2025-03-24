@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const PhoneInput = ({ country }) => {
   //  const [selectedCountry, setSelectedCountry] = useState(countryCodeList[0]);
+  console.log("country en PhoneInput componente: ", country)
   const [phone, setPhone] = useState('');
   const [isValid, setIsValid] = useState(null);
 
@@ -19,6 +20,7 @@ const PhoneInput = ({ country }) => {
 
   // Maneja el input del número
   const handlePhoneChange = (e) => {
+    setIsValid(null); // Reinicia validez
     const value = e.target.value;
     setPhone(value);
     console.log("phoneNumber: ", phone)
