@@ -1,214 +1,230 @@
 .reviews-section {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+	padding: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
 .reviews-section h2 {
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-  color: var(--color-text);
+	margin-bottom: 2rem;
+	font-size: 1.8rem;
+	color: var(--color-text);
 }
 
 .reviews-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 2rem;
 }
 
 .rating-summary {
-  display: flex;
-  gap: 3rem;
+	display: flex;
+	gap: 3rem;
 }
 
 .average-rating {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
 }
 
 .rating-number {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--color-text);
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: var(--color-text);
 }
 
 .total-reviews {
-  color: var(--color-text-light);
-  font-size: 0.9rem;
+	color: var(--color-text-light);
+	font-size: 0.9rem;
 }
 
 .rating-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
 .rating-bar-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #ffb400;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: #ffb400;
 }
 
 .rating-bar {
-  width: 150px;
-  height: 8px;
-  background-color: var(--color-background-light);
-  border-radius: 4px;
-  overflow: hidden;
+	width: 150px;
+	height: 8px;
+	background-color: var(--color-background-light);
+	border-radius: 4px;
+	overflow: hidden;
 }
 
 .rating-bar-fill {
-  height: 100%;
-  background-color: #ffb400;
-  border-radius: 4px;
+	height: 100%;
+	background-color: #ffb400;
+	border-radius: 4px;
 }
 
 .reviews-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1rem;
-  width: 100%;
-  max-width: 300px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 1rem;
+	width: 100%;
+	max-width: 300px;
 }
 
 .reviews-filters {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  justify-content: flex-end;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	width: 100%;
+	justify-content: flex-end;
 }
 
 .reviews-sort {
-  position: relative;
+	position: relative;
 }
 
 .reviews-sort .MuiSelect-select {
-  padding: 8px 16px !important;
-  padding-right: 32px !important;
-  font-size: 0.9rem;
+	padding: 8px 16px !important;
+	padding-right: 32px !important;
+	font-size: 0.9rem;
 }
 
 .reviews-sort .MuiOutlinedInput-notchedOutline {
-  border-color: rgba(0, 0, 0, 0.12);
+	border-color: rgba(0, 0, 0, 0.12);
 }
 
 .reviews-sort .MuiSelect-icon {
-  right: 8px;
+	right: 8px;
 }
 
 .reviews-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	margin-bottom: 2rem;
 }
 
 .review-card {
-  padding: 1.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background-color: var(--color-background);
+	padding: 1.5rem;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	background-color: var(--color-background);
 }
 
 .review-header {
-  margin-bottom: 1rem;
+	margin-bottom: 1rem;
 }
 
 .user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
+	width: 100%;
 }
 
 .user-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 
 .user-name {
-  font-weight: 600;
-  color: var(--color-text);
+	font-weight: 600;
+	color: var(--color-text);
 }
 
 .review-date {
-  font-size: 0.9rem;
-  color: var(--color-text-light);
+	font-size: 0.9rem;
+	color: var(--color-text-light);
 }
 
 .review-comment {
-  color: var(--color-text);
-  line-height: 1.5;
-  margin-top: 0.5rem;
-  width: 100%;
+	color: var(--color-text);
+	line-height: 1.5;
+	margin-top: 0.5rem;
+	width: 100%;
 }
 
 .reviews-pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
+	display: flex;
+	justify-content: center;
+	margin-top: 2rem;
 }
 
 .view-more-button {
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  color: var(--color-text);
-  cursor: pointer;
+	background-color: var(--color-background);
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	padding: 0.5rem 1rem;
+	font-size: 0.9rem;
+	color: var(--color-text);
+	cursor: pointer;
 }
 
 .view-more-button:hover {
-  background-color: var(--color-background-light);
+	background-color: var(--color-background-light);
+}
+
+.no-reviews-message {
+	text-align: center;
+	padding: 40px;
+	color: var(--Font-Background);
+	font-family: var(--font-outfit);
+	font-size: 18px;
+}
+
+.loading-reviews,
+.error-reviews {
+	text-align: center;
+	padding: 20px;
+	color: var(--Font-Background);
+	font-family: var(--font-outfit);
 }
 
 @media (max-width: 768px) {
-  .reviews-section {
-    padding: 1rem;
-  }
+	.reviews-section {
+		padding: 1rem;
+	}
 
-  .reviews-header {
-    flex-direction: column;
-    gap: 2rem;
-  }
+	.reviews-header {
+		flex-direction: column;
+		gap: 2rem;
+	}
 
-  .rating-summary {
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    order: -1;
-  }
+	.rating-summary {
+		flex-direction: column;
+		gap: 1.5rem;
+		width: 100%;
+		order: -1;
+	}
 
-  .reviews-actions {
-    max-width: none;
-    margin-top: 1rem;
-  }
+	.reviews-actions {
+		max-width: none;
+		margin-top: 1rem;
+	}
 
-  .reviews-filters {
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 0.75rem;
-  }
+	.reviews-filters {
+		flex-direction: row;
+		justify-content: flex-end;
+		gap: 0.75rem;
+	}
 
-  .rating-bar {
-    width: 100%;
-  }
+	.rating-bar {
+		width: 100%;
+	}
 
-  .reviews-sort .MuiSelect-select {
-    padding: 6px 12px !important;
-  }
+	.reviews-sort .MuiSelect-select {
+		padding: 6px 12px !important;
+	}
 
-  .reviews-sort {
-    flex: 1;
-    max-width: 200px;
-  }
+	.reviews-sort {
+		flex: 1;
+		max-width: 200px;
+	}
 }
