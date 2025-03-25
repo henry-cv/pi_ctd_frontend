@@ -7,25 +7,27 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
   const dateInputRef = useRef(null);
   const dateEndInputRef = useRef(null);
   const [date, setDate] = useState(selectedDate || "");
+  const [errorDate, setErrorDate] = useState("");
   const [dateEnd, setDateEnd] = useState(selectedDateEnd || "");
+  const [errorDateEnd, setErrorDateEnd] = useState("");
 
   useEffect(() => {
-    const hoy = new Date();
-    const fechaInicioDate = new Date(fechaInicio);
-    const fechaFinDate = new Date(fechaFin);
+    const today = new Date();
+    const dateStart = new Date(date);
+    const dateEndValue = new Date(dateEnd);
 
-    if (fechaInicioDate < hoy) {
-      setErrorFechaInicio('La fecha de inicio no puede ser anterior al día de hoy');
+    if (dateStart < today) {
+      setErrorDate('La fecha de inicio no puede ser anterior al día de hoy');
     } else {
-      setErrorFechaInicio(null);
+      setErrorDate(null);
     }
 
-    if (fechaFinDate <= hoy) {
-      setErrorFechaFin('La fecha de fin debe ser posterior al día de hoy');
+    if (dateEndValue <= today) {
+      setErrorDateEnd('La fecha de fin debe ser posterior al día de hoy');
     } else {
-      setErrorFechaFin(null);
+      setErrorDateEnd(null);
     }
-  }, [fechaInicio, fechaFin]);
+  }, [dateStart, dateEnd]);
   const handleCalendarClick = (ref) => {
     ref.current?.click();
     //refactorizado usando el operador existencial ?.
@@ -69,6 +71,8 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
             onChange={(e) => handleDateChange(e)}
             value={date}
           />
+          {errorDate && <p className="error-message">{errorDate}</p>}
+
         </div>
       </div>
       {eventType === "RECURRENTE" && (
