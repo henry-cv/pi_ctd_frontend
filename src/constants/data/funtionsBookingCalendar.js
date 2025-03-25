@@ -58,18 +58,28 @@ export const funtionsBookingCalendar = ({
   
   // Efecto para establecer la fecha mostrada cuando está disponible
   useEffect(() => {
-    if (availability?.type === "dias" && fechas.length > 0 && dateRangeRef.current) {
-      try {
-        const primerFecha = new Date(fechas[0]);
-        
-        if (dateRangeRef.current.setShownDate) {
+    if (availability?.type === "dias" && fechas.length > 0) {
+      const primerFecha = new Date(fechas[0]);
+      
+      // Establecer mes y año visibles
+      setVisibleMonth(primerFecha.getMonth());
+      setVisibleYear(primerFecha.getFullYear());
+  
+      // Establecer fecha mostrada solo la primera vez o cuando cambien los datos fundamentales
+      const shouldUpdateShownDate = 
+        dateRangeRef.current && 
+        dateRangeRef.current.setShownDate && 
+        (fechas.length > 0);
+  
+      if (shouldUpdateShownDate) {
+        try {
           dateRangeRef.current.setShownDate(primerFecha);
+        } catch (error) {
+          console.error("Error al establecer fecha mostrada:", error);
         }
-      } catch (error) {
-        console.error("Error al establecer fecha mostrada:", error);
       }
     }
-  }, [fechas, availability, dateRangeRef.current]);
+  }, [fechas, availability]);
 
   // Efecto para manejar fechas específicas
   useEffect(() => {
@@ -97,24 +107,24 @@ export const funtionsBookingCalendar = ({
   }, [availability, bookingDate, setBookingDate, setDateRange]);
   
   // Efecto para establecer la primera fecha visible
-  useEffect(() => {
-    if (availability?.type === "dias" && fechas.length > 0) {
-      const primerFecha = new Date(fechas[0]);
+  // useEffect(() => {
+  //   if (availability?.type === "dias" && fechas.length > 0) {
+  //     const primerFecha = new Date(fechas[0]);
   
-      // Establecemos el mes y el año visibles solo al cargar el componente
-      setVisibleMonth(primerFecha.getMonth());
-      setVisibleYear(primerFecha.getFullYear());
+  //     // Establecemos el mes y el año visibles solo al cargar el componente
+  //     setVisibleMonth(primerFecha.getMonth());
+  //     setVisibleYear(primerFecha.getFullYear());
   
-      // Navegar al mes correcto solo una vez
-      if (dateRangeRef.current && dateRangeRef.current.setShownDate) {
-        try {
-          dateRangeRef.current.setShownDate(primerFecha);
-        } catch (error) {
-          console.error("Error al establecer fecha mostrada:", error);
-        }
-      }
-    }
-  }, []); 
+  //     // Navegar al mes correcto solo una vez
+  //     if (dateRangeRef.current && dateRangeRef.current.setShownDate) {
+  //       try {
+  //         dateRangeRef.current.setShownDate(primerFecha);
+  //       } catch (error) {
+  //         console.error("Error al establecer fecha mostrada:", error);
+  //       }
+  //     }
+  //   }
+  // }, []); 
 
   // Efecto para restaurar el estado del calendario
   useEffect(() => {
