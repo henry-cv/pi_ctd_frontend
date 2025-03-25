@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import "../css/components/DateCalendar.css";
 import PropTypes from 'prop-types';
 import { FaCalendarAlt } from "react-icons/fa";
@@ -6,15 +6,20 @@ import { FaCalendarAlt } from "react-icons/fa";
 const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, dateEndChange }) => {
   const dateInputRef = useRef(null);
   const dateEndInputRef = useRef(null);
+
   const [date, setDate] = useState(selectedDate || "");
   const [errorDate, setErrorDate] = useState("");
+
   const [dateEnd, setDateEnd] = useState(selectedDateEnd || "");
   const [errorDateEnd, setErrorDateEnd] = useState("");
 
   useEffect(() => {
     const today = new Date();
+    console.log("today", today);
     const dateStart = new Date(date);
+    console.log("dateStart", dateStart);
     const dateEndValue = new Date(dateEnd);
+    console.log("dateEndValue", dateEndValue);
 
     if (dateStart < today) {
       setErrorDate('La fecha de inicio no puede ser anterior al día de hoy');
@@ -27,7 +32,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
     } else {
       setErrorDateEnd(null);
     }
-  }, [dateStart, dateEnd]);
+  }, [date, dateEnd]);
   const handleCalendarClick = (ref) => {
     ref.current?.click();
     //refactorizado usando el operador existencial ?.
@@ -96,6 +101,8 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
               value={dateEnd}
             />
           </div>
+          {errorDateEnd && <p className="error-message">{errorDateEnd}</p>}
+
           <div />
 
         </div>
