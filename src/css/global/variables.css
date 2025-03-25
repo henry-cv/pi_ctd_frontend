@@ -8,6 +8,7 @@
   --blue-700: #5e38e0;
   --blue-300: #7e60e6;
   --white: #ffffff;
+  --white-300:#F7F8FC;
   --black: #101828;
   --black-100: #afb2b7;
   --black-300: #606570;
@@ -60,6 +61,8 @@
   --blue-L-Yellow-D: var(--blue-base);
   --Color-base: var(--blue-base);
   --Menu-Hamburger: var(--white);
+  --Background-W-300:var(--white-300);
+  --Blue-300-L-yellow-D: var(--blue-300);
 }
 
 /* EL cambio del tono de las variables en el modo dark */
@@ -74,5 +77,6 @@
   --background-opacity:#00000093;
   --Menu-Hamburger: var(--black);
   --Color-base: var(--yellow-base);
-  
+  --Background-W-300:var(--black-700);
+  --Blue-300-L-yellow-D: var(--yellow-base);
 }
