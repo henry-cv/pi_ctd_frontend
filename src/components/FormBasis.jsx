@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 import { paymentPolicies, cancellationPolicies } from "../constants/data/policiesDataInfo";
+import PhoneInput from "./PhoneInput.jsx";
 
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
@@ -34,10 +35,19 @@ const FormBasis = ({ isEditMode = false }) => {
   const [idioma, setIdioma] = useState("");
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
-  const [countryValue, setCountry] = useState("");
+
+  const [countryValue, setCountryValue] = useState("");
   const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: "United States",
+    code: "US",
+    dial_code: "+1"
+  },);
+  const [countryDialCode, setCountryDialCode] = useState("+1");
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
+  //const [phoneNumber, setPhoneNumber] = useState("");
+
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
   const [quota, setQuota] = useState("");
@@ -162,6 +172,17 @@ const FormBasis = ({ isEditMode = false }) => {
     setCaracteristicasIds(caracteristicasIdsArray);
     console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
+  const handleCountryChange = (e) => {
+    console.log("valor de e.target en handleCountryChange")
+    console.log(e.target)
+    console.log("valor de e.target.value en handleCountryChange")
+    console.log(e.target.value)
+    const country = countries.find(c => c.name === e.target.value);
+    console.log("Country encontrado: ", country)
+    setSelectedCountry(country);
+    setCountryValue(country.name);
+    setCountryDialCode(country.dial_code);
+  };
   // useEffect para traer las categorias existentes
   useEffect(() => {
     const fetchCategories = async () => {
@@ -204,15 +225,18 @@ const FormBasis = ({ isEditMode = false }) => {
 
   // GetCountries
   useEffect(() => {
+    const UrlCountriesAPI = 'https://countriesnow.space/api/v0.1/countries/codes';
+    // Está Url también trae los dial-code de cada país
     const fetchCountries = async () => {
       try {
-        const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
+        //const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
+        const response = await fetch(UrlCountriesAPI);
         if (!response.ok) {
           throw new Error(`Error al obtener los paises: ${response.status}`);
         }
         const data = await response.json();
         setCountries(data.data);
-        // console.log("Countries", data.data);
+        console.log("Countries", data.data);
       } catch (error) {
         console.error("Error cargando paises:", error);
       } finally {
@@ -279,7 +303,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setIdioma(data.idioma);
           setPaymentPolicy(data.politicaPagos);
           setCancellationPolicy(data.politicaCancelacion);
-          setCountry(data.pais);
+          setCountryValue(data.pais);
           setCity(data.ciudad);
           setAddress(data.direccion);
           setQuota(data.cuposTotales);
@@ -304,7 +328,7 @@ const FormBasis = ({ isEditMode = false }) => {
             text: "No se pudo cargar la actividad.",
             icon: "error",
             customClass: {
-              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
             }
           });
           navigate("/administrador/actividades");
@@ -366,7 +390,7 @@ const FormBasis = ({ isEditMode = false }) => {
       horaFin: ensureTimeHasSeconds(horaFin),
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: fechaEvento ,
+      fechaEvento: fechaEvento,
       fechaFinEvento: fechaEvento || eventType === "FECHA_UNICA" ? fechaFinEvento : null,
       politicaPagos: paymentPolicyValue,
       politicaCancelacion: cancellationPolicyValue,
@@ -375,7 +399,7 @@ const FormBasis = ({ isEditMode = false }) => {
       direccion: address,
       cuposTotales: quota
     };
-    console.log("Datos a enviar:", JSON.stringify(productoData));
+    //console.log("Datos a enviar:", JSON.stringify(productoData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -423,7 +447,7 @@ const FormBasis = ({ isEditMode = false }) => {
         showConfirmButton: false,
         timer: 2000,
         customClass: {
-          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
         }
       }).then(() => {
         navigate("/administrador/actividades");
@@ -439,7 +463,7 @@ const FormBasis = ({ isEditMode = false }) => {
       setIdioma("");
       setPaymentPolicy("");
       setCancellationPolicy("");
-      setCountry("");
+      setCountryValue("");
       setCity("");
       setAddress("");
       setQuota(1);
@@ -457,7 +481,7 @@ const FormBasis = ({ isEditMode = false }) => {
         text: "No se pudo completar la operación.",
         icon: "error",
         customClass: {
-          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
         }
       });
     } finally {
@@ -505,13 +529,13 @@ const FormBasis = ({ isEditMode = false }) => {
         <select
           id="country"
           value={countryValue}
-          onChange={(e) => setCountry(e.target.value)}
+          onChange={(e) => handleCountryChange(e)}
           required>
           <option value="" disabled>
             Selecciona el País
           </option>
           {countries.map((country) => (
-            <option style={{ backgroundImage: "url(" + country.flag + ")" }} key={country.name} value={country.name}> {country.name}</option>
+            <option data-dial={country.dial_code} key={country.name} value={country.name}> {country.name}</option>
           ))}
         </select>
       </div>
@@ -546,7 +570,7 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
-
+      <PhoneInput country={selectedCountry} />
       <div className="container-addrate">
         <button
           type="button"
@@ -556,42 +580,44 @@ const FormBasis = ({ isEditMode = false }) => {
           &#x2795; Añadir Tarifas
         </button>
       </div>
-      {showExtraFields && (
-        <div className="extra-fields">
-          <div>
-            <label htmlFor="rateName">Valor tarifa:</label>
-            <select
-              id="rateType"
-              value={tipoTarifa}
-              onChange={(e) => setTipoTarifa(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Selecciona el tipo de tarifa
-              </option>
-              <option value="POR_PERSONA">Por persona</option>
-              <option value="POR_PAREJA">Por pareja</option>
-              <option value="POR_GRUPO_6">Por grupo (6)</option>
-              <option value="POR_GRUPO_10">Por grupo (10)</option>
-            </select>
+      {
+        showExtraFields && (
+          <div className="extra-fields">
+            <div>
+              <label htmlFor="rateName">Valor tarifa:</label>
+              <select
+                id="rateType"
+                value={tipoTarifa}
+                onChange={(e) => setTipoTarifa(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Selecciona el tipo de tarifa
+                </option>
+                <option value="POR_PERSONA">Por persona</option>
+                <option value="POR_PAREJA">Por pareja</option>
+                <option value="POR_GRUPO_6">Por grupo (6)</option>
+                <option value="POR_GRUPO_10">Por grupo (10)</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ratePrice">Tarifa por:</label>
+              <input
+                type="number"
+                id="ratePrice"
+                min="1"
+                placeholder="Inserta el precio"
+                required
+              />
+            </div>
+            <div className="centered-button">
+              <button type="button" className="save-rate-button">
+                <FaSave />
+              </button>
+            </div>
           </div>
-          <div>
-            <label htmlFor="ratePrice">Tarifa por:</label>
-            <input
-              type="number"
-              id="ratePrice"
-              min="1"
-              placeholder="Inserta el precio"
-              required
-            />
-          </div>
-          <div className="centered-button">
-            <button type="button" className="save-rate-button">
-              <FaSave />
-            </button>
-          </div>
-        </div>
-      )}
+        )
+      }
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
@@ -657,30 +683,34 @@ const FormBasis = ({ isEditMode = false }) => {
           <option value="RECURRENTE">Recurrente</option>
         </select>
       </div>
-      {eventType === "FECHA_UNICA" && (
-        <div className="container-dates">
-          <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
-          <Horas
-            onHoraInicioChange={handleHoraInicioChange}
-            horaInicio={horaInicio}
-            onHoraFinChange={handleHoraFinChange}
-            horaFin={horaFin}
-          />
-        </div>
-      )}
+      {
+        eventType === "FECHA_UNICA" && (
+          <div className="container-dates">
+            <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
+            <Horas
+              onHoraInicioChange={handleHoraInicioChange}
+              horaInicio={horaInicio}
+              onHoraFinChange={handleHoraFinChange}
+              horaFin={horaFin}
+            />
+          </div>
+        )
+      }
 
-      {eventType === "RECURRENTE" && (
-        <div className="container-days">
-          <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
-          <Horas
-            horaInicio={horaInicio}
-            horaFin={horaFin}
-            onHoraInicioChange={handleHoraInicioChange}
-            onHoraFinChange={handleHoraFinChange}
-          />
-        <DateCalendar  dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType = {eventType} selectedDateEnd ={fechaFinEvento}  />
-        </div>
-      )}
+      {
+        eventType === "RECURRENTE" && (
+          <div className="container-days">
+            <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
+            <Horas
+              horaInicio={horaInicio}
+              horaFin={horaFin}
+              onHoraInicioChange={handleHoraInicioChange}
+              onHoraFinChange={handleHoraFinChange}
+            />
+            <DateCalendar dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType={eventType} selectedDateEnd={fechaFinEvento} />
+          </div>
+        )
+      }
       <div className="container-categories">
         <label htmlFor="category">Categorías:</label>
         {categories.length > 0 &&

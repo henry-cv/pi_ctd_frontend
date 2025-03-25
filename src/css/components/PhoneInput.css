@@ -1,0 +1,41 @@
+.phone-input-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 1rem auto;
+  font-family: sans-serif;
+}
+
+.phone-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dial-code {
+  background-color: var(--Backgroundcolor);
+  border-radius: 10px;
+  border:1px solid var(--black-300);
+  color: var(--black-300);
+  font-size:var(--h5-size);
+  padding: 0.8rem;
+}
+
+input[type="tel"] {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.icon {
+  font-size: 1.2rem;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
