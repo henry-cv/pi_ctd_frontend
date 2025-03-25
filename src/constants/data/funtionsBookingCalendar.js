@@ -56,7 +56,7 @@ export const funtionsBookingCalendar = ({
 
   const { fechas } = extractDates();
   
-  // Efecto para establecer la fecha mostrada cuando está disponible
+  // Efecto para establecer la fecha mostrada cuando está disponible -fecha recurrente-
   useEffect(() => {
     if (availability?.type === "dias" && fechas.length > 0) {
       const primerFecha = new Date(fechas[0]);
@@ -81,7 +81,7 @@ export const funtionsBookingCalendar = ({
     }
   }, [fechas, availability]);
 
-  // Efecto para manejar fechas específicas
+  // Efecto para manejar fechas específicas- fecha unica-
   useEffect(() => {
     setErrors("");
     const today = normalizeDate(new Date());
