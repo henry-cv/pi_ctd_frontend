@@ -11,8 +11,9 @@ const Horas = ({ setHoraInicio, setHoraFin }) => {
   const obtenerHoraActual = () => {
     const ahora = new Date();
     const horas = ahora.getHours().toString().padStart(2, '0');
+    // guarda el valor de horas en formato dos dígitos si hace falta un 0 lo agrega a la izquierda
     const minutos = ahora.getMinutes().toString().padStart(2, '0');
-    return `${horas}:${minutos}`;
+    return `${horas}:${minutos}:00`;
   };
 
   // Efecto para establecer la hora actual al montar el componente
@@ -25,14 +26,15 @@ const Horas = ({ setHoraInicio, setHoraFin }) => {
 
   const handleHoraInicioChange = (event) => {
     const value = `${event.target.value}:00`;
-    console.log("hora Inicio en Horas.jsx ", value);
+    // agregados los :00 de segundos para enviar a estado del padre
+    //console.log("hora Inicio en Horas.jsx: ", value);
     setHoraInicioState(value);
     if (validarHoras(value, horaFinState)) setHoraInicio(value);
   };
 
   const handleHoraFinChange = (event) => {
     const value = `${event.target.value}:00`;
-    console.log("hora Fin en Horas.jsx ", value);
+    //console.log("hora Fin en Horas.jsx: ", value);
     setHoraFinState(value);
     if (validarHoras(horaInicioState, value)) setHoraFin(value);
   };

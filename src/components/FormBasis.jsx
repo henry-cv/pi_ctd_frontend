@@ -132,14 +132,6 @@ const FormBasis = ({ isEditMode = false }) => {
 
   };
 
-  const handleHoraInicioChange = (e) => {
-    setHoraInicio(e.target.value);
-  };
-
-  const handleHoraFinChange = (e) => {
-    setHoraFin(e.target.value);
-  };
-
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
@@ -683,10 +675,8 @@ const FormBasis = ({ isEditMode = false }) => {
           <div className="container-dates">
             <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
             <Horas
-              onHoraInicioChange={handleHoraInicioChange}
-              horaInicio={horaInicio}
-              onHoraFinChange={handleHoraFinChange}
-              horaFin={horaFin}
+              setHoraInicio={setHoraInicio}
+              setHoraFin={setHoraFin}
             />
           </div>
         )
