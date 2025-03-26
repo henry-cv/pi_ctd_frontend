@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import "../css/components/Horas.css";
 import PropTypes from 'prop-types';
 
-const Horas = ({ onHoraInicioChange, onHoraFinChange, horaInicio, horaFin }) => {
-  const [horaInicioState, setHoraInicioState] = useState(horaInicio || "");
-  const [horaFinState, setHoraFinState] = useState(horaFin || "");
+const Horas = ({ setHoraInicio, setHoraFin }) => {
+  const [horaInicioState, setHoraInicioState] = useState("");
+  const [horaFinState, setHoraFinState] = useState("");
   const [error, setError] = useState("");
 
   // Función para obtener la hora actual en formato HH:mm
@@ -17,25 +17,24 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange, horaInicio, horaFin }) => 
 
   // Efecto para establecer la hora actual al montar el componente
   useEffect(() => {
-    if (!horaInicio) {
+    if (!horaInicioState) {
       const horaActual = obtenerHoraActual();
       setHoraInicioState(horaActual);
-      onHoraInicioChange({ target: { value: horaActual, name: 'horaInicio' } });
     }
   }, []);
 
   const handleHoraInicioChange = (event) => {
-    const value = event.target.value;
+    const value = `${event.target.value}:00`;
+    console.log("hora Inicio en Horas.jsx ", value);
     setHoraInicioState(value);
-    onHoraInicioChange(event);
-    validarHoras(value, horaFinState);
+    if (validarHoras(value, horaFinState)) setHoraInicio(value);
   };
 
   const handleHoraFinChange = (event) => {
-    const value = event.target.value;
+    const value = `${event.target.value}:00`;
+    console.log("hora Fin en Horas.jsx ", value);
     setHoraFinState(value);
-    onHoraFinChange(event);
-    validarHoras(horaInicioState, value);
+    if (validarHoras(horaInicioState, value)) setHoraFin(value);
   };
   const validarHoras = (inicio, fin) => {
     if (inicio && fin) {
@@ -47,6 +46,7 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange, horaInicio, horaFin }) => 
     setError("");
     return true;
   };
+
   return (
     <div className="container-hours">
       <label>Hora:</label>
@@ -80,10 +80,8 @@ const Horas = ({ onHoraInicioChange, onHoraFinChange, horaInicio, horaFin }) => 
 
 // Validación de tipos de props
 Horas.propTypes = {
-  onHoraInicioChange: PropTypes.func.isRequired,
-  onHoraFinChange: PropTypes.func.isRequired,
-  horaInicio: PropTypes.string,
-  horaFin: PropTypes.string
+  setHoraInicio: PropTypes.func.isRequired,
+  setHoraFin: PropTypes.func.isRequired,
 };
 
 export default Horas;
