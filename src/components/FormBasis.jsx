@@ -122,16 +122,6 @@ const FormBasis = ({ isEditMode = false }) => {
     setDescripcion(texto);
   };
 
-  const handleDateChange = (e) => {
-    setFechaEvento(e.target.value);
-
-  };
-
-  const handleDateEndChange = (e) => {
-    setFechaFinEvento(e.target.value);
-
-  };
-
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
@@ -673,7 +663,7 @@ const FormBasis = ({ isEditMode = false }) => {
       {
         eventType === "FECHA_UNICA" && (
           <div className="container-dates">
-            <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
+            <DateCalendar eventType={eventType} setFechaEvento={setFechaEvento} setFechaFinEvento={setFechaFinEvento} />
             <Horas
               setHoraInicio={setHoraInicio}
               setHoraFin={setHoraFin}
@@ -687,12 +677,10 @@ const FormBasis = ({ isEditMode = false }) => {
           <div className="container-days">
             <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
             <Horas
-              horaInicio={horaInicio}
-              horaFin={horaFin}
-              onHoraInicioChange={handleHoraInicioChange}
-              onHoraFinChange={handleHoraFinChange}
+              setHoraInicio={setHoraInicio}
+              setHoraFin={setHoraFin}
             />
-            <DateCalendar dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType={eventType} selectedDateEnd={fechaFinEvento} />
+            <DateCalendar eventType={eventType} setFechaEvento={setFechaEvento} setFechaFinEvento={setFechaFinEvento} />
           </div>
         )
       }

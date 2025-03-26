@@ -3,22 +3,33 @@ import "../css/components/DateCalendar.css";
 import PropTypes from 'prop-types';
 import { FaCalendarAlt } from "react-icons/fa";
 
-const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, dateEndChange }) => {
+const DateCalendar = ({ eventType, setFechaEvento, setFechaFinEvento }) => {
   const dateInputRef = useRef(null);
   const dateEndInputRef = useRef(null);
 
-  const [date, setDate] = useState(selectedDate || "");
+  const [dateState, setDateState] = useState("");
   const [errorDate, setErrorDate] = useState("");
 
-  const [dateEnd, setDateEnd] = useState(selectedDateEnd || "");
+  const [dateStateEnd, setDateStateEnd] = useState("");
   const [errorDateEnd, setErrorDateEnd] = useState("");
 
+  const getTodayDate = () => {
+    return new Date().toISOString().split('T')[0];
+    // Obtiene una nueva fecha en formato "2023-03-15T14:30:00.000Z" se le quita la parte de la hora
+  };
+
+  //Para asignar la fecha actual, a la fechaInicio
   useEffect(() => {
+    setDateState(getTodayDate());
+  }, []);
+
+  //Para validar la fecha de fin
+  /* useEffect(() => {
     const today = new Date();
     console.log("today: ", today);
-    const dateStart = new Date(date);
+    const dateStart = new Date(dateState);
     console.log("dateStart: ", dateStart);
-    const dateEndValue = new Date(dateEnd);
+    const dateEndValue = new Date(dateStateEnd);
     console.log("dateEndValue: ", dateEndValue);
 
     if (dateStart < today) {
@@ -32,7 +43,38 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
     } else {
       setErrorDateEnd(null);
     }
-  }, [date, dateEnd]);
+  }, [dateState, dateStateEnd]); */
+
+  // Función para validar la fecha de Inicio
+  const validateStartDate = (startDate) => {
+    const today = new Date();
+    const startDateValue = new Date(startDate);
+    if (startDateValue <= today) {
+      return 'Fecha de inicio debe ser igual o posterior al día de hoy';
+    }
+    return null;
+  };
+  //Use Effect para validar la fecha de Inicio
+  useEffect(() => {
+    const error = validateStartDate(dateState);
+    setErrorDateEnd(error);
+  }, [dateState]);
+
+  // Función para validar la fecha de Fin
+  const validateEndDate = (endDate) => {
+    const today = new Date();
+    const endDateValue = new Date(endDate);
+    if (endDateValue <= today) {
+      return 'La fecha de fin debe ser posterior al día de hoy';
+    }
+    return null;
+  };
+
+  //Use Effect para validar la fecha de Fin
+  useEffect(() => {
+    const error = validateEndDate(dateStateEnd);
+    setErrorDateEnd(error);
+  }, [dateStateEnd]);
   const handleCalendarClick = (ref) => {
     ref.current?.click();
     //refactorizado usando el operador existencial ?.
@@ -41,16 +83,15 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
   const handleDateEndChange = (event) => {
     const dateValue = event.target.value;
     console.log("Fecha seleccionada Fin, en componente DateCalendar: ", dateValue);
-
-    setDateEnd(dateValue);
-    dateEndChange(event);
+    setDateStateEnd(dateValue);
+    if (validateEndDate(dateValue)) setFechaFinEvento(dateValue);
   };
 
   const handleDateChange = (event) => {
     const dateValue = event.target.value;
-    console.log("Fecha seleccionada Inicio: ", dateValue);
-    setDate(dateValue);
-    dateChange(event);
+    console.log("Fecha seleccionada Inicio, en componente DateCalendar: ", dateValue);
+    setDateState(dateValue);
+    if (validateEndDate(dateValue)) setFechaEvento(dateValue);
   };
 
   return (
@@ -60,8 +101,8 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
         <label htmlFor="datePicker">Fecha {eventType === "RECURRENTE" && "Inicio"}:</label>
         <div className="date-picker-container" onClick={() => handleCalendarClick(dateInputRef)}>
           <FaCalendarAlt className="calendar-icon" />
-          {date ? (
-            <p className="date-placeholder">{date}</p>
+          {dateState ? (
+            <p className="date-placeholder">{dateState}</p>
           ) : (
             <p className="date-placeholder">Ingrese fechas disponibles</p>
           )}
@@ -73,7 +114,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
             required
             ref={dateInputRef}
             onChange={(e) => handleDateChange(e)}
-            value={date}
+            value={dateState}
           />
           {errorDate && <p className="error-message">{errorDate}</p>}
 
@@ -84,8 +125,8 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
           <label htmlFor="datePickerEnd">Fecha Fin:</label>
           <div className="date-picker-container" onClick={() => handleCalendarClick(dateEndInputRef)}>
             <FaCalendarAlt className="calendar-icon" />
-            {dateEnd ? (
-              <p className="date-placeholder">{dateEnd}</p>
+            {dateStateEnd ? (
+              <p className="date-placeholder">{dateStateEnd}</p>
             ) : (
               <p className="date-placeholder">Ingrese fechas disponibles</p>
             )}
@@ -97,7 +138,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
               required
               ref={dateEndInputRef}
               onChange={(e) => handleDateEndChange(e)}
-              value={dateEnd}
+              value={dateStateEnd}
             />
           </div>
           {errorDateEnd && <p className="error-message">{errorDateEnd}</p>}
@@ -111,11 +152,9 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
 };
 
 DateCalendar.propTypes = {
-  dateChange: PropTypes.func.isRequired,
-  dateEndChange: PropTypes.func,
-  selectedDate: PropTypes.string,
-  selectedDateEnd: PropTypes.string,
   eventType: PropTypes.string,
+  setFechaEvento: PropTypes.func,
+  setFechaFinEvento: PropTypes.func,
 };
 
 export default DateCalendar;
