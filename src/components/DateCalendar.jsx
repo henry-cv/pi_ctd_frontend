@@ -15,11 +15,11 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
 
   useEffect(() => {
     const today = new Date();
-    console.log("today", today);
+    console.log("today: ", today);
     const dateStart = new Date(date);
-    console.log("dateStart", dateStart);
+    console.log("dateStart: ", dateStart);
     const dateEndValue = new Date(dateEnd);
-    console.log("dateEndValue", dateEndValue);
+    console.log("dateEndValue: ", dateEndValue);
 
     if (dateStart < today) {
       setErrorDate('La fecha de inicio no puede ser anterior al día de hoy');
@@ -40,7 +40,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
 
   const handleDateEndChange = (event) => {
     const dateValue = event.target.value;
-    console.log("Fecha seleccionada, en componente DateCalendar: ", dateValue);
+    console.log("Fecha seleccionada Fin, en componente DateCalendar: ", dateValue);
 
     setDateEnd(dateValue);
     dateEndChange(event);
@@ -48,8 +48,7 @@ const DateCalendar = ({ dateChange, selectedDate, eventType, selectedDateEnd, da
 
   const handleDateChange = (event) => {
     const dateValue = event.target.value;
-    console.log("Fecha seleccionada date:", dateValue);
-
+    console.log("Fecha seleccionada Inicio: ", dateValue);
     setDate(dateValue);
     dateChange(event);
   };
