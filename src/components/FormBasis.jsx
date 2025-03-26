@@ -164,21 +164,16 @@ const FormBasis = ({ isEditMode = false }) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
     const categoriasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCategoriasIds(categoriasIdsArray);
-    console.log("Categorías seleccionadas:", categoriasIdsArray);
+    //console.log("Categorías seleccionadas:", categoriasIdsArray);
   };
   const handleCaracteristicasChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
     const caracteristicasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCaracteristicasIds(caracteristicasIdsArray);
-    console.log("Características seleccionadas:", caracteristicasIdsArray);
+    //console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
   const handleCountryChange = (e) => {
-    console.log("valor de e.target en handleCountryChange")
-    console.log(e.target)
-    console.log("valor de e.target.value en handleCountryChange")
-    console.log(e.target.value)
     const country = countries.find(c => c.name === e.target.value);
-    console.log("Country encontrado: ", country)
     setSelectedCountry(country);
     setCountryValue(country.name);
     setCountryDialCode(country.dial_code);
@@ -213,7 +208,7 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCharacteristics(data);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.error("Error cargando características:", error);
       } finally {
@@ -236,7 +231,7 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCountries(data.data);
-        console.log("Countries", data.data);
+        //console.log("Countries", data.data);
       } catch (error) {
         console.error("Error cargando paises:", error);
       } finally {
@@ -253,7 +248,7 @@ const FormBasis = ({ isEditMode = false }) => {
       try {
         if (countryValue == "")
           return;
-        console.log("Selected Country", countryValue);
+        //console.log("Selected Country", countryValue);
 
         const response = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
           method: "POST",
@@ -319,8 +314,8 @@ const FormBasis = ({ isEditMode = false }) => {
           // Cargar imágenes existentes
           const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
           setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
-          console.log("data activityID obtenida:");
-          console.log(data);
+          //console.log("data activityID obtenida:");
+          //console.log(data);
         } catch (error) {
           console.error("Error cargando actividad:", error);
           Swal.fire({
