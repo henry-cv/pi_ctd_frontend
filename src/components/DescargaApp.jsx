@@ -1,8 +1,8 @@
 import '../css/components/DescargaApp.css';
 
-const DescargaApp = () => {
+const DescargaApp = ( { forceMobileStyle = false ,positionOnOff=false }) => {
   return (
-    <div className="layout-main" >
+    <div className={`layout-main ${forceMobileStyle ? 'force-mobile' : ''} ${positionOnOff ? 'position' : ''}`}>
 
         <h1 className="title">¡Descarga la App!</h1>
         <p className="subtitle">Comienza tu aventura hoy.</p>

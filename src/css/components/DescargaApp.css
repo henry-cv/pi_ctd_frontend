@@ -15,17 +15,6 @@
     padding: 112px 225px;
     
   }
-/* 
-  .layout-inner {
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    
-  } */
-
 
   .title {
     font-family: 'Archivo', sans-serif;
@@ -116,7 +105,26 @@
     padding: 89px 36px;
   }
 
+
+
 }
+
+.force-mobile {
+  position: static !important;
+  background-image: url('/public/reserve_background_SM.webp');
+  width:  100% !important;
+  max-width: 450px;
+  height: 420px !important;
+  padding: 89px 36px;
+}
+
+.position {
+  position: static !important;
+  width: 100% !important;
+  margin-top: 20px;
+ 
+}
+
 
 
 

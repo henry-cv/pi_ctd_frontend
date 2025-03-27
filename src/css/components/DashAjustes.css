@@ -9,7 +9,7 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
+
   }
   
   .ajustes-item {
@@ -67,7 +67,7 @@
     background-color: var(--blue-base);
     color: white;
     border-radius: 10px;
-    max-width: 600px;
+
   }
   
   /* Modo oscuro */
