@@ -333,7 +333,8 @@ const FormBasis = ({ isEditMode = false }) => {
           const data = await response.json();
           console.log("Disponibilidad cargada:");
           console.log(data);
-
+          console.log("fecha1:", data[0]?.fechaEvento);
+          console.log("fecha2:", data[1]?.fechaEvento);
           // Actualizar el estado con los datos extraídos
           setQuota(data[0]?.cuposTotales || null);
           setFechaEvento(data[0]?.fechaEvento || null);

@@ -8,13 +8,13 @@ const Horas = ({ horaInicio, setHoraInicio, setHoraFin, horaFin }) => {
   const [error, setError] = useState("");
 
   // Función para obtener la hora actual en formato HH:mm
-  const obtenerHoraActual = () => {
+  /* const obtenerHoraActual = () => {
     const ahora = new Date();
     const horas = ahora.getHours().toString().padStart(2, '0');
     // guarda el valor de horas en formato dos dígitos si hace falta un 0 lo agrega a la izquierda
     const minutos = ahora.getMinutes().toString().padStart(2, '0');
     return `${horas}:${minutos}:00`;
-  };
+  }; */
 
   // Sincroniza los valores iniciales cuando cambian (por ejemplo, al editar)
   useEffect(() => {
@@ -23,12 +23,12 @@ const Horas = ({ horaInicio, setHoraInicio, setHoraFin, horaFin }) => {
   }, [horaInicio, horaFin]);
 
   // Establece la hora actual al montar el componente si no hay valores iniciales
-  useEffect(() => {
-    if (!horaInicioState && !horaFinState) {
-      const horaActual = obtenerHoraActual();
-      setHoraInicioState(horaActual);
-    }
-  }, [horaInicioState, horaFinState]);
+  /*  useEffect(() => {
+     if (!horaInicioState && !horaFinState) {
+       const horaActual = obtenerHoraActual();
+       setHoraInicioState(horaActual);
+     }
+   }, [horaInicioState, horaFinState]); */
 
   // Maneja el cambio de la hora de inicio
   const handleHoraInicioChange = (event) => {
