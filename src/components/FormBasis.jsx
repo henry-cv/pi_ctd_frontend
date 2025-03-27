@@ -282,14 +282,9 @@ const FormBasis = ({ isEditMode = false }) => {
           setCountryValue(data.pais);
           setCity(data.ciudad);
           setAddress(data.direccion);
-          setQuota(data.cuposTotales);
           setHoraInicio(data.horaInicio);
           setHoraFin(data.horaFin);
           setDiasDisponible(data.diasDisponible || []);
-          const loadedEventDate = new Date(data.fechaEvento);
-          setFechaEvento(loadedEventDate || "");
-          const loadedEventEndDate = new Date(data.fechaFinEvento);
-          setFechaFinEvento(loadedEventEndDate || "");
           setSelectedImages(data.productoImagenesSalidaDto || []);
           //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
 
@@ -316,10 +311,45 @@ const FormBasis = ({ isEditMode = false }) => {
         }
       }
     };
-
     fetchActivity();
   }, [activityId, navigate]);
 
+  //UseEffect para consultar la disponibilidad por activityId
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      if (activityId) {
+        setLoading(true);
+        try {
+          const response = await fetch(`/api/disponibilidad/${activityId}`);
+          if (!response.ok) {
+            throw new Error(`Error al cargar la disponibilidad: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log("Disponibilidad cargada:");
+          console.log(data);
+
+          // Actualizar el estado con los datos extraídos
+          setQuota(data[0]?.cuposTotales || null);
+          setFechaEvento(data[0]?.fechaEvento || null);
+          setFechaFinEvento(data[1]?.fechaEvento || null);
+
+        } catch (error) {
+          console.error("Error cargando disponibilidad:", error);
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la disponibilidad.",
+            icon: "error",
+            customClass: {
+              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+            }
+          });
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchAvailability();
+  }, [activityId]);
   // Función handleSubmit dentro de FormBasis.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
