@@ -96,7 +96,7 @@ const FormBasis = ({ isEditMode = false }) => {
   };
 
   const handleAddress = (e) => {
-    const maximo = 60;
+    const maximo = 150;
     const texto = e.target.value;
     if (!validarAreaTexto(texto, maximo)) {
       setAddressError(
@@ -110,7 +110,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const handleDescriptionChange = (e) => {
     const texto = e.target.value;
-    const maximo = 200;
+    const maximo = 100;
     if (!validarAreaTexto(texto, maximo)) {
       setErrorDescripcion(
         `La descripción debe tener entre 4 y máximo ${maximo} carácteres`
