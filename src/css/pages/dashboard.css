@@ -313,6 +313,8 @@ button:focus-visible {
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   margin-top: 30px;
+  border-bottom: 1px solid var(--Icons-gray-opacity) ;
+  padding-bottom: 10px;
 }
 
 .RegisterCategory {
@@ -320,6 +322,8 @@ button:focus-visible {
   grid-template-columns: 2fr 1fr;
   align-items: center;
   margin-top: 30px;
+  border-bottom: 1px solid var(--Icons-gray-opacity) ;
+  padding-bottom: 10px;
 }
 
 .activitieImg {

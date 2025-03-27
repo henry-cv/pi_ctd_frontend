@@ -14,11 +14,7 @@
   width:min(80%, 1142px);
   
 }
-/* 
-.content-wrapper {
-  width:min(90%, 1142px);
-  margin: 1rem auto;
-} */
+
 
 
 /* Sección de galería */
@@ -30,12 +26,7 @@
   overflow: visible;
 }
 
-/* Asegurar que el content-wrapper se aplica correctamente */
-/* .gallery-section .content-wrapper {
-  width: 90%;
-  max-width: 1140px;
-  margin: 0 auto;
-} */
+
 
 .gallery-grid {
   display: grid;
@@ -134,15 +125,6 @@ max-height: 500px;
   object-fit: cover; /* Asegura que la imagen cubra todo el espacio */
 }
 
-/* .thumbnail :hover::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-} */
 
 .with-overlay {
   position: relative;
@@ -437,6 +419,16 @@ max-height: 500px;
   padding: 3rem 1rem;
 }
 
+.contact-detail{
+  color: var(--Font-Background);
+  padding: 0.5rem 0;
+}
+
+.contact-detail p{
+  font-size: var(--h5-size);
+  margin-bottom: 1rem;
+}
+
 /* Añadimos estilos para los botones de navegación móvil */
 .mobile-gallery-nav {
   display: none; /* Oculto por defecto, visible solo en móvil */
@@ -536,59 +528,6 @@ max-height: 500px;
   top: 15px;
 }
 /* Media queries */
-/* @media (max-width: 1200px) {
-  .gallery-section {
-    width: 90%;
-  }
-
-  .gallery-grid {
-    height: 450px;
-  }
-
-  .activity-detail-title h1 {
-    font-size: 2.2rem;
-  }
-
-  .content-wrapper {
-    width: 90%;
-  }
-
-  .thumbnail {
-    flex: 1; 
-  }
-} */
-
-/* @media (max-width: 992px) {
-
-
-  .gallery-grid {
-    height: 400px;
-  }
-
-  .activity-detail-title h1 {
-    font-size: 2rem;
-  }
-
-  .content-wrapper {
-    width: 90%;
-  }
-
-  .description-section p {
-    max-height: 6em;
-  }
-
-  .booking-card {
-    padding: 1.5rem;
-  }
-
-  .price {
-    font-size: 1.8rem;
-  }
-
-  .thumbnail {
-    flex: 1; 
-  }
-} */
 
 @media (max-width: 768px) {
 
@@ -621,51 +560,7 @@ max-height: 500px;
 
   }
 
-    /* .main-image img, .main-image {
-    max-width: 586px;
-  }
-
-  .gallery-section {
-    width: 90%;
-  }
-
-  .gallery-grid {
-    grid-template-columns: 2fr 1fr;
-    height: 350px;
-  }
-
-  .detail-grid {
-    grid-template-columns: 1.8fr 1.2fr;
-    gap: 1.5rem;
-  }
-
-  .activity-detail-title h1 {
-    font-size: 1.8rem;
-  }
-
-  .content-wrapper {
-    width: 90%;
-  }
-
-  .description-section p {
-    max-height: 7.5em;
-  }
-
-  .booking-card {
-    padding: 1.2rem;
-  }
-
-  .price {
-    font-size: 1.6rem;
-  }
-
-  .info-card {
-    padding: 1.2rem;
-  }
-
-  .thumbnail {
-    flex: 1; 
-  } */
+ 
 }
 
 @media (max-width: 480px) {
@@ -709,6 +604,18 @@ max-height: 500px;
     background-color: var(--black-400);
 
   }
+
+  .contact-detail p{
+    text-align: center;
+  }
+
+  .contact-detail{
+    width: 100%;
+  }
+  
+  .btn_contact{
+    width: 100%;
+  }
   
   .booking-column {
     display: none;
@@ -729,11 +636,6 @@ max-height: 500px;
 
     margin: 0 2rem;}
   
-  /* .gallery-section .content-wrapper {
-    width: 100%;
-    max-width: none;
-    padding: 0;
-  } */
   
   .mobile-gallery-nav {
     display: flex;
