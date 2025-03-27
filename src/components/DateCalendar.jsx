@@ -12,71 +12,50 @@ const DateCalendar = ({ eventType, setFechaEvento, setFechaFinEvento }) => {
 
   const [dateStateEnd, setDateStateEnd] = useState("");
   const [errorDateEnd, setErrorDateEnd] = useState("");
+  const TODAY = new Date().toISOString().split('T')[0];
 
-  const getTodayDate = () => {
-    return new Date().toISOString().split('T')[0];
-    // Obtiene una nueva fecha en formato "2023-03-15T14:30:00.000Z" se le quita la parte de la hora
-  };
-
-  //Para asignar la fecha actual, a la fechaInicio
   useEffect(() => {
-    setDateState(getTodayDate());
+    setDateState(TODAY);
   }, []);
 
-  // Función para validar la fecha de Inicio
-  const validateStartDate = (startDate) => {
-    const today = new Date();
-    const startDateValue = new Date(startDate);
-    if (startDateValue < today) {
-      return 'Fecha de inicio debe ser igual o posterior al día de hoy';
+  const isValidDate = (date, type) => {
+    const dateValue = new Date(date);
+    if (type === 'start') {
+      return dateValue < new Date(TODAY) ? 'Fecha de inicio debe ser igual o posterior al día de hoy' : null;
+    } else if (type === 'end') {
+      return dateValue <= new Date(TODAY) || dateValue <= new Date(dateState) ? 'La fecha de fin debe ser posterior al día de inicio' : null;
     }
-    return null;
   };
-  //Use Effect para validar la fecha de Inicio
+
   useEffect(() => {
-    const error = validateStartDate(dateState);
+    const error = isValidDate(dateState, 'start');
     setErrorDate(error);
   }, [dateState]);
 
-  // Función para validar la fecha de Fin
-  const validateEndDate = (endDate) => {
-    const today = new Date();
-    const endDateValue = new Date(endDate);
-    if (endDateValue <= today) {
-      return 'La fecha de fin debe ser posterior al día de hoy';
-    }
-    return null;
-  };
-  //Use Effect para validar la fecha de Fin
   useEffect(() => {
-    const error = validateEndDate(dateStateEnd);
+    const error = isValidDate(dateStateEnd, 'end');
     setErrorDateEnd(error);
-  }, [dateStateEnd]);
+  }, [dateStateEnd, dateState]);
 
-  //Manejador de click en la ref de calendar
   const handleCalendarClick = (ref) => {
     ref.current?.click();
-    //refactorizado usando el operador existencial ?.
   };
 
   const handleDateEndChange = (event) => {
     const dateValue = event.target.value;
-    console.log("Fecha seleccionada Fin, en componente DateCalendar: ", dateValue);
     setDateStateEnd(dateValue);
-    if (validateEndDate(dateValue)) {
+    if (!isValidDate(dateValue, 'end')) {
       setFechaFinEvento(dateValue);
-    };
+    }
   };
 
   const handleDateChange = (event) => {
     const dateValue = event.target.value;
-    console.log("Fecha seleccionada Inicio, en componente DateCalendar: ", dateValue);
     setDateState(dateValue);
-    if (validateEndDate(dateValue)) {
+    if (!isValidDate(dateValue, 'start')) {
       setFechaEvento(dateValue);
     }
   };
-
   return (
     <div className={`${eventType ? 'current-dates' : ''}`}>
 

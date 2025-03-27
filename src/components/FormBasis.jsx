@@ -264,6 +264,8 @@ const FormBasis = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
+          console.log("Actividad cargada:");
+          console.log(data);
           setTitulo(data.nombre);
           setDescripcion(data.descripcion);
           setValorTarifa(data.valorTarifa);
@@ -284,7 +286,10 @@ const FormBasis = ({ isEditMode = false }) => {
           setHoraInicio(data.horaInicio);
           setHoraFin(data.horaFin);
           setDiasDisponible(data.diasDisponible || []);
-          setFechaEvento(data.fechaEvento || "");
+          const loadedEventDate = new Date(data.fechaEvento);
+          setFechaEvento(loadedEventDate || "");
+          const loadedEventEndDate = new Date(data.fechaFinEvento);
+          setFechaFinEvento(loadedEventEndDate || "");
           setSelectedImages(data.productoImagenesSalidaDto || []);
           //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
 
@@ -406,7 +411,7 @@ const FormBasis = ({ isEditMode = false }) => {
       direccion: address,
       cuposTotales: quota
     };
-    //console.log("Datos a enviar:", JSON.stringify(productoData));
+    console.log("Datos a enviar:", JSON.stringify(productoData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
