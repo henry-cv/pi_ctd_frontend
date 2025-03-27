@@ -30,7 +30,7 @@ const DateCalendar = ({ eventType, setFechaEvento, setFechaFinEvento }) => {
     if (startDateValue < today) {
       return 'Fecha de inicio debe ser igual o posterior al día de hoy';
     }
-    return "";
+    return null;
   };
   //Use Effect para validar la fecha de Inicio
   useEffect(() => {
@@ -45,7 +45,7 @@ const DateCalendar = ({ eventType, setFechaEvento, setFechaFinEvento }) => {
     if (endDateValue <= today) {
       return 'La fecha de fin debe ser posterior al día de hoy';
     }
-    return "";
+    return null;
   };
   //Use Effect para validar la fecha de Fin
   useEffect(() => {

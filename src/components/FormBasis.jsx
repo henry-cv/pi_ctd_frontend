@@ -8,7 +8,7 @@ import { FaSave } from "react-icons/fa";
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
-import { validarTexto, validarAreaTexto, longitudPermitida } from "../utils/utils";
+import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -43,7 +43,6 @@ const FormBasis = ({ isEditMode = false }) => {
     code: "US",
     dial_code: "+1"
   },);
-  const [countryDialCode, setCountryDialCode] = useState("+1");
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
   //const [phoneNumber, setPhoneNumber] = useState("");
@@ -99,7 +98,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleAddress = (e) => {
     const maximo = 60;
     const texto = e.target.value;
-    if (!longitudPermitida(texto, maximo)) {
+    if (!validarAreaTexto(texto, maximo)) {
       setAddressError(
         `Dirección debe tener máximo ${maximo} carácteres.`
       );
@@ -125,13 +124,13 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
-  const ensureTimeHasSeconds = (timeString) => {
+  /* const ensureTimeHasSeconds = (timeString) => {
     if (!timeString) return timeString;
     const colonCount = (timeString.match(/:/g) || []).length;
     if (colonCount === 2) return timeString;
 
     return `${timeString}:00`;
-  };
+  }; */
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
@@ -158,7 +157,6 @@ const FormBasis = ({ isEditMode = false }) => {
     const country = countries.find(c => c.name === e.target.value);
     setSelectedCountry(country);
     setCountryValue(country.name);
-    setCountryDialCode(country.dial_code);
   };
   // useEffect para traer las categorias existentes
   useEffect(() => {
@@ -222,7 +220,6 @@ const FormBasis = ({ isEditMode = false }) => {
     };
     fetchCountries();
   }, []);
-
 
   // GetCities
   useEffect(() => {
@@ -328,7 +325,7 @@ const FormBasis = ({ isEditMode = false }) => {
     const method = isEditMode ? "PUT" : "POST";
 
     // Validaciones
-    if (errorTitulo || errorDescripcion) {
+    /* if (errorTitulo || errorDescripcion) {
       alert("Por favor, corrige los errores en el formulario antes de enviar.");
       return;
     }
@@ -346,6 +343,36 @@ const FormBasis = ({ isEditMode = false }) => {
     if (!isEditMode && selectedImages.length === 0) {
       alert("Debe seleccionar al menos una imagen");
       return;
+    } */
+    const showErrorAlert = (title, text) => {
+      Swal.fire({
+        title,
+        text,
+        icon: "error",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+        }
+      });
+    };
+
+    if (errorTitulo || errorDescripcion) {
+      showErrorAlert("Error", "Por favor, corrige los errores en el formulario antes de enviar.");
+      return;
+    }
+
+    if (tipoTarifa === "") {
+      showErrorAlert("Error", "Debe seleccionar un tipo de tarifa");
+      return;
+    }
+
+    if (isNaN(valorTarifa) || valorTarifa <= 0) {
+      showErrorAlert("Error", "El valor de la tarifa debe ser un número positivo");
+      return;
+    }
+
+    if (!isEditMode && selectedImages.length < 5) {
+      showErrorAlert("Error", "Debe seleccionar al menos 5 imagenes");
+      return;
     }
 
     // Prevenir múltiples envíos
@@ -353,7 +380,10 @@ const FormBasis = ({ isEditMode = false }) => {
 
     // Crear FormData para enviar archivos y datos
     const formData = new FormData();
-
+    console.log(`hora Inicio previa productoData: -->${horaInicio}<--`);
+    console.log(`Fecha Inicio previa productoData: -->${fechaEvento}<--`);
+    console.log(`hora Fin previa productoData: -->${horaFin}<--`);
+    console.log(`Fecha Fin previa productoData: -->${fechaFinEvento}<--`);
     // Datos del producto como JSON string
     const productoData = {
       nombre: titulo,
@@ -363,12 +393,12 @@ const FormBasis = ({ isEditMode = false }) => {
       categoriasIds: categoriasIds, // Ya son números según tu payload
       caracteristicasIds: caracteristicasIds, // Ya son números según tu payload
       idioma,
-      horaInicio: ensureTimeHasSeconds(horaInicio),
-      horaFin: ensureTimeHasSeconds(horaFin),
+      horaInicio,
+      horaFin,
       tipoEvento: eventType,
       diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: fechaEvento,
-      fechaFinEvento: fechaEvento || eventType === "FECHA_UNICA" ? fechaFinEvento : null,
+      fechaEvento,
+      fechaFinEvento,
       politicaPagos: paymentPolicyValue,
       politicaCancelacion: cancellationPolicyValue,
       pais: countryValue,
