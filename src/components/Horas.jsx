@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import "../css/components/Horas.css";
 import PropTypes from 'prop-types';
 
-const Horas = ({ setHoraInicio, setHoraFin }) => {
-  const [horaInicioState, setHoraInicioState] = useState("");
-  const [horaFinState, setHoraFinState] = useState("");
+const Horas = ({ horaInicio, setHoraInicio, setHoraFin, horaFin }) => {
+  const [horaInicioState, setHoraInicioState] = useState(horaInicio || "");
+  const [horaFinState, setHoraFinState] = useState(horaFin || "");
   const [error, setError] = useState("");
 
   // Función para obtener la hora actual en formato HH:mm
@@ -16,49 +16,59 @@ const Horas = ({ setHoraInicio, setHoraFin }) => {
     return `${horas}:${minutos}:00`;
   };
 
-  // Efecto para establecer la hora actual al montar el componente
+  // Sincroniza los valores iniciales cuando cambian (por ejemplo, al editar)
   useEffect(() => {
-    if (!horaInicioState) {
+    setHoraInicioState(horaInicio || "");
+    setHoraFinState(horaFin || "");
+  }, [horaInicio, horaFin]);
+
+  // Establece la hora actual al montar el componente si no hay valores iniciales
+  useEffect(() => {
+    if (!horaInicioState && !horaFinState) {
       const horaActual = obtenerHoraActual();
       setHoraInicioState(horaActual);
     }
-  }, []);
+  }, [horaInicioState, horaFinState]);
 
+  // Maneja el cambio de la hora de inicio
   const handleHoraInicioChange = (event) => {
-    const value = `${event.target.value}:00`;
-    // agregados los :00 de segundos para enviar a estado del padre
-    //console.log("hora Inicio en Horas.jsx: ", value);
+    const value = `${event.target.value}:00`; // Agrega los segundos al valor
     setHoraInicioState(value);
-    if (validarHoras(value, horaFinState)) setHoraInicio(value);
+    if (validarHoras(value, horaFinState)) {
+      setHoraInicio(value); // Actualiza el estado del padre
+    }
   };
 
+  // Maneja el cambio de la hora de fin
   const handleHoraFinChange = (event) => {
-    const value = `${event.target.value}:00`;
-    //console.log("hora Fin en Horas.jsx: ", value);
+    const value = `${event.target.value}:00`; // Agrega los segundos al valor
     setHoraFinState(value);
-    if (validarHoras(horaInicioState, value)) setHoraFin(value);
+    if (validarHoras(horaInicioState, value)) {
+      setHoraFin(value); // Actualiza el estado del padre
+    }
   };
+
+  // Valida que la hora de inicio sea menor que la de fin
   const validarHoras = (inicio, fin) => {
     if (inicio && fin) {
       if (inicio >= fin) {
-        setError("La hora de fin no puede ser menor o igual a la hora de inicio");
+        setError("La hora de fin no puede ser menor o igual a la hora de inicio.");
         return false;
       }
     }
-    setError("");
+    setError(""); // Limpia el error si todo es válido
     return true;
   };
-
   return (
     <div className="container-hours">
       <label>Hora:</label>
-      <div className="time-inputs"  >
+      <div className="time-inputs">
         <input
           type="time"
           id="startTime"
           name="horaInicio"
           className="time-input"
-          value={horaInicioState}
+          value={horaInicioState.slice(0, 5)} // Muestra solo HH:mm
           onChange={handleHoraInicioChange}
           required
         />
@@ -68,20 +78,20 @@ const Horas = ({ setHoraInicio, setHoraFin }) => {
           id="endTime"
           name="horaFin"
           className="time-input"
-          value={horaFinState}
+          value={horaFinState.slice(0, 5)} // Muestra solo HH:mm
           onChange={handleHoraFinChange}
           required
         />
       </div>
-      {error && (
-        <p className="time-error">{error}</p>
-      )}
+      {error && <p className="time-error">{error}</p>}
     </div>
   );
 };
 
 // Validación de tipos de props
 Horas.propTypes = {
+  horaInicio: PropTypes.string,
+  horaFin: PropTypes.string,
   setHoraInicio: PropTypes.func.isRequired,
   setHoraFin: PropTypes.func.isRequired,
 };

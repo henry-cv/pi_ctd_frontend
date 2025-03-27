@@ -264,46 +264,51 @@ const FormBasis = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
-          console.log("Actividad cargada:");
-          console.log(data);
-          setTitulo(data.nombre);
-          setDescripcion(data.descripcion);
-          setValorTarifa(data.valorTarifa);
+          console.log("Actividad cargada:", data);
 
-          const catIds = data.categorias ? data.categorias.map(cat => cat.id) : [];
+          // Asignación de estados
+          setTitulo(data.nombre || "");
+          setDescripcion(data.descripcion || "");
+          setValorTarifa(data.valorTarifa || "");
+
+          const catIds = data.categorias ? data.categorias.map((cat) => cat.id) : [];
           setCategoriasIds(catIds);
-          const charIds = data.caracteristicas ? data.caracteristicas.map(char => char.id) : [];
+
+          const charIds = data.caracteristicas ? data.caracteristicas.map((char) => char.id) : [];
           setCaracteristicasIds(charIds);
 
-          setTipoTarifa(data.tipoTarifa);
-          setIdioma(data.idioma);
-          setPaymentPolicy(data.politicaPagos);
-          setCancellationPolicy(data.politicaCancelacion);
-          setCountryValue(data.pais);
-          setCity(data.ciudad);
-          setAddress(data.direccion);
-          setHoraInicio(data.horaInicio);
-          setHoraFin(data.horaFin);
+          setTipoTarifa(data.tipoTarifa || "");
+          setIdioma(data.idioma || "");
+          setPaymentPolicy(data.politicaPagos || "");
+          setCancellationPolicy(data.politicaCancelacion || "");
+          setCountryValue(data.pais || "");
+          setCity(data.ciudad || "");
+          setAddress(data.direccion || "");
+
+          // Asegurar formato correcto de las horas
+          const horaInicioFormatted = data.horaInicio ? data.horaInicio.slice(0, 5) : "";
+          const horaFinFormatted = data.horaFin ? data.horaFin.slice(0, 5) : "";
+
+          setHoraInicio(horaInicioFormatted);
+          setHoraFin(horaFinFormatted);
+
           setDiasDisponible(data.diasDisponible || []);
           setSelectedImages(data.productoImagenesSalidaDto || []);
-          //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
-
-          setEventType(data.eventType || data.tipoEvento);
 
           // Cargar imágenes existentes
-          const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
+          const images = data.productoImagenesSalidaDto || [];
           setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
-          //console.log("data activityID obtenida:");
-          //console.log(data);
+
+          setEventType(data.eventType || data.tipoEvento || "");
         } catch (error) {
           console.error("Error cargando actividad:", error);
           Swal.fire({
             title: "Error",
-            text: "No se pudo cargar la actividad.",
+            text: "No se pudo cargar la actividad. Por favor, inténtalo nuevamente.",
             icon: "error",
             customClass: {
               popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
-            }
+            },
           });
           navigate("/administrador/actividades");
         } finally {
@@ -311,8 +316,9 @@ const FormBasis = ({ isEditMode = false }) => {
         }
       }
     };
+
     fetchActivity();
-  }, [activityId, navigate]);
+  }, [activityId]); // Eliminada la dependencia innecesaria `navigate`
 
   //UseEffect para consultar la disponibilidad por activityId
   useEffect(() => {
