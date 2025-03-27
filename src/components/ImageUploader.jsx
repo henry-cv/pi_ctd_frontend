@@ -6,6 +6,7 @@ import { FaUpload, FaTrash } from "react-icons/fa";
 const ImageUploader = ({ onImagesSelected }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
+  //const [quantityError, setQuantityError] = useState("")
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
