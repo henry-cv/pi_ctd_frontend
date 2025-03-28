@@ -859,7 +859,7 @@ const FormBasis = ({ isEditMode = false }) => {
       {/* Componente ImageUploader actualizado */}
 
       <div className="container-images">
-        {isEditMode && existingImages.length > 0 && (
+        {isEditMode && existingImages.length > 0 && existingImages.every(img => img.url) && (
           <>
             <label>Imágenes Existentes:</label>
             <div className="existing-images">
