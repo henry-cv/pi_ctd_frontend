@@ -377,7 +377,26 @@ const FormBasis = ({ isEditMode = false }) => {
 
     const method = isEditMode ? "PUT" : "POST";
 
-    //mensajes de error
+    // Validaciones
+    /* if (errorTitulo || errorDescripcion) {
+      alert("Por favor, corrige los errores en el formulario antes de enviar.");
+      return;
+    }
+
+    if (tipoTarifa === "") {
+      alert("Debe seleccionar un tipo de tarifa");
+      return;
+    }
+
+    if (isNaN(valorTarifa) || valorTarifa <= 0) {
+      alert("El valor de la tarifa debe ser un número positivo");
+      return;
+    }
+
+    if (!isEditMode && selectedImages.length === 0) {
+      alert("Debe seleccionar al menos una imagen");
+      return;
+    } */
     const showErrorAlert = (title, text) => {
       Swal.fire({
         title,
@@ -452,28 +471,14 @@ const FormBasis = ({ isEditMode = false }) => {
       "producto",
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
-    console.log("Antes de agregar las selectedImages: ");
-    console.log(selectedImages);
     // Agregar cada imagen como una parte separada
     //Está es la válida
-    if (!isEditMode && selectedImages.length > 5) {
-      selectedImages.forEach((file) => {
-        formData.append("imagenes", file);
-      });
-    }
-    /* selectedImages.forEach((file) => {
+    selectedImages.forEach((file) => {
       formData.append("imagenes", file);
-    }); */
+    });
 
     console.log(productoData);
     console.log("Enviando datos al backend...");
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-    formData.get("producto").text().then(text => {
-      console.log("Contenido del producto JSON:", JSON.parse(text));
-    });
-
     try {
       const token = state.token || localStorage.getItem("token");
 
@@ -488,8 +493,7 @@ const FormBasis = ({ isEditMode = false }) => {
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
-      console.log("Response del servidor:", response);
-
+      console.log(response);
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
@@ -498,7 +502,7 @@ const FormBasis = ({ isEditMode = false }) => {
       }
 
       const data = await response.json();
-      console.log("Data del servidor:", data);
+      console.log("Respuesta del servidor:", data);
       // alert("Producto creado correctamente");
 
       Swal.fire({
@@ -859,7 +863,7 @@ const FormBasis = ({ isEditMode = false }) => {
       {/* Componente ImageUploader actualizado */}
 
       <div className="container-images">
-        {isEditMode && existingImages.length > 0 && existingImages.every(img => img.url) && (
+        {isEditMode && existingImages.length > 0 && (
           <>
             <label>Imágenes Existentes:</label>
             <div className="existing-images">
