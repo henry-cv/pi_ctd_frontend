@@ -539,6 +539,22 @@ const ActivityDetail = () => {
 												);
 											})}
 										</div>
+
+										<div className="contact-detail">
+										<p>¿Necesitas más información sobre esta actividad?</p>
+
+										<ButtonGral
+										otherClass=" btn_contact"
+										text="Contacta al organizador"
+										variant="primary"
+										color="yellow"
+										icon={<FaIcons.FaWhatsapp />}
+										// fullWidth={true}
+										// url={`/reserva/${activity.id}`}
+										// onClick={() => handleOpenModalBooking(activity.id)}
+										/>
+										</div>
+
 									</div>
 								</div>
 							</div>

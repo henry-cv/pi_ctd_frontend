@@ -1,25 +1,19 @@
 .layout-main {
-    width: 1050px;
-    height: 467px;
-    position: absolute;
-    top: 50%;  
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    border-radius: 20px;
-    background-color: #3e10da; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .layout-inner {
-    width: 600px;
-    height: 240px;
+    position: absolute; 
+    background-image: url('/patrones_body/BannerApp.webp');
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 41px;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center;
+    clip-path: inset(0% 0% 0% 0% round 25px);
+    width: 1050px;
+    height: 450px;
+    gap: 30px;
+    padding: 112px 225px;
+    
   }
 
   .title {
@@ -27,7 +21,7 @@
     font-weight: 800;
     font-size: 40px;
     line-height: 42px;
-    color: #ffffff;
+    color: var(--white);
     text-align: center;
     margin: 0;
   }
@@ -37,7 +31,7 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 25px;
-    color: #ffffff;
+    color: var(--white);
     text-align: center;
     margin: 0;
   }
@@ -47,7 +41,7 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 25px;
-    color: #ffffff;
+    color: var(--white);
     text-align: center;
     margin: 0;
   }
@@ -57,7 +51,7 @@
     font-weight: 700;
     font-size: 20px;
     line-height: 25px;
-    color: #ffffff;
+    color: var(--white);
     text-align: center;
   }
  
@@ -83,4 +77,54 @@
     text-align: center;
     white-space: nowrap;
 }
+
+@media (max-width: 1024px){
+  .layout-main{
+    width: 95%;
+    height: 350px;
+  }
+
+}
+
+@media (max-width: 768px){
+  .layout-main{
+    background-image: url('/public/reserve_background_MD.webp');
+    width: 95%;
+    height: 467px !important;
+    padding: 110px 115px;
+  }
+
+}
+
+
+@media (max-width: 768px){
+  .layout-main{
+    background-image: url('/public/reserve_background_SM.webp');
+    width: 95%;
+    height: 440px ;
+    padding: 89px 36px;
+  }
+
+
+
+}
+
+.force-mobile {
+  position: static !important;
+  background-image: url('/public/reserve_background_SM.webp');
+  width:  100% !important;
+  max-width: 450px;
+  height: 420px !important;
+  padding: 89px 36px;
+}
+
+.position {
+  position: static !important;
+  width: 100% !important;
+  margin-top: 20px;
+ 
+}
+
+
+
 

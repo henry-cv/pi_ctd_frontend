@@ -8,6 +8,8 @@
   --blue-700: #5e38e0;
   --blue-300: #7e60e6;
   --white: #ffffff;
+  --white-opacity: #ffffffa4;
+  --white-300:#F7F8FC;
   --black: #101828;
   --black-100: #afb2b7;
   --black-300: #606570;
@@ -18,6 +20,7 @@
 
 
   --gray-400: #4b5563;
+  --gray-400-opacity: #4b55636b;
   --gray-200: #e5e7eb;
 
   --yellow-base: #f1c40f;
@@ -55,11 +58,14 @@
   --Font-Background: var(--black);
   /* Las fuentes que van sobre el background , navbar y form, no aplica a botones esos nunca cambian se mantienen */
   --Icons-gray: var(--gray-400);
+  --Icons-gray-opacity: var(--gray-400-opacity);
   /* para fuentes e iconos que en ligt son gris y en dark pasan a blanco */
   --background-opacity:#10182898;
   --blue-L-Yellow-D: var(--blue-base);
   --Color-base: var(--blue-base);
   --Menu-Hamburger: var(--white);
+  --Background-W-300:var(--white-300);
+  --Blue-300-L-yellow-D: var(--blue-300);
 }
 
 /* EL cambio del tono de las variables en el modo dark */
@@ -71,8 +77,10 @@
   --Background-sideBar: var(--black-400);
   --Font-Background: var(--white);
   --Icons-gray: var(--Font-Background);
+  --Icons-gray-opacity: var(--white-opacity);
   --background-opacity:#00000093;
   --Menu-Hamburger: var(--black);
   --Color-base: var(--yellow-base);
-  
+  --Background-W-300:var(--black-700);
+  --Blue-300-L-yellow-D: var(--yellow-base);
 }

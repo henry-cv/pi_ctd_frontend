@@ -1,9 +1,9 @@
 import '../css/components/DescargaApp.css';
 
-const DescargaApp = () => {
+const DescargaApp = ( { forceMobileStyle = false ,positionOnOff=false }) => {
   return (
-    <div className="layout-main" style={{ backgroundImage: "url('/reserve_background_XL.webp')" }}>
-      <div className="layout-inner">
+    <div className={`layout-main ${forceMobileStyle ? 'force-mobile' : ''} ${positionOnOff ? 'position' : ''}`}>
+
         <h1 className="title">¡Descarga la App!</h1>
         <p className="subtitle">Comienza tu aventura hoy.</p>
         <p className="description">
@@ -13,7 +13,7 @@ const DescargaApp = () => {
         <button className="download-button">
           <a href="#">Descargar Ahora</a>
         </button>
-      </div>
+
     </div>
   );
 };

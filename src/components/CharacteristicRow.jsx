@@ -114,7 +114,7 @@ const CharacteristicRow = ({ id, nombre, icono, onDelete, onUpdate }) => {
   };
 
   return (
-    <div className="RegisterCharacteristic RegisterActivitie grid-2-cols">
+    <div className="RegisterCharacteristic RegisterActivitie grid-2-cols"  style={{ borderBottom: '1px solid gray', paddingBottom: '10px' }}>
       <div className="infoCharacteristic infoActivitie">
         <input type="checkbox" className="inputCharacteristic inputActivitie" />
         <div className="characteristic-icon-container" style={{ width: '50px', textAlign: 'center' }}>
