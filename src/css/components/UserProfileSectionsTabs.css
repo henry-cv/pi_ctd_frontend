@@ -1,3 +1,4 @@
+
 .profile-tabs {
     display: flex;
     justify-content: center;
@@ -29,6 +30,54 @@
     width: 100%;
     height: 3px;
     background-color:var(--blue-base);
+  }
+
+
+  .toggle-button-group {
+    background-color: #f5f5f5;
+    border-radius: 25px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .toggle-button {
+    border-radius: 20px;
+    padding: 8px 16px;
+    text-transform: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  .toggle-button.selected {
+    background-color: #5c3bfe;
+    color: #fff;
+    border: none;
+  }
+  
+  .toggle-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .toggle-button.selected:hover {
+    background-color: #4a2deb;
+  }
+
+  .booking-tabs{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    background-color: #5c3bfe;
+    padding: 20px;
+    max-width: 512px;
+    margin: auto;
+    margin-top:40px;
+    border-radius: 30px;
   }
 
 

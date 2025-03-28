@@ -6,6 +6,7 @@ import FormEditUser from "../components/FormEditUser";
 import UserFavorites from "../components/UserFavorites";
 import { useContextGlobal } from "../gContext/globalContext";
 import Avatar from "@mui/material/Avatar";
+import UserBookings from "../components/MyBookings/UserBookings";
 
 const UserProfile = () => {
   const { state } = useContextGlobal();
@@ -29,11 +30,11 @@ const UserProfile = () => {
 
   // Determinar qué contenido mostrar según la pestaña activa
   const renderActiveTabContent = () => {
-    switch(state.activeTab) {
+    switch(state.userFiltersTabs.activeTab) {
       case "edit-profile":
         return <FormEditUser userData={userData} setUserData={setUserData} />;
       case "reservations":
-        return <p style={style}>Lista de reservas</p>;
+        return <UserBookings/>;
       case "favorites":
         return <UserFavorites />;
       default:
