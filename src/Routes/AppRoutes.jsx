@@ -23,6 +23,8 @@ import FilterProducts from "../pages/FilterProducts";
 import PolicyPage from "../components/PolicyPage";
 import Terms from "../pages/Terms";
 import DashPolicies from "../components/DashPolicies";
+import PersonalDataFormPage from "../pages/PersonalDataFormPage";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -88,6 +90,11 @@ const AppRoutes = () => {
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
       </Route>
+      <Route path="/datos-reserva" element={
+        <PrivateRoutes>
+          <PersonalDataFormPage />
+        </PrivateRoutes>
+      } />
       <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />
       {/* Ruta para políticas de uso */}

@@ -1,0 +1,193 @@
+.personal-data-page {
+  min-height: 100vh;
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+  display: flex;
+  flex-direction: column;
+}
+
+.personal-data-page.dark {
+  background-color: var(--BackgroundColor);
+}
+
+.personal-data-container {
+  padding-top: 120px;
+  padding-bottom: 50px;
+  flex: 1;
+}
+
+.breadcrumbs {
+  margin-bottom: 20px;
+  color: var(--Icons-gray);
+}
+
+.page-title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Contenido principal */
+.personal-data-content {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+
+  gap: 30px;
+  margin: 0 auto;
+  
+}
+
+/* Estilo del formulario */
+.form-container {
+  display: flex;
+  padding-bottom: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 25px;
+  align-self: stretch;
+  max-width: 697px;
+}
+
+.personal-data-page.dark .form-container {
+  background-color: var(--black-400);
+  border-color: var(--black-300);
+}
+
+.form-title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--Font-Background);
+}
+
+.form-subtitle {
+  color: var(--gray-500);
+  margin-bottom: 30px;
+}
+
+.personal-data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-weight: 500;
+  color: var(--Font-Background);
+}
+
+.phone-field {
+  margin-bottom: 20px;
+}
+
+.phone-input-container {
+  display: flex;
+  gap: 10px;
+}
+
+.country-code {
+  width: 100px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.button-yellow,
+.button-blue {
+  flex: 1;
+}
+
+/* Contenedor de resumen */
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Mensaje de error */
+.error-message {
+  text-align: center;
+  margin: 50px 0;
+}
+
+/* Personalizaciones para MUI Stepper */
+.MuiStepLabel-label {
+  font-family: var(--font-outfit) !important;
+}
+
+.MuiStepLabel-label.Mui-active {
+  color: var(--blue-base) !important;
+  font-weight: 600 !important;
+}
+
+.personal-data-page.dark .MuiStepLabel-label.Mui-active {
+  color: var(--yellow-base) !important;
+}
+
+.MuiStepIcon-root.Mui-active {
+  color: var(--blue-base) !important;
+}
+
+.personal-data-page.dark .MuiStepIcon-root.Mui-active {
+  color: var(--yellow-base) !important;
+}
+
+.MuiStepIcon-root.Mui-completed {
+  color: var(--blue-base) !important;
+}
+
+.personal-data-page.dark .MuiStepIcon-root.Mui-completed {
+  color: var(--yellow-base) !important;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 992px) {
+  .personal-data-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-container {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .personal-data-container {
+    padding-top: 100px;
+  }
+  
+  .form-container,
+  .summary-container {
+    padding: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .personal-data-container {
+    padding-top: 80px;
+  }
+  
+  .phone-input-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .country-code {
+    width: 100%;
+  }
+}
