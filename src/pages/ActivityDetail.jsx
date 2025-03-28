@@ -33,6 +33,8 @@ import AccessRequiredModal from "../components/AccessRequiredModal";
 import Reviews from "../components/Reviews";
 import ActivityPolitics from "../components/ActivityPolitics";
 import FavoriteButton from "../components/FavoriteButton";
+import ShareButton from "../components/ShareButton";
+import ShareModal from "../components/ShareModal";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -59,6 +61,7 @@ const ActivityDetail = () => {
 	const [openBooking, setOpenBooking] = useState(false);
 	const [openAccess, setOpenAccess] = useState(false);
 	const [disponibilidad, setDisponibilidad] = useState([]);
+	const [openShareModal, setOpenShareModal] = useState(false);
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
 	// console.log("La activity " + JSON.stringify(state.activity));
@@ -256,6 +259,14 @@ const ActivityDetail = () => {
 
 	const handleCloseAccess = () => setOpenAccess(false);
 
+	const handleOpenShareModal = () => {
+		setOpenShareModal(true);
+	};
+
+	const handleCloseShareModal = () => {
+		setOpenShareModal(false);
+	};
+
 	if (loading) {
 		return (
 			<div className="loading-container">
@@ -420,7 +431,10 @@ const ActivityDetail = () => {
 											</span>
 										</div>
 									</div>
-									<FavoriteButton productoId={activity.id} />
+									<div className="action-buttons">
+										<FavoriteButton productoId={activity.id} />
+										<ShareButton onClick={handleOpenShareModal} />
+									</div>
 								</div>
 
 								<div className="categories-detail">
@@ -604,6 +618,12 @@ const ActivityDetail = () => {
 					onClose={handleCloseImageViewer}
 				/>
 			)}
+			<ShareModal
+				open={openShareModal}
+				onClose={handleCloseShareModal}
+				activity={activity}
+				image={images[0] || defaultImage}
+			/>
 		</div>
 	);
 };
