@@ -1,0 +1,21 @@
+.user-bookings-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  margin-top: 40px ;
+  width: min(90%, 1142px);
+}
+
+.user-booking-grid{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 60px;
+  justify-content: center;
+ 
+}
+.card-act{
+    margin: 15px;
+}

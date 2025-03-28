@@ -61,7 +61,7 @@ const ActivityDetail = () => {
 	const [disponibilidad, setDisponibilidad] = useState([]);
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
-	// console.log("La activity " + JSON.stringify(state.activity));
+	console.log("La activity " + JSON.stringify(state.activity));
 
 	useEffect(() => {
 		const fetchActivityDetails = async () => {
