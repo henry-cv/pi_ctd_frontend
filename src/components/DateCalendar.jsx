@@ -3,20 +3,28 @@ import "../css/components/DateCalendar.css";
 import PropTypes from 'prop-types';
 import { FaCalendarAlt } from "react-icons/fa";
 
-const DateCalendar = ({ eventType, setFechaEvento, setFechaFinEvento }) => {
+const DateCalendar = ({ eventType, fechaEvento, setFechaEvento, fechaFinEvento, setFechaFinEvento }) => {
   const dateInputRef = useRef(null);
   const dateEndInputRef = useRef(null);
 
-  const [dateState, setDateState] = useState("");
+  const [dateState, setDateState] = useState(fechaEvento || "");
   const [errorDate, setErrorDate] = useState("");
 
-  const [dateStateEnd, setDateStateEnd] = useState("");
+  const [dateStateEnd, setDateStateEnd] = useState(fechaFinEvento || "");
   const [errorDateEnd, setErrorDateEnd] = useState("");
   const TODAY = new Date().toISOString().split('T')[0];
 
-  useEffect(() => {
+  /* useEffect(() => {
     setDateState(TODAY);
-  }, []);
+  }, []); */
+
+  // Sincroniza los valores iniciales cuando cambian (por ejemplo, al editar)
+  useEffect(() => {
+    setDateState(fechaEvento || "");
+    setDateStateEnd(fechaFinEvento || "");
+
+  }, [fechaEvento, fechaFinEvento]);
+
 
   const isValidDate = (date, type) => {
     const dateValue = new Date(date);
@@ -111,6 +119,8 @@ const DateCalendar = ({ eventType, setFechaEvento, setFechaFinEvento }) => {
 
 DateCalendar.propTypes = {
   eventType: PropTypes.string,
+  fechaEvento: PropTypes.string,
+  fechaFinEvento: PropTypes.string,
   setFechaEvento: PropTypes.func,
   setFechaFinEvento: PropTypes.func,
 };

@@ -21,6 +21,7 @@ import PhoneInput from "./PhoneInput.jsx";
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
+
   const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
 
@@ -49,7 +50,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
-  const [quota, setQuota] = useState("");
+  const [quota, setQuota] = useState(1);
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
   const [diasDisponible, setDiasDisponible] = useState([]);
@@ -286,11 +287,13 @@ const FormBasis = ({ isEditMode = false }) => {
           setAddress(data.direccion || "");
 
           // Asegurar formato correcto de las horas
-          const horaInicioFormatted = data.horaInicio ? data.horaInicio.slice(0, 5) : "";
+          /* const horaInicioFormatted = data.horaInicio ? data.horaInicio.slice(0, 5) : "";
           const horaFinFormatted = data.horaFin ? data.horaFin.slice(0, 5) : "";
 
           setHoraInicio(horaInicioFormatted);
-          setHoraFin(horaFinFormatted);
+          setHoraFin(horaFinFormatted); */
+          setHoraInicio(data.horaInicio);
+          setHoraFin(data.horaFin);
 
           setDiasDisponible(data.diasDisponible || []);
           setSelectedImages(data.productoImagenesSalidaDto || []);
@@ -318,7 +321,7 @@ const FormBasis = ({ isEditMode = false }) => {
     };
 
     fetchActivity();
-  }, [activityId]); // Eliminada la dependencia innecesaria `navigate`
+  }, [activityId, navigate]); // Eliminada la dependencia innecesaria `navigate`
 
   //UseEffect para consultar la disponibilidad por activityId
   useEffect(() => {
@@ -422,10 +425,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
     // Crear FormData para enviar archivos y datos
     const formData = new FormData();
-    console.log(`hora Inicio previa productoData: -->${horaInicio}<--`);
-    console.log(`Fecha Inicio previa productoData: -->${fechaEvento}<--`);
-    console.log(`hora Fin previa productoData: -->${horaFin}<--`);
-    console.log(`Fecha Fin previa productoData: -->${fechaFinEvento}<--`);
+
     // Datos del producto como JSON string
     const productoData = {
       nombre: titulo,
@@ -446,7 +446,7 @@ const FormBasis = ({ isEditMode = false }) => {
       pais: countryValue,
       ciudad: cityValue,
       direccion: address,
-      cuposTotales: quota
+      cuposTotales: parseInt(quota),
     };
     console.log("Datos a enviar:", JSON.stringify(productoData));
 
@@ -515,7 +515,7 @@ const FormBasis = ({ isEditMode = false }) => {
       setCountryValue("");
       setCity("");
       setAddress("");
-      setQuota(1);
+      setQuota("");
       setHoraInicio("");
       setHoraFin("");
       setEventType("");
@@ -709,7 +709,7 @@ const FormBasis = ({ isEditMode = false }) => {
           name="Cupos"
           placeholder="Cantidad de Cupos totales"
           value={quota}
-          onChange={(e) => setQuota(e.target.value)}
+          onChange={(e) => setQuota(parseInt(e.target.value))}
           min="1"
           autoComplete="off"
           required
@@ -735,8 +735,14 @@ const FormBasis = ({ isEditMode = false }) => {
       {
         eventType === "FECHA_UNICA" && (
           <div className="container-dates">
-            <DateCalendar eventType={eventType} setFechaEvento={setFechaEvento} setFechaFinEvento={setFechaFinEvento} />
+            <DateCalendar eventType={eventType}
+              fechaEvento={fechaEvento}
+              setFechaEvento={setFechaEvento}
+              fechaFinEvento={fechaFinEvento}
+              setFechaFinEvento={setFechaFinEvento} />
             <Horas
+              horaInicio={horaInicio}
+              horaFin={horaFin}
               setHoraInicio={setHoraInicio}
               setHoraFin={setHoraFin}
             />
@@ -749,10 +755,16 @@ const FormBasis = ({ isEditMode = false }) => {
           <div className="container-days">
             <Days selectedDays={diasDisponible} onChange={handleDaysChange} />
             <Horas
+              horaInicio={horaInicio}
+              horaFin={horaFin}
               setHoraInicio={setHoraInicio}
               setHoraFin={setHoraFin}
             />
-            <DateCalendar eventType={eventType} setFechaEvento={setFechaEvento} setFechaFinEvento={setFechaFinEvento} />
+            <DateCalendar eventType={eventType}
+              fechaEvento={fechaEvento}
+              setFechaEvento={setFechaEvento}
+              fechaFinEvento={fechaFinEvento}
+              setFechaFinEvento={setFechaFinEvento} />
           </div>
         )
       }

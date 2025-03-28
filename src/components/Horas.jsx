@@ -16,6 +16,17 @@ const Horas = ({ horaInicio, setHoraInicio, setHoraFin, horaFin }) => {
     return `${horas}:${minutos}:00`;
   }; */
 
+  // Valida que la hora de inicio sea menor que la de fin
+  const validarHoras = (inicio, fin) => {
+    if (inicio && fin) {
+      if (inicio >= fin) {
+        setError("La hora de fin no puede ser menor o igual a la hora de inicio.");
+        return false;
+      }
+    }
+    setError(""); // Limpia el error si todo es válido
+    return true;
+  };
   // Sincroniza los valores iniciales cuando cambian (por ejemplo, al editar)
   useEffect(() => {
     setHoraInicioState(horaInicio || "");
@@ -48,17 +59,7 @@ const Horas = ({ horaInicio, setHoraInicio, setHoraFin, horaFin }) => {
     }
   };
 
-  // Valida que la hora de inicio sea menor que la de fin
-  const validarHoras = (inicio, fin) => {
-    if (inicio && fin) {
-      if (inicio >= fin) {
-        setError("La hora de fin no puede ser menor o igual a la hora de inicio.");
-        return false;
-      }
-    }
-    setError(""); // Limpia el error si todo es válido
-    return true;
-  };
+
   return (
     <div className="container-hours">
       <label>Hora:</label>
