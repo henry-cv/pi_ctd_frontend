@@ -52,18 +52,19 @@ const DateCalendar = ({ eventType, fechaEvento, setFechaEvento, fechaFinEvento, 
   const handleDateEndChange = (event) => {
     const dateValue = event.target.value;
     setDateStateEnd(dateValue);
-    if (!isValidDate(dateValue, 'end')) {
-      setFechaFinEvento(dateValue);
-    }
+    const error = isValidDate(dateValue, 'end');
+    setErrorDateEnd(error);
+    setFechaFinEvento(dateValue); // siempre lo actualiza
   };
 
   const handleDateChange = (event) => {
     const dateValue = event.target.value;
     setDateState(dateValue);
-    if (!isValidDate(dateValue, 'start')) {
-      setFechaEvento(dateValue);
-    }
+    const error = isValidDate(dateValue, 'start');
+    setErrorDate(error);
+    setFechaEvento(dateValue); // siempre lo actualiza
   };
+
   return (
     <div className={`${eventType ? 'current-dates' : ''}`}>
 

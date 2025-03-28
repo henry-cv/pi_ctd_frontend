@@ -285,23 +285,18 @@ const FormBasis = ({ isEditMode = false }) => {
           setCountryValue(data.pais || "");
           setCity(data.ciudad || "");
           setAddress(data.direccion || "");
-
-          // Asegurar formato correcto de las horas
-          /* const horaInicioFormatted = data.horaInicio ? data.horaInicio.slice(0, 5) : "";
-          const horaFinFormatted = data.horaFin ? data.horaFin.slice(0, 5) : "";
-
-          setHoraInicio(horaInicioFormatted);
-          setHoraFin(horaFinFormatted); */
-          setHoraInicio(data.horaInicio);
-          setHoraFin(data.horaFin);
+          /* setHoraInicio(data.horaInicio?.substring(0, 5) || ""); */
+          setHoraInicio(data?.horaInicio || "");
+          /* setHoraFin(data.horaFin?.substring(0, 5) || ""); */
+          setHoraFin(data?.horaFin || "");
 
           setDiasDisponible(data.diasDisponible || []);
           setSelectedImages(data.productoImagenesSalidaDto || []);
 
           // Cargar imágenes existentes
           const images = data.productoImagenesSalidaDto || [];
-          setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
-
+          /* setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen }))); */
+          setExistingImages((images || []).map((img) => ({ id: img.id, url: img.rutaImagen })));
           setEventType(data.eventType || data.tipoEvento || "");
         } catch (error) {
           console.error("Error cargando actividad:", error);
@@ -326,6 +321,7 @@ const FormBasis = ({ isEditMode = false }) => {
   //UseEffect para consultar la disponibilidad por activityId
   useEffect(() => {
     const fetchAvailability = async () => {
+      if (!activityId) return;
       if (activityId) {
         setLoading(true);
         try {
@@ -333,15 +329,26 @@ const FormBasis = ({ isEditMode = false }) => {
           if (!response.ok) {
             throw new Error(`Error al cargar la disponibilidad: ${response.status}`);
           }
+
           const data = await response.json();
-          console.log("Disponibilidad cargada:");
-          console.log(data);
-          console.log("fecha1:", data[0]?.fechaEvento);
-          console.log("fecha2:", data[1]?.fechaEvento);
-          // Actualizar el estado con los datos extraídos
-          setQuota(data[0]?.cuposTotales || null);
-          setFechaEvento(data[0]?.fechaEvento || null);
-          setFechaFinEvento(data[1]?.fechaEvento || null);
+          console.log("Disponibilidad cargada: ", data);
+          if (data.length === 0) return;
+
+          if (data.length > 0) {
+            // Asignar cupos
+            setQuota(data[0]?.cuposTotales || null);
+
+            // Calcular fechas extrema
+            const fechasOrdenadas = data
+              .map(item => new Date(item.fechaEvento))
+              .sort((a, b) => a - b);
+
+            const fechaInicio = fechasOrdenadas[0]?.toISOString().split("T")[0];
+            const fechaFin = fechasOrdenadas[fechasOrdenadas.length - 1]?.toISOString().split("T")[0];
+
+            setFechaEvento(fechaInicio);
+            setFechaFinEvento(fechaFin);
+          }
 
         } catch (error) {
           console.error("Error cargando disponibilidad:", error);
@@ -360,6 +367,7 @@ const FormBasis = ({ isEditMode = false }) => {
     };
     fetchAvailability();
   }, [activityId]);
+
   // Función handleSubmit dentro de FormBasis.jsx
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -419,7 +427,15 @@ const FormBasis = ({ isEditMode = false }) => {
       showErrorAlert("Error", "Debe seleccionar al menos 5 imagenes");
       return;
     }
+    if (!fechaEvento || (eventType === "RECURRENTE" && !fechaFinEvento)) {
+      showErrorAlert("Fechas requeridas", "Debes seleccionar una fecha de inicio y fin.");
+      return;
+    }
 
+    if (eventType === "RECURRENTE" && fechaEvento > fechaFinEvento) {
+      showErrorAlert("Error en fechas", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+      return;
+    }
     // Prevenir múltiples envíos
     setIsSubmitting(true);
 
@@ -477,11 +493,11 @@ const FormBasis = ({ isEditMode = false }) => {
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
-
+      console.log(response);
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
-          `Error en la solicitud: ${response.status} - ${errorText}`
+          `Error en la solicitud: ${response.status} - ${errorText} --${response.statusText}`
         );
       }
 
