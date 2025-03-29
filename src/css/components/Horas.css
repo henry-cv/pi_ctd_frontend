@@ -1,10 +1,4 @@
-/* @import "./variables.css"; */
-
 :root {
-  --gray-200: #e5e7eb;
-  --black: #101828;
-  --white: #ffffff;
-  --gray-400: #606570;
   --Border-Input-color: var(--gray-400);
 }
 
@@ -13,7 +7,6 @@
   margin: 0;
   padding: 0;
 }
-
 /* Fue necesario agregar el box-sizing:border-box, para el tamaño preciso de la caja del elemento, sería mejor agregar la regla al variables.css */
 
 .container-hours {
@@ -37,4 +30,7 @@
   color: var(--gray-400);
   cursor: pointer;
   padding: 1rem;
+}
+.time-error{
+  color:var(--color-error);
 }
