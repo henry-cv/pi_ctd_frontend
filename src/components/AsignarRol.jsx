@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "../css/pages/dashboard.css";
 import "../css/components/AsignarRol.css";
 import { useContextGlobal } from "../gContext/globalContext";
@@ -12,16 +12,24 @@ const AsignarRol = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsuarios, setFilteredUsuarios] = useState([]);
   const [actionLoading, setActionLoading] = useState(false);
+
+  // Estado de paginación
   const [currentPage, setCurrentPage] = useState(1);
   const [userPerPage] = useState(6);
 
   const lastUser = currentPage * userPerPage;
   const firstUser = lastUser - userPerPage;
   const allPages = Math.ceil(filteredUsuarios.length / userPerPage);
-  const currentUsers = filteredUsuarios.slice(
+  /* const currentUsers = filteredUsuarios.slice(
     firstUser,
     lastUser
-  );
+  ); */
+
+  // Memoizar usuarios de la página actual
+  const currentUsers = useMemo(() => {
+    return filteredUsuarios.slice(firstUser, lastUser);
+  }, [filteredUsuarios, firstUser, lastUser]);
+
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -68,6 +76,8 @@ const AsignarRol = () => {
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
+    setCurrentPage(1); // Reiniciar a la primera página
+
 
     if (term.trim() === "") {
       setFilteredUsuarios(usuarios);
@@ -132,28 +142,14 @@ const AsignarRol = () => {
 
       // Si llegamos aquí, la solicitud fue exitosa
       // Actualizamos los estados locales
-      const updatedUsuarios = usuarios.map((user) => {
-        if (user.id === usuario.id) {
-          return {
-            ...user,
-            usuarioRoles: nuevoRol
-          };
-        }
-        return user;
-      });
-
+      const updatedUsuarios = usuarios.map((user) =>
+        user.id === usuario.id ? { ...user, usuarioRoles: nuevoRol } : user
+      );
       setUsuarios(updatedUsuarios);
 
-      const updatedFilteredUsuarios = filteredUsuarios.map((user) => {
-        if (user.id === usuario.id) {
-          return {
-            ...user,
-            usuarioRoles: nuevoRol
-          };
-        }
-        return user;
-      });
-
+      const updatedFilteredUsuarios = filteredUsuarios.map((user) =>
+        user.id === usuario.id ? { ...user, usuarioRoles: nuevoRol } : user
+      );
       setFilteredUsuarios(updatedFilteredUsuarios);
 
       // Mostramos un mensaje de éxito
@@ -213,8 +209,9 @@ const AsignarRol = () => {
           <div className="column asignar-acceso">Asignar acceso</div>
         </div>
 
-        {filteredUsuarios.length > 0 ? (
-          filteredUsuarios.map((usuario) => (
+        {/* cambiando filteredUsuarios por currentUsers */}
+        {currentUsers.length > 0 ? (
+          currentUsers.map((usuario) => (
             <div key={usuario.id} className="user-row">
               <div className="user-info">
                 <input type="checkbox" className="user-checkbox" />
@@ -246,13 +243,16 @@ const AsignarRol = () => {
           </div>
         )}
       </div>
-      <div className="pagination_dash">
-        <BasicPagination
-          count={allPages}
-          page={currentPage}
-          onChange={(_, page) => setCurrentPage(page)}
-        />
-      </div>
+      {allPages > 1 && (
+        <div className="pagination_dash">
+          <BasicPagination
+            count={allPages}
+            page={currentPage}
+            onChange={(_, page) => setCurrentPage(page)}
+          />
+        </div>
+      )}
+
     </div>
   );
 };
