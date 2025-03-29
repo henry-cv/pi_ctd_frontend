@@ -54,32 +54,42 @@ const BookingsConfirm = () => {
             </div>
         );
     }
+    
 
     return (
         <div className="user-bookings-container">
-            <div className="user-booking-grid">
-                {bookings.map((booking) => {
-                    // Extraer datos del objeto booking
-                    const { cantidadPersonas } = booking.bookingData;
-                    const { tipoTarifa, valorTarifa } = booking.productData;
-                    const precioFinal = calcularPrecio(cantidadPersonas, tipoTarifa, valorTarifa);
-
-                    return (
-                        <ActivityCard
-                            key={booking.productData.id}
-                            id={booking.bookingData.id}
-                            image={booking.productData.productoImagenesSalidaDto?.[0]?.rutaImagen}
-                            title={booking.productData.nombre}
-                            price={precioFinal} // Asegurar que use el precio calculado
-                            categories={booking.productData.categorias}
-                            fechaReserva={booking.bookingData.disponibilidadProductoSalidaDto.fechaEvento}
-                        />
-                    );
-                })}
-
-            </div>
+          <div className="user-booking-grid">
+            {bookings
+              .filter((booking) => {
+                if (state.userFiltersTabs.selectedFilters === "confirm") {
+                  return booking.bookingData.estado === "CONFIRMADA";
+                } else if (state.userFiltersTabs.selectedFilters === "cancel") {
+                  return booking.bookingData.estado === "CANCELADA";
+                }
+                else if (state.userFiltersTabs.selectedFilters === "complete")
+                    return booking.bookingData.estado === "FINALIZADA";
+              })
+              .map((booking) => {
+                const { cantidadPersonas } = booking.bookingData;
+                const { tipoTarifa, valorTarifa } = booking.productData;
+                const precioFinal = calcularPrecio(cantidadPersonas, tipoTarifa, valorTarifa);
+      
+                return (
+                  <ActivityCard
+                    key={booking.productData.id}
+                    id={booking.bookingData.id}
+                    image={booking.productData.productoImagenesSalidaDto?.[0]?.rutaImagen}
+                    title={booking.productData.nombre}
+                    price={precioFinal}
+                    categories={booking.productData.categorias}
+                    fechaReserva={booking.bookingData.disponibilidadProductoSalidaDto.fechaEvento}
+                  />
+                );
+              })}
+          </div>
         </div>
-    );
+      );
+      
 }
 
 export default BookingsConfirm;

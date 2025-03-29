@@ -19,6 +19,17 @@ import Skeleton from "@mui/material/Skeleton";
 const NavDash = ({ variant = "home" }) => {
   const { dispatch, state } = useContextGlobal();
 
+  const handleClick = () => {
+
+    if (state.userFiltersTabs.activeTab === "reservations") {
+      dispatch({
+        type: "SET_ACTIVE_TAB_FILTER",
+        payload: { activeTab: "edit-profile" },
+      });    
+    }
+  };
+
+
   if (variant === "admin") {
     return (
       <nav className="navbarDash admin">
@@ -46,7 +57,8 @@ const NavDash = ({ variant = "home" }) => {
             <FontAwesomeIcon icon={faBars} />
           </button>
         </div>
-        <Link to="/">
+        <Link to="/"
+        onClick={handleClick}>
           <LogoImg inNavbar={true} />
         </Link>
         <div className="hide-mobile">

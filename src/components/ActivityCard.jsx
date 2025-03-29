@@ -43,7 +43,7 @@ const ActivityCard = ({
     if (state.userFiltersTabs.activeTab === "reservations") {
       dispatch({
         type: "SET_ACTIVE_TAB_FILTER",
-        payload: { activeTab: "reservations" , },
+        payload: { activeTab: "edit-profile" },
       });
     }
   };
