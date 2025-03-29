@@ -7,11 +7,13 @@ import {
   faCalendarAlt,
   faClock,
 } from "@fortawesome/free-regular-svg-icons";
+import { FaMoneyCheck, FaSave } from "react-icons/fa";
 import "../css/components/ActivityCard.css";
 import DurationInfo from "./DurationInfo";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import FavoriteButton from "./FavoriteButton";
+import { useContextGlobal } from "../gContext/globalContext";
 
 const ActivityCard = ({
   id,
@@ -26,18 +28,36 @@ const ActivityCard = ({
   price,
   rating,
   categories,
+  fechaReserva,
+  estado
 }) => {
   // Imagen por defecto en caso de error o sin imagen
   const [extraCategories, setExtraCategories] = useState(false);
   const hasExtracategories = categories?.length > 1;
+  const { state, dispatch } = useContextGlobal();
   const defaultImage = "/activitie.webp";
   const handleImageError = (e) => {
     e.target.src = defaultImage;
   };
 
+  const handleClick = () => {
+    if (state.userFiltersTabs.activeTab === "reservations") {
+      dispatch({
+        type: "SET_ACTIVE_TAB_FILTER",
+        payload: { activeTab: "edit-profile" },
+      });
+    }
+  };
+
   return (
-    <Link key={id} to={`/actividad/${id}`} className="activity-link">
-      <div className="activity-card card-container-fluid">
+    <Link
+      key={id}
+      to={state.userFiltersTabs.activeTab === "reservations"
+        ? `/perfil/misreservas/${id}`
+        : `/actividad/${id}`}
+      className="activity-link"
+    >
+      <div className={`activity-card card-container-fluid ${state.userFiltersTabs.activeTab === "reservations" ? "card-height-reservation" : ""}`}>
         <div className="activity-image-container">
           <img
             src={image || defaultImage}
@@ -45,9 +65,9 @@ const ActivityCard = ({
             className="activity-image"
             onError={handleImageError}
           />
-          
+
           {/* Botón de favoritos */}
-          <FavoriteButton productoId={id} />
+          {state.userFiltersTabs.activeTab === "reservations" ? "" : <FavoriteButton productoId={id} />}
           <div className="container_card_category">
             {categories?.length > 0 && (
               <span className="card-category">{categories[0].nombre}</span>
@@ -61,9 +81,9 @@ const ActivityCard = ({
               >
                 {extraCategories
                   ? categories
-                      .slice(1)
-                      .map((cat) => cat.nombre)
-                      .join(", ")
+                    .slice(1)
+                    .map((cat) => cat.nombre)
+                    .join(", ")
                   : `+${categories.length - 1}`}
               </span>
             )}
@@ -71,33 +91,50 @@ const ActivityCard = ({
         </div>
         <div className="activity-content">
           <h3 className="activity-title">{title}</h3>
-          <div className="activity-details">
-            <span className="activity-location">
-              <FontAwesomeIcon icon={faMap} />
-              {location}
-            </span>
-            <span className="activity-duration">
-              {/* La duracion o el horario del evento depende del tipo de evento se manda a este componente DurationInfo para que maneje eso */}
-              {tipoEvento === "FECHA_UNICA" ? (
-                <FontAwesomeIcon icon={faClock} />
-              ) : (
-                <FontAwesomeIcon icon={faCalendarAlt} />
-              )}
-              <DurationInfo
-                tipoEvento={tipoEvento}
-                horaInicio={horaInicio}
-                horaFin={horaFin}
-                diasDisponible={diasDisponible}
-              />
-            </span>
-          </div>
-          <div className="activity-footer">
-            <span className="activity-price">${price}</span>
-            <span className="activity-rating">
-              <FontAwesomeIcon icon={faStar} />
-              {rating}
-            </span>
-          </div>
+
+          {state.userFiltersTabs.activeTab === "reservations"
+            ? <>
+            <p className="booking-state">{estado}</p>
+            <div className="booking-details-card">
+            <p>{fechaReserva}</p>
+            <span >
+               ${price} Usd
+               </span>
+
+            </div>
+  
+            
+   
+            </> : <>
+              <div className="activity-details">
+                <span className="activity-location">
+                  <FontAwesomeIcon icon={faMap} />
+                  {location}
+                </span>
+                <span className="activity-duration">
+                  {/* La duracion o el horario del evento depende del tipo de evento se manda a este componente DurationInfo para que maneje eso */}
+                  {tipoEvento === "FECHA_UNICA" ? (
+                    <FontAwesomeIcon icon={faClock} />
+                  ) : (
+                    <FontAwesomeIcon icon={faCalendarAlt} />
+                  )}
+                  <DurationInfo
+                    tipoEvento={tipoEvento}
+                    horaInicio={horaInicio}
+                    horaFin={horaFin}
+                    diasDisponible={diasDisponible}
+                  />
+                </span>
+              </div>
+              <div className="activity-footer">
+                <span className="activity-price">${price}</span>
+                <span className="activity-rating">
+                  <FontAwesomeIcon icon={faStar} />
+                  {rating}
+                </span>
+              </div>
+            </>}
+
         </div>
       </div>
     </Link>
@@ -117,6 +154,8 @@ ActivityCard.propTypes = {
   price: PropTypes.number.isRequired,
   rating: PropTypes.number.isRequired,
   categories: PropTypes.array,
+  fechaReserva: PropTypes.string,
+  estado:PropTypes.string,
 };
 
 ActivityCard.defaultProps = {

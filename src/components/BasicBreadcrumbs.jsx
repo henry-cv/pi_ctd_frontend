@@ -3,11 +3,19 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import "../css/pages/ActivityDetail.css";
+import { useContextGlobal } from "../gContext/globalContext";
+import { useNavigate } from "react-router-dom";
 
 export default function DynamicBreadcrumbs() {
+  const { dispatch } = useContextGlobal();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const pathnames = location.pathname.split("/").filter((x) => x);
+
+  const handlePerfilClick = () => {
+    navigate("/perfil");
+  };
 
   return (
     <Breadcrumbs aria-label="breadcrumb" className="breadcrumbs breadcrumbs-mobile">
@@ -30,6 +38,12 @@ export default function DynamicBreadcrumbs() {
             color="inherit"
             component={RouterLink}
             to={to}
+            onClick={(e) => {
+              if (value === "misreservas") {
+                e.preventDefault();
+                handlePerfilClick();
+              }
+            }}
           >
             {decodeURIComponent(value)}
           </Link>
