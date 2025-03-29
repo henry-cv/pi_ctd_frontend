@@ -4,7 +4,6 @@ import "../css/global/variables.css";
 import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
-import { FaSave } from "react-icons/fa";
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
@@ -22,7 +21,6 @@ const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
 
-  const [showExtraFields, setShowExtraFields] = useState(false);
   const [eventType, setEventType] = useState("");
 
   const [titulo, setTitulo] = useState("");
@@ -69,15 +67,6 @@ const FormBasis = ({ isEditMode = false }) => {
   const [characteristics, setCharacteristics] = useState([]);
   const [caracteristicasIds, setCaracteristicasIds] = useState([]);
   const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
-
-
-  const toggleExtraFields = () => {
-    setShowExtraFields(!showExtraFields);
-  };
-
-  const handleDelete = () => {
-    console.log("Hizo click en eliminar tarifa");
-  };
 
   const handleEventTypeChange = (e) => {
     setEventType(e.target.value);
@@ -616,53 +605,6 @@ const FormBasis = ({ isEditMode = false }) => {
         {addressError && <FieldError message={addressError} />}
       </div>
       <PhoneInput country={selectedCountry} />
-      <div className="container-addrate">
-        <button
-          type="button"
-          onClick={toggleExtraFields}
-          className="hamburger-button"
-        >
-          &#x2795; Añadir Tarifas
-        </button>
-      </div>
-      {
-        showExtraFields && (
-          <div className="extra-fields">
-            <div>
-              <label htmlFor="rateName">Valor tarifa:</label>
-              <select
-                id="rateType"
-                value={tipoTarifa}
-                onChange={(e) => setTipoTarifa(e.target.value)}
-                required
-              >
-                <option value="" disabled>
-                  Selecciona el tipo de tarifa
-                </option>
-                <option value="POR_PERSONA">Por persona</option>
-                <option value="POR_PAREJA">Por pareja</option>
-                <option value="POR_GRUPO_6">Por grupo (6)</option>
-                <option value="POR_GRUPO_10">Por grupo (10)</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="ratePrice">Tarifa por:</label>
-              <input
-                type="number"
-                id="ratePrice"
-                min="1"
-                placeholder="Inserta el precio"
-                required
-              />
-            </div>
-            <div className="centered-button">
-              <button type="button" className="save-rate-button">
-                <FaSave />
-              </button>
-            </div>
-          </div>
-        )
-      }
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
@@ -693,9 +635,6 @@ const FormBasis = ({ isEditMode = false }) => {
             <option value="POR_GRUPO_10">Por grupo (10)</option>
           </select>
         </div>
-        <button type="button" className="delete-button" onClick={handleDelete}>
-          <i className="fas fa-trash-alt"></i>
-        </button>
       </div>
       <div className="container-quota">
         <label htmlFor="quota">Cupos:</label>
