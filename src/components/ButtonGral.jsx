@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import "../css/pages/dashboard.css";
 
-const ButtonGral = ({ text, color = "transparent", icon = null , onClick, otherClass = ""}) => {
+const ButtonGral = ({ text, color = "transparent", icon = null , onClick, otherClass = "", disabled = false}) => {
   const colorStyles = {
     yellow: "btn_yellow",
     blue: "btn_blue",
@@ -16,6 +16,8 @@ const ButtonGral = ({ text, color = "transparent", icon = null , onClick, otherC
     <button 
     className={buttonClass}
     onClick={onClick}
+    disabled={disabled}
+    type="button"
     >
       {icon && <span>{icon}</span>}
       {text}
@@ -28,6 +30,7 @@ ButtonGral.propTypes = {
   color: PropTypes.oneOf(["yellow", "blue", "transparent"]),
   icon: PropTypes.element,
   otherClass: PropTypes.string,
+  disabled: PropTypes.bool
 };
 
 export default ButtonGral;

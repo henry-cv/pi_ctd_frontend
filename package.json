@@ -46,6 +46,7 @@
     "react-router-dom": "^7.1.5",
     "react-select": "^5.10.0",
     "react-share": "^5.2.2",
+    "react-tooltip": "^5.28.0",
     "sweetalert2": "^11.6.13",
     "swiper": "^11.2.4",
     "vite": "^6.1.0",

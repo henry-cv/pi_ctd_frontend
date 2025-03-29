@@ -12,10 +12,17 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 60px;
+  gap: 25px;
   justify-content: center;
  
 }
 .card-act{
     margin: 15px;
+}
+
+@media (max-width: 768px) {
+  .user-booking-grid{
+gap: 14px;
+  }
+
 }

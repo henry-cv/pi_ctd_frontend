@@ -19,13 +19,16 @@
 } */
 
 .card-height-reservation {
-  max-height: 310px !important; 
+  max-height: 330px !important; 
 }
 
 .card-height-reservation .activity-image-container {
-  height: 70% !important; 
+  height: 65% !important; 
 }
 
+.booking-state{
+  color: var(--Blue-300-L-yellow-D);
+}
 
 .booking-details-card{
   color: var(--Icons-gray);
@@ -33,6 +36,7 @@
   justify-content: space-between;
   
 }
+
 
 .activity-card:hover {
   transform: translateY(-4px);
