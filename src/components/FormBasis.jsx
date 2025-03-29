@@ -4,11 +4,10 @@ import "../css/global/variables.css";
 import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
-import { FaSave } from "react-icons/fa";
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
 import Days from "./Days";
-import { validarTexto, validarAreaTexto, longitudPermitida } from "../utils/utils";
+import { validarTexto, validarAreaTexto } from "../utils/utils";
 import FieldError from "./FieldError";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -21,7 +20,7 @@ import PhoneInput from "./PhoneInput.jsx";
 const FormBasis = ({ isEditMode = false }) => {
   const location = useLocation();
   const activityId = location.state?.activityId || null;
-  const [showExtraFields, setShowExtraFields] = useState(false);
+
   const [eventType, setEventType] = useState("");
 
   const [titulo, setTitulo] = useState("");
@@ -30,7 +29,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
 
-  const [valorTarifa, setValorTarifa] = useState("");
+  const [valorTarifa, setValorTarifa] = useState(1.00);
   const [tipoTarifa, setTipoTarifa] = useState("");
   const [idioma, setIdioma] = useState("");
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
@@ -43,14 +42,13 @@ const FormBasis = ({ isEditMode = false }) => {
     code: "US",
     dial_code: "+1"
   },);
-  const [countryDialCode, setCountryDialCode] = useState("+1");
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
   //const [phoneNumber, setPhoneNumber] = useState("");
 
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
-  const [quota, setQuota] = useState("");
+  const [quota, setQuota] = useState(1);
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
   const [diasDisponible, setDiasDisponible] = useState([]);
@@ -70,15 +68,6 @@ const FormBasis = ({ isEditMode = false }) => {
   const [caracteristicasIds, setCaracteristicasIds] = useState([]);
   const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
 
-
-  const toggleExtraFields = () => {
-    setShowExtraFields(!showExtraFields);
-  };
-
-  const handleDelete = () => {
-    console.log("Hizo click en eliminar tarifa");
-  };
-
   const handleEventTypeChange = (e) => {
     setEventType(e.target.value);
   };
@@ -97,9 +86,9 @@ const FormBasis = ({ isEditMode = false }) => {
   };
 
   const handleAddress = (e) => {
-    const maximo = 60;
+    const maximo = 150;
     const texto = e.target.value;
-    if (!longitudPermitida(texto, maximo)) {
+    if (!validarAreaTexto(texto, maximo)) {
       setAddressError(
         `Dirección debe tener máximo ${maximo} carácteres.`
       );
@@ -111,7 +100,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
   const handleDescriptionChange = (e) => {
     const texto = e.target.value;
-    const maximo = 200;
+    const maximo = 100;
     if (!validarAreaTexto(texto, maximo)) {
       setErrorDescripcion(
         `La descripción debe tener entre 4 y máximo ${maximo} carácteres`
@@ -122,34 +111,16 @@ const FormBasis = ({ isEditMode = false }) => {
     setDescripcion(texto);
   };
 
-  const handleDateChange = (e) => {
-    setFechaEvento(e.target.value);
-
-  };
-
-  const handleDateEndChange = (e) => {
-    setFechaFinEvento(e.target.value);
-
-  };
-
-  const handleHoraInicioChange = (e) => {
-    setHoraInicio(e.target.value);
-  };
-
-  const handleHoraFinChange = (e) => {
-    setHoraFin(e.target.value);
-  };
-
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
-  const ensureTimeHasSeconds = (timeString) => {
+  /* const ensureTimeHasSeconds = (timeString) => {
     if (!timeString) return timeString;
     const colonCount = (timeString.match(/:/g) || []).length;
     if (colonCount === 2) return timeString;
 
     return `${timeString}:00`;
-  };
+  }; */
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
@@ -164,24 +135,18 @@ const FormBasis = ({ isEditMode = false }) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
     const categoriasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCategoriasIds(categoriasIdsArray);
-    console.log("Categorías seleccionadas:", categoriasIdsArray);
+    //console.log("Categorías seleccionadas:", categoriasIdsArray);
   };
   const handleCaracteristicasChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
     const caracteristicasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCaracteristicasIds(caracteristicasIdsArray);
-    console.log("Características seleccionadas:", caracteristicasIdsArray);
+    //console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
   const handleCountryChange = (e) => {
-    console.log("valor de e.target en handleCountryChange")
-    console.log(e.target)
-    console.log("valor de e.target.value en handleCountryChange")
-    console.log(e.target.value)
     const country = countries.find(c => c.name === e.target.value);
-    console.log("Country encontrado: ", country)
     setSelectedCountry(country);
     setCountryValue(country.name);
-    setCountryDialCode(country.dial_code);
   };
   // useEffect para traer las categorias existentes
   useEffect(() => {
@@ -213,7 +178,7 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCharacteristics(data);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.error("Error cargando características:", error);
       } finally {
@@ -236,7 +201,7 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCountries(data.data);
-        console.log("Countries", data.data);
+        //console.log("Countries", data.data);
       } catch (error) {
         console.error("Error cargando paises:", error);
       } finally {
@@ -246,14 +211,13 @@ const FormBasis = ({ isEditMode = false }) => {
     fetchCountries();
   }, []);
 
-
   // GetCities
   useEffect(() => {
     const fetchCities = async () => {
       try {
         if (countryValue == "")
           return;
-        console.log("Selected Country", countryValue);
+        //console.log("Selected Country", countryValue);
 
         const response = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
           method: "POST",
@@ -290,46 +254,48 @@ const FormBasis = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
-          setTitulo(data.nombre);
-          setDescripcion(data.descripcion);
-          setValorTarifa(data.valorTarifa);
+          console.log("Actividad cargada:", data);
 
-          const catIds = data.categorias ? data.categorias.map(cat => cat.id) : [];
+          // Asignación de estados
+          setTitulo(data.nombre || "");
+          setDescripcion(data.descripcion || "");
+          setValorTarifa(data.valorTarifa || "");
+
+          const catIds = data.categorias ? data.categorias.map((cat) => cat.id) : [];
           setCategoriasIds(catIds);
-          const charIds = data.caracteristicas ? data.caracteristicas.map(char => char.id) : [];
+
+          const charIds = data.caracteristicas ? data.caracteristicas.map((char) => char.id) : [];
           setCaracteristicasIds(charIds);
 
-          setTipoTarifa(data.tipoTarifa);
-          setIdioma(data.idioma);
-          setPaymentPolicy(data.politicaPagos);
-          setCancellationPolicy(data.politicaCancelacion);
-          setCountryValue(data.pais);
-          setCity(data.ciudad);
-          setAddress(data.direccion);
-          setQuota(data.cuposTotales);
-          setHoraInicio(data.horaInicio);
-          setHoraFin(data.horaFin);
-          setDiasDisponible(data.diasDisponible || []);
-          setFechaEvento(data.fechaEvento || "");
-          setSelectedImages(data.productoImagenesSalidaDto || []);
-          //setExistingImages(data.productoImagenesSalidaDto.map(img => ({ id: img.id, url: img.rutaImagen })));
+          setTipoTarifa(data.tipoTarifa || "");
+          setIdioma(data.idioma || "");
+          setPaymentPolicy(data.politicaPagos || "");
+          setCancellationPolicy(data.politicaCancelacion || "");
+          setCountryValue(data.pais || "");
+          setCity(data.ciudad || "");
+          setAddress(data.direccion || "");
+          /* setHoraInicio(data.horaInicio?.substring(0, 5) || ""); */
+          setHoraInicio(data?.horaInicio || "");
+          /* setHoraFin(data.horaFin?.substring(0, 5) || ""); */
+          setHoraFin(data?.horaFin || "");
 
-          setEventType(data.eventType || data.tipoEvento);
+          setDiasDisponible(data.diasDisponible || []);
+          setSelectedImages(data.productoImagenesSalidaDto || []);
 
           // Cargar imágenes existentes
-          const images = data.productoImagenesSalidaDto || []; // El backend debe devolver las URLs de las imágenes existentes
-          setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen })));
-          console.log("data activityID obtenida:");
-          console.log(data);
+          const images = data.productoImagenesSalidaDto || [];
+          /* setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen }))); */
+          setExistingImages((images || []).map((img) => ({ id: img.id, url: img.rutaImagen })));
+          setEventType(data.eventType || data.tipoEvento || "");
         } catch (error) {
           console.error("Error cargando actividad:", error);
           Swal.fire({
             title: "Error",
-            text: "No se pudo cargar la actividad.",
+            text: "No se pudo cargar la actividad. Por favor, inténtalo nuevamente.",
             icon: "error",
             customClass: {
               popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
-            }
+            },
           });
           navigate("/administrador/actividades");
         } finally {
@@ -339,7 +305,57 @@ const FormBasis = ({ isEditMode = false }) => {
     };
 
     fetchActivity();
-  }, [activityId, navigate]);
+  }, [activityId]); // Eliminada la dependencia innecesaria `navigate`
+
+  //UseEffect para consultar la disponibilidad por activityId
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      if (!activityId) return;
+      if (activityId) {
+        setLoading(true);
+        try {
+          const response = await fetch(`/api/disponibilidad/${activityId}`);
+          if (!response.ok) {
+            throw new Error(`Error al cargar la disponibilidad: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Disponibilidad cargada: ", data);
+          if (data.length === 0) return;
+
+          if (data.length > 0) {
+            // Asignar cupos
+            setQuota(data[0]?.cuposTotales || null);
+
+            // Calcular fechas extrema
+            const fechasOrdenadas = data
+              .map(item => new Date(item.fechaEvento))
+              .sort((a, b) => a - b);
+
+            const fechaInicio = fechasOrdenadas[0]?.toISOString().split("T")[0];
+            const fechaFin = fechasOrdenadas[fechasOrdenadas.length - 1]?.toISOString().split("T")[0];
+
+            setFechaEvento(fechaInicio);
+            setFechaFinEvento(fechaFin);
+          }
+
+        } catch (error) {
+          console.error("Error cargando disponibilidad:", error);
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la disponibilidad.",
+            icon: "error",
+            customClass: {
+              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+            }
+          });
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchAvailability();
+  }, [activityId]);
 
   // Función handleSubmit dentro de FormBasis.jsx
   const handleSubmit = async (e) => {
@@ -350,27 +366,45 @@ const FormBasis = ({ isEditMode = false }) => {
 
     const method = isEditMode ? "PUT" : "POST";
 
-    // Validaciones
+    const showErrorAlert = (title, text) => {
+      Swal.fire({
+        title,
+        text,
+        icon: "error",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+        }
+      });
+    };
+
     if (errorTitulo || errorDescripcion) {
-      alert("Por favor, corrige los errores en el formulario antes de enviar.");
+      showErrorAlert("Error", "Por favor, corrige los errores en el formulario antes de enviar.");
       return;
     }
 
     if (tipoTarifa === "") {
-      alert("Debe seleccionar un tipo de tarifa");
+      showErrorAlert("Error", "Debe seleccionar un tipo de tarifa");
       return;
     }
 
     if (isNaN(valorTarifa) || valorTarifa <= 0) {
-      alert("El valor de la tarifa debe ser un número positivo");
+      showErrorAlert("Error", "El valor de la tarifa debe ser un número positivo");
       return;
     }
 
-    if (!isEditMode && selectedImages.length === 0) {
-      alert("Debe seleccionar al menos una imagen");
+    if (!isEditMode && selectedImages.length < 5) {
+      showErrorAlert("Error", "Debe seleccionar al menos 5 imagenes");
+      return;
+    }
+    if (!fechaEvento || (eventType === "RECURRENTE" && !fechaFinEvento)) {
+      showErrorAlert("Fechas requeridas", "Debes seleccionar una fecha de inicio y fin.");
       return;
     }
 
+    if (eventType === "RECURRENTE" && fechaEvento > fechaFinEvento) {
+      showErrorAlert("Error en fechas", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+      return;
+    }
     // Prevenir múltiples envíos
     setIsSubmitting(true);
 
@@ -386,20 +420,20 @@ const FormBasis = ({ isEditMode = false }) => {
       categoriasIds: categoriasIds, // Ya son números según tu payload
       caracteristicasIds: caracteristicasIds, // Ya son números según tu payload
       idioma,
-      horaInicio: ensureTimeHasSeconds(horaInicio),
-      horaFin: ensureTimeHasSeconds(horaFin),
+      horaInicio,
+      horaFin,
       tipoEvento: eventType,
-      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
-      fechaEvento: fechaEvento,
-      fechaFinEvento: fechaEvento || eventType === "FECHA_UNICA" ? fechaFinEvento : null,
+      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : [],
+      fechaEvento,
+      fechaFinEvento,
       politicaPagos: paymentPolicyValue,
       politicaCancelacion: cancellationPolicyValue,
       pais: countryValue,
       ciudad: cityValue,
       direccion: address,
-      cuposTotales: quota
+      cuposTotales: parseInt(quota),
     };
-    //console.log("Datos a enviar:", JSON.stringify(productoData));
+    console.log("Datos a enviar:", JSON.stringify(productoData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -414,6 +448,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
     console.log(productoData);
     console.log("Enviando datos al backend...");
+
     try {
       const token = state.token || localStorage.getItem("token");
 
@@ -428,11 +463,10 @@ const FormBasis = ({ isEditMode = false }) => {
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
-
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
-          `Error en la solicitud: ${response.status} - ${errorText}`
+          `Error en la solicitud: ${response.status} - ${errorText} --${response.statusText}`
         );
       }
 
@@ -466,7 +500,7 @@ const FormBasis = ({ isEditMode = false }) => {
       setCountryValue("");
       setCity("");
       setAddress("");
-      setQuota(1);
+      setQuota("");
       setHoraInicio("");
       setHoraFin("");
       setEventType("");
@@ -571,53 +605,6 @@ const FormBasis = ({ isEditMode = false }) => {
         {addressError && <FieldError message={addressError} />}
       </div>
       <PhoneInput country={selectedCountry} />
-      <div className="container-addrate">
-        <button
-          type="button"
-          onClick={toggleExtraFields}
-          className="hamburger-button"
-        >
-          &#x2795; Añadir Tarifas
-        </button>
-      </div>
-      {
-        showExtraFields && (
-          <div className="extra-fields">
-            <div>
-              <label htmlFor="rateName">Valor tarifa:</label>
-              <select
-                id="rateType"
-                value={tipoTarifa}
-                onChange={(e) => setTipoTarifa(e.target.value)}
-                required
-              >
-                <option value="" disabled>
-                  Selecciona el tipo de tarifa
-                </option>
-                <option value="POR_PERSONA">Por persona</option>
-                <option value="POR_PAREJA">Por pareja</option>
-                <option value="POR_GRUPO_6">Por grupo (6)</option>
-                <option value="POR_GRUPO_10">Por grupo (10)</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="ratePrice">Tarifa por:</label>
-              <input
-                type="number"
-                id="ratePrice"
-                min="1"
-                placeholder="Inserta el precio"
-                required
-              />
-            </div>
-            <div className="centered-button">
-              <button type="button" className="save-rate-button">
-                <FaSave />
-              </button>
-            </div>
-          </div>
-        )
-      }
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
@@ -648,9 +635,6 @@ const FormBasis = ({ isEditMode = false }) => {
             <option value="POR_GRUPO_10">Por grupo (10)</option>
           </select>
         </div>
-        <button type="button" className="delete-button" onClick={handleDelete}>
-          <i className="fas fa-trash-alt"></i>
-        </button>
       </div>
       <div className="container-quota">
         <label htmlFor="quota">Cupos:</label>
@@ -660,7 +644,7 @@ const FormBasis = ({ isEditMode = false }) => {
           name="Cupos"
           placeholder="Cantidad de Cupos totales"
           value={quota}
-          onChange={(e) => setQuota(e.target.value)}
+          onChange={(e) => setQuota(parseInt(e.target.value))}
           min="1"
           autoComplete="off"
           required
@@ -686,12 +670,16 @@ const FormBasis = ({ isEditMode = false }) => {
       {
         eventType === "FECHA_UNICA" && (
           <div className="container-dates">
-            <DateCalendar dateChange={handleDateChange} selectedDate={fechaEvento} />
+            <DateCalendar eventType={eventType}
+              fechaEvento={fechaEvento}
+              setFechaEvento={setFechaEvento}
+              fechaFinEvento={fechaFinEvento}
+              setFechaFinEvento={setFechaFinEvento} />
             <Horas
-              onHoraInicioChange={handleHoraInicioChange}
               horaInicio={horaInicio}
-              onHoraFinChange={handleHoraFinChange}
               horaFin={horaFin}
+              setHoraInicio={setHoraInicio}
+              setHoraFin={setHoraFin}
             />
           </div>
         )
@@ -704,10 +692,14 @@ const FormBasis = ({ isEditMode = false }) => {
             <Horas
               horaInicio={horaInicio}
               horaFin={horaFin}
-              onHoraInicioChange={handleHoraInicioChange}
-              onHoraFinChange={handleHoraFinChange}
+              setHoraInicio={setHoraInicio}
+              setHoraFin={setHoraFin}
             />
-            <DateCalendar dateEndChange={handleDateEndChange} dateChange={handleDateChange} selectedDate={fechaEvento} eventType={eventType} selectedDateEnd={fechaFinEvento} />
+            <DateCalendar eventType={eventType}
+              fechaEvento={fechaEvento}
+              setFechaEvento={setFechaEvento}
+              fechaFinEvento={fechaFinEvento}
+              setFechaFinEvento={setFechaFinEvento} />
           </div>
         )
       }
