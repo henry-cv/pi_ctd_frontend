@@ -47,7 +47,7 @@
 
 .table-header {
 	display: flex;
-	background-color: #eff0f1;
+	background-color: var(--Backgroundcolor);
 	padding: 15px 20px;
 	font-weight: 600;
 	color: var(--Font-Background);
@@ -66,6 +66,7 @@
 	padding: 15px 20px;
 	border-bottom: 1px solid var(--gray-200);
 	align-items: center;
+  justify-content: center;
 }
 
 .user-info {
@@ -74,7 +75,13 @@
 	align-items: center;
 	gap: 10px;
 }
-
+.user-row > .user-info{
+  color:var(--Font-Background);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 1rem;
+}
 .user-checkbox {
 	width: 20px;
 	height: 20px;
