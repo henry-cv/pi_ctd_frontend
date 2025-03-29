@@ -10,9 +10,9 @@ const UserBookings = () => {
           case "confirm":
             return <BookingsConfirm/>;
           case "complete":
-            return <p>las finalizadas</p>;
+            return <BookingsConfirm/>;
           case "cancel":
-            return <p>las canceladas</p>;
+            return <BookingsConfirm/>;
           default:
             return <p>las canceladas</p>;
         }

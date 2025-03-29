@@ -1,9 +1,19 @@
+@import url('../global/variables.css');
+
+.myBooking-Container{
+  background: var(--BackgroundColor);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 .bookingDetail-container {
-    margin-top: 100px  !important;
+    padding-top: 120px  !important;
+    padding-bottom: 80px !important;
     width: min(90%, 1142px);
     margin: auto;
-    padding: 20px;
-    background: #fff;
+
+    color: var(--Font-Background);
+
   }
 
   .bookingDetail-tittle-button{
@@ -13,7 +23,7 @@
   }
   
   .bookingDetail-status {
-    color: #6c63ff;
+    color: var(--Blue-300-L-yellow-D);
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 5px;
@@ -33,7 +43,7 @@
   
   .bookingDetail-image {
     width: 580px;
-    height: 309px;
+    max-height: 350px;
     border-radius: 10px;
     object-fit: cover;
   }
@@ -45,68 +55,50 @@
     justify-content: space-between;
 
   }
-  
-  .price {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .email {
-    color: #6c63ff;
-  }
-  
-  .whatsapp-btn {
-    background-color: #25D366;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-  
-  .modify-btn {
-    background-color: #6C63FF;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
 
-  .bookingDetail-info-contact{
-    margin-top:30px;
+  .bookingDetail-info-contact , .bookingDetail-info-contact  button{
+    margin:20px 0px;
   }
   
-  .confirmation-code {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #333;
-  }
+
   
   .cancellation-policy {
     margin-top: 15px;
     padding-top: 10px;
-    border-top: 1px solid #ddd;
+  }
+
+  .cancellation-policy p{
+    padding-top: 15px;
   }
   
-  .free-cancel {
-    font-weight: bold;
-    color: #25D366;
-  }
-  
+
   .cancel-btn {
-    background-color: #FF3B30;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
+    background-color: var(--Font-Background);
+    color: var(--BackgroundColor);
+  }
+
+  @media (max-width: 800px) {
+    .bookingDetail-content{
+      flex-direction: column;
+      width: min(100%, 700px);
+      align-items: start;
+    }
+    .bookingDetail-image {
+      width: min(100%, 700px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bookingDetail-content{
+      max-width: 100%;
+    }
+    .myBooking-Container{
+      max-width: 480px;
+    }
+
+    .bookingDetail-image {
+      max-width: 100%;
+    }
   }
   
