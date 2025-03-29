@@ -31,7 +31,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [descripcion, setDescripcion] = useState("");
   const [errorDescripcion, setErrorDescripcion] = useState("");
 
-  const [valorTarifa, setValorTarifa] = useState("");
+  const [valorTarifa, setValorTarifa] = useState(1.00);
   const [tipoTarifa, setTipoTarifa] = useState("");
   const [idioma, setIdioma] = useState("");
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
@@ -316,7 +316,7 @@ const FormBasis = ({ isEditMode = false }) => {
     };
 
     fetchActivity();
-  }, [activityId, navigate]); // Eliminada la dependencia innecesaria `navigate`
+  }, [activityId]); // Eliminada la dependencia innecesaria `navigate`
 
   //UseEffect para consultar la disponibilidad por activityId
   useEffect(() => {
@@ -377,26 +377,6 @@ const FormBasis = ({ isEditMode = false }) => {
 
     const method = isEditMode ? "PUT" : "POST";
 
-    // Validaciones
-    /* if (errorTitulo || errorDescripcion) {
-      alert("Por favor, corrige los errores en el formulario antes de enviar.");
-      return;
-    }
-
-    if (tipoTarifa === "") {
-      alert("Debe seleccionar un tipo de tarifa");
-      return;
-    }
-
-    if (isNaN(valorTarifa) || valorTarifa <= 0) {
-      alert("El valor de la tarifa debe ser un número positivo");
-      return;
-    }
-
-    if (!isEditMode && selectedImages.length === 0) {
-      alert("Debe seleccionar al menos una imagen");
-      return;
-    } */
     const showErrorAlert = (title, text) => {
       Swal.fire({
         title,
@@ -454,7 +434,7 @@ const FormBasis = ({ isEditMode = false }) => {
       horaInicio,
       horaFin,
       tipoEvento: eventType,
-      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
+      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : [],
       fechaEvento,
       fechaFinEvento,
       politicaPagos: paymentPolicyValue,
@@ -479,6 +459,7 @@ const FormBasis = ({ isEditMode = false }) => {
 
     console.log(productoData);
     console.log("Enviando datos al backend...");
+
     try {
       const token = state.token || localStorage.getItem("token");
 
@@ -493,7 +474,6 @@ const FormBasis = ({ isEditMode = false }) => {
         body: formData,
         // No establecer Content-Type, el navegador lo configura automáticamente con boundary para multipart/form-data
       });
-      console.log(response);
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
