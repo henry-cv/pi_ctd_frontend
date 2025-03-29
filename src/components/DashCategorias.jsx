@@ -1,5 +1,5 @@
 import "../css/pages/dashboard.css";
-//import FormNewCategory from "./FormNewCategory";
+
 import { useState, useEffect } from "react";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
@@ -71,7 +71,7 @@ const DashCategorias = () => {
   return (
     <div className="categories_container activities_container">
       <header className="header_categories header_activities">
-        <h2 className="dark_activities">Nueva Categoría</h2>
+        <h2 className="dark_activities">Mis Categorías</h2>
         <div className="categoryRight activitieRight">
           <div className="searchFilter">
             <DashSearch onSearch={handleSearch} />{" "}
@@ -88,13 +88,19 @@ const DashCategorias = () => {
           </Link>
         </div>
       </header>
-
+      <div className="table_activities table_categories">
+        <div className="left-cell" >
+          <span className="titleTable">Categoría</span>
+        </div>
+        <div className="right-cell">
+          <span className="titleTable">Acciones</span>
+        </div>
+      </div>
       {loading && <p>Cargando categorías...</p>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       {!loading && !error && currentCategories.length > 0
         ? currentCategories.map((category) => (
-          console.log(category),
           <CategoryRow
             key={category.id}
             id={category.id}

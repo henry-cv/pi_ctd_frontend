@@ -306,6 +306,14 @@ button:focus-visible {
 .table_categories {
   display: grid;
   grid-template-columns: 2fr 1fr;
+  justify-items: center;
+}
+.table_categories div.left-cell{
+  justify-self: start;
+  /* padding-left: 4rem; */
+}
+.table_categories div.right-cell{
+  justify-self: center;
 }
 
 .RegisterActivitie {
