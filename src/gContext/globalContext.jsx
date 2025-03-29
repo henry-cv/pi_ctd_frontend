@@ -6,7 +6,7 @@ const initialState = {
   theme: "",
   userFiltersTabs:{
     activeTab: "edit-profile",
-    selectedFilters: "Confirm"
+    selectedFilters: "confirm"
   }
   ,
   user: JSON.parse(localStorage.getItem("user")) || null,

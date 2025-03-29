@@ -23,6 +23,7 @@ import FilterProducts from "../pages/FilterProducts";
 import PolicyPage from "../components/PolicyPage";
 import Terms from "../pages/Terms";
 import DashPolicies from "../components/DashPolicies";
+import BookingDetail from "../pages/BookingDetail";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -87,6 +88,7 @@ const AppRoutes = () => {
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
+        <Route path="/misreservas/:id" element={<BookingDetail/>} />
       </Route>
       <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />

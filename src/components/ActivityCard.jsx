@@ -43,7 +43,7 @@ const ActivityCard = ({
     if (state.userFiltersTabs.activeTab === "reservations") {
       dispatch({
         type: "SET_ACTIVE_TAB_FILTER",
-        payload: { activeTab: "edit-profile" },
+        payload: { activeTab: "reservations" , },
       });
     }
   };
@@ -52,7 +52,7 @@ const ActivityCard = ({
     <Link
       key={id}
       to={state.userFiltersTabs.activeTab === "reservations"
-        ? `/mis-reservas/${id}`
+        ? `/misreservas/${id}`
         : `/actividad/${id}`}
       className="activity-link"
       onClick={handleClick}
