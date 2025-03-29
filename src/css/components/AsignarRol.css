@@ -47,7 +47,7 @@
 
 .table-header {
 	display: flex;
-	background-color: #eff0f1;
+	background-color: var(--Backgroundcolor);
 	padding: 15px 20px;
 	font-weight: 600;
 	color: var(--Font-Background);
@@ -76,6 +76,7 @@
 	gap: 10px;
 }
 .user-row > .user-info{
+  color:var(--Font-Background);
   display: flex;
   flex-direction: row;
   align-items: center;
