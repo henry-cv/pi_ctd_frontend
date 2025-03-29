@@ -760,3 +760,20 @@
 		display: none;
 	}
 }
+
+.action-buttons {
+	display: flex;
+	flex-direction: column; /* Cambiar de row a column */
+	align-items: center;
+	gap: 10px; /* Espacio entre los botones */
+}
+
+.action-buttons > button,
+.action-buttons > div {
+	margin-left: 0; /* Quitar margen horizontal si existiera */
+}
+
+/* Ajuste específico para el botón de compartir */
+.share-button {
+	margin-left: 0 !important; /* Sobreescribir cualquier margin que pudiera tener */
+}
