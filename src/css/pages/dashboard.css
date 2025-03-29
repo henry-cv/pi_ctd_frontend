@@ -314,6 +314,10 @@ button:focus-visible {
   justify-self: center;
 }
 
+.table_features{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
 .RegisterActivitie {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
