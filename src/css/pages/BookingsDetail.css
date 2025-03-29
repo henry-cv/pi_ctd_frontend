@@ -56,10 +56,26 @@
 
   }
 
+  .user-booking-loading{
+    background-color: var(--BackgroundColor);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    text-align: center;
+    padding: 20px;
+    color: var(--Font-Background);
+  }
+
   .bookingDetail-info-contact , .bookingDetail-info-contact  button{
     margin:20px 0px;
   }
   
+  .info-slots strong{
+    padding: 0 4px;
+    
+  }
 
   
   .cancellation-policy {
@@ -76,6 +92,26 @@
     margin-top: 15px;
     background-color: var(--Font-Background);
     color: var(--BackgroundColor);
+  }
+
+  .cancel-btn:disabled {
+    background-color: var(--Font-Background);
+    color: var(--BackgroundColor);
+    opacity: 0.5;
+  }
+
+  .cancel-btn:hover {
+    background-color: var(--Font-Background);
+    color: var(--BackgroundColor);
+    opacity: 0.5;
+  }
+
+  .copy-code{
+    cursor: pointer;
+  }
+
+  .custom-tooltip-booking{
+    background-color: var(--black-300) !important; /* Azul oscuro */
   }
 
   @media (max-width: 800px) {

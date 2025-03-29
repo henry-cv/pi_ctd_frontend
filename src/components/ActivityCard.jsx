@@ -29,6 +29,7 @@ const ActivityCard = ({
   rating,
   categories,
   fechaReserva,
+  estado
 }) => {
   // Imagen por defecto en caso de error o sin imagen
   const [extraCategories, setExtraCategories] = useState(false);
@@ -52,10 +53,9 @@ const ActivityCard = ({
     <Link
       key={id}
       to={state.userFiltersTabs.activeTab === "reservations"
-        ? `/misreservas/${id}`
+        ? `/perfil/misreservas/${id}`
         : `/actividad/${id}`}
       className="activity-link"
-      onClick={handleClick}
     >
       <div className={`activity-card card-container-fluid ${state.userFiltersTabs.activeTab === "reservations" ? "card-height-reservation" : ""}`}>
         <div className="activity-image-container">
@@ -94,6 +94,7 @@ const ActivityCard = ({
 
           {state.userFiltersTabs.activeTab === "reservations"
             ? <>
+            <p className="booking-state">{estado}</p>
             <div className="booking-details-card">
             <p>{fechaReserva}</p>
             <span >
@@ -154,6 +155,7 @@ ActivityCard.propTypes = {
   rating: PropTypes.number.isRequired,
   categories: PropTypes.array,
   fechaReserva: PropTypes.string,
+  estado:PropTypes.string,
 };
 
 ActivityCard.defaultProps = {

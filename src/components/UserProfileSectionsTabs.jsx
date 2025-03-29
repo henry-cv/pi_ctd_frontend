@@ -66,18 +66,18 @@ const UserProfileSectionsTabs = () => {
         <span>Confirmadas</span>
       </button>
       <button
-        className={`booking-tab-button ${state.activeTab === "complete" ? "active-filter" : ""}`}
+        className={`booking-tab-button ${state.userFiltersTabs.selectedFilters === "complete" ? "active-filter" : ""}`}
         onClick={() => handleChange("filter","complete")}
       >
         <FontAwesomeIcon icon={state.userFiltersTabs.selectedFilters === "complete" ? faClose : faPlus} />
         <span>Finalizadas</span>
       </button>
       <button
-        className={`booking-tab-button ${state.activeTab === "cancel" ? "active-filter" : ""}`}
+        className={`booking-tab-button ${state.userFiltersTabs.selectedFilters === "cancel" ? "active-filter" : ""}`}
         onClick={() => handleChange("filter","cancel")}
       >
         <FontAwesomeIcon icon={state.userFiltersTabs.selectedFilters === "cancel" ? faClose : faPlus} />
-        <span>Canceladass</span>
+        <span>Canceladas</span>
       </button>
     </div>
 </> : <> </>}

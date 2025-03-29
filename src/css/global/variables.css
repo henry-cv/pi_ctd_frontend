@@ -10,6 +10,7 @@
   --white: #ffffff;
   --white-opacity: #ffffffa4;
   --white-300:#F7F8FC;
+  --white-400: #D6D6D6;
   --black: #101828;
   --black-100: #afb2b7;
   --black-300: #606570;
@@ -65,6 +66,7 @@
   --Color-base: var(--blue-base);
   --Menu-Hamburger: var(--white);
   --Background-W-300:var(--white-300);
+  --Background-W-300-B-400:var(--white-300);
   --Blue-300-L-yellow-D: var(--blue-300);
 }
 
@@ -82,5 +84,6 @@
   --Menu-Hamburger: var(--black);
   --Color-base: var(--yellow-base);
   --Background-W-300:var(--black-700);
+  --Background-W-300-B-400:var(--black-400);
   --Blue-300-L-yellow-D: var(--yellow-base);
 }

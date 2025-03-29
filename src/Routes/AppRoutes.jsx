@@ -91,7 +91,7 @@ const AppRoutes = () => {
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
-        <Route path="/misreservas/:id" element={<BookingDetail/>} />
+        <Route path="/perfil/misreservas/:id" element={<BookingDetail/>} />
       </Route>
       
       {/* Rutas de reserva */}
