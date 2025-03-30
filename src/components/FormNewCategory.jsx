@@ -57,19 +57,31 @@ const FormNewCategory = ({ isEditMode = false }) => {
     }
     setDescription(texto);
   };
+  //Para manejar el checkbox
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setDeleteExistingImage(isChecked);
+    if (isChecked) {
+      setExistingImage(""); // Oculta la imagen actual
+      setSelectedImage([]); // Limpia imágenes anteriores
+    }
+  };
 
   const handleRemoveExistingImage = () => {
     setExistingImage("");
     setDeleteExistingImage(true); // úsalo para enviar al backend
   };
-  const handleNewImages = (files) => {
-    setNewImages(files);
-  };
+
   // Nueva función para manejar las imágenes seleccionadas
   const handleImageSelected = (files) => {
-    if (!Array.isArray(files)) setErrorFile("Deberia ser un arreglo on una imágen")
+    if (!Array.isArray(files)) {
+      setErrorFile("Debe seleccionar al menos una imagen válida.");
+      return;
+    }
+    setErrorFile("");
     setSelectedImage(files);
   };
+
 
   // useEffect para buscar categoría por Id y cargarla en el formulario
   useEffect(() => {
@@ -88,7 +100,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           setCategory(data.nombre || "");
           setDescription(data.descripcion || "");
 
-          setExistingImage(data.imagenCategoriaUrl)
+          setExistingImage(data.imagenCategoriaUrl || "")
         } catch (error) {
           console.error("Error cargando categoría:", error);
           Swal.fire({
@@ -137,7 +149,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
     }
 
     if (!isEditMode && selectedImage.length === 0) {
-      showErrorAlert("Debe seleccionar al menos una imagen");
+      showErrorAlert("Falta imagen", "Debe seleccionar al menos una imagen para la nueva categoría.");
       return;
     }
 
@@ -260,6 +272,20 @@ const FormNewCategory = ({ isEditMode = false }) => {
       <div className="container-images">
         <label>Imágenes:</label>
         {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
+        {existingImage && isEditMode && (
+          <div>
+            <input
+              type="checkbox"
+              id="deleteExistingImage"
+              checked={deleteExistingImage}
+              onChange={handleCheckboxChange}
+            />
+            <label htmlFor="deleteExistingImage">
+              ¿Deseas reemplazar la imagen existente?
+            </label>
+          </div>
+        )}
+
         <ImageXUploader
           onImagesSelected={handleImageSelected}
           onRemoveExistingImage={handleRemoveExistingImage}
