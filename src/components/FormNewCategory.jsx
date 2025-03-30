@@ -1,17 +1,22 @@
 import "../css/global/variables.css";
 import "../css/components/FormNewCategory.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ImageUploader from "./ImageUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 import { useContextGlobal } from "../gContext/globalContext";
 
-const FormNewCategory = () => {
+const FormNewCategory = ({ isEditMode = false }) => {
+
+  const location = useLocation();
+  const categoryId = location.state?.categoryId || null;
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [category, setCategory] = useState("");
   const [errorCategory, setErrorCategory] = useState("");
@@ -20,6 +25,7 @@ const FormNewCategory = () => {
   const [errorDescription, setErrorDescription] = useState("");
 
   const [selectedImages, setSelectedImages] = useState([]);
+  const [existingImage, setExistingImage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { state } = useContextGlobal();
 
@@ -52,6 +58,51 @@ const FormNewCategory = () => {
   const handleImagesSelected = (files) => {
     setSelectedImages(files);
   };
+
+  // useEffect para buscar categoría por Id y cargarla en el formulario
+  useEffect(() => {
+    const fetchCategory = async () => {
+      if (categoryId) {
+        setLoading(true);
+        try {
+          const response = await fetch(`/api/categoria/${categoryId}`);
+          if (!response.ok) {
+            throw new Error(`Error al cargar la actividad: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log("Categoría cargada:", data);
+
+          // Asignación de estados
+          setCategory(data.nombre || "");
+          setDescription(data.descripcion || "");
+
+          setExistingImage(data.imagenCategoriaUrl)
+
+          // Cargar imágenes existentes
+          //const images = data.productoImagenesSalidaDto || [];
+
+          /* setExistingImages((images || []).map((img) => ({ id: img.id, url: img.rutaImagen })));
+          setEventType(data.eventType || data.tipoEvento || ""); */
+        } catch (error) {
+          console.error("Error cargando categoría:", error);
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la categoría. Por favor, inténtalo nuevamente.",
+            icon: "error",
+            customClass: {
+              popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+            },
+          });
+          navigate("/administrador/categorias");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    //fetchCategory();
+  }, [categoryId]); // Eliminada la dependencia innecesaria `navigate`
+
 
   //Manejador del Evento Submit del Formulario
   const handleSubmit = async (e) => {
@@ -129,7 +180,7 @@ const FormNewCategory = () => {
         timer: 2000,
         customClass: {
           popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
-          }
+        }
       }).then(() => {
         navigate("/administrador/categorias");
       });
