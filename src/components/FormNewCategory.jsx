@@ -174,9 +174,29 @@ const FormNewCategory = ({ isEditMode = false }) => {
     );
 
     // Agregar cada imagen como una parte separada
-    selectedImage.forEach((file) => {
+    /* selectedImage.forEach((file) => {
       formData.append("imagenCategoria", file);
-    });
+    }); */
+
+    // Agregar cada imagen como una parte separada
+    if (isEditMode && deleteExistingImage) {
+      // Si el formulario está en modo editar y el usuario ha seleccionado el checkbox para reemplazar la imagen existente
+      // Solo agregar la nueva imagen seleccionada
+      selectedImage.forEach((file) => {
+        formData.append("imagenCategoria", file);
+      });
+      // Agregar un campo adicional para indicar que se desea reemplazar la imagen existente
+      formData.append("replaceExistingImage", "true");
+      // Agregar la clave de la imagen existente
+      formData.append("existingImageKey", existingImage);
+    } else {
+      // Si no se desea reemplazar la imagen existente o el formulario no está en modo editar
+      // Agregar cada imagen seleccionada
+      selectedImage.forEach((file) => {
+        formData.append("imagenCategoria", file);
+      });
+    }
+
     console.log(`--->${categoryData}<---`)
     console.log("Enviando datos al backend...");
 
@@ -224,7 +244,6 @@ const FormNewCategory = ({ isEditMode = false }) => {
       setCategory("");
       setDescription("");
       setSelectedImage([]);
-      //navigate('/administrador/categorias');
 
     } catch (error) {
       console.error("Error:", error.message);
