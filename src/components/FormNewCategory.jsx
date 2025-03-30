@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
 import { useContextGlobal } from "../gContext/globalContext";
+import PropTypes from "prop-types";
 
 const FormNewCategory = ({ isEditMode = false }) => {
 
@@ -100,22 +101,38 @@ const FormNewCategory = ({ isEditMode = false }) => {
       }
     };
 
-    //fetchCategory();
+    fetchCategory();
   }, [categoryId]); // Eliminada la dependencia innecesaria `navigate`
 
 
   //Manejador del Evento Submit del Formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const endpoint = isEditMode
+      ? `/api/categoria/editar/${categoryId}`
+      : "/api/categoria/registrar";
+
+    const method = isEditMode ? "PUT" : "POST";
+
+    const showErrorAlert = (title, text) => {
+      Swal.fire({
+        title,
+        text,
+        icon: "error",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+        }
+      });
+    };
 
     // Validaciones
     if (errorCategory || errorDescription) {
-      alert("Por favor, corrige los errores en el formulario antes de enviar.");
+      showErrorAlert("Por favor, ingresa los datos correctamente en el formulario antes de enviar.");
       return;
     }
 
     if (selectedImages.length === 0) {
-      alert("Debe seleccionar al menos una imagen");
+      showErrorAlert("Debe seleccionar al menos una imagen");
       return;
     }
 
@@ -131,6 +148,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
       descripcion: description
 
     };
+    console.log("Datos a enviar:", JSON.stringify(categoryData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -151,8 +169,8 @@ const FormNewCategory = ({ isEditMode = false }) => {
       if (!token) {
         throw new Error("No se encontró el token de autenticación");
       }
-      const response = await fetch("/api/categoria/registrar", {
-        method: "POST",
+      const response = await fetch(endpoint, {
+        method,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -173,8 +191,8 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
       //Agregada para Sweet Alert 2
       Swal.fire({
-        title: "¡Categoría Creada!",
-        text: "La categoría se ha guardado correctamente.",
+        title: isEditMode ? "¡Categoría Actualizada!" : "¡Categoría Creada!",
+        text: "La categoría se guardó correctamente.",
         icon: "success",
         showConfirmButton: false,
         timer: 2000,
@@ -193,16 +211,21 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
     } catch (error) {
       console.error("Error:", error.message);
-      alert(`Error al enviar los datos: ${error.message}`);
+      //alert(`Error al enviar los datos: ${error.message}`);
+      showErrorAlert("Error", "No se pudo completar la operación.");
     } finally {
       setIsSubmitting(false);
     }
 
   };
-
+  if (loading) {
+    return <p>Cargando datos de la categoría...</p>;
+  }
   return (
     <form action="" className="form-base new-category" onSubmit={handleSubmit}>
       <div className="container-title">
+        <h2>{isEditMode ? "Editar Categoría" : "Agregar Categoría"}</h2>
+
         <label htmlFor="category">Nombre Categoría</label>
         <input
           id="category"
@@ -252,5 +275,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
     </form>
   )
 }
-
+FormNewCategory.propTypes = {
+  isEditMode: PropTypes.bool,
+}
 export default FormNewCategory

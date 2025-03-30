@@ -24,6 +24,8 @@ import PolicyPage from "../components/PolicyPage";
 import Terms from "../pages/Terms";
 import DashPolicies from "../components/DashPolicies";
 import BookingDetail from "../pages/BookingDetail";
+import EditCategory from "../components/EditCategory";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -70,6 +72,10 @@ const AppRoutes = () => {
         />
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />
+        <Route
+          path="/administrador/categorias/editarCategoria"
+          element={<EditCategory />}
+        />
         <Route path="ajustes" element={<DashAjustes />} />
         <Route
           path="ajustes/asignar-rol"
@@ -88,7 +94,7 @@ const AppRoutes = () => {
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
-        <Route path="/perfil/misreservas/:id" element={<BookingDetail/>} />
+        <Route path="/perfil/misreservas/:id" element={<BookingDetail />} />
       </Route>
       <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />

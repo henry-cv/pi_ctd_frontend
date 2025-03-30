@@ -5,7 +5,7 @@ import { useContextGlobal } from "../gContext/globalContext";
 import Swal from "sweetalert2";
 import "../css/components/DeleteUSer.css"
 
-const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
+const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete, onUpdate }) => {
   const { state } = useContextGlobal();
   //console.log(`Imagen: ${imagenCategoriaUrl}`);
 
@@ -19,9 +19,9 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
       customClass: {
-        popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
-        confirmButton: "custom-button", 
-        cancelButton: "swal2-cancel", 
+        popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+        confirmButton: "custom-button",
+        cancelButton: "swal2-cancel",
       }
     });
 
@@ -44,11 +44,11 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
           title: "¡Categoría eliminada!",
           text: "La categoría ha sido eliminada exitosamente.",
           icon: "success",
-          timer: 3000,  
-          timerProgressBar: true,  
+          timer: 3000,
+          timerProgressBar: true,
           showConfirmButton: false,
           customClass: {
-            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
           }
         });
 
@@ -59,11 +59,11 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
           title: "Error",
           text: `Ocurrió un problema al eliminar la categoría: ${error.message}`,
           icon: "error",
-          timer: 4000,   
+          timer: 4000,
           showConfirmButton: false,
           customClass: {
-            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
-          } 
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+          }
         });
       }
     }
@@ -77,7 +77,7 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
         <p>{nombre}</p>
       </div>
       <div className="btn_action">
-        <button className="btn_blueAction">
+        <button className="btn_blueAction" onClick={onUpdate} >
           <FaEdit size={"1.2rem"} />
         </button>
         <button className="btn_redAction" onClick={handleDelete}>
@@ -93,6 +93,7 @@ CategoryRow.propTypes = {
   nombre: PropTypes.string.isRequired,
   descripcion: PropTypes.string.isRequired,
   imagenCategoriaUrl: PropTypes.string.isRequired,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onUpdate: PropTypes.func,
 };
 export default CategoryRow
