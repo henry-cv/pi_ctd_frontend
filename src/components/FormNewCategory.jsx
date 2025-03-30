@@ -241,7 +241,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           id="description"
           placeholder="Ingresa descripción de la categoría"
           name="descripcion"
-          title="En este campo si admite números y los símbolos: ':' , * - • ; _"
+          title="Este campo si admite números y los símbolos: ':' , * - • ; _"
           value={description}
           onChange={handleDescriptionChange}
           required>
@@ -255,6 +255,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           onImagesSelected={handleImageSelected}
           existingImages={existingImage ? [existingImage] : []}
           isEditMode={!!existingImage}
+          /* La doble negación obtiene un valor booleano de la variable */
           allowUpload={true}
           maxImages={1}
         />
