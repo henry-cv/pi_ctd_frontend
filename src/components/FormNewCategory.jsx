@@ -27,6 +27,8 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
   const [selectedImage, setSelectedImage] = useState([]);
   const [existingImage, setExistingImage] = useState("");
+  const [deleteExistingImage, setDeleteExistingImage] = useState(false);
+
   const [errorFile, setErrorFile] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { state } = useContextGlobal();
@@ -56,6 +58,13 @@ const FormNewCategory = ({ isEditMode = false }) => {
     setDescription(texto);
   };
 
+  const handleRemoveExistingImage = () => {
+    setExistingImage("");
+    setDeleteExistingImage(true); // úsalo para enviar al backend
+  };
+  const handleNewImages = (files) => {
+    setNewImages(files);
+  };
   // Nueva función para manejar las imágenes seleccionadas
   const handleImageSelected = (files) => {
     if (!Array.isArray(files)) setErrorFile("Deberia ser un arreglo on una imágen")
@@ -253,6 +262,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
         {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
         <ImageXUploader
           onImagesSelected={handleImageSelected}
+          onRemoveExistingImage={handleRemoveExistingImage}
           existingImages={existingImage ? [existingImage] : []}
           isEditMode={!!existingImage}
           /* La doble negación obtiene un valor booleano de la variable */

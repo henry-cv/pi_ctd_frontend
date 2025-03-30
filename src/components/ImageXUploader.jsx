@@ -8,38 +8,47 @@ const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 
 const ImageXUploader = ({
   onImagesSelected,
+  onRemoveExistingImage,
   existingImages = [],
   isEditMode = false,
   allowUpload = true,
-  maxImages = 5
+  maxImages = 5,
 }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
-  // Precargar imágenes remotas
+  // Cargar imágenes precargadas (remotas) en modo edición
   useEffect(() => {
-    const remoteImages = existingImages.map((url) => ({
-      file: null,
-      preview: url,
-      isRemote: true,
-    }));
-    setImages(remoteImages);
+    if (existingImages.length > 0) {
+      const remoteImages = existingImages.map((url) => ({
+        file: null,
+        preview: url,
+        isRemote: true,
+      }));
+      setImages(remoteImages);
+    }
   }, [existingImages]);
+
+  // Función para validar imágenes
+  const validateImage = (file) => {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    const isValidType = validTypes.includes(file.type);
+    const isValidSize = file.size <= MAX_FILE_SIZE;
+    return isValidType && isValidSize;
+  };
 
   const handleImageChange = (e) => {
     if (!allowUpload) return;
 
     const files = Array.from(e.target.files);
 
-    const validFiles = files.filter((file) => {
-      const isValidType = ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type);
-      const isValidSize = file.size <= MAX_FILE_SIZE;
-      return isValidType && isValidSize;
-    });
+    const validFiles = files.filter(validateImage);
 
     if (validFiles.length !== files.length) {
-      setError("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, WEBP) y no excedan 4MB.");
+      setError(
+        "Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, WEBP) y no excedan 4MB."
+      );
     } else {
       setError(null);
     }
@@ -47,7 +56,9 @@ const ImageXUploader = ({
     if (validFiles.length === 0) return;
 
     if (images.length + validFiles.length > maxImages) {
-      setError(`Solo puedes subir un máximo de ${maxImages} imagen${maxImages > 1 ? "es" : ""}.`);
+      setError(
+        `Solo puedes subir un máximo de ${maxImages} imagen${maxImages > 1 ? "es" : ""}.`
+      );
       return;
     }
 
@@ -62,8 +73,8 @@ const ImageXUploader = ({
     const updatedImages = [...images, ...newImages];
     setImages(updatedImages);
 
-    // Solo archivos nuevos, no URLs existentes
-    onImagesSelected?.(updatedImages.filter(img => img.file !== null).map((img) => img.file));
+    // Notificar solo archivos nuevos
+    onImagesSelected?.(updatedImages.filter((img) => img.file !== null).map((img) => img.file));
     setUploading(false);
   };
 
@@ -73,20 +84,26 @@ const ImageXUploader = ({
 
     if (!imgToRemove) return;
 
-    if (!imgToRemove.isRemote) {
-      URL.revokeObjectURL(imgToRemove.preview);
+    // Imagen existente del backend
+    if (imgToRemove.isRemote) {
+      onRemoveExistingImage?.(imgToRemove.preview); // o pasar un ID si tienes uno
+      updatedImages.splice(index, 1);
+      setImages(updatedImages);
+      return;
     }
 
+    // Imagen recién subida (local)
+    URL.revokeObjectURL(imgToRemove.preview);
     updatedImages.splice(index, 1);
     setImages(updatedImages);
 
-    // Solo archivos nuevos
-    onImagesSelected?.(updatedImages.filter(img => img.file !== null).map((img) => img.file));
+    // Notificar solo los archivos locales
+    onImagesSelected?.(updatedImages.filter((img) => img.file !== null).map((img) => img.file));
   };
 
   const truncateString = (str, length) => {
-    if (!str) return '';
-    return str.length > length ? str.substring(0, length) + '...' : str;
+    if (!str) return "";
+    return str.length > length ? str.substring(0, length) + "..." : str;
   };
 
   return (
@@ -107,17 +124,15 @@ const ImageXUploader = ({
           />
         </label>
       )}
+
       {uploading && (
         <div className="upload-loading">
-          <p>Procesando imagen{maxImages > 1 ? "es" : ""}</p>
+          <p>Procesando imagen{maxImages > 1 ? "es" : ""}...</p>
         </div>
       )}
-      {/* {error && (
-        <div className="error-message">
-          <p>{error}</p>
-        </div>
-      )} */}
+
       {error && <FieldError message={error} />}
+
       {images.length > 0 && (
         <div className="image-previews">
           {images.map((image, index) => (
@@ -146,10 +161,11 @@ const ImageXUploader = ({
 
 ImageXUploader.propTypes = {
   onImagesSelected: propTypes.func,
+  onRemoveExistingImage: propTypes.func,
   existingImages: propTypes.array,
   isEditMode: propTypes.bool,
   allowUpload: propTypes.bool,
-  maxImages: propTypes.number
+  maxImages: propTypes.number,
 };
 
 export default ImageXUploader;
