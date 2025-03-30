@@ -118,3 +118,10 @@ export const calcularPrecio = (cantidadPersonas, tipoTarifa, valorTarifa) => {
         return "no es posible calcular los cupos";
     }
   };
+
+  
+  export const handleGoWhatsApp = (phoneNumber ) => {
+    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    window.open(whatsappUrl, "_blank");
+  };
+

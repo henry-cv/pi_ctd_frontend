@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FaTicket } from "react-icons/fa6";
 import ButtonGral from "../components/ButtonGral";
-import { calcularPrecio, onlyFetchBooking, calcularCupos, formatFecha } from "../constants/data/funtionFetchBookings";
+import { calcularPrecio, onlyFetchBooking, calcularCupos, formatFecha, handleGoWhatsApp} from "../constants/data/funtionFetchBookings";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
@@ -141,7 +141,6 @@ const BookingDetail = () => {
 	};
 
 
-
   return (
     <section className="myBooking-Container">
 
@@ -177,7 +176,14 @@ const BookingDetail = () => {
             <div className="bookingDetail-info-contact">
               <p><FaCheck /> La confirmación va de camino a <strong className="email">{state.user.email}</strong></p>
               <p><FaCheck /> Alojamiento o servicio garantizado.</p>
-              <ButtonGral text="Escríbele al anfitrión" color="blue" icon={<WhatsappIcon size={32} round bgStyle={{ fill: "#25D366" }} iconFillColor="#000000" />} />
+              <ButtonGral 
+              text="Escríbele al organizador" 
+              color="blue" icon={<WhatsappIcon 
+              size={32} 
+              round bgStyle={{ fill: "#25D366" }} 
+              iconFillColor="#000000" />}
+              onClick={() => handleGoWhatsApp(3005223014)}
+               />
             </div>
 
           </div>
