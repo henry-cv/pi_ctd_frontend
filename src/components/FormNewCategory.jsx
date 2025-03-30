@@ -1,7 +1,7 @@
 import "../css/global/variables.css";
 import "../css/components/FormNewCategory.css";
 import { useState, useEffect } from "react";
-import ImageUploader from "./ImageUploader";
+import ImageXUploader from "./ImageXUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import FieldError from "./FieldError";
 import { validarTexto, validarAreaTexto } from "../utils/utils";
@@ -25,8 +25,9 @@ const FormNewCategory = ({ isEditMode = false }) => {
   const [description, setDescription] = useState("");
   const [errorDescription, setErrorDescription] = useState("");
 
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState([]);
   const [existingImage, setExistingImage] = useState("");
+  const [errorFile, setErrorFile] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { state } = useContextGlobal();
 
@@ -47,7 +48,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
     const maximo = 100;
     if (!validarAreaTexto(texto, maximo)) {
       setErrorDescription(
-        `La desripción debe tener entre 4 y máximo ${maximo} carácteres`
+        `La descripción debe tener entre 4 y máximo ${maximo} carácteres`
       );
     } else {
       setErrorDescription("");
@@ -56,8 +57,9 @@ const FormNewCategory = ({ isEditMode = false }) => {
   };
 
   // Nueva función para manejar las imágenes seleccionadas
-  const handleImagesSelected = (files) => {
-    setSelectedImages(files);
+  const handleImageSelected = (files) => {
+    if (!Array.isArray(files)) setErrorFile("Deberia ser un arreglo on una imágen")
+    setSelectedImage(files);
   };
 
   // useEffect para buscar categoría por Id y cargarla en el formulario
@@ -78,12 +80,6 @@ const FormNewCategory = ({ isEditMode = false }) => {
           setDescription(data.descripcion || "");
 
           setExistingImage(data.imagenCategoriaUrl)
-
-          // Cargar imágenes existentes
-          //const images = data.productoImagenesSalidaDto || [];
-
-          /* setExistingImages((images || []).map((img) => ({ id: img.id, url: img.rutaImagen })));
-          setEventType(data.eventType || data.tipoEvento || ""); */
         } catch (error) {
           console.error("Error cargando categoría:", error);
           Swal.fire({
@@ -131,7 +127,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
       return;
     }
 
-    if (selectedImages.length === 0) {
+    if (!isEditMode && selectedImage.length === 0) {
       showErrorAlert("Debe seleccionar al menos una imagen");
       return;
     }
@@ -157,7 +153,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
     );
 
     // Agregar cada imagen como una parte separada
-    selectedImages.forEach((file) => {
+    selectedImage.forEach((file) => {
       formData.append("imagenCategoria", file);
     });
     console.log(`--->${categoryData}<---`)
@@ -206,7 +202,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
       // Limpiar formulario después de un envío exitoso
       setCategory("");
       setDescription("");
-      setSelectedImages([]);
+      setSelectedImage([]);
       //navigate('/administrador/categorias');
 
     } catch (error) {
@@ -232,6 +228,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           type="text"
           placeholder="Ingresa título de la categoría"
           name="categoria"
+          title="Ingrese letras únicamente y símbolo punto '.' si desea"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           onBlur={handleCategoryBlur}
@@ -244,6 +241,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           id="description"
           placeholder="Ingresa descripción de la categoría"
           name="descripcion"
+          title="En este campo si admite números y los símbolos: ':' , * - • ; _"
           value={description}
           onChange={handleDescriptionChange}
           required>
@@ -252,10 +250,18 @@ const FormNewCategory = ({ isEditMode = false }) => {
       </div>
       <div className="container-images">
         <label>Imágenes:</label>
-        <ImageUploader onImagesSelected={handleImagesSelected} />
-        {selectedImages.length > 0 && (
+        {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
+        <ImageXUploader
+          onImagesSelected={handleImageSelected}
+          existingImages={existingImage ? [existingImage] : []}
+          isEditMode={!!existingImage}
+          allowUpload={true}
+          maxImages={1}
+        />
+        {errorFile && <FieldError message={errorFile} />}
+        {selectedImage.length === 1 && (
           <p className="selected-count">
-            {selectedImages.length} imagen(es) seleccionada(s)
+            {selectedImage.length} imagen seleccionada
           </p>
         )}
       </div>
@@ -264,6 +270,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           text="Cancelar"
           className="button-yellow btn-preview"
           type="button"
+          onClick={() => navigate("/administrador/categorias")}
         />
         <ButtonBluePill
           text={isSubmitting ? "Guardando..." : "Guardar"}
