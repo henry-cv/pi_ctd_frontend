@@ -35,6 +35,8 @@ import ActivityPolitics from "../components/ActivityPolitics";
 import FavoriteButton from "../components/FavoriteButton";
 import ShareButton from "../components/ShareButton";
 import ShareModal from "../components/ShareModal";
+import {handleGoWhatsApp} from "../constants/data/funtionFetchBookings";
+import { WhatsappIcon } from "react-share";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -542,17 +544,14 @@ const ActivityDetail = () => {
 
 										<div className="contact-detail">
 										<p>¿Necesitas más información sobre esta actividad?</p>
-
-										<ButtonGral
-										otherClass=" btn_contact"
-										text="Contacta al organizador"
-										variant="primary"
-										color="yellow"
-										icon={<FaIcons.FaWhatsapp />}
-										// fullWidth={true}
-										// url={`/reserva/${activity.id}`}
-										// onClick={() => handleOpenModalBooking(activity.id)}
-										/>
+			  <ButtonGral 
+			  text="Escríbele al organizador" 
+			  color="blue" icon={<WhatsappIcon 
+			  size={32} 
+			  round bgStyle={{ fill: "#25D366" }} 
+			  iconFillColor="#000000" />}
+			  onClick={() => handleGoWhatsApp(3005223014)}
+			   />
 										</div>
 
 									</div>
