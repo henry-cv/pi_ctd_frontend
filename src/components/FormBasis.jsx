@@ -44,7 +44,7 @@ const FormBasis = ({ isEditMode = false }) => {
   },);
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
-  //const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
@@ -274,6 +274,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setCountryValue(data.pais || "");
           setCity(data.ciudad || "");
           setAddress(data.direccion || "");
+          setPhoneNumber(data.telefono || "");
           /* setHoraInicio(data.horaInicio?.substring(0, 5) || ""); */
           setHoraInicio(data?.horaInicio || "");
           /* setHoraFin(data.horaFin?.substring(0, 5) || ""); */
@@ -430,6 +431,7 @@ const FormBasis = ({ isEditMode = false }) => {
       politicaCancelacion: cancellationPolicyValue,
       pais: countryValue,
       ciudad: cityValue,
+      telefono: phoneNumber,
       direccion: address,
       cuposTotales: parseInt(quota),
     };
@@ -507,6 +509,7 @@ const FormBasis = ({ isEditMode = false }) => {
       setDiasDisponible([]);
       setFechaEvento("");
       setSelectedImages([]);
+      setPhoneNumber("");
     } catch (error) {
       console.error("Error:", error.message, "Error completo: ", error);
       //alert(`Error al enviar los datos: ${error.message}`);
@@ -604,7 +607,7 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
-      <PhoneInput country={selectedCountry} />
+      <PhoneInput country={selectedCountry} setPhoneNumber={setPhoneNumber} />
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
