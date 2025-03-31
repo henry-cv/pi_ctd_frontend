@@ -150,6 +150,7 @@ const Home = () => {
             </h2>
             <div className="categories-grid">
               <Swiper
+              className="category-swiper"
                 modules={[Navigation, Pagination]}
                 slidesPerView={5}
                 spaceBetween={20}

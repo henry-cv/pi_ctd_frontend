@@ -24,9 +24,9 @@
 
 /* Estilos para los slides */
 .swiper-slide {
-  width: 100%;
   height: 100%;
 }
+
 
 /* Estilos para controles de Swiper si los necesitamos */
 .swiper-button-prev,
