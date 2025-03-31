@@ -127,7 +127,7 @@ const ActivityCard = ({
                 </span>
               </div>
               <div className="activity-footer">
-                <span className="activity-price">${price}</span>
+                <span className="activity-price">${price} </span>
                 <span className="activity-rating">
                   <FontAwesomeIcon icon={faStar} />
                   {rating}

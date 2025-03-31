@@ -37,8 +37,8 @@ function ActivityPolitics({cancelation, payment}) {
     setObjModal(null);
   };
 
-  console.log("Cancelation:", cancelation);
-  console.log("Payment:", payment);
+  // console.log("Cancelation:", cancelation);
+  // console.log("Payment:", payment);
   return (
     <div className="info-card-yellow">
       <div className="info-item">
