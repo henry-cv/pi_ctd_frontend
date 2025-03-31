@@ -155,12 +155,13 @@ const Home = () => {
 								spaceBetween={20}
 								grabCursor={true}
 								centeredSlides={false}
-								cssMode={true}
+								cssMode={false}
+								navigation={false}
 								breakpoints={{
-									320: { slidesOffsetBefore: 10, spaceBetween: 10 }, // Reducido a 10px
-									400: { slidesOffsetBefore: 15, spaceBetween: 10 }, // Reducido a 10px
-									768: { slidesOffsetBefore: 0, spaceBetween: 20 }, // Se mantiene en 20px
-									1024: { slidesOffsetBefore: 0, spaceBetween: 20 }, // Se mantiene en 20px
+									320: { slidesOffsetBefore: 10, spaceBetween: 10 },
+									400: { slidesOffsetBefore: 15, spaceBetween: 10 },
+									768: { slidesOffsetBefore: 0, spaceBetween: 20 },
+									1024: { slidesOffsetBefore: 0, spaceBetween: 20 },
 								}}
 							>
 								{categories.length > 0 ? (
