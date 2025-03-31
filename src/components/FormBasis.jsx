@@ -2,7 +2,7 @@ import "../css/components/Form.css";
 import "../css/global/variables.css";
 
 import { useState, useEffect } from "react";
-import ImageUploader from "./ImageUploader";
+import ImageXUploader from "./ImageXUploader";
 import ButtonBluePill from "./ButtonBluePill";
 import Horas from "./Horas";
 import DateCalendar from "./DateCalendar";
@@ -56,6 +56,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [fechaFinEvento, setFechaFinEvento] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]); // Imágenes existentes
+  const [errorFile, setErrorFile] = useState("");
   const { state } = useContextGlobal();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -123,6 +124,11 @@ const FormBasis = ({ isEditMode = false }) => {
   }; */
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
+    if (!Array.isArray(files)) {
+      setErrorFile("Debe seleccionar al menos una imagen válida.");
+      return;
+    }
+    setErrorFile("");
     setSelectedImages(files);
   };
   //Manejador para permitir subir nuevas imágenes
@@ -280,7 +286,7 @@ const FormBasis = ({ isEditMode = false }) => {
           /* setHoraFin(data.horaFin?.substring(0, 5) || ""); */
           setHoraFin(data?.horaFin || "");
 
-          setDiasDisponible(data.diasDisponible || []);
+          setDiasDisponible(data.diasDisponible || null);
           setSelectedImages(data.productoImagenesSalidaDto || []);
 
           // Cargar imágenes existentes
@@ -424,9 +430,9 @@ const FormBasis = ({ isEditMode = false }) => {
       horaInicio,
       horaFin,
       tipoEvento: eventType,
-      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : [],
+      diasDisponible: eventType === "RECURRENTE" ? diasDisponible : null,
       fechaEvento,
-      fechaFinEvento,
+      fechaFinEvento: eventType === "FECHA_UNICA" ? null : fechaFinEvento,
       politicaPagos: paymentPolicyValue,
       politicaCancelacion: cancellationPolicyValue,
       pais: countryValue,
@@ -814,7 +820,12 @@ const FormBasis = ({ isEditMode = false }) => {
         {(!isEditMode || allowImageUpload) && (
           <>
             <label>{isEditMode ? "Nuevas Imágenes:" : "Imágenes:"}</label>
-            <ImageUploader onImagesSelected={handleImagesSelected} />
+            <ImageXUploader
+              onImagesSelected={handleImagesSelected}
+              existingImages={existingImages ? [existingImages] : []}
+              isEditMode={!!isEditMode}
+            />
+            {errorFile && <FieldError message={errorFile} />}
             {selectedImages.length > 0 && (
               <p className="selected-count">
                 {selectedImages.length} imagen(es) seleccionada(s)
