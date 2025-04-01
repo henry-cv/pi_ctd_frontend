@@ -65,13 +65,13 @@ const ActivityDetail = () => {
 	const [openAccess, setOpenAccess] = useState(false);
 	const [disponibilidad, setDisponibilidad] = useState([]);
 	const [openShareModal, setOpenShareModal] = useState(false);
-	const [isPastDate, setIsPastDate] = useState(state.bookingModals.callEffect)
+	const [isPastDate, setIsPastDate] = useState(null)
 
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
 	//  console.log("La activity " + JSON.stringify(state.activity));
 
-	//  console.log("el efecto ", isPastDate);
+	 console.log("el efecto ", isPastDate);
 
 	useEffect(() => {
 		const fetchActivityDetails = async () => {
@@ -133,33 +133,35 @@ const ActivityDetail = () => {
 		fetchActivityDetails();
 	}, [id]);
 
-	const GetPastEvent = () => {
 
-		const today = normalizeDate(new Date());
-		let theActivity = state.activity?.theActivity;
-		// let eventDate = state.activity?.theActivity?.[0].fechaEvento;
-		let isPastEvent = true;
+useEffect(() => {
+	if (state.activity?.theActivity) {
+	  const today = normalizeDate(new Date());
+	  let theActivity = state.activity.theActivity;
+	  let isPastEvent = true;
+  
+	  Object.keys(theActivity)
+		.filter((key) => !isNaN(parseInt(key)))
+		.forEach((key) => {
+		  let eventDate = theActivity[key].fechaEvento;
+		  if (eventDate) {
+			eventDate = normalizeDate(new Date(eventDate));
+			if (eventDate > today) {
+			  isPastEvent = false;
+			  return;
+			}
+		  }
+		});
+	  
+	  if (isPastEvent) {
+		setIsPastDate("Esta actividad no cuenta con fechas disponibles");
+	  } else {
+		setIsPastDate("");
+	  }
+	}
+  }, [state.activity?.theActivity]);
+  
 
-		if (theActivity != null) {
-			Object.keys(theActivity)
-				.filter((key) => !isNaN(parseInt(key)))
-				.map((key) => {
-					let eventDate = theActivity[key].fechaEvento;
-					if (eventDate != undefined) {
-						eventDate = normalizeDate(new Date(eventDate));
-						console.log("fechas que tiene disponibles" + key, eventDate);
-						if (eventDate > today) {
-							isPastEvent = false;
-							return;
-						}
-
-					}
-				});
-			if (isPastEvent)
-				console.log("Esta actividad ya pasó");
-		}
-	};
-	GetPastEvent();
 
 	// Detectar scroll para mostrar la card de reserva en móvil
 	useEffect(() => {
@@ -593,7 +595,7 @@ const ActivityDetail = () => {
 							<div className="booking-column">
 								<div className="booking-card">
 									<div className="price-section">
-										<p>{state.bookingModals.pastDate}</p>
+									<p style={{ color: "red" }}>{isPastDate}</p>
 										<span className="price">${activity.valorTarifa || 0}</span>
 										<span className="price-type">
 											{activity.tipoTarifa === "POR_PERSONA"
@@ -617,6 +619,8 @@ const ActivityDetail = () => {
 										fullWidth={true}
 										url={`/reserva/${activity.id}`}
 										onClick={() => handleOpenModalBooking(activity.id)}
+										disabled={ isPastDate  ? true : false}
+										otherClass={isPastDate  ?" disiabled" : ""}
 									/>
 								</div>
 							</div>
