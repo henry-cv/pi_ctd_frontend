@@ -45,7 +45,7 @@ const FormBasis = ({ isEditMode = false }) => {
   },);
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
-  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [phoneData, setPhoneData] = useState({
     dial_code: "+1",
     phone: "",
@@ -74,6 +74,12 @@ const FormBasis = ({ isEditMode = false }) => {
   const [caracteristicasIds, setCaracteristicasIds] = useState([]);
   const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
 
+  const searchCountryByName = (name) => {
+    const country = countries.find(c => c.name === name);
+    console.log(`Search country: ${name}, founded: ${country}`);
+    console.log(country);
+    return country;
+  }
   const handleEventTypeChange = (e) => {
     setEventType(e.target.value);
   };
@@ -155,7 +161,7 @@ const FormBasis = ({ isEditMode = false }) => {
     //console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
   const handleCountryChange = (e) => {
-    const country = countries.find(c => c.name === e.target.value);
+    const country = searchCountryByName(e.target.value);
     setSelectedCountry(country);
     setCountryValue(country.name);
   };
@@ -283,16 +289,17 @@ const FormBasis = ({ isEditMode = false }) => {
           setPaymentPolicy(data.politicaPagos || "");
           setCancellationPolicy(data.politicaCancelacion || "");
           setCountryValue(data.pais || "");
+          setSelectedCountry(searchCountryByName(data.pais) || {});
           setCity(data.ciudad || "");
           setAddress(data.direccion || "");
           setTelefono(data?.telefono || "");
-          const parsedNumber = parsePhoneNumberFromString(data?.telefono);
+          /* const parsedNumber = parsePhoneNumberFromString(data?.telefono);
           if (parsedNumber) {
             setPhoneData({
               dial_code: parsedNumber.countryCallingCode,
               phone: parsedNumber.nationalNumber,
             });
-          }
+          } */
           setHoraInicio(data?.horaInicio || "");
 
           setHoraFin(data?.horaFin || "");
@@ -448,7 +455,7 @@ const FormBasis = ({ isEditMode = false }) => {
       politicaCancelacion: cancellationPolicyValue,
       pais: countryValue,
       ciudad: cityValue,
-      telefono: phoneNumber,
+      telefono,
       direccion: address,
       cuposTotales: parseInt(quota),
     };
@@ -526,7 +533,6 @@ const FormBasis = ({ isEditMode = false }) => {
       setDiasDisponible([]);
       setFechaEvento("");
       setSelectedImages([]);
-      setPhoneNumber("");
     } catch (error) {
       console.error("Error:", error.message, "Error completo: ", error);
       //alert(`Error al enviar los datos: ${error.message}`);
