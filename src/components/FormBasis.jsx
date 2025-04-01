@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 import { paymentPolicies, cancellationPolicies } from "../constants/data/policiesDataInfo";
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import PhoneInput from "./PhoneInput.jsx";
 
 const FormBasis = ({ isEditMode = false }) => {
@@ -45,7 +46,11 @@ const FormBasis = ({ isEditMode = false }) => {
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const [phoneData, setPhoneData] = useState({
+    dial_code: "+1",
+    phone: "",
+  });
+  const [telefono, setTelefono] = useState("");
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
   const [quota, setQuota] = useState(1);
@@ -280,10 +285,16 @@ const FormBasis = ({ isEditMode = false }) => {
           setCountryValue(data.pais || "");
           setCity(data.ciudad || "");
           setAddress(data.direccion || "");
-          setPhoneNumber(data.telefono || "");
-          /* setHoraInicio(data.horaInicio?.substring(0, 5) || ""); */
+          setTelefono(data?.telefono || "");
+          const parsedNumber = parsePhoneNumberFromString(data?.telefono);
+          if (parsedNumber) {
+            setPhoneData({
+              dial_code: parsedNumber.countryCallingCode,
+              phone: parsedNumber.nationalNumber,
+            });
+          }
           setHoraInicio(data?.horaInicio || "");
-          /* setHoraFin(data.horaFin?.substring(0, 5) || ""); */
+
           setHoraFin(data?.horaFin || "");
 
           setDiasDisponible(data.diasDisponible || null);
@@ -613,7 +624,7 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
-      <PhoneInput country={selectedCountry} setPhoneNumber={setPhoneNumber} />
+      <PhoneInput country={selectedCountry} phoneData={phoneData} setPhoneData={setPhoneData} />
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
