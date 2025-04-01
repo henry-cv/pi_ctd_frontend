@@ -41,8 +41,9 @@
 }
 /* Estilo del formulario */
 .form-container {
+  justify-content: flex-start;
   display: flex;
-  padding-bottom: 20px;
+  padding: 0px;
   flex-direction: column;
   align-items: flex-start;
   gap: 25px;
@@ -56,21 +57,28 @@
 }
 
 .form-title {
-  font-family: var(--font-archivo);
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--Font-Background);
+  color: var(--Black-500, #101828);
+  font-family: Archivo;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 140% */
 }
 
 .form-subtitle {
-  color: var(--gray-500);
-  margin-bottom: 30px;
+  align-self: stretch;
+  color: var(--Black-300, #606570);
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px; /* 156.25% */
 }
 
 .personal-data-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  width: 100%;
 }
 
 .form-field {
@@ -86,11 +94,16 @@
 
 .phone-field {
   margin-bottom: 20px;
+  align-items: normal;
+
 }
 
 .phone-input-container {
   display: flex;
+  flex-direction: row;
   gap: 10px;
+  margin: 0px;
+  width: 100%;
 }
 
 .country-code {
@@ -153,42 +166,134 @@
 }
 
 /* Media queries para responsividad */
-@media (max-width: 992px) {
-  .personal-data-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .summary-container {
-    order: -1;
-  }
-}
 
-@media (max-width: 768px) {
-  .personal-data-container {
-    padding-top: 100px;
-  }
-  
-  .form-container,
-  .summary-container {
-    padding: 20px;
-  }
-  
-  .form-buttons {
-    flex-direction: column;
-  }
+@media(max-width: 700px){
+.personal-data-content{
+  padding: 0px 0px 0px 20px;
 }
-
-@media (max-width: 480px) {
+}
+/* Media queries for responsividad */
+@media (max-width: 630px) {
   .personal-data-container {
     padding-top: 80px;
+    padding-bottom: 120px; /* Extra space for floating buttons */
+  }
+  
+  .personal-data-content {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+    gap: 20px;
+  }
+  
+  .breadcrumbs {
+    padding: 0 20px;
+  }
+  
+  .form-container, .summary-container {
+    width: 100%;
+  }
+  
+  /* Reorder content to match design */
+  .summary-container {
+    display: flex;
+    flex-direction: column;
+    order: 2;
+    align-items: center;
+  }
+  
+  .form-container {
+    order: 1;
   }
   
   .phone-input-container {
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row;
+    gap: 10px;
   }
   
   .country-code {
+    width: 80px;
+    flex-shrink: 0;
+  }
+  
+  /* Sticky floating footer with buttons */
+  .form-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 15px 20px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    margin-top: 0;
+    flex-direction: column;
+  }
+  
+  .button-yellow, .button-blue {
     width: 100%;
+  }
+  
+  /* Total amount display in floating footer */
+  .form-buttons::before {
+    content: "Total: $75 USD";
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: var(--font-archivo);
+  }
+  
+  /* Adjust stepper for mobile */
+  .MuiStepper-root {
+    padding: 0 10px;
+  }
+  
+  .MuiStepLabel-label {
+    font-size: 12px;
+  }
+  
+  /* Adjust card styles for mobile */
+  .summary-container > div {
+    margin-bottom: 20px;
+  }
+  
+  /* Make the page title smaller */
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  /* Form components */
+  .form-title {
+    font-size: 18px;
+  }
+  
+  .form-subtitle {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  /* Add space between form fields */
+  .form-field {
+    margin-bottom: 15px;
+  }
+
+  /* Make floating buttons more visible with animated indicator */
+  @keyframes pulseButton {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .button-blue {
+    animation: pulseButton 2s infinite ease-in-out;
+    margin-top: 10px;
+  }
+  
+  /* Dark mode adjustments */
+  .personal-data-page.dark .form-buttons {
+    background-color: var(--black-500);
+    color: white;
   }
 }

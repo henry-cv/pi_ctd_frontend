@@ -9,7 +9,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 21px;
-  align-self: stretch;
   border-radius: 20px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border: 1px solid var(--Black-100, #AFB2B7);
@@ -147,7 +146,11 @@ svg:not(:host).svg-inline--fa.fa-star.star-filled {
     max-width: 301px;
   }
 }
-
+@media (max-width: 630px) {
+  .activity-summary-card {
+    max-width: 411px;
+  }
+}
 @media (max-width: 440px) {
   .activity-summary-card {
     max-width: 411px;

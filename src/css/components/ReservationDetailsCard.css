@@ -189,6 +189,12 @@
     max-width: 301px;
   };
 }
+@media (max-width: 630px) {
+  .reservation-summary-card {
+    max-width: 411px;
+  };
+
+}
 @media (max-width: 440px) {
   .reservation-summary-card {
     max-width: 411px;

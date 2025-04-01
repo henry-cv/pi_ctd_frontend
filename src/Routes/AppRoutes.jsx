@@ -24,6 +24,8 @@ import PolicyPage from "../components/PolicyPage";
 import Terms from "../pages/Terms";
 import DashPolicies from "../components/DashPolicies";
 import PersonalDataFormPage from "../pages/PersonalDataFormPage";
+import ConfirmationPage from "../pages/ConfirmationPage";
+import ReservationSuccessPage from "../pages/ReservationSuccessPage";
 
 const AppRoutes = () => {
   return (
@@ -82,7 +84,6 @@ const AppRoutes = () => {
         />
         <Route path="caracteristicas" element={<DashCharacteristics />} />
         <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
-
       </Route>
 
       {/* Otras rutas */}
@@ -90,21 +91,35 @@ const AppRoutes = () => {
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
       </Route>
+      
+      {/* Rutas de reserva */}
+      <Route path="/datos-personales" element={
+        <PrivateRoutes>
+          <PersonalDataFormPage />
+        </PrivateRoutes>
+      } />
+      <Route path="/confirmar-reserva" element={
+        <PrivateRoutes>
+          <ConfirmationPage />
+        </PrivateRoutes>
+      } />
+      <Route path="/reserva-exitosa" element={
+        <PrivateRoutes>
+          <ReservationSuccessPage />
+        </PrivateRoutes>
+      } />
       <Route path="/datos-reserva" element={
         <PrivateRoutes>
           <PersonalDataFormPage />
         </PrivateRoutes>
       } />
+      
       <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />
       {/* Ruta para políticas de uso */}
       <Route path="/politicasdeuso" element={<PolicyPage />} >
-        {/*         <Route path="/politicasdeuso/:article/:subarticle?" element={<DashPolicies />} />
- */}        <Route path="/politicasdeuso/:article/:subarticle?" element={<DashPolicies selectedPolicy={"pagos"} />} />
-
+        <Route path="/politicasdeuso/:article/:subarticle?" element={<DashPolicies selectedPolicy={"pagos"} />} />
       </Route>
-      {/* ruta /politicasdeuso/:article/:subarticle?", :subarticle?, toma como
-      opcional el argumento subarticle */}
     </Routes>
   );
 };

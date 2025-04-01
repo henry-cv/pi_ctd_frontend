@@ -159,7 +159,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       handleClose();
       
       // Redireccionar a la página de confirmación de reserva
-      navigate(`/datos-reserva`);
+      navigate(`/datos-personales`);
     } else {
       Swal.fire({
         icon: "error",
