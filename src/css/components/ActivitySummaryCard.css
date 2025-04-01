@@ -1,0 +1,167 @@
+/* Contenedor principal */
+.activity-summary-card {
+  display: flex;
+  width: 100%;
+  max-width: 411px;
+  height: auto;
+  max-height: none;
+  padding-bottom: 20px;  padding: 20px 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 21px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--Black-100, #AFB2B7);
+}
+.activity-summary-card.dark {
+  background-color: var(--black-400);
+  border-color: var(--Black-300, #2D2D2D);
+}
+/* Contenedor de la actividad principal */
+.activity-summary-main {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Imagen de la actividad */
+.activity-thumbnail {
+  width: 96px;
+  height: 102px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Detalles de la actividad */
+.activity-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: calc(100% - 112px); /* 96px de imagen + 16px de gap */
+}
+
+/* Título de la actividad */
+.activity-title {
+  font-family: Archivo;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 116.667% */
+  margin: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-wrap: break-word;
+}
+
+.activity-location {
+  color: var(--Black-500, #101828);
+  font-family: Outfit;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px;
+}
+
+.activity-summary-card.dark .activity-location {
+  color: #ffffff;
+}
+svg:not(:host).svg-inline--fa.fa-location-dot {
+  width: 20px;
+  height: 20px;
+  color: #101828;
+}
+.activity-summary-card.dark svg:not(:host).svg-inline--fa.fa-location-dot {
+  color: #ffffff;
+}
+span.rating-text{
+padding-left: 15px;
+padding-top: 4px;
+color: var(--Black-500, #101828);
+font-family: Archivo;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 25px;
+}
+.activity-summary-card.dark span.rating-text{
+  color: var(--Black-500, #ffffff);
+  }
+svg:not(:host).svg-inline--fa.fa-star.star-empty{
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+svg:not(:host).svg-inline--fa.fa-star.star-filled {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.activity-summary-card.dark svg:not(:host).svg-inline--fa.fa-location-dot {
+  color: #ffffff;
+}
+
+.activity-summary-card.dark svg:not(:host).svg-inline--fa.fa-star.star-empty, .activity-summary-card.dark svg:not(:host).svg-inline--fa.fa-star.star-filled {
+  color: #ffffff;
+}
+.activity-summary-card h3.card-title {
+  border-bottom: none;
+  box-shadow: none;
+  position: relative;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  font-family: Outfit;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px; /* 125% */
+}
+
+.activity-contact {
+  text-align: center;
+  width: 100%;
+}
+
+.contact-link {
+  color: var(--Font-Background);
+  margin: 0;
+  font-size: 16px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
+  display: block;
+  width: 100%;
+}
+
+.contact-link a {
+  color: #3e10da;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+}
+/* Breakpoints específicos */
+@media (max-width: 834px) {
+  .activity-summary-card {
+    max-width: 301px;
+  }
+}
+@media (max-width: 630px) {
+  .activity-summary-card {
+    max-width: 411px;
+  }
+}
+@media (max-width: 440px) {
+  .activity-summary-card {
+    max-width: 411px;
+    height: auto;
+  }
+  
+  .activity-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .contact-link {
+    font-size: 14px;
+  }
+}
