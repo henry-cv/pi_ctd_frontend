@@ -41,7 +41,6 @@ const PersonalDataFormPage = () => {
     email: user?.email || "",
     telefono: ""
   });
-  import { useNavigate } from "react-router-dom";
 
   const [errors, setErrors] = useState({});
 
