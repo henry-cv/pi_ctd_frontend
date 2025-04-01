@@ -15,9 +15,17 @@ const initialState = {
   isLoading: true,
   usuarioRoles: null,
   activity: null,
-  reservation: JSON.parse(localStorage.getItem("reservation")) || [], 
-  urlRedirection: localStorage.getItem("urlRedirection") || "",
-  isAccessModal: false
+  reservation:{ 
+    theBooking: JSON.parse(localStorage.getItem("reservation")) || [], 
+    isBooking: false},
+    urlRedirection: localStorage.getItem("urlRedirection") || "",
+    isAccessModal: false,
+    bookingModals:{
+      pastDate:"",
+      callEffect: false,
+      isActiveModal:true,  
+    }
+  
 };
 
 export const ContextGlobal = createContext();

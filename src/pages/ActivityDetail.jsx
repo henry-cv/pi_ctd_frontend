@@ -35,8 +35,9 @@ import ActivityPolitics from "../components/ActivityPolitics";
 import FavoriteButton from "../components/FavoriteButton";
 import ShareButton from "../components/ShareButton";
 import ShareModal from "../components/ShareModal";
-import {handleGoWhatsApp} from "../constants/data/funtionFetchBookings";
+import { handleGoWhatsApp } from "../constants/data/funtionFetchBookings";
 import { WhatsappIcon } from "react-share";
+import { normalizeDate } from "../constants/data/funtionsBookingCalendar"
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -64,9 +65,13 @@ const ActivityDetail = () => {
 	const [openAccess, setOpenAccess] = useState(false);
 	const [disponibilidad, setDisponibilidad] = useState([]);
 	const [openShareModal, setOpenShareModal] = useState(false);
+	const [isPastDate, setIsPastDate] = useState(state.bookingModals.callEffect)
+
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
-	 console.log("La activity " + JSON.stringify(state.activity));
+	//  console.log("La activity " + JSON.stringify(state.activity));
+
+	//  console.log("el efecto ", isPastDate);
 
 	useEffect(() => {
 		const fetchActivityDetails = async () => {
@@ -127,6 +132,34 @@ const ActivityDetail = () => {
 
 		fetchActivityDetails();
 	}, [id]);
+
+	const GetPastEvent = () => {
+
+		const today = normalizeDate(new Date());
+		let theActivity = state.activity?.theActivity;
+		// let eventDate = state.activity?.theActivity?.[0].fechaEvento;
+		let isPastEvent = true;
+
+		if (theActivity != null) {
+			Object.keys(theActivity)
+				.filter((key) => !isNaN(parseInt(key)))
+				.map((key) => {
+					let eventDate = theActivity[key].fechaEvento;
+					if (eventDate != undefined) {
+						eventDate = normalizeDate(new Date(eventDate));
+						console.log("fechas que tiene disponibles" + key, eventDate);
+						if (eventDate > today) {
+							isPastEvent = false;
+							return;
+						}
+
+					}
+				});
+			if (isPastEvent)
+				console.log("Esta actividad ya pasó");
+		}
+	};
+	GetPastEvent();
 
 	// Detectar scroll para mostrar la card de reserva en móvil
 	useEffect(() => {
@@ -322,9 +355,8 @@ const ActivityDetail = () => {
 				<section className="gallery-section" ref={galleryRef}>
 					<div className="content-wrapper">
 						<div
-							className={`gallery-grid ${
-								images.length === 1 ? "single-image" : ""
-							}`}
+							className={`gallery-grid ${images.length === 1 ? "single-image" : ""
+								}`}
 						>
 							<div
 								className="main-image"
@@ -384,9 +416,8 @@ const ActivityDetail = () => {
 								{images.slice(1, 5).map((image, index) => (
 									<div
 										key={index}
-										className={`thumbnail ${
-											index === 3 && images.length > 5 ? "with-overlay" : ""
-										}`}
+										className={`thumbnail ${index === 3 && images.length > 5 ? "with-overlay" : ""
+											}`}
 										onClick={() => handleOpenImageViewer(index + 1)}
 									>
 										<img
@@ -543,15 +574,15 @@ const ActivityDetail = () => {
 										</div>
 
 										<div className="contact-detail">
-										<p>¿Necesitas más información sobre esta actividad?</p>
-			  <ButtonGral 
-			  text="Escríbele al organizador" 
-			  color="blue" icon={<WhatsappIcon 
-			  size={32} 
-			  round bgStyle={{ fill: "#25D366" }} 
-			  iconFillColor="#000000" />}
-			  onClick={() => handleGoWhatsApp(3005223014)}
-			   />
+											<p>¿Necesitas más información sobre esta actividad?</p>
+											<ButtonGral
+												text="Escríbele al organizador"
+												color="blue" icon={<WhatsappIcon
+													size={32}
+													round bgStyle={{ fill: "#25D366" }}
+													iconFillColor="#000000" />}
+												onClick={() => handleGoWhatsApp(activity.telefono ? activity.telefono : 3005223014)}
+											/>
 										</div>
 
 									</div>
@@ -562,6 +593,7 @@ const ActivityDetail = () => {
 							<div className="booking-column">
 								<div className="booking-card">
 									<div className="price-section">
+										<p>{state.bookingModals.pastDate}</p>
 										<span className="price">${activity.valorTarifa || 0}</span>
 										<span className="price-type">
 											{activity.tipoTarifa === "POR_PERSONA"

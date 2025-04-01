@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FaTicket } from "react-icons/fa6";
 import ButtonGral from "../components/ButtonGral";
-import { calcularPrecio, onlyFetchBooking, calcularCupos, formatFecha, handleGoWhatsApp} from "../constants/data/funtionFetchBookings";
+import { calcularPrecio, onlyFetchBooking, calcularCupos, formatFecha, handleGoWhatsApp } from "../constants/data/funtionFetchBookings";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
@@ -20,6 +20,7 @@ import {
 import { Tooltip } from 'react-tooltip';
 import { Breadcrumbs } from "@mui/material";
 import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
+import BookingModal from "../components/BookingModal";
 
 
 const BookingDetail = () => {
@@ -35,20 +36,39 @@ const BookingDetail = () => {
   const navigate = useNavigate();
   const [politics, setPolitics] = useState([]);
   const [copied, setCopied] = useState(false);
-
+  const [openBooking, setOpenBooking] = useState(false);
 
   console.log(id, "id reserva");
   console.log("las tab filter es :", state.userFiltersTabs.selectedFilters);
-  
 
+  const handleCloseModalBooking = () => {
+    setOpenBooking(false);
+  };
 
-
+  const handleOpenModalBooking = () => {
+    setOpenBooking(true);
+  };
   useEffect(() => {
     const getBookings = async () => {
       try {
         setLoading(true);
         const reservations = await onlyFetchBooking(id, state.token);
         setBooking(reservations);
+
+        const theActivity = { ...reservations.bookingData, ...reservations.disponibilityData, ...reservations.productData };
+
+        console.log("lo que le mandaresmo a la actividad ", theActivity);
+
+        dispatch({
+          type: "SET_ACTIVITY",
+          payload: { theActivity },
+        });
+        
+
+        dispatch({
+          type: "SET_RESERVATION",
+          payload: {  isBooking: true }
+        });
 
         if (reservations.bookingData && reservations.productData) {
           const { cantidadPersonas } = reservations.bookingData;
@@ -135,17 +155,17 @@ const BookingDetail = () => {
   };
 
   const handleCopyLink = (confirmationCode) => {
-		navigator.clipboard.writeText(confirmationCode);
-		setCopied(true);
-		setTimeout(() => setCopied(false), 2000);
-	};
+    navigator.clipboard.writeText(confirmationCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
 
   return (
     <section className="myBooking-Container">
 
       <div className="bookingDetail-container">
-        <BasicBreadcrumbs/>
+        <BasicBreadcrumbs />
         <p className="bookingDetail-status">Reserva  {booking.bookingData.estado.toLowerCase()}</p>
         <h3 className="bookingDetail-title">Tu reserva en {booking.productData.nombre}.</h3>
         <div className="bookingDetail-content">
@@ -158,7 +178,13 @@ const BookingDetail = () => {
             <div>
               <div className="bookingDetail-tittle-button">
                 <h4>Datos de la reservación</h4>
-                <ButtonGral text="Modificar" color="blue" icon={<FaEdit />} />
+                <ButtonGral text="Modificar" color="blue" icon={<FaEdit />}
+                  onClick={() => handleOpenModalBooking()} />
+                <BookingModal
+                  open={openBooking}
+                  handleClose={handleCloseModalBooking}
+                  activityId={booking.productData.id}
+                />
               </div>
               <p><FaTags /><span>Precio total:</span> <strong >{precioFinal} Usd</strong></p>
               <p><FaCalendarAlt /><strong>Fecha:</strong> {date}</p>
@@ -176,14 +202,14 @@ const BookingDetail = () => {
             <div className="bookingDetail-info-contact">
               <p><FaCheck /> La confirmación va de camino a <strong className="email">{state.user.email}</strong></p>
               <p><FaCheck /> Alojamiento o servicio garantizado.</p>
-              <ButtonGral 
-              text="Escríbele al organizador" 
-              color="blue" icon={<WhatsappIcon 
-              size={32} 
-              round bgStyle={{ fill: "#25D366" }} 
-              iconFillColor="#000000" />}
-              onClick={() => handleGoWhatsApp(3005223014)}
-               />
+              <ButtonGral
+                text="Escríbele al organizador"
+                color="blue" icon={<WhatsappIcon
+                  size={32}
+                  round bgStyle={{ fill: "#25D366" }}
+                  iconFillColor="#000000" />}
+                onClick={() => handleGoWhatsApp(3005223014)}
+              />
             </div>
 
           </div>
@@ -192,13 +218,13 @@ const BookingDetail = () => {
         <div className="confirmation-code">
           <strong>Código de confirmación:</strong>
           <p > <FaCopy data-tooltip-id="tooltip"
-          
-          
-          onClick={() => handleCopyLink(booking.bookingData.codigoConfirmacion)} className="copy-code"
+
+
+            onClick={() => handleCopyLink(booking.bookingData.codigoConfirmacion)} className="copy-code"
           />  <span > {booking.bookingData.codigoConfirmacion}</span>
-          <Tooltip id="tooltip" content={ copied ? "Código copiado" : "Copiar código"}   place="top" className="custom-tooltip-booking"/>
+            <Tooltip id="tooltip" content={copied ? "Código copiado" : "Copiar código"} place="top" className="custom-tooltip-booking" />
           </p>
-        
+
         </div>
         <div className="cancellation-policy">
 
@@ -246,7 +272,7 @@ const BookingDetail = () => {
 
               )
           )}
-          <ButtonGral text="Cancelar reserva" color="blue" otherClass=" cancel-btn" onClick={handleCancelBooking} disabled={ booking.bookingData.estado ==="CANCELADA" || booking.bookingData.estado === "FINALIZADA"  ? true: false} />
+          <ButtonGral text="Cancelar reserva" color="blue" otherClass=" cancel-btn" onClick={handleCancelBooking} disabled={booking.bookingData.estado === "CANCELADA" || booking.bookingData.estado === "FINALIZADA" ? true : false} />
         </div>
       </div>
 

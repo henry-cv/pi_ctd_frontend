@@ -2,15 +2,17 @@
   box-sizing: border-box;
 }
 .profile-container {
-    margin: 0 ;
+
+    margin: auto;
     background-color: var(--BackgroundColor);
-    padding-top: 140px;
+    padding-top: 130px;
     padding-bottom: 25px;
+    max-width:  min(80%, 1142px); 
   }
 
   .profile-tabs{
-    max-width:  min(80%, 1142px); 
     margin: 0 auto;
+    max-width:  min(100%, 1142px); 
   }
   
 .profile-banner {
@@ -23,7 +25,8 @@
     margin: 0 auto;
     display: flex;
     justify-content: start;
-    max-width:  min(80%, 1142px); 
+    max-width:  min(100%, 1142px); 
+    margin-top: 30px;
 }
   
   .user-info-profile {

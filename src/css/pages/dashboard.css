@@ -377,14 +377,14 @@ button:focus-visible {
   background-color: #d61b1b;
   color: white;
   border-radius: 30px;
-  padding: 10px 30px;
+  padding: 10px 20px;
 }
 
 .btn_blueAction {
   background-color: var(--blue-base);
   color: white;
   border-radius: 30px;
-  padding: 10px 30px;
+  padding: 10px 20px;
 }
 
 /* NAVBAR DASH */

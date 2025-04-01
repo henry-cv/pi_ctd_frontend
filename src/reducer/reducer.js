@@ -40,15 +40,17 @@ export const reducer = (state, action) => {
         isLoading: false,
       };
     case "SET_ACTIVITY":
-      console.log("elpayload");
-      console.log(action.payload);
       return { ...state, activity: action.payload };
 
-    case "SET_RESERVATION":
-      return {
-        ...state,
-        reservation: [...state.reservation, action.payload],
-      };
+      case "SET_RESERVATION":
+        return {
+          ...state,
+          reservation: {
+            ...state.reservation,  
+            theBooking: action.payload.theBooking,  
+            isBooking: action.payload.isBooking
+          },
+        };
       case "SET_URL_REDIRECTION":
         localStorage.setItem("urlRedirection", action.payload);  
         return {
@@ -60,6 +62,16 @@ export const reducer = (state, action) => {
           ...state,
           isAccessModal: action.payload,
         };
+        case "SET_BOOKINGS_DATES":
+          return {
+            ...state,
+            bookingModals: {
+              ...state.bookingModals,  
+              pastDate: action.payload.pastDate,  
+              callEffect: action.payload.callEffect, 
+              isActiveModal: action.payload.isActiveModal
+            },
+          };
     default:
       throw new Error("Acción no existente");
   }

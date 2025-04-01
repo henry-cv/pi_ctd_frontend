@@ -41,13 +41,21 @@ const ActivityCard = ({
   };
 
   const handleClick = () => {
-    if (state.userFiltersTabs.activeTab === "reservations") {
-      dispatch({
-        type: "SET_ACTIVE_TAB_FILTER",
-        payload: { activeTab: "edit-profile" },
-      });
-    }
+    
+    dispatch({
+      type: "SET_BOOKINGS_DATES", 
+      payload: { callEffect: true },
+    });
+
+    // if (state.userFiltersTabs.activeTab === "reservations") {
+    //   dispatch({
+    //     type: "SET_ACTIVE_TAB_FILTER",
+    //     payload: { activeTab: "edit-profile" },
+    //   });
+    // }
   };
+
+  // console.log(state.bookingModals.callEffect);
 
   return (
     <Link
@@ -56,6 +64,7 @@ const ActivityCard = ({
         ? `/perfil/misreservas/${id}`
         : `/actividad/${id}`}
       className="activity-link"
+      onClick={handleClick}
     >
       <div className={`activity-card card-container-fluid ${state.userFiltersTabs.activeTab === "reservations" ? "card-height-reservation" : ""}`}>
         <div className="activity-image-container">

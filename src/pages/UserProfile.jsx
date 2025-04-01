@@ -7,6 +7,7 @@ import UserFavorites from "../components/UserFavorites";
 import { useContextGlobal } from "../gContext/globalContext";
 import Avatar from "@mui/material/Avatar";
 import UserBookings from "../components/MyBookings/UserBookings";
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 
 const UserProfile = () => {
   const { state } = useContextGlobal();
@@ -44,6 +45,7 @@ const UserProfile = () => {
 
   return (
     <div className="profile-container">
+            <BasicBreadcrumbs/>
       <div className="profile-banner">
         <div className="user-info-profile">
           <div className="avatar-container">

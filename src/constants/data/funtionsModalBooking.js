@@ -25,6 +25,7 @@ export const funtionsBookingModal = ({
       if (quantity === 0) {
         newErrors.slot = "La cantidad de reservas es requerido";
       }
+
   
       setErrorsBooking(newErrors);
       return Object.keys(newErrors).length === 0;

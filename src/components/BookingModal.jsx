@@ -138,6 +138,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   
   //submit por ahora quedó aqui 
   const BookingSubmit = () => {
+
+    
     if (validateCreateBooking(bookingDate, quantity)) {
       const reservationData = {
         idActivity: id,
@@ -148,10 +150,10 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         cuposReservados: quantity,
       };
 
-      dispatch({
-        type: "SET_RESERVATION",
-        payload: reservationData,
-      });
+      // dispatch({
+      //   type: "SET_RESERVATION",
+      //   payload: reservationData,
+      // });
 
       Swal.fire({
         icon: "success",
@@ -283,6 +285,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           resetCalendar={resetCalendar}
           setResetCalendar={setResetCalendar}
           availabilityMap={availabilityMap}
+
+
         />
 
         <BookingQuantity
@@ -309,7 +313,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         )}
 
         <ActivityPolitics cancelation={politicaCancelacion} payment={politicaPagos} />
-
         <Box mt={3} p={2} border={1} borderRadius={2}>
           <div className="title-checkbox">
             <Typography fontWeight={600}>{nombre}</Typography>
