@@ -66,7 +66,7 @@ const BookingDetail = () => {
         
 
         dispatch({
-          type: "SET_RESERVATION",
+          type: "SET_BOOKING",
           payload: {  isBooking: true }
         });
 

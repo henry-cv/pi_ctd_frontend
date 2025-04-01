@@ -15,8 +15,9 @@ const initialState = {
   isLoading: true,
   usuarioRoles: null,
   activity: null,
-  reservation:{ 
-    theBooking: JSON.parse(localStorage.getItem("reservation")) || [], 
+  reservation: JSON.parse(localStorage.getItem("reservation")) || [],
+  booking:{ 
+    theBooking: JSON.parse(localStorage.getItem("booking")) || [], 
     isBooking: false},
     urlRedirection: localStorage.getItem("urlRedirection") || "",
     isAccessModal: false,

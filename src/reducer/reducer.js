@@ -41,16 +41,20 @@ export const reducer = (state, action) => {
       };
     case "SET_ACTIVITY":
       return { ...state, activity: action.payload };
-
       case "SET_RESERVATION":
         return {
           ...state,
-          reservation: {
-            ...state.reservation,  
-            theBooking: action.payload.theBooking,  
-            isBooking: action.payload.isBooking
-          },
+          reservation: [...state.reservation, action.payload],
         };
+        case "SET_BOOKING":
+          return {
+            ...state,
+            booking: {
+              ...state.booking,  
+              theBooking: action.payload.theBooking,  
+              isBooking: action.payload.isBooking
+            },
+          };
       case "SET_URL_REDIRECTION":
         localStorage.setItem("urlRedirection", action.payload);  
         return {
