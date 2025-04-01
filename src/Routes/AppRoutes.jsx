@@ -23,10 +23,10 @@ import FilterProducts from "../pages/FilterProducts";
 import PolicyPage from "../components/PolicyPage";
 import Terms from "../pages/Terms";
 import DashPolicies from "../components/DashPolicies";
+
 import PersonalDataFormPage from "../pages/PersonalDataFormPage";
 import ConfirmationPage from "../pages/ConfirmationPage";
 import ReservationSuccessPage from "../pages/ReservationSuccessPage";
-
 import BookingDetail from "../pages/BookingDetail";
 import EditCategory from "../components/EditCategory";
 
