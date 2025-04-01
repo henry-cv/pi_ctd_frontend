@@ -70,7 +70,9 @@ const NavDash = ({ variant = "home" }) => {
       <div className="rightContainer">
         <div className="theme-globe-buttons">
           <button
-            onClick={() => dispatch({ type: "CHANGE_THEME" })}
+            onClick={() => dispatch({ type: "CHANGE_THEME" ,
+              payload: state.theme === "dark" ? "ligth" : "dark",
+            })}
             className="icon-button"
           >
             <FontAwesomeIcon icon={state.theme === "dark" ? faSun : faMoon} />
