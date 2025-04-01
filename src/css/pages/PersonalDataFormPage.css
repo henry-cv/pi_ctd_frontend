@@ -1,0 +1,299 @@
+.personal-data-page {
+  min-height: 100vh;
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+  display: flex;
+  flex-direction: column;
+}
+
+.personal-data-page.dark {
+  background-color: var(--BackgroundColor);
+}
+
+.personal-data-container {
+  padding-top: 120px;
+  padding-bottom: 50px;
+  flex: 1;
+}
+
+.breadcrumbs {
+  margin-bottom: 20px;
+  color: var(--Icons-gray);
+}
+
+.page-title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Contenido principal */
+.personal-data-content {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  max-width: 1150px;
+  gap: 30px;
+  margin: 0 auto;
+  padding-left: 60px;  
+  padding-right: 60px;
+  box-sizing: border-box; /
+}
+/* Estilo del formulario */
+.form-container {
+  justify-content: flex-start;
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 25px;
+  align-self: stretch;
+  max-width: 697px;
+}
+
+.personal-data-page.dark .form-container {
+  background-color: var(--black-400);
+  border-color: var(--black-300);
+}
+
+.form-title {
+  color: var(--Black-500, #101828);
+  font-family: Archivo;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 140% */
+}
+
+.form-subtitle {
+  align-self: stretch;
+  color: var(--Black-300, #606570);
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px; /* 156.25% */
+}
+
+.personal-data-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-weight: 500;
+  color: var(--Font-Background);
+}
+
+.phone-field {
+  margin-bottom: 20px;
+  align-items: normal;
+
+}
+
+.phone-input-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 0px;
+  width: 100%;
+}
+
+.country-code {
+  width: 100px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.button-yellow,
+.button-blue {
+  flex: 1;
+}
+
+/* Contenedor de resumen */
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Mensaje de error */
+.error-message {
+  text-align: center;
+  margin: 50px 0;
+}
+
+/* Personalizaciones para MUI Stepper */
+.MuiStepLabel-label {
+  font-family: var(--font-outfit) !important;
+}
+
+.MuiStepLabel-label.Mui-active {
+  color: var(--blue-base) !important;
+  font-weight: 600 !important;
+}
+
+.personal-data-page.dark .MuiStepLabel-label.Mui-active {
+  color: var(--yellow-base) !important;
+}
+
+.MuiStepIcon-root.Mui-active {
+  color: var(--blue-base) !important;
+}
+
+.personal-data-page.dark .MuiStepIcon-root.Mui-active {
+  color: var(--yellow-base) !important;
+}
+
+.MuiStepIcon-root.Mui-completed {
+  color: var(--blue-base) !important;
+}
+
+.personal-data-page.dark .MuiStepIcon-root.Mui-completed {
+  color: var(--yellow-base) !important;
+}
+
+/* Media queries para responsividad */
+
+@media(max-width: 700px){
+.personal-data-content{
+  padding: 0px 0px 0px 20px;
+}
+}
+/* Media queries for responsividad */
+@media (max-width: 630px) {
+  .personal-data-container {
+    padding-top: 80px;
+    padding-bottom: 120px; /* Extra space for floating buttons */
+  }
+  
+  .personal-data-content {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+    gap: 20px;
+  }
+  
+  .breadcrumbs {
+    padding: 0 20px;
+  }
+  
+  .form-container, .summary-container {
+    width: 100%;
+  }
+  
+  /* Reorder content to match design */
+  .summary-container {
+    display: flex;
+    flex-direction: column;
+    order: 2;
+    align-items: center;
+  }
+  
+  .form-container {
+    order: 1;
+  }
+  
+  .phone-input-container {
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .country-code {
+    width: 80px;
+    flex-shrink: 0;
+  }
+  
+  /* Sticky floating footer with buttons */
+  .form-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 15px 20px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    margin-top: 0;
+    flex-direction: column;
+  }
+  
+  .button-yellow, .button-blue {
+    width: 100%;
+  }
+  
+  /* Total amount display in floating footer */
+  .form-buttons::before {
+    content: "Total: $75 USD";
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+    font-family: var(--font-archivo);
+  }
+  
+  /* Adjust stepper for mobile */
+  .MuiStepper-root {
+    padding: 0 10px;
+  }
+  
+  .MuiStepLabel-label {
+    font-size: 12px;
+  }
+  
+  /* Adjust card styles for mobile */
+  .summary-container > div {
+    margin-bottom: 20px;
+  }
+  
+  /* Make the page title smaller */
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  /* Form components */
+  .form-title {
+    font-size: 18px;
+  }
+  
+  .form-subtitle {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  /* Add space between form fields */
+  .form-field {
+    margin-bottom: 15px;
+  }
+
+  /* Make floating buttons more visible with animated indicator */
+  @keyframes pulseButton {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .button-blue {
+    animation: pulseButton 2s infinite ease-in-out;
+    margin-top: 10px;
+  }
+  
+  /* Dark mode adjustments */
+  .personal-data-page.dark .form-buttons {
+    background-color: var(--black-500);
+    color: white;
+  }
+}

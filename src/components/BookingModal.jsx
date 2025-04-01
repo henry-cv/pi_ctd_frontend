@@ -29,9 +29,10 @@ import { funtionsBookingModal } from '../constants/data/funtionsModalBooking';
 import { Calendar1Icon, CalendarCheck2 } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
-
+import { useNavigate } from "react-router-dom";
 
 const BookingModal = ({ open, handleClose, activityId }) => {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
   const [errorsBooking, setErrorsBooking] = useState({});
   const isMobile = useMediaQuery("(max-width: 480px)");
@@ -166,13 +167,17 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         }
       });
       
+      // Cerrar el modal y resetear los datos
       resetBookingData();
       handleClose();
+      
+      // Redireccionar a la página de confirmación de reserva
+      navigate(`/datos-personales`);
     } else {
       Swal.fire({
         icon: "error",
         title: "Reserva fallida",
-        text: "no se puede hacer la reserva",
+        text: "No se puede hacer la reserva. Por favor, selecciona una fecha y cupos válidos.",
         timer: 2000,
         showConfirmButton: false,
         customClass: {
