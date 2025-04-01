@@ -41,8 +41,12 @@ const PersonalDataFormPage = () => {
     email: user?.email || "",
     telefono: ""
   });
+<<<<<<< HEAD
   import { useNavigate } from "react-router-dom";
 
+=======
+  
+>>>>>>> 6437730 (Feat: realizar reserva)
   // Estado para validación
   const [errors, setErrors] = useState({});
 
