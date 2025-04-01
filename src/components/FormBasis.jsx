@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useContextGlobal } from "../gContext/globalContext";
 import { paymentPolicies, cancellationPolicies } from "../constants/data/policiesDataInfo";
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import PhoneInput from "./PhoneInput.jsx";
 
 const FormBasis = ({ isEditMode = false }) => {
@@ -35,7 +34,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const [idioma, setIdioma] = useState("");
   const [paymentPolicyValue, setPaymentPolicy] = useState("");
   const [cancellationPolicyValue, setCancellationPolicy] = useState("");
-
+  const UrlCountriesAPI = 'https://countriesnow.space/api/v0.1/countries/codes';
   const [countryValue, setCountryValue] = useState("");
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState({
@@ -46,10 +45,6 @@ const FormBasis = ({ isEditMode = false }) => {
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
 
-  const [phoneData, setPhoneData] = useState({
-    dial_code: "+1",
-    phone: "",
-  });
   const [telefono, setTelefono] = useState("");
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
@@ -75,11 +70,15 @@ const FormBasis = ({ isEditMode = false }) => {
   const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
 
   const searchCountryByName = (name) => {
-    const country = countries.find(c => c.name === name);
-    console.log(`Search country: ${name}, founded: ${country}`);
-    console.log(country);
-    return country;
-  }
+    if (!countries.length) {
+      throw new Error("La lista de países no ha sido cargada");
+    }
+    const countryIndex = countries.findIndex(c => c.name === name);
+    if (countryIndex === -1) {
+      return null;
+    }
+    return countries[countryIndex];
+  };
   const handleEventTypeChange = (e) => {
     setEventType(e.target.value);
   };
@@ -161,9 +160,21 @@ const FormBasis = ({ isEditMode = false }) => {
     //console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
   const handleCountryChange = (e) => {
-    const country = searchCountryByName(e.target.value);
-    setSelectedCountry(country);
-    setCountryValue(country.name);
+    const countryName = e.target.value;
+    if (!countryName) {
+      return;
+    }
+    try {
+      const country = searchCountryByName(countryName);
+      if (!country) {
+        console.error(`No se encontró el país con nombre ${countryName}`);
+        return;
+      }
+      setSelectedCountry(country);
+      setCountryValue(country.name);
+    } catch (error) {
+      console.error("Error al buscar el país:", error.message);
+    }
   };
   // useEffect para traer las categorias existentes
   useEffect(() => {
@@ -207,9 +218,8 @@ const FormBasis = ({ isEditMode = false }) => {
 
   // GetCountries
   useEffect(() => {
-    const UrlCountriesAPI = 'https://countriesnow.space/api/v0.1/countries/codes';
-    // Está Url también trae los dial-code de cada país
-    const fetchCountries = async () => {
+    const fetchCountriesAsync = async () => {
+      setLoading(true);
       try {
         //const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
         const response = await fetch(UrlCountriesAPI);
@@ -225,7 +235,7 @@ const FormBasis = ({ isEditMode = false }) => {
         setLoading(false);
       }
     };
-    fetchCountries();
+    fetchCountriesAsync();
   }, []);
 
   // GetCities
@@ -289,7 +299,7 @@ const FormBasis = ({ isEditMode = false }) => {
           setPaymentPolicy(data.politicaPagos || "");
           setCancellationPolicy(data.politicaCancelacion || "");
           setCountryValue(data.pais || "");
-          setSelectedCountry(searchCountryByName(data.pais) || {});
+          //setSelectedCountry(searchCountryByName(data.pais) || {});
           setCity(data.ciudad || "");
           setAddress(data.direccion || "");
           setTelefono(data?.telefono || "");
@@ -630,7 +640,7 @@ const FormBasis = ({ isEditMode = false }) => {
         />
         {addressError && <FieldError message={addressError} />}
       </div>
-      <PhoneInput country={selectedCountry} phoneData={phoneData} setPhoneData={setPhoneData} />
+      <PhoneInput country={selectedCountry} telefono={telefono} setTelefono={setTelefono} />
       <div className="rates">
         <div>
           <label htmlFor="rateValue">Valor tarifa:</label>
