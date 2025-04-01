@@ -47,6 +47,11 @@ const ActivityCard = ({
       payload: { callEffect: true },
     });
 
+    dispatch({
+      type: "SET_URL_REDIRECTION",
+      payload: "",
+      });
+
     // if (state.userFiltersTabs.activeTab === "reservations") {
     //   dispatch({
     //     type: "SET_ACTIVE_TAB_FILTER",

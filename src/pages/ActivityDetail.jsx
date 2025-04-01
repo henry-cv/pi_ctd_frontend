@@ -62,11 +62,10 @@ const ActivityDetail = () => {
 	const [currentMobileImageIndex, setCurrentMobileImageIndex] = useState(0);
 	const [isMobileView, setIsMobileView] = useState(false);
 	const [openBooking, setOpenBooking] = useState(false);
-	const [openAccess, setOpenAccess] = useState(false);
 	const [disponibilidad, setDisponibilidad] = useState([]);
 	const [openShareModal, setOpenShareModal] = useState(false);
-	const [isPastDate, setIsPastDate] = useState(null)
-
+	const [isPastDate, setIsPastDate] = useState(null);
+	console.log("el acces", state.urlRedirection );
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
 	//  console.log("La activity " + JSON.stringify(state.activity));
@@ -161,7 +160,19 @@ useEffect(() => {
 	}
   }, [state.activity?.theActivity]);
   
+  
+console.log(state.urlRedirection === location.pathname);
 
+useEffect(() => {
+	if (state.urlRedirection === location.pathname) {
+	  console.log("Abrimos el modal de booking automáticamente");
+	  handleOpenModalBooking(); // Función que abre el modal
+	  dispatch({
+		type: "SET_URL_REDIRECTION",
+		payload: "",
+	  });
+	}
+  }, [state.urlRedirection]);
 
 	// Detectar scroll para mostrar la card de reserva en móvil
 	useEffect(() => {
@@ -186,6 +197,8 @@ useEffect(() => {
 
 		return () => window.removeEventListener("resize", checkMobileView);
 	}, []);
+
+
 
 	const handleOpenImageViewer = (index) => {
 		setCurrentImageIndex(index);
@@ -279,22 +292,16 @@ useEffect(() => {
 	};
 
 	const handleOpenModalBooking = (id) => {
-		if (!state.token) {
-			console.log("el token no esta no esta logueado");
-			setOpenAccess(true);
-		} else {
-			console.log("usurio loggueado");
-			console.log(state.user.id);
-
+	
 			setOpenBooking(true);
-		}
+		
 	};
 
 	const handleCloseModalBooking = () => {
 		setOpenBooking(false);
 	};
 
-	const handleCloseAccess = () => setOpenAccess(false);
+	// const handleCloseAccess = () => setOpenAccess(false);
 
 	const handleOpenShareModal = () => {
 		setOpenShareModal(true);
@@ -303,6 +310,8 @@ useEffect(() => {
 	const handleCloseShareModal = () => {
 		setOpenShareModal(false);
 	};
+
+	
 
 	if (loading) {
 		return (
@@ -660,7 +669,7 @@ useEffect(() => {
 				activityId={activity.id}
 			/>
 
-			<AccessRequiredModal open={openAccess} onClose={handleCloseAccess} />
+			{/* <AccessRequiredModal open={openAccess} onClose={handleCloseAccess} /> */}
 			{/* Visor de imágenes */}
 			{showImageViewer && !isMobileView && (
 				<ImageViewer
