@@ -92,7 +92,14 @@ const Register = () => {
           type: "LOGIN_USER",
           payload: { user: userData, token },
         });
-
+        try {
+          const emailResponse = await sendConfirmationEmail(userData);
+          console.log("Resultado del envío de email:", emailResponse);
+          
+          // No mostramos nada al usuario si falla el envío de email para no afectar la experiencia
+        } catch (emailError) {
+          console.error("Error al enviar email de confirmación:", emailError);
+        }
         Swal.fire({
           icon: "success",
           title: "Registro exitoso",
