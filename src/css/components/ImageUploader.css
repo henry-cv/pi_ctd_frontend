@@ -1,3 +1,4 @@
+@import "../global/variables.css";
 :root {
   --black-100: #afb2b7;
   --black-300: #606570;
@@ -92,5 +93,79 @@
 
 .icon-trash{
   width: 10px;
+}
+
+/* estilos para deslizar las fotos  */
+
+.image-previews-container {
+  margin-top: 20px;
+}
+
+.image-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.sortable-item {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.sortable-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.drag-handle {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  padding: 3px;
+  cursor: grab;
+  z-index: 10;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  width: 100%;
+  padding: 0 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: auto;
+}
+
+.drag-instructions {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 

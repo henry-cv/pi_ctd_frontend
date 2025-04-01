@@ -44,7 +44,8 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="profile-container">
+    <div className="profile-user-page">
+          <div className="profile-container">
             <BasicBreadcrumbs/>
       <div className="profile-banner">
         <div className="user-info-profile">
@@ -64,6 +65,9 @@ const UserProfile = () => {
       
       {renderActiveTabContent()}
     </div>
+
+    </div>
+
   );
 };
 

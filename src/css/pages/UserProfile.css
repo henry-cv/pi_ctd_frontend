@@ -1,10 +1,15 @@
 *{
   box-sizing: border-box;
 }
+
+.profile-user-page{
+  background-color: var(--BackgroundColor);
+
+}
 .profile-container {
 
     margin: auto;
-    background-color: var(--BackgroundColor);
+
     padding-top: 130px;
     padding-bottom: 25px;
     max-width:  min(80%, 1142px); 
@@ -194,7 +199,7 @@
   }
   
 
-  .action-buttons {
+  .action-buttons-profile {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -244,6 +249,6 @@
     .form-data-picture-columns{ flex-direction: column-reverse;}
     .profile-banner{background-image:url("../../../public/marco_perfil_us_sm.webp")}
     .profile-tabs{margin-top:60px}
-    .action-buttons{flex-direction:column;align-items:center;gap:10px}
+    .action-buttons-profile{flex-direction:column;align-items:center;gap:10px}
     .delete-account-container{justify-content:center}
   }

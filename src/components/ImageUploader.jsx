@@ -1,12 +1,58 @@
 import { useState } from "react";
 import "../css/components/ImageUploader.css";
-import { FaUpload, FaTrash } from "react-icons/fa";
+import { FaUpload, FaTrash, FaGripLines } from "react-icons/fa";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-// eslint-disable-next-line react/prop-types
+// Componente individual para cada imagen que se puede arrastrar
+const SortableImageItem = ({ image, index, onRemove }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: image.id
+  });
+  
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  };
+  
+  return (
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      className="image-preview sortable-item"
+    >
+      <div className="drag-handle" {...attributes} {...listeners}>
+        <FaGripLines />
+      </div>
+      <img src={image.preview} alt={`Vista previa ${index}`} />
+      <button
+        type="button"
+        className="remove-button"
+        onClick={() => onRemove(index)}
+      >
+        <FaTrash className="icon-trash" />
+      </button>
+      <div className="file-name">
+        {image.file.name.length > 15 ? image.file.name.substring(0, 15) + '...' : image.file.name}
+      </div>
+    </div>
+  );
+};
+
+// Componente principal
 const ImageUploader = ({ onImagesSelected }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
-  //const [quantityError, setQuantityError] = useState("")
+//const [quantityError, setQuantityError] = useState("")
+  
+  // Configuración de sensores para arrastrar
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -26,6 +72,7 @@ const ImageUploader = ({ onImagesSelected }) => {
     setUploading(true);
 
     const newImages = validFiles.map((file) => ({
+      id: `image-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, // ID único
       file,
       preview: URL.createObjectURL(file),
     }));
@@ -48,6 +95,23 @@ const ImageUploader = ({ onImagesSelected }) => {
     // Notificar al componente padre sobre la actualización
     onImagesSelected(updatedImages.map(img => img.file));
   };
+  
+  // Manejar el evento de fin de arrastre
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    
+    if (active.id !== over.id) {
+      setImages((items) => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
+        
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+        // Notificar al componente padre sobre la nueva ordenación
+        onImagesSelected(newOrder.map(img => img.file));
+        return newOrder;
+      });
+    }
+  };
 
   return (
     <div className="image-uploader-container">
@@ -65,27 +129,37 @@ const ImageUploader = ({ onImagesSelected }) => {
           disabled={uploading}
         />
       </label>
+      
       {uploading && (
         <div className="upload-loading">
           <p>Procesando imágenes...</p>
         </div>
       )}
+      
       {images.length > 0 && (
-        <div className="image-previews">
-          {images.map((image, index) => (
-            <div key={index} className="image-preview">
-              <img src={image.preview} alt={`Vista previa ${index}`} />
-              <button
-                type="button"
-                className="remove-button"
-                onClick={() => handleRemoveImage(index)}
-                disabled={uploading}
-              >
-                <FaTrash className="icon-trash" />
-              </button>
-              <div className="file-name">{image.file.name.length > 15 ? image.file.name.substring(0, 15) + '...' : image.file.name}</div>
-            </div>
-          ))}
+        <div className="image-previews-container">
+          <p className="drag-instructions">Mantén presionado el icono de la izquierda de cada foto y arrástrala para cambiar su orden.</p>
+          <DndContext 
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext 
+              items={images.map(img => img.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="image-previews">
+                {images.map((image, index) => (
+                  <SortableImageItem 
+                    key={image.id}
+                    image={image}
+                    index={index}
+                    onRemove={handleRemoveImage}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         </div>
       )}
     </div>

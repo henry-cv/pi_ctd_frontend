@@ -29,7 +29,7 @@ const ActivityCard = ({
   rating,
   categories,
   fechaReserva,
-  estado
+  estado,
 }) => {
   // Imagen por defecto en caso de error o sin imagen
   const [extraCategories, setExtraCategories] = useState(false);
@@ -121,7 +121,7 @@ const ActivityCard = ({
    
             </> : <>
               <div className="activity-details">
-                <span className="activity-location">
+                <span className="activity-location-card">
                   <FontAwesomeIcon icon={faMap} />
                   {location}
                 </span>

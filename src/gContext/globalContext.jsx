@@ -3,7 +3,7 @@ import { reducer } from "../reducer/reducer";
 import axios from "axios";
 
 const initialState = {
-  theme: "",
+  theme: localStorage.getItem("theme") || "",
   userFiltersTabs:{
     activeTab: "edit-profile",
     selectedFilters: "confirm"
@@ -93,6 +93,12 @@ export const ContextProvider = ({ children }) => {
       localStorage.setItem("reservation", JSON.stringify(state.reservation));
     }
   }, [state.reservation]);
+
+  useEffect(() => {
+    if (state.theme) {
+      localStorage.setItem("theme", state.theme);
+    }
+  }, [state.theme]);
 
   return (
     <ContextGlobal.Provider value={{ state, dispatch }}>
