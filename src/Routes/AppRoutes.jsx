@@ -27,6 +27,7 @@ import PersonalDataFormPage from "../pages/PersonalDataFormPage";
 import ConfirmationPage from "../pages/ConfirmationPage";
 import ReservationSuccessPage from "../pages/ReservationSuccessPage";
 
+import BookingDetail from "../pages/BookingDetail";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -90,6 +91,7 @@ const AppRoutes = () => {
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
+        <Route path="/misreservas/:id" element={<BookingDetail/>} />
       </Route>
       
       {/* Rutas de reserva */}

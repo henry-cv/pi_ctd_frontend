@@ -10,6 +10,7 @@ const BookingsConfirm = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+
     useEffect(() => {
         const getBookings = async () => {
             try {
