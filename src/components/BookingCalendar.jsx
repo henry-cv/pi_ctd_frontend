@@ -2,7 +2,7 @@ import { Popover, Box, Typography, useMediaQuery } from "@mui/material";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../css/components/BookingCalendar.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import { es } from "date-fns/locale";
@@ -21,8 +21,13 @@ const BookingCalendar = ({
   availabilityMap = {}
 }) => {
   const isMobile = useMediaQuery("(max-width: 480px)");
-  const { state } = useContextGlobal();
+  const { state ,dispatch } = useContextGlobal();
   const dateRangeRef = useRef(null);
+  const [theDateIsPast, setTheDateIsPast] = useState("")
+
+
+ 
+
   
   const {
     errors,
@@ -40,8 +45,18 @@ const BookingCalendar = ({
     setResetCalendar,
     availabilityMap,
     state,
-    dateRangeRef
+    dateRangeRef,
+    setTheDateIsPast,
+
   });
+  useEffect(() => {
+    dispatch({ type: "SET_BOOKINGS_DATES", payload: { pastDate: theDateIsPast } })
+  }, [theDateIsPast]);
+
+ 
+  console.log(theDateIsPast);
+  
+  
 
   return (
     <Popover

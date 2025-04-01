@@ -36,7 +36,7 @@ const DashCategorias = () => {
         }
         const data = await response.json();
         setCategories(data);
-        setFilteredCategories(data); // Inicialmente, las categorías filtradas son todas
+        setFilteredCategories(data.reverse()); // Inicialmente, las categorías filtradas son todas
       } catch (error) {
         console.error("Error cargando categorías:", error);
         setError(error.message);

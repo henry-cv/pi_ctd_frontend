@@ -66,6 +66,8 @@ export const calcularPrecio = (cantidadPersonas, tipoTarifa, valorTarifa) => {
     }
   };
 
+
+
   export const onlyFetchBooking = async (id, token) => {
     if (!token) return [];
   
@@ -85,8 +87,14 @@ export const calcularPrecio = (cantidadPersonas, tipoTarifa, valorTarifa) => {
       if (!productResponse.ok) throw new Error("Error al obtener producto");
   
       const product = await productResponse.json();
+      const id3 = product.id
+     
+      const disponibilityResponse = await fetch(`/api/disponibilidad/${id3}`);
+      if (!disponibilityResponse.ok) throw new Error("Error al obtener disponibilidad de actividad");
+      
+      const disponibility = await disponibilityResponse.json();
   
-      return { bookingData: reserva, productData: product };  
+      return { bookingData: reserva, productData: product, disponibilityData:disponibility };  
   
     } catch (error) {
       console.error("Error:", error);
@@ -96,7 +104,7 @@ export const calcularPrecio = (cantidadPersonas, tipoTarifa, valorTarifa) => {
   
 
   export const formatFecha = (fechaStr)=> {
-    const fecha = new Date(fechaStr);
+    const fecha = new Date(fechaStr + "T00:00:00");
     return fecha.toLocaleDateString("es-ES", {
       day: "numeric",
       month: "long",

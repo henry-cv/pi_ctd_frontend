@@ -27,7 +27,8 @@ export const funtionsBookingCalendar = ({
   setResetCalendar, 
   availabilityMap = {},
   state,
-  dateRangeRef
+  dateRangeRef,
+  setTheDateIsPast,
 }) => {
   const [selectedDate, setSelectedDate] = useState(bookingDate || dateRange[0]?.startDate);
   const [visibleMonth, setVisibleMonth] = useState(new Date().getMonth());
@@ -39,6 +40,7 @@ export const funtionsBookingCalendar = ({
     setVisibleMonth(date.getMonth());
     setVisibleYear(date.getFullYear());
   };
+
 
   const extractDates = () => {
     if (!state.activity?.theActivity) return { fechas: [] };
@@ -81,15 +83,17 @@ export const funtionsBookingCalendar = ({
     }
   }, [fechas, availability]);
 
-  // Efecto para manejar fechas específicas- fecha unica-
-  useEffect(() => {
+  // Función para manejar fechas específicas- fecha unica-
+ const handleSingleDateAvailability = () => {
     setErrors("");
-    const today = normalizeDate(new Date());
     
+    const today = normalizeDate(new Date());
+  
     if (availability?.type === "fecha" && availability.data.length > 0) {
-      const otra = normalizeDate(new Date(availability.data[0] +"T00:00:00"));
-
+      const otra = normalizeDate(new Date(availability.data[0] + "T00:00:00"));
+  
       if (otra < today) {
+        setTheDateIsPast("Esta actividad ya pasó");
         setErrors("Esta actividad ya pasó");
         return;
       }
@@ -104,7 +108,15 @@ export const funtionsBookingCalendar = ({
         setBookingDate(otra);
       }
     }
+  };
+
+// Efecto que sua la función  para manejar fechas específicas- fecha unica-
+  useEffect(() => {
+    handleSingleDateAvailability()
+
   }, [availability, bookingDate, setBookingDate, setDateRange]);
+
+  
   
   // Efecto para establecer la primera fecha visible
   // useEffect(() => {
