@@ -129,7 +129,7 @@ const ActivityCard = ({
           ) : (
             <>
               <div className="activity-details">
-                <p className="activity-location">
+                <span className="activity-location-card">
                   <FontAwesomeIcon icon={faMap} />
                   <span className="location-paragraph">{location}</span>
                 </p>

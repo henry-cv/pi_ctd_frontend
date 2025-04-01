@@ -80,7 +80,7 @@
   gap: 8px;
 }
 
-.activity-location,
+.activity-location-card,
 .activity-duration {
   display: flex;
   align-items: center;

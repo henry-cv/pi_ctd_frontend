@@ -1,9 +1,7 @@
 export const reducer = (state, action) => {
   switch (action.type) {
     case "CHANGE_THEME":
-      return {
-        ...state,
-        theme: state.theme === "" ? "dark" : "",
+      return { ...state, theme: action.payload
       };
     case "SET_ACTIVE_TAB_FILTER":
       return {
