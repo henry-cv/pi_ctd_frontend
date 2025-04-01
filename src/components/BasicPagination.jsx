@@ -6,8 +6,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../css/global/variables.css";
 import { useContextGlobal } from "../gContext/globalContext";
+import PropTypes from "prop-types";
 
-export default function BasicPAgination({ count, onChange, page }) {
+export default function BasicPagination({ count, onChange, page }) {
   const { state } = useContextGlobal();
   return (
     <Stack spacing={2}>
@@ -26,4 +27,9 @@ export default function BasicPAgination({ count, onChange, page }) {
       />
     </Stack>
   );
+}
+BasicPagination.propTypes = {
+  count: PropTypes.number,
+  onChange: PropTypes.func,
+  page: PropTypes.number,
 }

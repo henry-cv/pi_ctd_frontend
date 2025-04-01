@@ -14,7 +14,7 @@ const DashActividades = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activitiesPerPage] = useState(6);
+  const [activitiesPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
 
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const DashActividades = () => {
           throw new Error(`Error al obtener actividades: ${response.status}`);
         }
         const data = await response.json();
-        setActivities(data.reverse()); // Invertimos el orden
+        setActivities(data); // Invertimos el orden
         setFilteredActivities(data.reverse());
         //console.log(data);
       } catch (error) {

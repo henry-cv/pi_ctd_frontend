@@ -6,7 +6,10 @@ export const paymentPolicies =
             tittle:"Pago inmediato y reserva confirmada"
    ,        html: "- Cancela con 7 días de antelación para recibir un reembolso completo.\n\n- Si cancelas entre 3 y 6 días antes, recibirás un reembolso del 50 %.\n\n- Si cancelas con menos de 2 días de antelación, no habrá reembolso.\n\n- La hora límite se basa en la hora local del destino.\n\n- Si la actividad se cancela por mal clima, podrás reprogramar o recibir un reembolso total.",
             modal: "Esta actividad requiere pago inmediato al momento de la reserva. Solo se confirmará tu participación una vez que el pago se haya procesado con éxito.\n\nAsegura tu lugar ahora y recibe la confirmación de tu reserva al instante. No se permite el pago posterior.",
-            infoCard: " Realiza el pago completo al reservar para asegurar tu cupo."
+            infoCard: " Realiza el pago completo al reservar para asegurar tu cupo.",
+            infoBooking: "Tu pago ha sido procesado, disfruta de tu experiencia.",
+            bookingRefound: "En caso de cancelación dentro del período permitido, recibirás un reembolso según nuestras políticas.",
+            bookingNoRefound: " Esta reserva no es reembolsable en caso de cancelación.",
         },
 //         {
 //             id: "PAGO_PARCIAL_ANTICIPADO",
@@ -30,7 +33,10 @@ export const paymentPolicies =
             tittle:"dsdfd"
    ,        html: "",
             modal: "Disfruta de mayor flexibilidad en tus planes reservando ahora y pagando hasta dos días antes del inicio de la experiencia. La fecha de vencimiento del pago dependerá del método seleccionado, pero también puedes pagarlo en cualquier momento antes del plazo límite.\n\nPara garantizar tu reserva, deberás ingresar una tarjeta de pago al momento de la reserva. El cobro se realizará automáticamente máximo 48 horas antes de la actividad, a menos que realices el pago manualmente antes.\n\nPuedes revisar y gestionar tu pago en cualquier momento desde tu cuenta.",
-            infoCard: " planes flexibles asegura tu reserva , sin que se te haga el cargo hoy."
+            infoCard: " planes flexibles asegura tu reserva , sin que se te haga el cargo hoy.",
+            infoBooking: "Recuerda que el pago debe completarse antes del inicio de la actividad.",
+            bookingRefound: "En caso de cancelación dentro del período permitido, recibirás un reembolso según nuestras políticas.",
+            bookingNoRefound: " Esta reserva no es reembolsable en caso de cancelación.",
         }
     ];
 

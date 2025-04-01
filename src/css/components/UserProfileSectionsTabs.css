@@ -1,3 +1,5 @@
+@import url('../global/variables.css');
+
 .profile-tabs {
     display: flex;
     justify-content: center;
@@ -31,15 +33,99 @@
     background-color:var(--blue-base);
   }
 
+  .tab-button span{
+    padding: 6px;
+  }
 
+
+  .toggle-button-group {
+    background-color: #f5f5f5;
+    border-radius: 25px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .toggle-button {
+    border-radius: 20px;
+    padding: 8px 16px;
+    text-transform: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  .toggle-button.selected {
+    background-color: #5c3bfe;
+    color: #fff;
+    border: none;
+  }
+  
+  .toggle-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .toggle-button.selected:hover {
+    background-color: #4a2deb;
+  }
+
+  .booking-tabs{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    background-color: var(--Background-W-300-B-400);
+    padding: 20px;
+    max-width: 45%;
+    margin: auto;
+    margin-top:40px  ;
+    border-radius: 30px;
+    border: solid 1px var(--white-400);
+  }
+.booking-tab-button{
+  background-color: transparent;
+  border: solid 1px var(--Font-Background);
+  color: var(--Font-Background);
+  border-radius: 30px;
+  padding: 4px 8px;
+  transition: transform 0.3s
+}
+
+.booking-tab-button span{
+  padding: 5px;
+}
+.booking-tab-button:hover{
+  transform: translateY(-2px);
+}
+
+.active-filter{
+  background-color: var(--blue-L-Yellow-D);
+  color: var(--Menu-Hamburger);
+}
   @media (max-width:768px){
 
     .profile-tabs{
         margin-top:20px;overflow-x:auto
     }
+    .booking-tabs{
+      max-width: 75%;
+      gap: 25px;
+    }
+
+    .booking-tab-button{
+      padding: 6px 8px;
+    }
+
   }
   @media (max-width:480px){
     .profile-tabs{
         margin-top:60px
+    }
+    .booking-tabs{
+      max-width: 90%;
+      gap: 12px;
     }
   }
