@@ -1,12 +1,12 @@
 /* ---------------------------------- texto --------------------------------- */
 export function validarTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  const regex = new RegExp(`^[a-záéíóúñ ]{4,${maximo}}$`, 'i');
+  const regex = new RegExp(`^[a-záéíóúñ. ]{4,${maximo}}$`, 'i');
   return regex.test(texto);
 }
 export function validarAreaTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  const regex = new RegExp(`^[\\wáéíóúñ *:,.•\n\r-]{4,${maximo}}$`, 'ig');
+  const regex = new RegExp(`^[\\wáéíóúñ *:;,.•\n\r-]{4,${maximo}}$`, 'ig');
   return regex.test(texto);
 }
 export function longitudPermitida(texto, maximo) {

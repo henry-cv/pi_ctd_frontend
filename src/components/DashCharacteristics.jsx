@@ -12,7 +12,7 @@ import { useContextGlobal } from "../gContext/globalContext";
 const DashCharacteristics = () => {
   const navigate = useNavigate();
   const { state } = useContextGlobal();
-  
+
   const [characteristics, setCharacteristics] = useState([]);
   const [filteredCharacteristics, setFilteredCharacteristics] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,23 +33,23 @@ const DashCharacteristics = () => {
     const fetchCharacteristics = async () => {
       try {
         setLoading(true);
-        
+
         const token = state.token || localStorage.getItem("token");
-        
+
         if (!token) {
           throw new Error("No se encontró el token de autenticación");
         }
-        
+
         const response = await fetch("/api/caracteristica/listar", {
           headers: {
             "Authorization": `Bearer ${token}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error(`Error al obtener características: ${response.status}`);
         }
-        
+
         const data = await response.json();
         setCharacteristics(data);
         setFilteredCharacteristics(data);
@@ -86,8 +86,8 @@ const DashCharacteristics = () => {
   };
 
   const handleUpdate = (characteristicId) => {
-    navigate(`/administrador/caracteristicas/editarCaracteristica`, { 
-      state: { characteristicId } 
+    navigate(`/administrador/caracteristicas/editarCaracteristica`, {
+      state: { characteristicId }
     });
   };
 
@@ -112,7 +112,7 @@ const DashCharacteristics = () => {
         </div>
       </header>
 
-      <div className="table_activities">
+      <div className="table_activities table_features">
         <div>
           <span className="titleTable">Característica</span>
         </div>
@@ -126,27 +126,27 @@ const DashCharacteristics = () => {
 
       {!loading && !error && currentCharacteristics.length > 0
         ? currentCharacteristics.map((characteristic) => (
-            <CharacteristicRow
-              key={characteristic.id}
-              id={characteristic.id}
-              nombre={characteristic.nombre}
-              icono={characteristic.icono}
-              onDelete={handleDelete}
-              onUpdate={() => handleUpdate(characteristic.id)}
-            />
-          ))
+          <CharacteristicRow
+            key={characteristic.id}
+            id={characteristic.id}
+            nombre={characteristic.nombre}
+            icono={characteristic.icono}
+            onDelete={handleDelete}
+            onUpdate={() => handleUpdate(characteristic.id)}
+          />
+        ))
         : !loading &&
-          !error && (
-            <div className="characteristics_info_img activities_info_img">
-              <p>
-                {searchTerm
-                  ? "No hay características que coincidan con la búsqueda."
-                  : "Aún no tienes características creadas. ¡Empieza ahora y añade tu primera característica!"}
-              </p>
-              <img src="/characteristicsImg.webp" alt="Sin características" />
-            </div>
-          )}
-      
+        !error && (
+          <div className="characteristics_info_img activities_info_img">
+            <p>
+              {searchTerm
+                ? "No hay características que coincidan con la búsqueda."
+                : "Aún no tienes características creadas. ¡Empieza ahora y añade tu primera característica!"}
+            </p>
+            <img src="/characteristicsImg.webp" alt="Sin características" />
+          </div>
+        )}
+
       <div className="pagination_dash">
         <BasicPagination
           count={allPages}

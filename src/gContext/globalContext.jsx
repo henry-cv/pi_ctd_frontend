@@ -4,7 +4,11 @@ import axios from "axios";
 
 const initialState = {
   theme: "",
-  activeTab: "edit-profile",
+  userFiltersTabs:{
+    activeTab: "edit-profile",
+    selectedFilters: "confirm"
+  }
+  ,
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
   isAuthenticated: false,

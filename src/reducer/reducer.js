@@ -5,8 +5,14 @@ export const reducer = (state, action) => {
         ...state,
         theme: state.theme === "" ? "dark" : "",
       };
-    case "SET_ACTIVE_TAB":
-      return { ...state, activeTab: action.payload };
+    case "SET_ACTIVE_TAB_FILTER":
+      return {
+        ...state,
+        userFiltersTabs: {
+          ...state.userFiltersTabs, 
+          ...action.payload   
+        }
+      }
     case "LOGIN_USER":
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("user", JSON.stringify(action.payload.user));

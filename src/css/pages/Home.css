@@ -12,6 +12,12 @@
   height: inherit;
 }
 
+/* 
+el swiper del banner y de las categorias se pisaban los estilos  se le puso una clase para diferenciarlos*/
+.category-swiper .swiper-slide {
+  width: auto !important;
+}
+
 .swiper-button-prev,
 .swiper-button-next {
   color: var(--Font-Background);

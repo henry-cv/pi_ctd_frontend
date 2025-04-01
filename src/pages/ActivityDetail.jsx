@@ -33,6 +33,10 @@ import AccessRequiredModal from "../components/AccessRequiredModal";
 import Reviews from "../components/Reviews";
 import ActivityPolitics from "../components/ActivityPolitics";
 import FavoriteButton from "../components/FavoriteButton";
+import ShareButton from "../components/ShareButton";
+import ShareModal from "../components/ShareModal";
+import {handleGoWhatsApp} from "../constants/data/funtionFetchBookings";
+import { WhatsappIcon } from "react-share";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -59,9 +63,10 @@ const ActivityDetail = () => {
 	const [openBooking, setOpenBooking] = useState(false);
 	const [openAccess, setOpenAccess] = useState(false);
 	const [disponibilidad, setDisponibilidad] = useState([]);
+	const [openShareModal, setOpenShareModal] = useState(false);
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
-	// console.log("La activity " + JSON.stringify(state.activity));
+	 console.log("La activity " + JSON.stringify(state.activity));
 
 	useEffect(() => {
 		const fetchActivityDetails = async () => {
@@ -256,6 +261,14 @@ const ActivityDetail = () => {
 
 	const handleCloseAccess = () => setOpenAccess(false);
 
+	const handleOpenShareModal = () => {
+		setOpenShareModal(true);
+	};
+
+	const handleCloseShareModal = () => {
+		setOpenShareModal(false);
+	};
+
 	if (loading) {
 		return (
 			<div className="loading-container">
@@ -420,7 +433,10 @@ const ActivityDetail = () => {
 											</span>
 										</div>
 									</div>
-									<FavoriteButton productoId={activity.id} />
+									<div className="action-buttons">
+										<FavoriteButton productoId={activity.id} />
+										<ShareButton onClick={handleOpenShareModal} />
+									</div>
 								</div>
 
 								<div className="categories-detail">
@@ -528,17 +544,14 @@ const ActivityDetail = () => {
 
 										<div className="contact-detail">
 										<p>¿Necesitas más información sobre esta actividad?</p>
-
-										<ButtonGral
-										otherClass=" btn_contact"
-										text="Contacta al organizador"
-										variant="primary"
-										color="yellow"
-										icon={<FaIcons.FaWhatsapp />}
-										// fullWidth={true}
-										// url={`/reserva/${activity.id}`}
-										// onClick={() => handleOpenModalBooking(activity.id)}
-										/>
+			  <ButtonGral 
+			  text="Escríbele al organizador" 
+			  color="blue" icon={<WhatsappIcon 
+			  size={32} 
+			  round bgStyle={{ fill: "#25D366" }} 
+			  iconFillColor="#000000" />}
+			  onClick={() => handleGoWhatsApp(3005223014)}
+			   />
 										</div>
 
 									</div>
@@ -620,6 +633,12 @@ const ActivityDetail = () => {
 					onClose={handleCloseImageViewer}
 				/>
 			)}
+			<ShareModal
+				open={openShareModal}
+				onClose={handleCloseShareModal}
+				activity={activity}
+				image={images[0] || defaultImage}
+			/>
 		</div>
 	);
 };
