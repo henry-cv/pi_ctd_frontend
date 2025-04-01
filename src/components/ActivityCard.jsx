@@ -65,21 +65,13 @@ const ActivityCard = ({
   return (
     <Link
       key={id}
-      to={
-        state.userFiltersTabs.activeTab === "reservations"
-          ? `/perfil/misreservas/${id}`
-          : `/actividad/${id}`
-      }
+      to={state.userFiltersTabs.activeTab === "reservations"
+        ? `/perfil/misreservas/${id}`
+        : `/actividad/${id}`}
       className="activity-link"
       onClick={handleClick}
     >
-      <div
-        className={`activity-card card-container-fluid ${
-          state.userFiltersTabs.activeTab === "reservations"
-            ? "card-height-reservation"
-            : ""
-        }`}
-      >
+      <div className={`activity-card card-container-fluid ${state.userFiltersTabs.activeTab === "reservations" ? "card-height-reservation" : ""}`}>
         <div className="activity-image-container">
           <img
             src={image || defaultImage}
@@ -89,11 +81,7 @@ const ActivityCard = ({
           />
 
           {/* Botón de favoritos */}
-          {state.userFiltersTabs.activeTab === "reservations" ? (
-            ""
-          ) : (
-            <FavoriteButton productoId={id} />
-          )}
+          {state.userFiltersTabs.activeTab === "reservations" ? "" : <FavoriteButton productoId={id} />}
           <div className="container_card_category">
             {categories?.length > 0 && (
               <span className="card-category">{categories[0].nombre}</span>
@@ -107,9 +95,9 @@ const ActivityCard = ({
               >
                 {extraCategories
                   ? categories
-                      .slice(1)
-                      .map((cat) => cat.nombre)
-                      .join(", ")
+                    .slice(1)
+                    .map((cat) => cat.nombre)
+                    .join(", ")
                   : `+${categories.length - 1}`}
               </span>
             )}
@@ -118,21 +106,25 @@ const ActivityCard = ({
         <div className="activity-content">
           <h3 className="activity-title">{title}</h3>
 
-          {state.userFiltersTabs.activeTab === "reservations" ? (
-            <>
-              <p className="booking-state">{estado}</p>
-              <div className="booking-details-card">
-                <p>{fechaReserva}</p>
-                <span>${price} Usd</span>
-              </div>
-            </>
-          ) : (
-            <>
+          {state.userFiltersTabs.activeTab === "reservations"
+            ? <>
+            <p className="booking-state">{estado}</p>
+            <div className="booking-details-card">
+            <p>{fechaReserva}</p>
+            <span >
+               ${price} Usd
+               </span>
+
+            </div>
+  
+            
+   
+            </> : <>
               <div className="activity-details">
                 <span className="activity-location-card">
                   <FontAwesomeIcon icon={faMap} />
-                  <span className="location-paragraph">{location}</span>
-                </p>
+                  {location}
+                </span>
                 <span className="activity-duration">
                   {/* La duracion o el horario del evento depende del tipo de evento se manda a este componente DurationInfo para que maneje eso */}
                   {tipoEvento === "FECHA_UNICA" ? (
@@ -155,8 +147,8 @@ const ActivityCard = ({
                   {rating}
                 </span>
               </div>
-            </>
-          )}
+            </>}
+
         </div>
       </div>
     </Link>
@@ -177,7 +169,7 @@ ActivityCard.propTypes = {
   rating: PropTypes.number.isRequired,
   categories: PropTypes.array,
   fechaReserva: PropTypes.string,
-  estado: PropTypes.string,
+  estado:PropTypes.string,
 };
 
 ActivityCard.defaultProps = {
