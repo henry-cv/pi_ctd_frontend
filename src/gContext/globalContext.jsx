@@ -3,7 +3,8 @@ import { reducer } from "../reducer/reducer";
 import axios from "axios";
 
 const initialState = {
-  theme: localStorage.getItem("theme") || "",
+  // theme: localStorage.getItem("theme") || "",
+  theme: "",
   userFiltersTabs:{
     activeTab: "edit-profile",
     selectedFilters: "confirm"

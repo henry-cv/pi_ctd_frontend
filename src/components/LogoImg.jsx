@@ -17,7 +17,7 @@ const LogoImg = ({ inNavbar }) => {
         src="/GoBook_LOGO_LIGHT.svg"
         alt="Logo GoBook Dark"
         width={inNavbar ? 85 : 105}
-        className={`logoDark ${state.theme === "ligth" ? "hidden" : ""}`}
+        className={`logoDark ${state.theme === "" ? "hidden" : ""}`}
       />
     </div>
   );
