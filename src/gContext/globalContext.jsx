@@ -59,7 +59,7 @@ export const ContextProvider = ({ children }) => {
                 },
               });
               const userData = response.data;
-              console.log("Datos del usuario obtenidos:", userData);
+              // console.log("Datos del usuario obtenidos:", userData);
 
               dispatch({
                 type: "LOGIN_USER",

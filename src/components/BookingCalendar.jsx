@@ -18,7 +18,8 @@ const BookingCalendar = ({
   bookingDate,
   resetCalendar,
   setResetCalendar,
-  availabilityMap = {}
+  availabilityMap,
+  isBooking = {}
 }) => {
   const isMobile = useMediaQuery("(max-width: 480px)");
   const { state ,dispatch } = useContextGlobal();
@@ -35,7 +36,8 @@ const BookingCalendar = ({
     handleDateSelection,
     handleMonthChange, // Añadido aquí
     fechas,
-    primeraFechaValida
+    primeraFechaValida,
+    
   } = funtionsBookingCalendar({
     dateRange,
     setDateRange,
@@ -48,6 +50,7 @@ const BookingCalendar = ({
     state,
     dateRangeRef,
     setTheDateIsPast,
+    isBooking,
 
   });
   useEffect(() => {
@@ -55,9 +58,7 @@ const BookingCalendar = ({
   }, [theDateIsPast]);
 
  
-  // console.log(theDateIsPast);
-  
-  
+  // console.log(theDateIsPast)
 
   return (
     <Popover

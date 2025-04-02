@@ -32,7 +32,7 @@ import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation  } from "react-router-dom";
 import AccessRequiredModal from "../components/AccessRequiredModal";
 
-const BookingModal = ({ open, handleClose, activityId }) => {
+const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) => {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
   const [errorsBooking, setErrorsBooking] = useState({});
@@ -45,14 +45,11 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     },
   ]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const location = useLocation();
+
   const [priceQuantity, setPriceQuantity] = useState(0);
   const { state, dispatch } = useContextGlobal(null);
   const { theActivity } = state.activity || {};
-  const openAfterAcces = state.urlRedirection;
 
-  // console.log("el acces", openAfterAcces);
-  
 
   // Extraer valores necesarios theActivity 
   const nombre = theActivity?.nombre || "";
@@ -101,10 +98,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       setAvailabilityMap(map);
     }
   }, [theActivity]);
-  
-// console.log(openAfterAcces === location.pathname);
-
-
 
   const [openQuantity, setOpenQuantity] = useState(false);
   const [bookingDate, setBookingDate] = useState(null);
@@ -113,7 +106,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const [showDate, setShowDate] = useState(false);
   const [openAccess, setOpenAccess] = useState(false);
 
-
+  // console.log("la reserva change" ,isBooking)
   // Get availability for current selected date
   const getAvailabilityForDate = (date) => {
     if (!date) return 0;
@@ -148,6 +141,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     valorTarifa,
     errorsBooking,
     setShowDate,
+    setIsBooking,
+    isBooking
   });
 
 
@@ -168,6 +163,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
 	};
 
   
+		// console.log("la reserva existe",state.booking.isBooking);
+
   //submit por ahora quedó aqui 
   const BookingSubmit = () => {
 
@@ -321,8 +318,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           resetCalendar={resetCalendar}
           setResetCalendar={setResetCalendar}
           availabilityMap={availabilityMap}
-
-
+          isBooking={isBooking}
         />
 
         <BookingQuantity
@@ -332,6 +328,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           setQuantity={handleSelectQuantity}
           cupoDisponible={currentDateAvailability}
           tipoTarifa={tipoTarifa}
+          isBooking={isBooking}
         />
 
 <AccessRequiredModal open={openAccess} onClose={handleCloseAccess} />

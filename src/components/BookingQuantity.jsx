@@ -4,9 +4,11 @@ import { useContextGlobal } from "../gContext/globalContext";
 import  "../css/components/BookingQuantity.css"
 import ButtonBluePill from "./ButtonBluePill";
 
-function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,tipoTarifa}) {
+function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,tipoTarifa,isBooking}) {
 
   const isMobile = useMediaQuery("(max-width: 480px)");
+  const{state}= useContextGlobal();
+  console.log("la cantidad es", state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados);
 
   useEffect(() => {
     if (!quantity) {
@@ -14,10 +16,17 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
     }
   }, [quantity]);
 
+  useEffect(() => {
+  
+    if (isBooking) {
+      const cuposReservados = state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados || 0;
+      setQuantity(cuposReservados);
+    }
+  }, [isBooking, state.theBooking?.isBooking]);
+
   const [tempQuantity, setTempQuantity] = useState(quantity);
-  const{state}= useContextGlobal();
-  // const {
-  //   theActivity: {tipoTarifa,} = {},} = state.activity || {};
+
+
 
   const handleApply = () => {
     console.log("Aplicando cantidad:", tempQuantity);  
@@ -27,7 +36,7 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
 
   const handleDecreaseAndIncrease = (operation) => {
 
-    console.log(cupoDisponible);
+    // console.log(cupoDisponible);
     
 
     if(operation === "add"){

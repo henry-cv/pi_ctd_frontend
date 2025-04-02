@@ -65,7 +65,8 @@ const ActivityDetail = () => {
 	const [disponibilidad, setDisponibilidad] = useState([]);
 	const [openShareModal, setOpenShareModal] = useState(false);
 	const [isPastDate, setIsPastDate] = useState(null);
-	console.log("el acces", state.urlRedirection );
+	const [isBooking, setIsBooking] = useState(false);
+	// console.log("el acces", state.urlRedirection );
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
 	//  console.log("La activity " + JSON.stringify(state.activity));
@@ -161,11 +162,11 @@ useEffect(() => {
   }, [state.activity?.theActivity]);
   
   
-console.log(state.urlRedirection === location.pathname);
+// console.log(state.urlRedirection === location.pathname);
 
 useEffect(() => {
 	if (state.urlRedirection === location.pathname) {
-	  console.log("Abrimos el modal de booking automáticamente");
+	//   console.log("Abrimos el modal de booking automáticamente");
 	  handleOpenModalBooking(); // Función que abre el modal
 	  dispatch({
 		type: "SET_URL_REDIRECTION",
@@ -292,16 +293,13 @@ useEffect(() => {
 	};
 
 	const handleOpenModalBooking = (id) => {
-	
+			setIsBooking(false)
 			setOpenBooking(true);
-		
 	};
 
 	const handleCloseModalBooking = () => {
 		setOpenBooking(false);
 	};
-
-	// const handleCloseAccess = () => setOpenAccess(false);
 
 	const handleOpenShareModal = () => {
 		setOpenShareModal(true);
@@ -667,6 +665,8 @@ useEffect(() => {
 				open={openBooking}
 				handleClose={handleCloseModalBooking}
 				activityId={activity.id}
+				isBooking={isBooking}
+				setIsBooking ={setIsBooking}
 			/>
 
 			{/* <AccessRequiredModal open={openAccess} onClose={handleCloseAccess} /> */}

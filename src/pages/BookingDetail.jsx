@@ -37,16 +37,19 @@ const BookingDetail = () => {
   const [politics, setPolitics] = useState([]);
   const [copied, setCopied] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
+  const [isBooking, setIsBooking] = useState(false);
 
-  console.log(id, "id reserva");
-  console.log("las tab filter es :", state.userFiltersTabs.selectedFilters);
+  // console.log(id, "id reserva");
+  // console.log("las tab filter es :", state.userFiltersTabs.selectedFilters);
 
   const handleCloseModalBooking = () => {
     setOpenBooking(false);
   };
 
   const handleOpenModalBooking = () => {
+    setIsBooking(true)
     setOpenBooking(true);
+
   };
   useEffect(() => {
     const getBookings = async () => {
@@ -57,19 +60,14 @@ const BookingDetail = () => {
 
         const theActivity = { ...reservations.bookingData, ...reservations.disponibilityData, ...reservations.productData };
 
-        console.log("lo que le mandaresmo a la actividad ", theActivity);
+        // console.log("lo que le mandaresmo a la actividad ", theActivity);
 
         dispatch({
           type: "SET_ACTIVITY",
           payload: { theActivity },
         });
+
         
-
-        dispatch({
-          type: "SET_BOOKING",
-          payload: {  isBooking: true }
-        });
-
         if (reservations.bookingData && reservations.productData) {
           const { cantidadPersonas } = reservations.bookingData;
           const { tipoTarifa, valorTarifa } = reservations.productData;
@@ -184,6 +182,8 @@ const BookingDetail = () => {
                   open={openBooking}
                   handleClose={handleCloseModalBooking}
                   activityId={booking.productData.id}
+                  isBooking={isBooking}
+                  setIsBooking ={setIsBooking}
                 />
               </div>
               <p><FaTags /><span>Precio total:</span> <strong >{precioFinal} Usd</strong></p>

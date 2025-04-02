@@ -29,6 +29,7 @@ export const funtionsBookingCalendar = ({
   state,
   dateRangeRef,
   setTheDateIsPast,
+  isBooking,
 }) => {
   const [selectedDate, setSelectedDate] = useState(bookingDate || dateRange[0]?.startDate);
   const [visibleMonth, setVisibleMonth] = useState(new Date().getMonth());
@@ -61,61 +62,53 @@ export const funtionsBookingCalendar = ({
 
 
   useEffect(() => {
-    // Caso 1: Cuando el tipo es "dias" y hay fechas disponibles
-    if (availability?.type === "dias" && fechas.length > 0) {
+    let fechaSeleccionada = null;
+  
+    if (isBooking && state.activity?.theActivity?.disponibilidadProductoSalidaDto?.fechaEvento) {
+      const fechaReserva = new Date(state.activity.theActivity.disponibilidadProductoSalidaDto.fechaEvento+"T00:00:00");
+
+      fechaSeleccionada = fechaReserva;
+
+      setBookingDate(fechaReserva);
+    }
+
+    if (!fechaSeleccionada && !isBooking && availability?.type === "dias" && fechas.length > 0) {
       const today = normalizeDate(new Date());
-      let fechaSeleccionada;
       
-      // Buscar la primera fecha válida (no anterior a hoy)
-      let fechaValida = null;
       for (let i = 0; i < fechas.length; i++) {
-        const fecha = normalizeDate(new Date(fechas[i]));
+        const fecha = normalizeDate(new Date(fechas[i]+"T00:00:00"));
         if (fecha >= today) {
-          fechaValida = fecha;
+          fechaSeleccionada = fecha;
           break;
         }
       }
-      
-      if (fechaValida) {
-        fechaSeleccionada = fechaValida;
-        setPrimeraFechaValida(fechaValida);
-      } else {
+      if (!fechaSeleccionada) {
+        console.warn("No hay fechas disponibles en el futuro. Mostrando la primera disponible.");
         setErrors("Esta actividad ya pasó");
-        fechaSeleccionada = new Date(fechas[0]);
-      }
-      
-
-      setVisibleMonth(fechaSeleccionada.getMonth());
-      setVisibleYear(fechaSeleccionada.getFullYear());
-      
-
-      if (dateRangeRef.current?.setShownDate) {
-        try {
-          dateRangeRef.current.setShownDate(fechaSeleccionada);
-        } catch (error) {
-          console.error("Error al establecer fecha mostrada:", error);
-        }
-      }
-    } 
-    // Caso 2: Cuando el tipo es "fecha" - seleccionar directamente la fecha especificada
-    else if (availability?.type === "fecha" && availability?.fecha) {
-      const fechaUnica = new Date(availability.fecha);
-      
-      setPrimeraFechaValida(fechaUnica);
-      
-      setVisibleMonth(fechaUnica.getMonth());
-      setVisibleYear(fechaUnica.getFullYear());
-      
-      if (dateRangeRef.current?.setShownDate) {
-        try {
-          dateRangeRef.current.setShownDate(fechaUnica);
-        } catch (error) {
-          console.error("Error al establecer fecha mostrada:", error);
-        }
+        fechaSeleccionada = new Date(fechas[0]+"T00:00:00");
       }
     }
-  }, [availability]);
+    if (!fechaSeleccionada && !isBooking && availability?.type === "fecha" && availability?.fecha) {
+      fechaSeleccionada = new Date(availability.fecha+"T00:00:00");
+    }
 
+    if (fechaSeleccionada) {
+      setPrimeraFechaValida(fechaSeleccionada);
+      setVisibleMonth(fechaSeleccionada.getMonth());
+      setVisibleYear(fechaSeleccionada.getFullYear());
+  
+      setTimeout(() => {
+        if (dateRangeRef.current?.setShownDate) {
+          try {
+            dateRangeRef.current.setShownDate(fechaSeleccionada);
+          } catch (error) {
+            console.error("Error al establecer la fecha mostrada:", error);
+          }
+        }
+      }, 100);
+    }
+  
+  }, [availability, isBooking, state.activity]);
 
   // Efecto para establecer la primera fecha visible
   // useEffect(() => {
@@ -182,6 +175,11 @@ export const funtionsBookingCalendar = ({
     
     let isAvailable = false;
     
+    // Verificar si este día corresponde a la fecha del evento cuando isBooking es true
+    const isBookingEventDate = isBooking && 
+      state.activity?.theActivity?.disponibilidadProductoSalidaDto?.fechaEvento && 
+      normalizedDay.toDateString() === normalizeDate(new Date(state.activity.theActivity.disponibilidadProductoSalidaDto.fechaEvento+"T00:00:00")).toDateString();
+    
     if (availability?.type === "dias") {
       isAvailable = availability.data.includes(dayName);
       
@@ -199,7 +197,7 @@ export const funtionsBookingCalendar = ({
         return normalizedAvailableDate.toDateString() === normalizedDay.toDateString();
       });
     }
-
+  
     const isSingleDate =
       availability?.type === "fecha" &&
       availability.data.length === 1 &&
@@ -216,8 +214,8 @@ export const funtionsBookingCalendar = ({
           return "disabled-day";
         }
         // Si es fecha única y está disponible
-        if (isSingleDate) {
-          return  "selected-day";
+        if (isSingleDate || isBookingEventDate) {
+          return "selected-day";
         }
         // Si está disponible como día regular
         return "available-day";
@@ -225,11 +223,10 @@ export const funtionsBookingCalendar = ({
       // Si no está disponible, continuamos mostrándolo como transparente
       return "transparent-day";
     }
-
-    
-    // Para fecha única 
-    if (isSingleDate) {
-      if (cuposDisponibles <= 0) {
+  
+    // Para fecha única o si es la fecha exacta de la reserva
+    if (isSingleDate || isBookingEventDate) {
+      if (cuposDisponibles <= 0 && !isBookingEventDate) {
         return "disabled-day";
       }
       return "selected-day";
@@ -240,7 +237,7 @@ export const funtionsBookingCalendar = ({
       return "selected-day";
     }
   
-    // Días disponibles para fecha recurrente
+    // Día disponible
     if (isAvailable) {
       if (cuposDisponibles <= 0) {
         return "disabled-day";
@@ -248,7 +245,8 @@ export const funtionsBookingCalendar = ({
       return "available-day";
     }
   
-    return "semi-available-day";
+    // Día no disponible
+    return "disabled-day-no-pointer";
   };
 
   // Función para reiniciar el estado del calendario

@@ -16,7 +16,7 @@ export const calcularPrecio = (cantidadPersonas, tipoTarifa, valorTarifa) => {
   export const fetchBookings = async (user, token) => {
     if (!token) return [];
 
-    console.log("entre al fetchBookings", user, token);
+    // console.log("entre al fetchBookings", user, token);
     
   
     try {
