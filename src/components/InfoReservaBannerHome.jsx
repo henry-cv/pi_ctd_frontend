@@ -1,17 +1,25 @@
-import "../css/components/InfoReservaBannerHome.css"
+import "../css/components/InfoReservaBannerHome.css";
 
 const InfoReservaBannerHome = () => {
   return (
     <section className="container-banner-first">
-      <img className="banner-first-img" src="../../public/man_with-suitcase.webp" alt="man with suitcase" />
+      <img
+        className="banner-first-img"
+        src="https://res.cloudinary.com/drq4tucwt/image/upload/v1743635689/man_with-suitcase_rtqoct.webp"
+        alt="man with suitcase"
+      />
       <div className="banner-text-column">
         <h4 className="banner-text-tittle">LO QUE SERVIMOS</h4>
-        <h2 className="banner-text-subtittle">Reserva de actividades variadas</h2>
+        <h2 className="banner-text-subtittle">
+          Reserva de actividades variadas
+        </h2>
         <p className="banner-text-paragraph">
           Abrace la inmensidad de la vida, aventúrese y descubra las maravillas
           que le aguardan más allá. El mundo le llama.
         </p>
-        <p className="banner-text-paragraph" >¡Aproveche ahora sus grandes ofertas!</p>
+        <p className="banner-text-paragraph">
+          ¡Aproveche ahora sus grandes ofertas!
+        </p>
 
         <div className="banner-footer-items">
           <div>
