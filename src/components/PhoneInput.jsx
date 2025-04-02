@@ -1,43 +1,66 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import '../css/components/PhoneInput.css';
-//import { countryCodeList } from "../constants/data/countryCodeList.js";
 import FieldError from './FieldError';
 import PropTypes from 'prop-types';
 
 
-const PhoneInput = ({ country, setPhoneNumber }) => {
-  const [phone, setPhone] = useState('');
+const PhoneInput = ({ country, telefono, setTelefono }) => {
+  const [phone, setPhone] = useState("");
+  const [dialCode, setDialCode] = useState(country.dial_code || "");
   const [isValid, setIsValid] = useState(null);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (telefono) {
+      const parsedNumber = parsePhoneNumberFromString(telefono);
+      if (parsedNumber) {
+        setPhone(parsedNumber.nationalNumber);
+        setDialCode(parsedNumber.countryCallingCode || country.dial_code || "");
+      }
+    } else {
+      setPhone("");
+      setDialCode(country.dial_code || "");
+    }
+  }, [telefono, country]);
+  useEffect(() => {
+    if (country) {
+      setDialCode(country.dial_code);
+    }
+  }, [country]);
+
   // Maneja el input del número
   const handlePhoneChange = (e) => {
-    setIsValid(null); // Reinicia validez
     const value = e.target.value;
     setPhone(value);
 
-    const fullNumber = `${country.dial_code}${value}`;
+    if (!value) {
+      setIsValid(null);
+      setError("");
+      return;
+    }
+
+    const fullNumber = `${dialCode}${value}`;
     const parsedNumber = parsePhoneNumberFromString(fullNumber);
 
-    // Verifica si el número es válido para el país seleccionado
     if (parsedNumber && parsedNumber.isValid() && parsedNumber.country === country.code) {
       setIsValid(true);
-      setPhoneNumber(parsedNumber.number);
-      //console.log("PhoneInput component, valor de parsedNumber: ", parsedNumber + "-->" + parsedNumber.number);
       setError("");
+      setTelefono(parsedNumber.number);
     } else {
       setIsValid(false);
-      setError("El número ingresado no es válido")
+      setError("El número ingresado no es válido");
+      setTelefono("");
     }
   };
+
 
   return (
     <div className="container-whatsapp-number">
       <div className="phone-number">
         <label htmlFor="phone-number">Teléfono:</label>
         <div className="phone-field">
-          <span className="dial-code">{country.dial_code}</span>
+          <span className="dial-code">{dialCode}</span>
           <input
             type="tel"
             name="telefono"
@@ -55,9 +78,12 @@ const PhoneInput = ({ country, setPhoneNumber }) => {
   );
 };
 PhoneInput.propTypes = {
-  country: PropTypes.object,
-  phoneNumber: PropTypes.string,
-  setPhoneNumber: PropTypes.func
-}
+  country: PropTypes.shape({
+    dial_code: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
+  }),
+  setTelefono: PropTypes.func.isRequired,
+  telefono: PropTypes.string,
+};
 
 export default PhoneInput;
