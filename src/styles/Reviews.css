@@ -228,3 +228,38 @@
 		max-width: 200px;
 	}
 }
+
+/* Estilos para el modal de reseñas */
+.review-modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90%;
+	max-width: 500px;
+	background-color: white;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	padding: 2rem;
+	border-radius: 8px;
+	outline: none;
+}
+
+.rating-input {
+	display: flex;
+	justify-content: center;
+	margin: 1rem 0;
+}
+
+.review-modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.review-modal {
+		width: 95%;
+		padding: 1.5rem;
+	}
+}
