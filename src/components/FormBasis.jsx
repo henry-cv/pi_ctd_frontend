@@ -169,8 +169,7 @@ const FormBasis = ({ isEditMode = false }) => {
       console.error(`No se encontró un país válido con nombre ${countryName}`);
       return;
     }
-
-    console.log("País seleccionado:", country); // 🔍 Verifica que el país se asigna correctamente
+    //console.log("País seleccionado:", country); // 🔍 Verifica que el país se asigna correctamente
 
     setSelectedCountry(country);
     setCountryValue(country.name);
@@ -186,7 +185,7 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCategories(data);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.error("Error cargando categorías:", error);
       } finally {
@@ -290,7 +289,7 @@ const FormBasis = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
-          console.log("Actividad cargada:", data);
+          //console.log("Actividad cargada:", data);
 
           // Asignación de estados
           setTitulo(data.nombre || "");
@@ -364,7 +363,7 @@ const FormBasis = ({ isEditMode = false }) => {
           }
 
           const data = await response.json();
-          console.log("Disponibilidad cargada: ", data);
+          //console.log("Disponibilidad cargada: ", data);
           if (data.length === 0) return;
 
           if (data.length > 0) {
@@ -478,7 +477,7 @@ const FormBasis = ({ isEditMode = false }) => {
       direccion: address,
       cuposTotales: parseInt(quota),
     };
-    console.log("Datos a enviar:", JSON.stringify(productoData));
+    //console.log("Datos a enviar:", JSON.stringify(productoData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -491,8 +490,8 @@ const FormBasis = ({ isEditMode = false }) => {
       formData.append("imagenes", file);
     });
 
-    console.log(productoData);
-    console.log("Enviando datos al backend...");
+    //console.log(productoData);
+    //console.log("Enviando datos al backend...");
 
     try {
       const token = state.token || localStorage.getItem("token");
