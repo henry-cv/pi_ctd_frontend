@@ -21,6 +21,7 @@ import Footer from "../components/Footer";
 import BookingModal from "../components/BookingModal";
 import ReservationService from "../services/ReservationService";
 import "../css/pages/ConfirmationPage.css";
+import { sendReservationConfirmation } from "../services/emailService";
 
 const ConfirmationPage = () => {
   const { state: globalState } = useContextGlobal();
@@ -235,7 +236,25 @@ const ConfirmationPage = () => {
       try {
         const response = await ReservationService.createReservation(reservationData);
         console.log("Backend API response:", response);
+        const completeReservationData = {
+          ...response,
+          cantidadPersonas: reservationData.cantidadPersonas,
+          totalPrice: currentReservation.totalPrice || (theActivity.valorTarifa * reservationData.cantidadPersonas),
+          date: reservationDate
+        };
         
+        // Enviar email de confirmación de reserva
+        try {
+          const emailResult = await sendReservationConfirmation(
+            completeReservationData,
+            userData,
+            theActivity
+          );
+          console.log("Resultado del envío de email de reserva:", emailResult);
+        } catch (emailError) {
+          console.error("Error al enviar email de confirmación de reserva:", emailError);
+          // Continuamos con el flujo aunque falle el email
+        }
         // Mostrar mensaje de éxito
         setSnackbar({
           open: true,

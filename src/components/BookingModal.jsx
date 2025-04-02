@@ -193,7 +193,11 @@ console.log(openAfterAcces === location.pathname);
           popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
         }
       });
-      
+     
+      dispatch({
+        type: "SET_RESERVATION",
+          payload: reservationData,
+      });
       // Cerrar el modal y resetear los datos
       resetBookingData();
       handleClose();

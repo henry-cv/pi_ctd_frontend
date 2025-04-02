@@ -19,24 +19,22 @@
 } */
 
 .card-height-reservation {
-  max-height: 330px !important; 
+  max-height: 330px !important;
 }
 
 .card-height-reservation .activity-image-container {
-  height: 65% !important; 
+  height: 65% !important;
 }
 
-.booking-state{
+.booking-state {
   color: var(--Blue-300-L-yellow-D);
 }
 
-.booking-details-card{
+.booking-details-card {
   color: var(--Icons-gray);
   display: flex;
   justify-content: space-between;
-  
 }
-
 
 .activity-card:hover {
   transform: translateY(-4px);
@@ -66,13 +64,13 @@
 
 .activity-title-ca {
   font-family: var(--font-archivo);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--Font-Background);
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   width: 100%;
 }
 
@@ -90,13 +88,18 @@
   color: var(--Icons-gray);
   font-size: 14px;
 }
+.location-paragraph {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
 
 .activity-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: 8px !important;
 }
 
 .activity-price {
