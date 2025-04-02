@@ -3,6 +3,7 @@ import { reducer } from "../reducer/reducer";
 import axios from "axios";
 
 const initialState = {
+  // theme: localStorage.getItem("theme") || "",
   theme: "",
   userFiltersTabs:{
     activeTab: "edit-profile",
@@ -15,9 +16,18 @@ const initialState = {
   isLoading: true,
   usuarioRoles: null,
   activity: null,
-  reservation: JSON.parse(localStorage.getItem("reservation")) || [], 
-  urlRedirection: localStorage.getItem("urlRedirection") || "",
-  isAccessModal: false
+  reservation: JSON.parse(localStorage.getItem("reservation")) || [],
+  booking:{ 
+    theBooking: JSON.parse(localStorage.getItem("booking")) || [], 
+    isBooking: false},
+    urlRedirection: localStorage.getItem("urlRedirection") || "",
+    isAccessModal: false,
+    bookingModals:{
+      pastDate:"",
+      callEffect: false,
+      isActiveModal:true,  
+    }
+  
 };
 
 export const ContextGlobal = createContext();
@@ -84,6 +94,12 @@ export const ContextProvider = ({ children }) => {
       localStorage.setItem("reservation", JSON.stringify(state.reservation));
     }
   }, [state.reservation]);
+
+  useEffect(() => {
+    if (state.theme) {
+      localStorage.setItem("theme", state.theme);
+    }
+  }, [state.theme]);
 
   return (
     <ContextGlobal.Provider value={{ state, dispatch }}>

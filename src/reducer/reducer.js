@@ -1,10 +1,12 @@
 export const reducer = (state, action) => {
   switch (action.type) {
+    // case "CHANGE_THEME":
+    //   return { ...state, theme: action.payload
+    //   };
     case "CHANGE_THEME":
-      return {
-        ...state,
-        theme: state.theme === "" ? "dark" : "",
-      };
+         return {
+             ...state,
+             theme: state.theme === "" ? "dark" : "",};
     case "SET_ACTIVE_TAB_FILTER":
       return {
         ...state,
@@ -40,15 +42,21 @@ export const reducer = (state, action) => {
         isLoading: false,
       };
     case "SET_ACTIVITY":
-      console.log("elpayload");
-      console.log(action.payload);
       return { ...state, activity: action.payload };
-
-    case "SET_RESERVATION":
-      return {
-        ...state,
-        reservation: [...state.reservation, action.payload],
-      };
+      case "SET_RESERVATION":
+        return {
+          ...state,
+          reservation: [...state.reservation, action.payload],
+        };
+        case "SET_BOOKING":
+          return {
+            ...state,
+            booking: {
+              ...state.booking,  
+              theBooking: action.payload.theBooking,  
+              isBooking: action.payload.isBooking
+            },
+          };
       case "SET_URL_REDIRECTION":
         localStorage.setItem("urlRedirection", action.payload);  
         return {
@@ -60,6 +68,16 @@ export const reducer = (state, action) => {
           ...state,
           isAccessModal: action.payload,
         };
+        case "SET_BOOKINGS_DATES":
+          return {
+            ...state,
+            bookingModals: {
+              ...state.bookingModals,  
+              pastDate: action.payload.pastDate,  
+              callEffect: action.payload.callEffect, 
+              isActiveModal: action.payload.isActiveModal
+            },
+          };
     default:
       throw new Error("Acción no existente");
   }

@@ -29,9 +29,11 @@ import { funtionsBookingModal } from '../constants/data/funtionsModalBooking';
 import { Calendar1Icon, CalendarCheck2 } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
-
+import { useNavigate, useLocation  } from "react-router-dom";
+import AccessRequiredModal from "../components/AccessRequiredModal";
 
 const BookingModal = ({ open, handleClose, activityId }) => {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
   const [errorsBooking, setErrorsBooking] = useState({});
   const isMobile = useMediaQuery("(max-width: 480px)");
@@ -43,9 +45,14 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     },
   ]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const location = useLocation();
   const [priceQuantity, setPriceQuantity] = useState(0);
   const { state, dispatch } = useContextGlobal(null);
   const { theActivity } = state.activity || {};
+  const openAfterAcces = state.urlRedirection;
+
+  console.log("el acces", openAfterAcces);
+  
 
   // Extraer valores necesarios theActivity 
   const nombre = theActivity?.nombre || "";
@@ -75,6 +82,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const fechasEvento = getEventDates();
   
   // Generate availability map from theActivity
+
   useEffect(() => {
     if (theActivity) {
       const map = {};
@@ -93,13 +101,19 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       setAvailabilityMap(map);
     }
   }, [theActivity]);
+  
+console.log(openAfterAcces === location.pathname);
+
+
 
   const [openQuantity, setOpenQuantity] = useState(false);
   const [bookingDate, setBookingDate] = useState(null);
   const [anchorElQuantity, setAnchorElQuantity] = useState(null);
   const [resetCalendar, setResetCalendar] = useState(false);
   const [showDate, setShowDate] = useState(false);
-  
+  const [openAccess, setOpenAccess] = useState(false);
+
+
   // Get availability for current selected date
   const getAvailabilityForDate = (date) => {
     if (!date) return 0;
@@ -135,9 +149,29 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     errorsBooking,
     setShowDate,
   });
+
+
+  const handleCloseAccess = () => setOpenAccess(false);
+
+  const handleOpenAcess = (id) => {
+    console.log("entré al acceso");
+    
+		if (!state.token) {
+			console.log("el token no esta no esta logueado");
+			setOpenAccess(true);
+		} else {
+			console.log("usurio loggueado");
+			console.log(state.user.id);
+
+			BookingSubmit();
+		}
+	};
+
   
   //submit por ahora quedó aqui 
   const BookingSubmit = () => {
+
+    
     if (validateCreateBooking(bookingDate, quantity)) {
       const reservationData = {
         idActivity: id,
@@ -148,10 +182,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         cuposReservados: quantity,
       };
 
-      dispatch({
-        type: "SET_RESERVATION",
-        payload: reservationData,
-      });
 
       Swal.fire({
         icon: "success",
@@ -163,14 +193,22 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
         }
       });
-      
+     
+      dispatch({
+        type: "SET_RESERVATION",
+          payload: reservationData,
+      });
+      // Cerrar el modal y resetear los datos
       resetBookingData();
       handleClose();
+      
+      // Redireccionar a la página de confirmación de reserva
+      navigate(`/datos-personales`);
     } else {
       Swal.fire({
         icon: "error",
         title: "Reserva fallida",
-        text: "no se puede hacer la reserva",
+        text: "No se puede hacer la reserva. Por favor, selecciona una fecha y cupos válidos.",
         timer: 2000,
         showConfirmButton: false,
         customClass: {
@@ -283,6 +321,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           resetCalendar={resetCalendar}
           setResetCalendar={setResetCalendar}
           availabilityMap={availabilityMap}
+
+
         />
 
         <BookingQuantity
@@ -293,6 +333,8 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           cupoDisponible={currentDateAvailability}
           tipoTarifa={tipoTarifa}
         />
+
+<AccessRequiredModal open={openAccess} onClose={handleCloseAccess} />
 
         {!bookingDate ? null : (
           <>
@@ -309,7 +351,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
         )}
 
         <ActivityPolitics cancelation={politicaCancelacion} payment={politicaPagos} />
-
         <Box mt={3} p={2} border={1} borderRadius={2}>
           <div className="title-checkbox">
             <Typography fontWeight={600}>{nombre}</Typography>
@@ -356,7 +397,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
           text="Reservar Ahora"
           className="button-blue btn-save"
           type="submit"
-          onClick={BookingSubmit}
+          onClick={handleOpenAcess}
         />
       </DialogActions>
     </Dialog>
@@ -364,3 +405,4 @@ const BookingModal = ({ open, handleClose, activityId }) => {
 };
 
 export default BookingModal;
+
