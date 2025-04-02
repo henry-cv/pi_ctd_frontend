@@ -374,7 +374,7 @@ const FormEditUser = ({ setUserData })=> {
           </div> */}
         </div>
 
-        <div className="action-buttons">
+        <div className="action-buttons-profile">
           <button
             type="button"
             className={

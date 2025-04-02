@@ -79,7 +79,7 @@
     gap:40px;
     background-color: var(--Background-W-300-B-400);
     padding: 20px;
-    max-width: 45%;
+    max-width: 75%;
     margin: auto;
     margin-top:40px  ;
     border-radius: 30px;
@@ -108,10 +108,11 @@
   @media (max-width:768px){
 
     .profile-tabs{
-        margin-top:20px;overflow-x:auto
+        margin-top:20px;
+        overflow-x:auto;
     }
     .booking-tabs{
-      max-width: 75%;
+      max-width: 85%;
       gap: 25px;
     }
 
@@ -125,7 +126,18 @@
         margin-top:60px
     }
     .booking-tabs{
-      max-width: 90%;
-      gap: 12px;
+      max-width: 95%;
+    }
+  }
+
+  @media (max-width:400px){
+    .profile-tabs{
+        margin-top:60px
+    }
+    .booking-tabs{
+      max-width: 100%;
+    }
+    .booking-tab-button{
+      font-size: 10px;
     }
   }

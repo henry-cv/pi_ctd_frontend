@@ -14,6 +14,7 @@ export default function DynamicBreadcrumbs() {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   const handlePerfilClick = () => {
+    
     navigate("/perfil");
   };
 

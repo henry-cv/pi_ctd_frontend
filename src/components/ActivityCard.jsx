@@ -29,7 +29,7 @@ const ActivityCard = ({
   rating,
   categories,
   fechaReserva,
-  estado
+  estado,
 }) => {
   // Imagen por defecto en caso de error o sin imagen
   const [extraCategories, setExtraCategories] = useState(false);
@@ -41,13 +41,26 @@ const ActivityCard = ({
   };
 
   const handleClick = () => {
-    if (state.userFiltersTabs.activeTab === "reservations") {
-      dispatch({
-        type: "SET_ACTIVE_TAB_FILTER",
-        payload: { activeTab: "edit-profile" },
+    
+    dispatch({
+      type: "SET_BOOKINGS_DATES", 
+      payload: { callEffect: true },
+    });
+
+    dispatch({
+      type: "SET_URL_REDIRECTION",
+      payload: "",
       });
-    }
+
+    // if (state.userFiltersTabs.activeTab === "reservations") {
+    //   dispatch({
+    //     type: "SET_ACTIVE_TAB_FILTER",
+    //     payload: { activeTab: "edit-profile" },
+    //   });
+    // }
   };
+
+  // console.log(state.bookingModals.callEffect);
 
   return (
     <Link
@@ -56,6 +69,7 @@ const ActivityCard = ({
         ? `/perfil/misreservas/${id}`
         : `/actividad/${id}`}
       className="activity-link"
+      onClick={handleClick}
     >
       <div className={`activity-card card-container-fluid ${state.userFiltersTabs.activeTab === "reservations" ? "card-height-reservation" : ""}`}>
         <div className="activity-image-container">
@@ -90,7 +104,7 @@ const ActivityCard = ({
           </div>
         </div>
         <div className="activity-content">
-          <h3 className="activity-title">{title}</h3>
+          <h3 className="activity-title-ca">{title}</h3>
 
           {state.userFiltersTabs.activeTab === "reservations"
             ? <>
@@ -107,7 +121,7 @@ const ActivityCard = ({
    
             </> : <>
               <div className="activity-details">
-                <span className="activity-location">
+                <span className="activity-location-card">
                   <FontAwesomeIcon icon={faMap} />
                   {location}
                 </span>

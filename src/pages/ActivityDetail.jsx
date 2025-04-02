@@ -35,8 +35,9 @@ import ActivityPolitics from "../components/ActivityPolitics";
 import FavoriteButton from "../components/FavoriteButton";
 import ShareButton from "../components/ShareButton";
 import ShareModal from "../components/ShareModal";
-import {handleGoWhatsApp} from "../constants/data/funtionFetchBookings";
+import { handleGoWhatsApp } from "../constants/data/funtionFetchBookings";
 import { WhatsappIcon } from "react-share";
+import { normalizeDate } from "../constants/data/funtionsBookingCalendar"
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -61,12 +62,15 @@ const ActivityDetail = () => {
 	const [currentMobileImageIndex, setCurrentMobileImageIndex] = useState(0);
 	const [isMobileView, setIsMobileView] = useState(false);
 	const [openBooking, setOpenBooking] = useState(false);
-	const [openAccess, setOpenAccess] = useState(false);
 	const [disponibilidad, setDisponibilidad] = useState([]);
 	const [openShareModal, setOpenShareModal] = useState(false);
+	const [isPastDate, setIsPastDate] = useState(null);
+	console.log("el acces", state.urlRedirection );
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
-	 console.log("La activity " + JSON.stringify(state.activity));
+	//  console.log("La activity " + JSON.stringify(state.activity));
+
+	 console.log("el efecto ", isPastDate);
 
 	useEffect(() => {
 		const fetchActivityDetails = async () => {
@@ -128,6 +132,48 @@ const ActivityDetail = () => {
 		fetchActivityDetails();
 	}, [id]);
 
+
+useEffect(() => {
+	if (state.activity?.theActivity) {
+	  const today = normalizeDate(new Date());
+	  let theActivity = state.activity.theActivity;
+	  let isPastEvent = true;
+  
+	  Object.keys(theActivity)
+		.filter((key) => !isNaN(parseInt(key)))
+		.forEach((key) => {
+		  let eventDate = theActivity[key].fechaEvento;
+		  if (eventDate) {
+			eventDate = normalizeDate(new Date(eventDate));
+			if (eventDate > today) {
+			  isPastEvent = false;
+			  return;
+			}
+		  }
+		});
+	  
+	  if (isPastEvent) {
+		setIsPastDate("Esta actividad no cuenta con fechas disponibles");
+	  } else {
+		setIsPastDate("");
+	  }
+	}
+  }, [state.activity?.theActivity]);
+  
+  
+console.log(state.urlRedirection === location.pathname);
+
+useEffect(() => {
+	if (state.urlRedirection === location.pathname) {
+	  console.log("Abrimos el modal de booking automáticamente");
+	  handleOpenModalBooking(); // Función que abre el modal
+	  dispatch({
+		type: "SET_URL_REDIRECTION",
+		payload: "",
+	  });
+	}
+  }, [state.urlRedirection]);
+
 	// Detectar scroll para mostrar la card de reserva en móvil
 	useEffect(() => {
 		const handleScroll = () => {
@@ -151,6 +197,8 @@ const ActivityDetail = () => {
 
 		return () => window.removeEventListener("resize", checkMobileView);
 	}, []);
+
+
 
 	const handleOpenImageViewer = (index) => {
 		setCurrentImageIndex(index);
@@ -244,22 +292,16 @@ const ActivityDetail = () => {
 	};
 
 	const handleOpenModalBooking = (id) => {
-		if (!state.token) {
-			console.log("el token no esta no esta logueado");
-			setOpenAccess(true);
-		} else {
-			console.log("usurio loggueado");
-			console.log(state.user.id);
-
+	
 			setOpenBooking(true);
-		}
+		
 	};
 
 	const handleCloseModalBooking = () => {
 		setOpenBooking(false);
 	};
 
-	const handleCloseAccess = () => setOpenAccess(false);
+	// const handleCloseAccess = () => setOpenAccess(false);
 
 	const handleOpenShareModal = () => {
 		setOpenShareModal(true);
@@ -268,6 +310,8 @@ const ActivityDetail = () => {
 	const handleCloseShareModal = () => {
 		setOpenShareModal(false);
 	};
+
+	
 
 	if (loading) {
 		return (
@@ -322,9 +366,8 @@ const ActivityDetail = () => {
 				<section className="gallery-section" ref={galleryRef}>
 					<div className="content-wrapper">
 						<div
-							className={`gallery-grid ${
-								images.length === 1 ? "single-image" : ""
-							}`}
+							className={`gallery-grid ${images.length === 1 ? "single-image" : ""
+								}`}
 						>
 							<div
 								className="main-image"
@@ -384,9 +427,8 @@ const ActivityDetail = () => {
 								{images.slice(1, 5).map((image, index) => (
 									<div
 										key={index}
-										className={`thumbnail ${
-											index === 3 && images.length > 5 ? "with-overlay" : ""
-										}`}
+										className={`thumbnail ${index === 3 && images.length > 5 ? "with-overlay" : ""
+											}`}
 										onClick={() => handleOpenImageViewer(index + 1)}
 									>
 										<img
@@ -543,15 +585,15 @@ const ActivityDetail = () => {
 										</div>
 
 										<div className="contact-detail">
-										<p>¿Necesitas más información sobre esta actividad?</p>
-			  <ButtonGral 
-			  text="Escríbele al organizador" 
-			  color="blue" icon={<WhatsappIcon 
-			  size={32} 
-			  round bgStyle={{ fill: "#25D366" }} 
-			  iconFillColor="#000000" />}
-			  onClick={() => handleGoWhatsApp(3005223014)}
-			   />
+											<p>¿Necesitas más información sobre esta actividad?</p>
+											<ButtonGral
+												text="Escríbele al organizador"
+												color="blue" icon={<WhatsappIcon
+													size={32}
+													round bgStyle={{ fill: "#25D366" }}
+													iconFillColor="#000000" />}
+												onClick={() => handleGoWhatsApp(activity.telefono ? activity.telefono : 3005223014)}
+											/>
 										</div>
 
 									</div>
@@ -562,6 +604,7 @@ const ActivityDetail = () => {
 							<div className="booking-column">
 								<div className="booking-card">
 									<div className="price-section">
+									<p style={{ color: "red" }}>{isPastDate}</p>
 										<span className="price">${activity.valorTarifa || 0}</span>
 										<span className="price-type">
 											{activity.tipoTarifa === "POR_PERSONA"
@@ -585,6 +628,8 @@ const ActivityDetail = () => {
 										fullWidth={true}
 										url={`/reserva/${activity.id}`}
 										onClick={() => handleOpenModalBooking(activity.id)}
+										disabled={ isPastDate  ? true : false}
+										otherClass={isPastDate  ?" disiabled" : ""}
 									/>
 								</div>
 							</div>
@@ -624,7 +669,7 @@ const ActivityDetail = () => {
 				activityId={activity.id}
 			/>
 
-			<AccessRequiredModal open={openAccess} onClose={handleCloseAccess} />
+			{/* <AccessRequiredModal open={openAccess} onClose={handleCloseAccess} /> */}
 			{/* Visor de imágenes */}
 			{showImageViewer && !isMobileView && (
 				<ImageViewer

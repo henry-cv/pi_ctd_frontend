@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import Categories from "../Routes/Categories";
 
 const Activities = () => {
@@ -19,22 +19,19 @@ const Activities = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <div className="dropdown" ref={dropdownRef}>
-      <button
-        onClick={toggleDropdown}
-        className="dropdown-button"
-      >
+      <button onClick={toggleDropdown} className="dropdown-button">
         Actividades
-        <FontAwesomeIcon 
-          icon={faAngleDown} 
-          className={`dropdown-arrow ${isOpen ? 'rotate-180' : ''}`}
+        <FontAwesomeIcon
+          icon={faAngleDown}
+          className={`dropdown-arrow ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
       {isOpen && (

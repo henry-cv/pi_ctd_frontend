@@ -212,6 +212,8 @@
   padding: 0.6em 1.2em;
 }
 
+
+
 /* button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -267,6 +269,10 @@ button:focus-visible {
 .btn_transparent:hover {
   color: var(--Color-base);
   border-radius: 30px;
+}
+
+.disiabled{
+  opacity: 0.6;
 }
 
 .btnIconFilter {
@@ -377,14 +383,14 @@ button:focus-visible {
   background-color: #d61b1b;
   color: white;
   border-radius: 30px;
-  padding: 10px 30px;
+  padding: 10px 20px;
 }
 
 .btn_blueAction {
   background-color: var(--blue-base);
   color: white;
   border-radius: 30px;
-  padding: 10px 30px;
+  padding: 10px 20px;
 }
 
 /* NAVBAR DASH */
