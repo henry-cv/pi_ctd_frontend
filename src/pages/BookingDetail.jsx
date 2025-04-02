@@ -188,13 +188,17 @@ const BookingDetail = () => {
               </div>
               <p><FaTags /><span>Precio total:</span> <strong >{precioFinal} Usd</strong></p>
               <p><FaCalendarAlt /><strong>Fecha:</strong> {date}</p>
-              <p><FaTicket /> <strong>Cupos:</strong> {cupos} </p>
-              <p className="info-slots"> Esta actividad es de tipo <strong>
-                {booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ")}
-              </strong>
-                lo que significa que tu reserva cubre la entrada para
-                <strong>{booking.bookingData.cantidadPersonas}</strong>
-                personas</p>
+              <p><FaTicket /> <strong>Cupos:</strong> {booking.bookingData.cantidadPersonas} </p>
+              <p className="info-slots"> Esta actividad es 
+                {booking.productData.tipoTarifa === "POR_PERSONA" ?" por": " para"}
+                <strong>
+              { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
+              {cupos > 1  ? "s":""}
+              </strong> Tu reserva incluye la entrada para 
+              <strong>{booking.bookingData.cantidadPersonas}</strong>personas , es decir, 
+                <strong>{cupos}</strong>
+                { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
+                {cupos > 1  ? "s":""}.</p>
 
             </div>
 

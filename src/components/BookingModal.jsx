@@ -106,7 +106,7 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
   const [showDate, setShowDate] = useState(false);
   const [openAccess, setOpenAccess] = useState(false);
 
-  // console.log("la reserva change" ,isBooking)
+  // console.log("la r change" ,isBooking)
   // Get availability for current selected date
   const getAvailabilityForDate = (date) => {
     if (!date) return 0;
@@ -241,8 +241,7 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
       <DialogContent>
         <Typography variant="body2">
           Esta actividad se reserva por{" "}
-          {tipoTarifa.toLowerCase().replace(/_/g, " ")}. Selecciona la fecha y
-          cuántos cupos deseas.
+          {tipoTarifa.toLowerCase().replace(/_/g, " ")}.
         </Typography>
 
         <Box className="select-date-slot">
@@ -391,7 +390,7 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
 
       <DialogActions className="Booking-principal-container">
         <ButtonBluePill
-          text="Reservar Ahora"
+          text={isBooking ? "Editar Reserva": "Reservar Ahora"}
           className="button-blue btn-save"
           type="submit"
           onClick={handleOpenAcess}

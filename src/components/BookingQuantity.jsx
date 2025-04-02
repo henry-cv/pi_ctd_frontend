@@ -8,7 +8,7 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
 
   const isMobile = useMediaQuery("(max-width: 480px)");
   const{state}= useContextGlobal();
-  console.log("la cantidad es", state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados);
+  // console.log("la cantidad es", state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados);
 
   useEffect(() => {
     if (!quantity) {
@@ -35,17 +35,34 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
     onClose(tempQuantity);  
   };
 
+  const slotsQuantityIncrement = ( tipoTarifa) => {
+      switch (tipoTarifa) {
+        case "POR_PERSONA":
+          return  1;
+        case "POR_PAREJA":
+          return  2 ;
+        case "POR_GRUPO_6":
+          return  6 ;
+        case "POR_GRUPO_10":
+          return 10 ;
+        default:
+          return "no es posible escoger los cupos";
+      }
+    };
+
   const handleDecreaseAndIncrease = (operation) => {
 
-    // console.log(cupoDisponible);
-    
-
+      let addOrSustractQuantity = slotsQuantityIncrement(tipoTarifa)
+      
     if(operation === "add"){
-      setTempQuantity((prev) => Math.min(prev + 1, cupoDisponible));
+      setTempQuantity((prev) => Math.min(prev + addOrSustractQuantity, cupoDisponible));
     }else{
-      setTempQuantity((prev) => Math.max(0, prev - 1));}
+      setTempQuantity((prev) => Math.max(0, prev - addOrSustractQuantity));}
     
   };
+
+
+
   
 
   return (

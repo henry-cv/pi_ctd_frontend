@@ -90,6 +90,7 @@ export const funtionsBookingCalendar = ({
     }
     if (!fechaSeleccionada && !isBooking && availability?.type === "fecha" && availability?.fecha) {
       fechaSeleccionada = new Date(availability.fecha+"T00:00:00");
+      setBookingDate(fechaSeleccionada);
     }
 
     if (fechaSeleccionada) {
