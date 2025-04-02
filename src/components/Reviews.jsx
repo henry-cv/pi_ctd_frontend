@@ -42,6 +42,7 @@ const Reviews = ({ productoId }) => {
 	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitError, setSubmitError] = useState(null);
+	const [reservaId, setReservaId] = useState(null);
 
 	useEffect(() => {
 		const fetchReviews = async () => {
@@ -144,6 +145,7 @@ const Reviews = ({ productoId }) => {
 					console.log("Reservas del usuario:", reservas);
 
 					// Verificar si alguna reserva corresponde al productoId actual
+					let reservaEncontrada = null;
 					const tieneReserva = reservas.some((reserva) => {
 						// Comprobar en diferentes ubicaciones posibles del ID del producto
 						const productoIdEnReserva =
@@ -152,24 +154,27 @@ const Reviews = ({ productoId }) => {
 							reserva.disponibilidadProductoSalidaDto?.productoId ===
 								parseInt(productoId);
 
+						if (productoIdEnReserva) {
+							reservaEncontrada = reserva;
+						}
+
 						console.log(
 							`Reserva ID: ${reserva.id}, ¿Coincide con producto ${productoId}?: ${productoIdEnReserva}`,
 						);
 						return productoIdEnReserva;
 					});
 
+					if (reservaEncontrada) {
+						console.log(
+							`Reserva encontrada para dejar reseña: ID ${reservaEncontrada.id}`,
+						);
+						setReservaId(reservaEncontrada.id);
+					}
+
 					console.log(
 						`¿Usuario puede dejar reseña para producto ${productoId}?: ${tieneReserva}`,
 					);
 					setCanReview(tieneReserva);
-
-					// Para desarrollo/testing - habilitar siempre en localhost (opcional)
-					if (window.location.hostname === "localhost" && !tieneReserva) {
-						console.log(
-							"Modo desarrollo: permitiendo reseñas sin verificar reserva",
-						);
-						setCanReview(true);
-					}
 				} else {
 					console.error(
 						`Error ${response.status}: No se pudo obtener las reservas del usuario`,
@@ -228,18 +233,22 @@ const Reviews = ({ productoId }) => {
 			return;
 		}
 
+		if (!reservaId) {
+			setSubmitError("No se pudo identificar la reserva asociada");
+			return;
+		}
+
 		try {
 			setIsSubmitting(true);
 			setSubmitError(null);
 
 			const token = localStorage.getItem("token");
 
-			// Estructura según el esquema que muestra la API
+			// Estructura según el esquema que muestra la API, incluyendo reservaId
 			const reviewData = {
-				nombreUsuario: state.user.nombre + " " + state.user.apellido,
 				puntuacion: parseInt(newReview.puntuacion),
 				resena: newReview.comentario,
-				fechaResena: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
+				reservaId: reservaId,
 			};
 
 			console.log("Enviando datos de reseña:", reviewData);
@@ -353,6 +362,117 @@ const Reviews = ({ productoId }) => {
 				<p className="no-reviews-message">
 					Esta actividad no cuenta con opiniones disponibles.
 				</p>
+
+				{/* Añadir el botón para escribir reseña */}
+				<div className="reviews-actions" style={{ marginTop: "20px" }}>
+					<Button
+						variant="contained"
+						color="primary"
+						fullWidth
+						onClick={handleOpenModal}
+						disabled={!canReview || !state.user}
+						sx={{
+							borderRadius: "30px",
+							textTransform: "none",
+							backgroundColor: "#6749D9",
+							padding: "10px 20px",
+							"&.Mui-disabled": {
+								backgroundColor: "#9E9E9E",
+								color: "white",
+							},
+						}}
+					>
+						Escribir una opinión
+					</Button>
+
+					{/* Modal para escribir una reseña */}
+					<Modal
+						open={isModalOpen}
+						onClose={handleCloseModal}
+						aria-labelledby="modal-review-title"
+					>
+						<Box className="review-modal">
+							{/* El código del modal se mantiene igual */}
+							<Typography
+								id="modal-review-title"
+								variant="h6"
+								component="h2"
+								sx={{ mb: 2 }}
+							>
+								Escribir una opinión
+							</Typography>
+
+							{/* Avatar y nombre del usuario */}
+							<div className="user-review-info">
+								<CustomAvatar
+									src={state.user?.avatarUrl || "/default-avatar.png"}
+									alt={state.user?.nombre || "Usuario"}
+									size="medium"
+								/>
+								<Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+									{state.user?.nombre} {state.user?.apellido}
+								</Typography>
+							</div>
+
+							{/* Sección de calificación centrada */}
+							<div className="rating-section">
+								<Typography variant="h4" component="h4">
+									¿Cómo puntuarías esta experiencia?
+								</Typography>
+								<div className="rating-input">
+									<CustomRating
+										value={newReview.puntuacion || 0} // Valor 0 para que empiece vacío
+										onChange={handleRatingChange}
+										precision={1}
+										readOnly={false}
+										size="large"
+									/>
+								</div>
+							</div>
+
+							<TextField
+								className="review-text-field"
+								name="comentario"
+								label="¿Qué te ha parecido la experiencia?"
+								multiline
+								rows={4}
+								value={newReview.comentario}
+								onChange={handleReviewChange}
+								fullWidth
+								margin="normal"
+								variant="outlined"
+							/>
+
+							{submitError && (
+								<Typography
+									color="error"
+									variant="body2"
+									sx={{ mt: 1, textAlign: "center" }}
+								>
+									{submitError}
+								</Typography>
+							)}
+
+							<div className="review-modal-actions">
+								<Button
+									onClick={handleCloseModal}
+									variant="outlined"
+									className="cancel-button"
+								>
+									Cancelar
+								</Button>
+								<Button
+									variant="contained"
+									onClick={handleSubmitReview}
+									disabled={isSubmitting}
+									className="publish-button"
+								>
+									{isSubmitting ? "Publicando..." : "Publicar"}
+								</Button>
+							</div>
+						</Box>
+					</Modal>
+				</div>
 			</section>
 		);
 	}
