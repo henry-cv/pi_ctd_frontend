@@ -21,6 +21,7 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
     if (isBooking) {
       const cuposReservados = state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados || 0;
       setQuantity(cuposReservados);
+      setTempQuantity(cuposReservados);
     }
   }, [isBooking, state.theBooking?.isBooking]);
 
