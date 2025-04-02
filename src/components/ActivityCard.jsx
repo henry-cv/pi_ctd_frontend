@@ -104,7 +104,7 @@ const ActivityCard = ({
           </div>
         </div>
         <div className="activity-content">
-          <h3 className="activity-title">{title}</h3>
+          <h3 className="activity-title-ca">{title}</h3>
 
           {state.userFiltersTabs.activeTab === "reservations"
             ? <>
