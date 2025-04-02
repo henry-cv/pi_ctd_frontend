@@ -6,12 +6,28 @@ import PropTypes from 'prop-types';
 
 
 const PhoneInput = ({ country, telefono, setTelefono }) => {
-  const mobileNumberParsed = parsePhoneNumberFromString(telefono);
-  const [phone, setPhone] = useState(mobileNumberParsed?.nationalNumber || "");
-  const [dialCode, setDialCode] = useState(mobileNumberParsed?.countryCallingCode || country.dial_code || "");
-
+  const [phone, setPhone] = useState("");
+  const [dialCode, setDialCode] = useState(country.dial_code || "");
   const [isValid, setIsValid] = useState(null);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (telefono) {
+      const parsedNumber = parsePhoneNumberFromString(telefono);
+      if (parsedNumber) {
+        setPhone(parsedNumber.nationalNumber);
+        setDialCode(parsedNumber.countryCallingCode || country.dial_code || "");
+      }
+    } else {
+      setPhone("");
+      setDialCode(country.dial_code || "");
+    }
+  }, [telefono, country]);
+  useEffect(() => {
+    if (country) {
+      setDialCode(country.dial_code);
+    }
+  }, [country]);
 
   // Maneja el input del número
   const handlePhoneChange = (e) => {
@@ -30,16 +46,14 @@ const PhoneInput = ({ country, telefono, setTelefono }) => {
     if (parsedNumber && parsedNumber.isValid() && parsedNumber.country === country.code) {
       setIsValid(true);
       setError("");
-      setTelefono(fullNumber);
+      setTelefono(parsedNumber.number);
     } else {
       setIsValid(false);
       setError("El número ingresado no es válido");
       setTelefono("");
     }
   };
-  useEffect(() => {
-    setDialCode(country.dial_code);
-  }, [country]);
+
 
   return (
     <div className="container-whatsapp-number">
@@ -53,7 +67,7 @@ const PhoneInput = ({ country, telefono, setTelefono }) => {
             id="phone-number"
             placeholder="1234567890"
             value={phone}
-            onChange={(e) => handlePhoneChange(e)}
+            onChange={handlePhoneChange}
           />
           {isValid === true && <span className="icon success">✅</span>}
           {isValid === false && <span className="icon error">❌</span>}

@@ -70,15 +70,13 @@ const FormBasis = ({ isEditMode = false }) => {
   const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
 
   const searchCountryByName = (name) => {
-    if (!countries.length) {
-      throw new Error("La lista de países no ha sido cargada");
+    if (!Array.isArray(countries) || countries.length === 0) {
+      return null; // No hay países cargados, retorno seguro
     }
-    const countryIndex = countries.findIndex(c => c.name === name);
-    if (countryIndex === -1) {
-      return null;
-    }
-    return countries[countryIndex];
+
+    return countries.find((c) => c.name === name) || null;
   };
+
   const handleEventTypeChange = (e) => {
     setEventType(e.target.value);
   };
@@ -159,23 +157,25 @@ const FormBasis = ({ isEditMode = false }) => {
     setCaracteristicasIds(caracteristicasIdsArray);
     //console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
+
   const handleCountryChange = (e) => {
-    const countryName = e.target.value;
-    if (!countryName) {
+    const countryName = e.target.value.trim();
+
+    if (!countryName) return;
+
+    const country = searchCountryByName(countryName);
+
+    if (!country || !country.dial_code || !country.code) {
+      console.error(`No se encontró un país válido con nombre ${countryName}`);
       return;
     }
-    try {
-      const country = searchCountryByName(countryName);
-      if (!country) {
-        console.error(`No se encontró el país con nombre ${countryName}`);
-        return;
-      }
-      setSelectedCountry(country);
-      setCountryValue(country.name);
-    } catch (error) {
-      console.error("Error al buscar el país:", error.message);
-    }
+
+    console.log("País seleccionado:", country); // 🔍 Verifica que el país se asigna correctamente
+
+    setSelectedCountry(country);
+    setCountryValue(country.name);
   };
+
   // useEffect para traer las categorias existentes
   useEffect(() => {
     const fetchCategories = async () => {
@@ -219,22 +219,31 @@ const FormBasis = ({ isEditMode = false }) => {
   // GetCountries
   useEffect(() => {
     const fetchCountriesAsync = async () => {
+      if (!UrlCountriesAPI) {
+        console.error("URL de la API de países no está definida.");
+        return;
+      }
+
       setLoading(true);
       try {
-        //const response = await fetch("https://countriesnow.space/api/v0.1/countries/flag/images");
         const response = await fetch(UrlCountriesAPI);
         if (!response.ok) {
-          throw new Error(`Error al obtener los paises: ${response.status}`);
+          throw new Error(`Error al obtener los países: ${response.status}`);
         }
+
         const data = await response.json();
-        setCountries(data.data);
-        //console.log("Countries", data.data);
+        if (!Array.isArray(data.data)) {
+          throw new Error("Formato de datos incorrecto, se esperaba un array.");
+        }
+
+        setCountries(data.data || []);
       } catch (error) {
-        console.error("Error cargando paises:", error);
+        console.error("Error cargando países:", error.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchCountriesAsync();
   }, []);
 
