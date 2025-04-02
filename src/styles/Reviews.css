@@ -228,3 +228,91 @@
 		max-width: 200px;
 	}
 }
+
+/* Estilos para el modal de reseñas */
+.review-modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90%;
+	max-width: 500px;
+	background-color: white;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	padding: 2rem;
+	border-radius: 12px !important;
+	outline: none;
+}
+
+.user-review-info {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 10px 0;
+}
+
+/* Centrar y mejorar la sección de calificación */
+.rating-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 1.5rem 0;
+	text-align: center;
+}
+
+.rating-section h4 {
+	font-size: 1rem;
+	color: var(--Font-Background);
+	margin-bottom: 0.75rem;
+	font-weight: 500;
+}
+
+/* Estrellas más grandes */
+.rating-input {
+	display: flex;
+	justify-content: center;
+	margin: 0.5rem 0 1.5rem;
+}
+
+.rating-input .MuiRating-root {
+	font-size: 2rem; /* Estrellas más grandes */
+}
+
+/* Campo de texto rectangular */
+.review-text-field .MuiOutlinedInput-root {
+	border-radius: 12px !important; /* Border radius más pequeño */
+}
+
+/* Centrar botones */
+.review-modal-actions {
+	display: flex;
+	justify-content: center; /* Centrado en lugar de flex-end */
+	gap: 1rem; /* Espacio entre botones */
+	margin-top: 2rem;
+}
+
+/* Estilos para los botones */
+.review-modal-actions button {
+	min-width: 120px;
+	border-radius: 30px;
+	text-transform: none; /* Para mantener mayúsculas/minúsculas como en el diseño */
+	padding: 8px 20px;
+}
+
+.review-modal-actions button.cancel-button {
+	border: 1px solid #d0d0d0;
+	color: var(--Font-Background);
+}
+
+.review-modal-actions button.publish-button {
+	background-color: var(--blue-base);
+	color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.review-modal {
+		width: 95%;
+		padding: 1.5rem;
+	}
+}
