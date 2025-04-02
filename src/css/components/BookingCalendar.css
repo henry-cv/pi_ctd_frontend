@@ -53,11 +53,11 @@
   background-color: var(--blue-base);
   color: white !important;
   border-radius: 50%;
-  width: 32px;
+  width: 25px;
 }
 
 .available-day , .overlay-class {
-  background-color: var(--blue-300) !important;
+  background-color: var(--blue-200) !important;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -66,7 +66,7 @@
 
 .transparent-day {
   background-color:transparent !important;
-  pointer-events: none;
+  pointer-events: none !important;
   color: black !important;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .disabled{
-  background-color: var(--blue-300);
+  background-color: var(--blue-200);
 }
 
 .full{

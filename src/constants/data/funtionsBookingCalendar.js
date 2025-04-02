@@ -35,6 +35,7 @@ export const funtionsBookingCalendar = ({
   const [visibleYear, setVisibleYear] = useState(new Date().getFullYear());
   const [haHechoClicEnFechaUnica, setHaHechoClicEnFechaUnica] = useState(false);
   const [errors, setErrors] = useState("");
+  const [primeraFechaValida, setPrimeraFechaValida] = useState(null);
 
   const handleMonthChange = (date) => {
     setVisibleMonth(date.getMonth());
@@ -57,67 +58,65 @@ export const funtionsBookingCalendar = ({
   };
 
   const { fechas } = extractDates();
-  
-  // Efecto para establecer la fecha mostrada cuando está disponible -fecha recurrente-
+
+
   useEffect(() => {
+    // Caso 1: Cuando el tipo es "dias" y hay fechas disponibles
     if (availability?.type === "dias" && fechas.length > 0) {
-      const primerFecha = new Date(fechas[0]);
+      const today = normalizeDate(new Date());
+      let fechaSeleccionada;
       
-      // Establecer mes y año visibles
-      setVisibleMonth(primerFecha.getMonth());
-      setVisibleYear(primerFecha.getFullYear());
-  
-      // Establecer fecha mostrada solo la primera vez o cuando cambien los datos fundamentales
-      const shouldUpdateShownDate = 
-        dateRangeRef.current && 
-        dateRangeRef.current.setShownDate && 
-        (fechas.length > 0);
-  
-      if (shouldUpdateShownDate) {
+      // Buscar la primera fecha válida (no anterior a hoy)
+      let fechaValida = null;
+      for (let i = 0; i < fechas.length; i++) {
+        const fecha = normalizeDate(new Date(fechas[i]));
+        if (fecha >= today) {
+          fechaValida = fecha;
+          break;
+        }
+      }
+      
+      if (fechaValida) {
+        fechaSeleccionada = fechaValida;
+        setPrimeraFechaValida(fechaValida);
+      } else {
+        setErrors("Esta actividad ya pasó");
+        fechaSeleccionada = new Date(fechas[0]);
+      }
+      
+
+      setVisibleMonth(fechaSeleccionada.getMonth());
+      setVisibleYear(fechaSeleccionada.getFullYear());
+      
+
+      if (dateRangeRef.current?.setShownDate) {
         try {
-          dateRangeRef.current.setShownDate(primerFecha);
+          dateRangeRef.current.setShownDate(fechaSeleccionada);
+        } catch (error) {
+          console.error("Error al establecer fecha mostrada:", error);
+        }
+      }
+    } 
+    // Caso 2: Cuando el tipo es "fecha" - seleccionar directamente la fecha especificada
+    else if (availability?.type === "fecha" && availability?.fecha) {
+      const fechaUnica = new Date(availability.fecha);
+      
+      setPrimeraFechaValida(fechaUnica);
+      
+      setVisibleMonth(fechaUnica.getMonth());
+      setVisibleYear(fechaUnica.getFullYear());
+      
+      if (dateRangeRef.current?.setShownDate) {
+        try {
+          dateRangeRef.current.setShownDate(fechaUnica);
         } catch (error) {
           console.error("Error al establecer fecha mostrada:", error);
         }
       }
     }
-  }, [fechas, availability]);
+  }, [availability]);
 
-  // Función para manejar fechas específicas- fecha unica-
- const handleSingleDateAvailability = () => {
-    setErrors("");
-    
-    const today = normalizeDate(new Date());
-  
-    if (availability?.type === "fecha" && availability.data.length > 0) {
-      const otra = normalizeDate(new Date(availability.data[0] + "T00:00:00"));
-  
-      if (otra < today) {
-        setTheDateIsPast("Esta actividad ya pasó");
-        setErrors("Esta actividad ya pasó");
-        return;
-      }
-  
-      setVisibleMonth(otra.getMonth());
-      setVisibleYear(otra.getFullYear());
-  
-      if (availability.data.length === 1 && !bookingDate) {
-        setSelectedDate(otra);
-        setDateRange([{ startDate: otra, endDate: otra, key: "selection" }]);
-        setHaHechoClicEnFechaUnica(true);
-        setBookingDate(otra);
-      }
-    }
-  };
 
-// Efecto que sua la función  para manejar fechas específicas- fecha unica-
-  useEffect(() => {
-    handleSingleDateAvailability()
-
-  }, [availability, bookingDate, setBookingDate, setDateRange]);
-
-  
-  
   // Efecto para establecer la primera fecha visible
   // useEffect(() => {
   //   if (availability?.type === "dias" && fechas.length > 0) {
@@ -211,15 +210,29 @@ export const funtionsBookingCalendar = ({
     
     // Día actual no disponible
     if (isToday) {
+      // Si el día actual está disponible, le damos la clase de disponible
+      if (isAvailable) {
+        if (cuposDisponibles <= 0) {
+          return "disabled-day";
+        }
+        // Si es fecha única y está disponible
+        if (isSingleDate) {
+          return  "selected-day";
+        }
+        // Si está disponible como día regular
+        return "available-day";
+      }
+      // Si no está disponible, continuamos mostrándolo como transparente
       return "transparent-day";
     }
-  
+
+    
     // Para fecha única 
     if (isSingleDate) {
       if (cuposDisponibles <= 0) {
         return "disabled-day";
       }
-      return !haHechoClicEnFechaUnica ? "selected-day overlay-class" : "selected-day";
+      return "selected-day";
     }
   
     // Día seleccionado
@@ -322,6 +335,7 @@ export const funtionsBookingCalendar = ({
     getDayClass,
     resetCalendarState,
     handleDateSelection,
-    fechas
+    fechas,
+    primeraFechaValida
   };
 };

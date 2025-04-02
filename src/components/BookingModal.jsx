@@ -51,7 +51,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
   const { theActivity } = state.activity || {};
   const openAfterAcces = state.urlRedirection;
 
-  console.log("el acces", openAfterAcces);
+  // console.log("el acces", openAfterAcces);
   
 
   // Extraer valores necesarios theActivity 
@@ -102,7 +102,7 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     }
   }, [theActivity]);
   
-console.log(openAfterAcces === location.pathname);
+// console.log(openAfterAcces === location.pathname);
 
 
 
@@ -157,11 +157,11 @@ console.log(openAfterAcces === location.pathname);
     console.log("entré al acceso");
     
 		if (!state.token) {
-			console.log("el token no esta no esta logueado");
+			// console.log("el token no esta no esta logueado");
 			setOpenAccess(true);
 		} else {
-			console.log("usurio loggueado");
-			console.log(state.user.id);
+			// console.log("usurio loggueado");
+			// console.log(state.user.id);
 
 			BookingSubmit();
 		}

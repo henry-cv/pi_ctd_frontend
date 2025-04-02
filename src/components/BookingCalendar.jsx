@@ -34,7 +34,8 @@ const BookingCalendar = ({
     getDayClass,
     handleDateSelection,
     handleMonthChange, // Añadido aquí
-    fechas
+    fechas,
+    primeraFechaValida
   } = funtionsBookingCalendar({
     dateRange,
     setDateRange,
@@ -54,7 +55,7 @@ const BookingCalendar = ({
   }, [theDateIsPast]);
 
  
-  console.log(theDateIsPast);
+  // console.log(theDateIsPast);
   
   
 
@@ -84,7 +85,7 @@ const BookingCalendar = ({
           handleClose();
         }}
         onShownDateChange={(date) => handleMonthChange(date)}
-        shownDate={bookingDate ? new Date(bookingDate) : (availability?.type === "dias" && fechas.length > 0 ? new Date(fechas[0]) : new Date())}
+        shownDate={bookingDate ? new Date(bookingDate) : (availability?.type === "dias" && fechas.length > 0 ? new Date(primeraFechaValida) : new Date())}
         months={1}
         direction={isMobile ? "vertical" : "horizontal"}
         showDateDisplay={false}

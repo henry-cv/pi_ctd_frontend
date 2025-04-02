@@ -94,7 +94,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
-          console.log("Categoría cargada:", data);
+          // console.log("Categoría cargada:", data);
 
           // Asignación de estados
           setCategory(data.nombre || "");
