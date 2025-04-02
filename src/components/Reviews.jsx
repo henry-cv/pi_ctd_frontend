@@ -232,43 +232,19 @@ const Reviews = ({ productoId }) => {
 			setIsSubmitting(true);
 			setSubmitError(null);
 
-			// Encuentra la reserva que coincide con este producto
 			const token = localStorage.getItem("token");
-			const reservasResponse = await fetch(
-				`/api/reserva/usuario/${state.user.email}`,
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				},
-			);
 
-			const reservas = await reservasResponse.json();
-
-			// Buscar el ID de la reserva que coincide con este producto
-			const reservaCoincidente = reservas.find(
-				(reserva) =>
-					reserva.productoId === parseInt(productoId) ||
-					reserva.disponibilidadProductoId === parseInt(productoId) ||
-					reserva.disponibilidadProductoSalidaDto?.productoId ===
-						parseInt(productoId),
-			);
-
-			if (!reservaCoincidente) {
-				throw new Error("No se encontró una reserva asociada a este producto");
-			}
-
-			// Estructura EXACTA según la clase ResenaDTO del backend
+			// Estructura según el esquema que muestra la API
 			const reviewData = {
-				id: null, // ID nulo para una nueva reseña
-				idReserva: reservaCoincidente.id, // La clave faltante - ID de la reserva
-				resena: newReview.comentario, // Cambiar de 'comentario' a 'resena'
+				nombreUsuario: state.user.nombre + " " + state.user.apellido,
 				puntuacion: parseInt(newReview.puntuacion),
+				resena: newReview.comentario,
+				fechaResena: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
 			};
 
 			console.log("Enviando datos de reseña:", reviewData);
 
-			const response = await fetch("/api/reserva/agregar-resena", {
+			const response = await fetch(`/api/reserva/agregar-resena`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -277,8 +253,13 @@ const Reviews = ({ productoId }) => {
 				body: JSON.stringify(reviewData),
 			});
 
+			// Verificar y manejar errores de manera más detallada
 			if (!response.ok) {
-				throw new Error("Error al enviar la reseña");
+				const errorText = await response.text();
+				console.log("Respuesta de error:", response.status, errorText);
+				throw new Error(
+					`Error al enviar la reseña: ${response.status} ${errorText}`,
+				);
 			}
 
 			// Actualizar la lista de reseñas después de enviar
@@ -432,24 +413,45 @@ const Reviews = ({ productoId }) => {
 						aria-labelledby="modal-review-title"
 					>
 						<Box className="review-modal">
-							<Typography id="modal-review-title" variant="h6" component="h2">
+							<Typography
+								id="modal-review-title"
+								variant="h6"
+								component="h2"
+								sx={{ mb: 2 }}
+							>
 								Escribir una opinión
 							</Typography>
 
-							<Typography variant="body2" sx={{ mb: 2 }}>
-								¿Cómo puntuarías esta experiencia?
-							</Typography>
-
-							<div className="rating-input">
-								<CustomRating
-									value={newReview.puntuacion}
-									onChange={handleRatingChange}
-									precision={1}
-									readOnly={false}
+							{/* Avatar y nombre del usuario */}
+							<div className="user-review-info">
+								<CustomAvatar
+									src={state.user?.avatarUrl || "/default-avatar.png"}
+									alt={state.user?.nombre || "Usuario"}
+									size="medium"
 								/>
+								<Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+									{state.user?.nombre} {state.user?.apellido}
+								</Typography>
+							</div>
+
+							{/* Sección de calificación centrada */}
+							<div className="rating-section">
+								<Typography variant="h4" component="h4">
+									¿Cómo puntuarías esta experiencia?
+								</Typography>
+								<div className="rating-input">
+									<CustomRating
+										value={newReview.puntuacion || 0} // Valor 0 para que empiece vacío
+										onChange={handleRatingChange}
+										precision={1}
+										readOnly={false}
+										size="large"
+									/>
+								</div>
 							</div>
 
 							<TextField
+								className="review-text-field"
 								name="comentario"
 								label="¿Qué te ha parecido la experiencia?"
 								multiline
@@ -462,26 +464,30 @@ const Reviews = ({ productoId }) => {
 							/>
 
 							{submitError && (
-								<Typography color="error" variant="body2" sx={{ mt: 1 }}>
+								<Typography
+									color="error"
+									variant="body2"
+									sx={{ mt: 1, textAlign: "center" }}
+								>
 									{submitError}
 								</Typography>
 							)}
 
 							<div className="review-modal-actions">
-								<Button onClick={handleCloseModal} sx={{ mr: 2 }}>
+								<Button
+									onClick={handleCloseModal}
+									variant="outlined"
+									className="cancel-button"
+								>
 									Cancelar
 								</Button>
 								<Button
 									variant="contained"
 									onClick={handleSubmitReview}
 									disabled={isSubmitting}
-									sx={{
-										borderRadius: "30px",
-										textTransform: "none",
-										backgroundColor: "#6749D9",
-									}}
+									className="publish-button"
 								>
-									{isSubmitting ? "Publicando..." : "Publicar opinión"}
+									{isSubmitting ? "Publicando..." : "Publicar"}
 								</Button>
 							</div>
 						</Box>
