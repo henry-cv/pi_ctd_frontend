@@ -17,9 +17,6 @@ export const funtionsBookingModal = ({
   const validateCreateBooking = (bookingDate, quantity) => {
     const newErrors = {};
 
-    console.log(bookingDate, "y la ", quantity);
-
-
     if (!bookingDate) {
       newErrors.date = "Escoger la fecha es requerida";
     }
@@ -28,13 +25,12 @@ export const funtionsBookingModal = ({
       newErrors.slot = "La cantidad de reservas es requerido";
     }
 
-
     setErrorsBooking(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleOpenCalendar = (event) => {
-    setAnchorEl(event.currentTarget)
+    setAnchorEl(event.currentTarget);
   };
 
   const handleCloseCalendar = () => setAnchorEl(null);
@@ -66,21 +62,30 @@ export const funtionsBookingModal = ({
       date: "",
       slot: "",
     }));
-    setIsBooking(false)
+    setIsBooking(false);
     setResetCalendar(true);
     handleClose();
   };
 
+  // This is the function that was causing the loop
   const handleSelectDate = (date) => {
-    // console.log("la fecha que me mandan dessde el calendario",date);
-    setShowDate(true)
-
-    setBookingDate(date);
-    if (errorsBooking.date) {
-      setErrorsBooking((prevErrors) => ({
-        ...prevErrors,
-        date: "",
-      }));
+    // Only update if date is valid and there's an actual change
+    if (date && !isNaN(date.getTime())) {
+      // Check if this is actually a different date before setting
+      const currentDateString = date.toDateString();
+      
+      setShowDate(true);
+      
+      // Clear error if there was one
+      if (errorsBooking.date) {
+        setErrorsBooking((prevErrors) => ({
+          ...prevErrors,
+          date: "",
+        }));
+      }
+      
+      // Set the booking date
+      setBookingDate(date);
     }
   };
 

@@ -13,7 +13,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { format } from "date-fns";
+import { format, isValid } from "date-fns";
 import BookingCalendar from "./BookingCalendar";
 import { IoLocation, IoTicket } from "react-icons/io5";
 import { FaCreditCard, FaHourglass } from "react-icons/fa";
@@ -109,13 +109,21 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
   // console.log("la r change" ,isBooking)
   // Get availability for current selected date
   const getAvailabilityForDate = (date) => {
-    if (!date) return 0;
+    // Si date no existe o no es una fecha válida, retornar 0
+    if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+      return 0;
+    }
     
-    const dateStr = date.toISOString().split('T')[0];
-    return availabilityMap[dateStr] || 0;
+    try {
+      const dateStr = date.toISOString().split('T')[0];
+      return availabilityMap[dateStr] || 0;
+    } catch (error) {
+      console.error("Error al procesar fecha en getAvailabilityForDate:", error);
+      return 0;
+    }
   };
   
-  const currentDateAvailability = getAvailabilityForDate(bookingDate);
+  const currentDateAvailability = bookingDate ? getAvailabilityForDate(bookingDate instanceof Date ? bookingDate : new Date(bookingDate)) : 0;
 
   //funciones para abrir, cerrar, resetear
   const {
@@ -144,7 +152,30 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
     setIsBooking,
     isBooking
   });
-
+  const safeFormatDate = (date, formatString, options = {}) => {
+    // Verificar si date es una instancia de Date
+    if (!(date instanceof Date)) {
+      try {
+        // Intentar convertir a objeto Date si es una cadena de texto
+        date = new Date(date);
+      } catch (error) {
+        console.error("Error al convertir fecha:", error);
+        return "Fecha no disponible";
+      }
+    }
+    
+    // Verificar si la fecha es válida antes de formatear
+    if (!date || !isValid(date)) {
+      return "Fecha no disponible";
+    }
+    
+    try {
+      return format(date, formatString, options);
+    } catch (error) {
+      console.error("Error al formatear fecha:", error);
+      return "Fecha no disponible";
+    }
+  };
 
   const handleCloseAccess = () => setOpenAccess(false);
 
@@ -247,10 +278,8 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
                 sx={{ cursor: "pointer" }}
                 onClick={handleOpenCalendar}
               >
-                {bookingDate
-                  ? format(bookingDate, "EEE, dd MMM", { locale: es })
-                  : "Selecciona tu fecha"
-                }
+                {bookingDate ? safeFormatDate(bookingDate, "EEE, dd MMM", { locale: es }) : "Selecciona tu fecha"}
+
               </Typography>
             </Box>
             {errorsBooking.date && (
@@ -360,7 +389,7 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
               className="info-icon"
             />
             <Typography>
-              Fecha Escogida: {bookingDate ? format(bookingDate, "EEE, dd MMM yyyy", { locale: es }) : "No seleccionada"}
+              Fecha Escogida: {bookingDate ? safeFormatDate(bookingDate, "EEE, dd MMM", { locale: es }) : "No seleccionada"}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" mt={1} gap={1}>

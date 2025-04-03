@@ -41,7 +41,7 @@ const FormBasis = ({ isEditMode = false }) => {
     name: "United States",
     code: "US",
     dial_code: "+1"
-  },);
+  });
   const [cityValue, setCity] = useState("");
   const [cities, setCities] = useState([]);
 
@@ -70,8 +70,8 @@ const FormBasis = ({ isEditMode = false }) => {
   const [allowImageUpload, setAllowImageUpload] = useState(false); // Nueva variable de estado
 
   const searchCountryByName = (name) => {
-    if (!Array.isArray(countries) || countries.length === 0) {
-      return null; // No hay países cargados, retorno seguro
+    if (!name || !Array.isArray(countries) || countries.length === 0) {
+      return null; // No hay países cargados o nombre vacío, retorno seguro
     }
 
     return countries.find((c) => c.name === name) || null;
@@ -123,13 +123,7 @@ const FormBasis = ({ isEditMode = false }) => {
   const handleDaysChange = (selectedDays) => {
     setDiasDisponible(selectedDays);
   };
-  /* const ensureTimeHasSeconds = (timeString) => {
-    if (!timeString) return timeString;
-    const colonCount = (timeString.match(/:/g) || []).length;
-    if (colonCount === 2) return timeString;
 
-    return `${timeString}:00`;
-  }; */
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
     console.log("images length: ", files.length);
@@ -150,13 +144,12 @@ const FormBasis = ({ isEditMode = false }) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
     const categoriasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCategoriasIds(categoriasIdsArray);
-    //console.log("Categorías seleccionadas:", categoriasIdsArray);
   };
+  
   const handleCaracteristicasChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
     const caracteristicasIdsArray = selectedOptions.map((option) => parseInt(option.value, 10));
     setCaracteristicasIds(caracteristicasIdsArray);
-    //console.log("Características seleccionadas:", caracteristicasIdsArray);
   };
 
   const handleCountryChange = (e) => {
@@ -170,7 +163,6 @@ const FormBasis = ({ isEditMode = false }) => {
       console.error(`No se encontró un país válido con nombre ${countryName}`);
       return;
     }
-    //console.log("País seleccionado:", country); // 🔍 Verifica que el país se asigna correctamente
 
     setSelectedCountry(country);
     setCountryValue(country.name);
@@ -186,7 +178,6 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCategories(data);
-        //console.log(data);
       } catch (error) {
         console.error("Error cargando categorías:", error);
       } finally {
@@ -206,7 +197,6 @@ const FormBasis = ({ isEditMode = false }) => {
         }
         const data = await response.json();
         setCharacteristics(data);
-        //console.log(data);
       } catch (error) {
         console.error("Error cargando características:", error);
       } finally {
@@ -237,6 +227,14 @@ const FormBasis = ({ isEditMode = false }) => {
         }
 
         setCountries(data.data || []);
+        
+        // Si estamos en modo edición y ya tenemos el país, establecerlo después de cargar los países
+        if (isEditMode && activityId && countryValue) {
+          const country = data.data.find(c => c.name === countryValue);
+          if (country) {
+            setSelectedCountry(country);
+          }
+        }
       } catch (error) {
         console.error("Error cargando países:", error.message);
       } finally {
@@ -245,15 +243,14 @@ const FormBasis = ({ isEditMode = false }) => {
     };
 
     fetchCountriesAsync();
-  }, []);
+  }, [UrlCountriesAPI, isEditMode, activityId, countryValue]);
 
   // GetCities
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        if (countryValue == "")
+        if (countryValue === "")
           return;
-        //console.log("Selected Country", countryValue);
 
         const response = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
           method: "POST",
@@ -261,15 +258,13 @@ const FormBasis = ({ isEditMode = false }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ country: countryValue })
-        },
-        );
+        });
 
         if (!response.ok) {
           throw new Error(`Error al obtener las ciudades: ${response.status}`);
         }
         const data = await response.json();
         setCities(data.data);
-        // console.log("Cities", data.data);
       } catch (error) {
         console.error("Error cargando ciudades:", error);
       } finally {
@@ -290,7 +285,6 @@ const FormBasis = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
-          // //console.log("Actividad cargada:", data);
 
           // Asignación de estados
           setTitulo(data.nombre || "");
@@ -307,28 +301,28 @@ const FormBasis = ({ isEditMode = false }) => {
           setIdioma(data.idioma || "");
           setPaymentPolicy(data.politicaPagos || "");
           setCancellationPolicy(data.politicaCancelacion || "");
+          
+          // Establecer el país y buscar el objeto país completo
           setCountryValue(data.pais || "");
-          //setSelectedCountry(searchCountryByName(data.pais) || {});
+          
+          // Si los países ya están cargados, establecer el selectedCountry
+          if (countries.length > 0) {
+            const country = searchCountryByName(data.pais);
+            if (country) {
+              setSelectedCountry(country);
+            }
+          }
+          
           setCity(data.ciudad || "");
           setAddress(data.direccion || "");
           setTelefono(data?.telefono || "");
-          /* const parsedNumber = parsePhoneNumberFromString(data?.telefono);
-          if (parsedNumber) {
-            setPhoneData({
-              dial_code: parsedNumber.countryCallingCode,
-              phone: parsedNumber.nationalNumber,
-            });
-          } */
           setHoraInicio(data?.horaInicio || "");
-
           setHoraFin(data?.horaFin || "");
-
           setDiasDisponible(data.diasDisponible || null);
           setSelectedImages(data.productoImagenesSalidaDto || []);
 
           // Cargar imágenes existentes
           const images = data.productoImagenesSalidaDto || [];
-          /* setExistingImages(images.map((img) => ({ id: img.id, url: img.rutaImagen }))); */
           setExistingImages((images || []).map((img) => ({ id: img.id, url: img.rutaImagen })));
           setEventType(data.eventType || data.tipoEvento || "");
         } catch (error) {
@@ -349,7 +343,7 @@ const FormBasis = ({ isEditMode = false }) => {
     };
 
     fetchActivity();
-  }, [activityId]); // Eliminada la dependencia innecesaria `navigate`
+  }, [activityId, countries.length]);
 
   //UseEffect para consultar la disponibilidad por activityId
   useEffect(() => {
@@ -364,7 +358,6 @@ const FormBasis = ({ isEditMode = false }) => {
           }
 
           const data = await response.json();
-          // //console.log("Disponibilidad cargada: ", data);
           if (data.length === 0) return;
 
           if (data.length > 0) {
@@ -486,7 +479,6 @@ const FormBasis = ({ isEditMode = false }) => {
       new Blob([JSON.stringify(productoData)], { type: "application/json" })
     );
     // Agregar cada imagen como una parte separada
-    //Está es la válida
     selectedImages.forEach((file) => {
       formData.append("imagenes", file);
     });
@@ -517,7 +509,6 @@ const FormBasis = ({ isEditMode = false }) => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      // alert("Producto creado correctamente");
 
       Swal.fire({
         title: isEditMode ? "¡Actividad Actualizada!" : "¡Actividad Creada!",
@@ -554,7 +545,6 @@ const FormBasis = ({ isEditMode = false }) => {
       setSelectedImages([]);
     } catch (error) {
       console.error("Error:", error.message, "Error completo: ", error);
-      //alert(`Error al enviar los datos: ${error.message}`);
       Swal.fire({
         title: "Error",
         text: "No se pudo completar la operación.",
