@@ -9,10 +9,10 @@ const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 const ImageXUploader = ({
   onImagesSelected,
   onRemoveExistingImage,
-  existingImages = [],
   isEditMode = false,
   allowUpload = true,
   maxImages = 5,
+  existingImages = maxImages > 1 ? [] : "",
 }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -39,9 +39,7 @@ const ImageXUploader = ({
     const validFiles = files.filter(validateImage);
 
     if (validFiles.length !== files.length) {
-      setError(
-        "Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, WEBP) y no excedan 4MB."
-      );
+      setError("Algunos archivos no son válidos. Asegúrate de que sean imágenes (JPG, JPEG, PNG, WEBP) y no excedan 4MB.");
     } else {
       setError(null);
     }
@@ -57,35 +55,31 @@ const ImageXUploader = ({
     setUploading(true);
 
     if (maxImages === 1) {
+      // 📌 CASO: Solo se permite una imagen (Formulario de Categoría)
       if (images.length > 0) {
         URL.revokeObjectURL(images[0].preview);
       }
-      setImages(newImages.slice(0, 1)); // Solo permite 1 imagen
-      onImagesSelected?.(newImages[0]?.file || null);
+      setImages(newImages.slice(0, 1)); // Solo mantiene 1 imagen
+      onImagesSelected?.(newImages[0]?.file || null); // Enviamos 1 archivo, no un array
     } else {
-      // 🔥 Aquí está la corrección:
-      // Contamos solo imágenes LOCALES antes de agregar nuevas
-      const localImages = images.filter(img => !img.isRemote);
-      const availableSlots = maxImages - localImages.length;
+      // 📌 CASO: Se permiten múltiples imágenes (Formulario de Actividad)
+      const totalImages = images.filter(img => !img.isRemote).length + newImages.length;
 
-      if (newImages.length > availableSlots) {
+      if (totalImages > maxImages) {
         setError(`Solo puedes subir un máximo de ${maxImages} imágenes.`);
         setUploading(false);
         return;
       }
 
-      const updatedImages = [...localImages, ...newImages].slice(0, maxImages);
+      const updatedImages = [...images, ...newImages].slice(0, maxImages);
       setImages(updatedImages);
-
-      // 📌 Nos aseguramos de enviar correctamente todos los archivos al padre
-      const filesToSend = updatedImages.map(img => img.file).filter(Boolean);
+      const filesToSend = updatedImages.filter(img => img.file).map(img => img.file);
       console.log("Imágenes enviadas al padre:", filesToSend.length);
-      onImagesSelected?.(filesToSend);
+      onImagesSelected?.(filesToSend); // Enviamos un array de imágenes al padre
     }
 
     setUploading(false);
   };
-
 
 
   const handleRemoveImage = (index) => {
