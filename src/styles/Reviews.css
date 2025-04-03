@@ -1,329 +1,115 @@
+/* Estructura básica */
 .reviews-section {
-	padding: 2rem;
-	max-width: 1200px;
-	margin: 0 auto;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .reviews-section h2 {
-	margin-bottom: 2rem;
-	font-size: 1.8rem;
-	color: var(--color-text);
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    color: var(--color-text);
 }
 
+/* Header y organización principal */
 .reviews-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0;
 }
 
+/* Estadísticas y barras de rating */
 .rating-summary {
-	display: flex;
-	gap: 3rem;
+    display: flex;
+    gap: 3rem;
 }
 
 .average-rating {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
 }
 
 .rating-number {
-	font-size: 2.5rem;
-	font-weight: bold;
-	color: var(--color-text);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--color-text);
 }
 
 .total-reviews {
-	color: var(--color-text-light);
-	font-size: 0.9rem;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
 }
 
 .rating-bars {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .rating-bar-row {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	color: #ffb400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffb400;
 }
 
 .rating-bar {
-	width: 150px;
-	height: 8px;
-	background-color: var(--color-background-light);
-	border-radius: 4px;
-	overflow: hidden;
+    width: 150px;
+    height: 8px;
+    background-color: var(--color-background-light);
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .rating-bar-fill {
-	height: 100%;
-	background-color: #ffb400;
-	border-radius: 4px;
+    height: 100%;
+    background-color: #ffb400;
+    border-radius: 4px;
 }
 
+/* Acciones y filtros */
 .reviews-actions {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	gap: 1rem;
-	width: 100%;
-	max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+.reviews-filters-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .reviews-filters {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	width: 100%;
-	justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 .reviews-sort {
-	position: relative;
+    position: relative;
 }
 
-.reviews-sort .MuiSelect-select {
-	padding: 8px 16px !important;
-	padding-right: 32px !important;
-	font-size: 0.9rem;
+/* Contenedor wrapper para todo el contenido de reseñas */
+.reviews-content-wrapper {
+    position: relative;
+    width: 100%;
 }
 
-.reviews-sort .MuiOutlinedInput-notchedOutline {
-	border-color: rgba(0, 0, 0, 0.12);
-}
-
-.reviews-sort .MuiSelect-icon {
-	right: 8px;
-}
-
+/* Lista de reseñas */
 .reviews-list {
-	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
-	margin-bottom: 0; /* Quitar margen inferior si existe */
-}
-
-.review-card {
-	padding: 1.5rem;
-	border: 1px solid var(--color-border);
-	border-radius: 8px;
-	background-color: var(--color-background);
-}
-
-.review-header {
-	margin-bottom: 1rem;
-}
-
-.user-info {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 0.5rem;
-	width: 100%;
-}
-
-.user-details {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-}
-
-.user-name {
-	font-weight: 600;
-	color: var(--color-text);
-}
-
-.review-date {
-	font-size: 0.9rem;
-	color: var(--color-text-light);
-}
-
-.review-comment {
-	color: var(--color-text);
-	line-height: 1.5;
-	margin-top: 0.5rem;
-	width: 100%;
-}
-
-.reviews-pagination {
-	display: flex;
-	justify-content: center;
-	margin-top: 2rem;
-}
-
-.view-more-button {
-	background-color: var(--color-background);
-	border: 1px solid var(--color-border);
-	border-radius: 8px;
-	padding: 0.5rem 1rem;
-	font-size: 0.9rem;
-	color: var(--color-text);
-	cursor: pointer;
-}
-
-.view-more-button:hover {
-	background-color: var(--color-background-light);
-}
-
-.no-reviews-message {
-	text-align: center;
-	padding: 40px;
-	color: var(--Font-Background);
-	font-family: var(--font-outfit);
-	font-size: 18px;
-}
-
-.loading-reviews,
-.error-reviews {
-	text-align: center;
-	padding: 20px;
-	color: var(--Font-Background);
-	font-family: var(--font-outfit);
-}
-
-@media (max-width: 768px) {
-	.reviews-section {
-		padding: 1rem;
-	}
-
-	.reviews-header {
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	.rating-summary {
-		flex-direction: column;
-		gap: 1.5rem;
-		width: 100%;
-		order: -1;
-	}
-
-	.reviews-actions {
-		max-width: none;
-		margin-top: 1rem;
-	}
-
-	.reviews-filters {
-		flex-direction: row;
-		justify-content: flex-end;
-		gap: 0.75rem;
-	}
-
-	.rating-bar {
-		width: 100%;
-	}
-
-	.reviews-sort .MuiSelect-select {
-		padding: 6px 12px !important;
-	}
-
-	.reviews-sort {
-		flex: 1;
-		max-width: 200px;
-	}
-}
-
-/* Estilos para el modal de reseñas */
-.review-modal {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 90%;
-	max-width: 500px;
-	background-color: white;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-	padding: 2rem;
-	border-radius: 12px !important;
-	outline: none;
-}
-
-.user-review-info {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	margin: 10px 0;
-}
-
-/* Centrar y mejorar la sección de calificación */
-.rating-section {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin: 1.5rem 0;
-	text-align: center;
-}
-
-.rating-section h4 {
-	font-size: 1rem;
-	color: var(--Font-Background);
-	margin-bottom: 0.75rem;
-	font-weight: 500;
-}
-
-/* Estrellas más grandes */
-.rating-input {
-	display: flex;
-	justify-content: center;
-	margin: 0.5rem 0 1.5rem;
-}
-
-.rating-input .MuiRating-root {
-	font-size: 2rem; /* Estrellas más grandes */
-}
-
-/* Campo de texto rectangular */
-.review-text-field .MuiOutlinedInput-root {
-	border-radius: 12px !important; /* Border radius más pequeño */
-}
-
-/* Centrar botones */
-.review-modal-actions {
-	display: flex;
-	justify-content: center; /* Centrado en lugar de flex-end */
-	gap: 1rem; /* Espacio entre botones */
-	margin-top: 2rem;
-}
-
-/* Estilos para los botones */
-.review-modal-actions button {
-	min-width: 120px;
-	border-radius: 30px;
-	text-transform: none; /* Para mantener mayúsculas/minúsculas como en el diseño */
-	padding: 8px 20px;
-}
-
-.review-modal-actions button.cancel-button {
-	border: 1px solid #d0d0d0;
-	color: var(--Font-Background);
-}
-
-.review-modal-actions button.publish-button {
-	background-color: var(--blue-base);
-	color: white;
-}
-
-/* Mensaje informativo de reseña */
-.review-info-message {
-	font-size: 0.85rem;
-	color: #616161;
-	margin-top: 0.5rem;
-	text-align: center;
-	font-style: italic;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-	.review-modal {
-		width: 95%;
-		padding: 1.5rem;
-	}
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 0;
 }
 
 /* Layout con sidebar de filtros */
@@ -331,11 +117,11 @@
     position: relative;
     display: flex;
     width: 100%;
-    overflow: visible; /* Cambiado de hidden para permitir crecimiento */
-    will-change: transform; /* Indica al navegador que optimice las transformaciones */
-    margin-top: 1rem; /* Espacio después de los controles fijos */
-    min-height: 450px; /* Consistencia con la sidebar */
-    margin-bottom: 0; /* Quitar margen inferior */
+    overflow: visible;
+    will-change: transform;
+    margin-top: 1rem;
+    min-height: 450px;
+    margin-bottom: 0;
 }
 
 /* Contenedor principal de reviews */
@@ -345,30 +131,39 @@
     z-index: 2;
     background-color: var(--BackgroundColor);
     transform: translateX(0);
-    /* Eliminar transition para dejar que GSAP maneje todo */
-    will-change: transform; /* Optimizar rendimiento */
-    padding-top: 0; /* Ya no necesita padding superior */
-    min-height: 450px; /* Espacio adicional para compensa la altura mínima del sidebar */
-    margin-bottom: 0; /* Quitar margen inferior */
+    will-change: transform;
+    padding-top: 0;
+    min-height: 450px;
+    margin-bottom: 0;
 }
 
 .reviews-container h2 {
     display: none;
 }
 
-/* Sidebar de filtros */
+/* Estilo para el contenedor del botón fijo */
+.reviews-pagination-fixed {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 5;
+}
+
+/* Sidebar de filtros - contenedor */
 .review-filter-sidebar-container {
     position: absolute;
     top: 0;
     left: 0;
     height: auto;
-    min-height: 450px; /* Mismo valor que arriba */
+    min-height: 450px;
     width: 280px;
     z-index: 1;
-    /* Sin transiciones CSS para evitar conflictos */
     visibility: hidden;
     display: none;
-    backface-visibility: hidden; /* Mejorar rendimiento */
+    backface-visibility: hidden;
     will-change: opacity, transform;
 }
 
@@ -376,18 +171,17 @@
 .review-filter-sidebar {
     position: fixed;
     width: 280px;
-    min-height: 450px; /* Ajusta este valor según el tamaño con todas las opciones */
-    height: auto; /* Permitir crecer si hay más contenido */
+    min-height: 450px;
+    height: auto;
     background-color: #FFFFFF;
     box-shadow: none; 
     padding: 20px;
     display: flex;
     flex-direction: column;
     overflow-y: visible;
-    z-index: 1; /* Valor más bajo que el contenido principal */
-    /* Añadir borde derecho para delimitar secciones sin generar sombra */
-    border-right: 1px solid #E5E7EB;
-    will-change: opacity; /* Mejorar rendimiento */
+    z-index: 1;
+    border-right: none !important; /* Eliminar separador */
+    will-change: opacity;
 }
 
 /* Header del sidebar */
@@ -401,15 +195,8 @@
 .filter-sidebar-header h3 {
     font-family: var(--font-archivo);
     font-size: 1.2rem;
-    color: var(--Font-Background);
+    color: #9e8d6e; /* Nuevo color gris específico */
     margin: 0;
-}
-
-.close-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--Font-Background);
 }
 
 /* Secciones de filtros */
@@ -420,10 +207,11 @@
 .filter-section h4 {
     font-family: var(--font-archivo);
     font-size: 1rem;
-    color: var(--Font-Background);
+    color: #9e8d6e; /* Nuevo color gris específico */
     margin-bottom: 10px;
 }
 
+/* Filtros de calificación */
 .rating-filters {
     display: flex;
     flex-direction: column;
@@ -433,6 +221,55 @@
 .rating-label {
     display: flex;
     align-items: center;
+    color: #9e9e9e !important;
+}
+
+/* ESTILOS PARA LOS ELEMENTOS DE MATERIAL UI */
+
+/* Estilos para el botón de Sort */
+.reviews-filters .reviews-sort .MuiInputBase-root {
+    border: none;
+    background-color: #9e9e9e !important; /* Nuevo color gris solicitado */
+    height: 40px; /* Misma altura que el botón filtrar */
+    border-radius: 30px; /* Bordes redondeados como el botón filtrar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+.reviews-filters .reviews-sort .MuiSelect-select,
+.reviews-filters .reviews-sort .MuiSvgIcon-root {
+    color: #FFFFFF; /* Texto blanco */
+    font-weight: 600;
+}
+
+.reviews-filters .reviews-sort .MuiOutlinedInput-notchedOutline {
+    border: none;
+}
+
+.reviews-sort .MuiSelect-select {
+    font-weight: 600;
+    padding: 10px 20px !important; /* Mismo padding que el botón filtrar */
+    color: #FFFFFF; /* Texto blanco */
+}
+
+/* Estrellas de calificación - MODO FIJO PARA AMBOS TEMAS */
+.rating-filters .MuiRating-root .MuiRating-iconFilled {
+    color: #6749D9;
+}
+
+.rating-filters .MuiRating-root .MuiRating-iconEmpty {
+    color: #6749D9;
+    opacity: 0.4;
+}
+
+/* Estilo para los checkboxes - SIN CONTORNO */
+.rating-filters .MuiCheckbox-root {
+    padding: 4px;
+    margin-right: 8px;
+}
+
+/* Quitar todos los bordes de los checkboxes */
+.rating-filters .MuiCheckbox-root .MuiSvgIcon-root {
+    border: none !important;
 }
 
 /* Botones de acción */
@@ -440,11 +277,59 @@
     display: flex;
     justify-content: space-between;
     gap: 10px;
+    margin-top: auto;
+    padding: 20px;
 }
 
 .filter-actions .MuiButton-root {
     flex: 1;
     padding: 8px 16px;
+}
+
+/* ESTILOS DE BOTONES ESPECÍFICOS */
+
+/* Botón filtrar y ver más reseñas - Cambiado a #290b91 */
+.btn-black-outline {
+    background-color: #3e10da !important; /* Cambiado de #000000 a #290b91 */
+    color: #FFFFFF !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.btn-black-outline:hover {
+    background-color: rgba(41, 11, 145, 0.8) !important; /* Hover adaptado al nuevo color */
+    opacity: 0.95 !important;
+}
+
+/* Botón Aplicar amarillo */
+.btn-yellow-outline {
+    background-color: #EEC52D !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+}
+
+.btn-yellow-outline:hover {
+    background-color: #d9b429 !important;
+}
+
+/* Botón Limpiar - Sin borde negro */
+.filter-actions .MuiButton-outlined {
+    border-radius: "30px"; 
+    text-transform: "none";
+    background-color: "#FFFFFF";
+    border-color: "transparent" !important; /* Quitamos el borde negro */
+    color: "#000000";
+}
+
+/* Si hay estilos inline en el botón Limpiar, modificamos estos para la consistencia */
+.filter-actions .MuiButton-root:first-child {
+    border-color: transparent !important;
+}
+
+/* Botón ver más reseñas sin borde */
+.reviews-pagination-fixed .MuiButton-contained {
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Mensaje cuando no hay reseñas filtradas */
@@ -453,13 +338,6 @@
     padding: 20px;
     color: var(--Font-Background);
     font-family: var(--font-outfit);
-}
-
-/* Cambio en el container de los filtros para alinear mejor */
-.reviews-filters-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 /* Mobile: versión modal del sidebar */
@@ -478,12 +356,89 @@
     transform: translateY(0);
 }
 
+/* Estilo para el contenedor de controles fijos */
+.reviews-controls-fixed {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 100;
+    background-color: var(--BackgroundColor);
+    width: 100%;
+}
+
+/* Correcciones para la alineación de reviews y mejoras visuales */
+
+/* Quitar el borde/separador de las review-card */
+.review-card {
+    border: none;
+    padding: 15px 0;
+}
+
+/* Alinear correctamente el contenido de las reviews */
+.review-header {
+    display: flex;
+}
+
+/* Ajustar la información del usuario */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 15px;
+}
+
+/* Ajustar las estrellas para que estén pegadas al avatar */
+.user-info .custom-rating {
+    margin-bottom: 5px;
+}
+
+/* Asegurar que el nombre de usuario y fecha estén en la misma línea */
+.user-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #9e9e9e !important; /* Nuevo color gris solicitado */
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: var(--gray-400);
+}
+
+.review-comment {
+    margin-top: 5px;
+    margin-bottom: 0;
+    color: #9e9e9e !important; /* Nuevo color gris solicitado */
+}
+
 /* Media Queries */
 @media (max-width: 767px) {
+    .reviews-section {
+        padding: 1rem;
+    }
+
+    .reviews-header {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .rating-summary {
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        order: -1;
+    }
+
     .reviews-actions {
         flex-direction: column;
         align-items: stretch;
         gap: 15px;
+        max-width: none;
+        margin-top: 1rem;
     }
 
     .reviews-filters-container {
@@ -499,125 +454,73 @@
     .filter-actions {
         padding: 0 20px 20px;
     }
+    
+    .rating-bar {
+        width: 100%;
+    }
+
+    .reviews-sort .MuiSelect-select {
+        padding: 6px 12px !important;
+    }
+
+    .reviews-sort {
+        flex: 1;
+        max-width: 200px;
+    }
 }
 
-/* Estilo para el contenedor de controles fijos */
-.reviews-controls-fixed {
-    margin-bottom: 2rem;
-    position: relative;
-    z-index: 100; /* Encima de otros elementos */
-    background-color: var(--BackgroundColor);
-    width: 100%;
+/* Media query para modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .filter-sidebar-header h3,
+    .filter-section h4,
+    .review-comment,
+    .user-name {
+        color: #9e9e9e !important; /* Mantener el mismo gris en modo oscuro */
+    }
+    
+    .review-filter-sidebar {
+        background-color: var(--BackgroundColor); /* Color de fondo según tema oscuro */
+    }
+    
+    .reviews-filters .reviews-sort .MuiSelect-select,
+    .reviews-filters .reviews-sort .MuiSvgIcon-root {
+        color: #FFFFFF; /* Mantener texto blanco en modo oscuro */
+    }
+    
+    .reviews-filters .reviews-sort .MuiInputBase-root {
+        background-color: #9e9e9e !important; /* Mantener el mismo gris en modo oscuro */
+    }
 }
 
-/* Contenedor wrapper para todo el contenido de reseñas */
-.reviews-content-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-/* Estilo para el contenedor del botón fijo */
-.reviews-pagination-fixed {
+/* Ajuste adicional para el botón de filtrar */
+.reviews-filters-container .MuiButton-root {
+    height: 40px; /* Asegurar altura consistente */
     display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 2rem;
-    padding-bottom: 2rem;
-    position: relative;
-    z-index: 5; /* Asegurar que esté por encima de otros elementos */
+    align-items: center;
+    padding: 8px 20px; /* Asegurar padding consistente con el sort */
 }
 
-/* Estrellas de calificación - estilo universal */
-.rating-filters .MuiRating-root .MuiRating-iconFilled {
-    color: #6749D9; /* Color azul fijo */
+/* 1. Modificar el color de los textos en la sidebar */
+
+/* Header del sidebar con mayor especificidad */
+.review-filter-sidebar .filter-sidebar-header h3 {
+    font-family: var(--font-archivo);
+    font-size: 1.2rem;
+    color: #9e9e9e !important; /* Nuevo color gris solicitado con !important */
+    margin: 0;
 }
 
-.rating-filters .MuiRating-root .MuiRating-iconEmpty {
-    color: #6749D9;
-    opacity: 0.4;
+/* Secciones de filtros con mayor especificidad */
+.review-filter-sidebar .filter-section h4 {
+    font-family: var(--font-archivo);
+    font-size: 1rem;
+    color: #9e9e9e !important; /* Nuevo color gris solicitado con !important */
+    margin-bottom: 10px;
 }
 
-/* Botones en la sidebar - estilo universal */
-.filter-actions .MuiButton-outlined {
-    border-color: #6749D9;
-    color: #6749D9;
-}
-
-.filter-actions .MuiButton-contained {
-    background-color: #6749D9;
-    color: white;
-}
-
-.filter-actions .MuiButton-contained:hover {
-    background-color: #5438C0;
-}
-
-/* Estilos para el botón de Sort - estilo universal */
-.reviews-filters .reviews-sort .MuiInputBase-root {
-    border: 2px solid white;
-    background-color: #6749D9;
-}
-
-.reviews-filters .reviews-sort .MuiSelect-select,
-.reviews-filters .reviews-sort .MuiSvgIcon-root {
-    color: white;
-    font-weight: bold;
-}
-
-/* Estilos para botones de filtrar y ver más reseñas */
-.btn-black-outline {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border: 2px solid #FFFFFF !important;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8) !important;
-}
-
-.btn-black-outline:hover {
-    background-color: #1a1a1a !important;
-    opacity: 0.95 !important;
-}
-
-/* Estilos para el texto con contorno en la sidebar */
-.sidebar-text-outline {
-    color: #FFFFFF;
-    text-shadow: 
-        -1px -1px 0 #000,  
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000;
-}
-
-/* Estilos para las estrellas con contorno */
-.star-with-outline .MuiRating-iconFilled,
-.star-with-outline .MuiRating-iconEmpty {
-    filter: drop-shadow(0px 0px 1px #FFFFFF) drop-shadow(0px 0px 1px #FFFFFF);
-    color: #EEC52D !important; /* Color amarillo para las estrellas */
-}
-
-/* Botón Aplicar amarillo con contorno negro */
-.btn-yellow-outline {
-    background-color: #EEC52D !important;
-    color: #000000 !important;
-    border: 2px solid #000000 !important;
-}
-
-.btn-yellow-outline:hover {
-    background-color: #d9b429 !important;
-}
-
-/* Botón Limpiar negro con contorno blanco y letras blancas */
-.btn-black-white-outline {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border: 2px solid #FFFFFF !important;
-}
-
-.btn-black-white-outline:hover {
-    background-color: #1a1a1a !important;
-}
-
-/* Estilo para los checkboxes */
-.rating-filters .MuiCheckbox-root {
-    padding: 4px;
-    margin-right: 8px;
+/* 5. Asegurar que los checkboxes tengan el texto correcto */
+.rating-label {
+    display: flex;
+    align-items: center;
+    color: #9e9e9e !important;
 }
