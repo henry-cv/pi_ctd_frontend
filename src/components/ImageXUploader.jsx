@@ -12,20 +12,20 @@ const ImageXUploader = ({
   isEditMode = false,
   allowUpload = true,
   maxImages = 5,
-  existingImages = maxImages > 1 ? [] : "",
+  existingImages = maxImages > 1 ? [] : ""
 }) => {
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const remoteImages = existingImages.map((url) => ({
       file: null,
       preview: url,
       isRemote: true,
     }));
     setImages(remoteImages);
-  }, [existingImages]);
+  }, [existingImages]); */
 
   const validateImage = (file) => {
     const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
