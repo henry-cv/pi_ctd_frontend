@@ -23,6 +23,7 @@ const Reviews = ({ productoId }) => {
 		canReview,
 		reservaId,
 		submitReview,
+		userHasReviewed, // Recibir el nuevo estado
 	} = useReviews(productoId);
 
 	const {
@@ -36,6 +37,39 @@ const Reviews = ({ productoId }) => {
 		handleRatingChange,
 		handleSubmitReview,
 	} = useReviewForm(submitReview, reservaId);
+
+	// Función para generar el mensaje del tooltip según el estado
+	const getButtonTooltip = () => {
+		if (!state.user) return "Inicia sesión para escribir una opinión";
+		if (userHasReviewed) return "Ya has escrito una reseña para esta actividad";
+		if (!canReview)
+			return "Solo puedes escribir una reseña si has reservado esta actividad";
+		return "Escribe tu opinión sobre esta actividad";
+	};
+
+	// Modificar la lógica del botón (para ambas secciones - con y sin reseñas)
+	const renderReviewButton = () => (
+		<Button
+			variant="contained"
+			color="primary"
+			fullWidth
+			onClick={() => handleOpenModal(canReview && !userHasReviewed, state.user)}
+			disabled={!canReview || !state.user || userHasReviewed}
+			title={getButtonTooltip()}
+			sx={{
+				borderRadius: "30px",
+				textTransform: "none",
+				backgroundColor: "#6749D9",
+				padding: "10px 20px",
+				"&.Mui-disabled": {
+					backgroundColor: "#9E9E9E",
+					color: "white",
+				},
+			}}
+		>
+			{userHasReviewed ? "Ya opinaste" : "Escribir una opinión"}
+		</Button>
+	);
 
 	// Estados de carga y error
 	if (loading) {
@@ -66,25 +100,13 @@ const Reviews = ({ productoId }) => {
 				</p>
 
 				<div className="reviews-actions" style={{ marginTop: "20px" }}>
-					<Button
-						variant="contained"
-						color="primary"
-						fullWidth
-						onClick={() => handleOpenModal(canReview, state.user)}
-						disabled={!canReview || !state.user}
-						sx={{
-							borderRadius: "30px",
-							textTransform: "none",
-							backgroundColor: "#6749D9",
-							padding: "10px 20px",
-							"&.Mui-disabled": {
-								backgroundColor: "#9E9E9E",
-								color: "white",
-							},
-						}}
-					>
-						Escribir una opinión
-					</Button>
+					{renderReviewButton()}
+
+					{userHasReviewed && (
+						<p className="review-info-message">
+							Ya has dejado tu opinión sobre esta actividad.
+						</p>
+					)}
 
 					<ReviewModal
 						open={isModalOpen}
@@ -112,25 +134,13 @@ const Reviews = ({ productoId }) => {
 				<ReviewStats stats={ratingStats} />
 
 				<div className="reviews-actions">
-					<Button
-						variant="contained"
-						color="primary"
-						fullWidth
-						onClick={() => handleOpenModal(canReview, state.user)}
-						disabled={!canReview || !state.user}
-						sx={{
-							borderRadius: "30px",
-							textTransform: "none",
-							backgroundColor: "#6749D9",
-							padding: "10px 20px",
-							"&.Mui-disabled": {
-								backgroundColor: "#9E9E9E",
-								color: "white",
-							},
-						}}
-					>
-						Escribir una opinión
-					</Button>
+					{renderReviewButton()}
+
+					{userHasReviewed && (
+						<p className="review-info-message">
+							Ya has dejado tu opinión sobre esta actividad.
+						</p>
+					)}
 
 					<ReviewModal
 						open={isModalOpen}
