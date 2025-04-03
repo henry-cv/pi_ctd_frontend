@@ -40,7 +40,7 @@ const BookingDetail = () => {
   const [isBooking, setIsBooking] = useState(false);
 
   // console.log(id, "id reserva");
-  // console.log("las tab filter es :", state.userFiltersTabs.selectedFilters);
+  // console.log("las reserva es :", booking);
 
   const handleCloseModalBooking = () => {
     setOpenBooking(false);

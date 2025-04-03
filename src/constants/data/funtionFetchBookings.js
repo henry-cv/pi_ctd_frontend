@@ -1,16 +1,9 @@
 export const calcularPrecio = (cantidadPersonas, tipoTarifa, valorTarifa) => {
-    switch (tipoTarifa) {
-      case "POR_PERSONA":
-        return cantidadPersonas * valorTarifa;
-      case "POR_PAREJA":
-        return Math.ceil(cantidadPersonas / 2) * valorTarifa;
-      case "POR_GRUPO_6":
-        return Math.ceil(cantidadPersonas / 6) * valorTarifa;
-      case "POR_GRUPO_10":
-        return Math.ceil(cantidadPersonas / 10) * valorTarifa;
-      default:
-        return valorTarifa;
-    }
+    
+    
+   let total=  cantidadPersonas * valorTarifa;
+   return total
+   
   };
   
   export const fetchBookings = async (user, token) => {
