@@ -30,6 +30,9 @@ const Reviews = ({ productoId }) => {
     
     const [filteredReviews, setFilteredReviews] = useState([]);
 
+    // En la parte superior, agregamos un nuevo estado para controlar si se muestran todas las reseñas
+    const [expandedReviews, setExpandedReviews] = useState(false);
+
     // Usar los hooks personalizados
     const {
         reviews: sortedReviews,
@@ -155,6 +158,13 @@ const Reviews = ({ productoId }) => {
         setFilteredReviews(filtered);
     }, [sortedReviews, ratingFilters]);
 
+    // Después del efecto que actualiza filteredReviews, agregar este nuevo efecto
+
+    // Reiniciar expandedReviews cuando cambian los filtros
+    useEffect(() => {
+        setExpandedReviews(false);
+    }, [ratingFilters]);
+
     // Solo para depuración - monitorear cambios en filterSidebarOpen
     useEffect(() => {
         console.log("filterSidebarOpen changed to:", filterSidebarOpen);
@@ -180,6 +190,7 @@ const Reviews = ({ productoId }) => {
     
     // Aplicar filtros (para el botón Aplicar)
     const handleApplyFilters = () => {
+        setExpandedReviews(false);
         if (isMobile) {
             setFilterSidebarOpen(false);
         }
@@ -194,6 +205,7 @@ const Reviews = ({ productoId }) => {
             two: false,
             one: false
         });
+        setExpandedReviews(false);
     };
 
     // Función para generar el mensaje del tooltip según el estado
@@ -283,7 +295,11 @@ const Reviews = ({ productoId }) => {
         );
     }
 
-    // Caso con reseñas
+    // Caso con reseñas - Estructura modificada
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const buttonColor = isDarkMode ? "#F1C40F" : "#6749D9"; // Amarillo / Morado
+    const buttonTextColor = isDarkMode ? "#000000" : "#FFFFFF"; // Negro / Blanco
+
     return (
         <section id="reviews" className="reviews-section">
             <h2>Reseñas</h2>
@@ -303,6 +319,10 @@ const Reviews = ({ productoId }) => {
                         )}
                         
                         <div className="reviews-filters-container">
+                            {/* Primero el componente de ordenamiento (Sort) */}
+                            <ReviewFilters sortBy={sortBy} onSortChange={setSortBy} />
+                            
+                            {/* Luego el botón de filtrar con ancho mayor */}
                             <Button
                                 variant="contained"
                                 startIcon={<FilterAltIcon />}
@@ -310,18 +330,16 @@ const Reviews = ({ productoId }) => {
                                     console.log("Filter button clicked");
                                     toggleFilterSidebar();
                                 }}
+                                className="btn-black-outline"
                                 sx={{
                                     borderRadius: "30px",
                                     textTransform: "none",
-                                    backgroundColor: "#1C1B1F",
                                     padding: "10px 20px",
-                                    marginRight: "10px",
+                                    minWidth: "160px",
                                 }}
                             >
                                 Filtrar
                             </Button>
-                            
-                            <ReviewFilters sortBy={sortBy} onSortChange={setSortBy} />
                         </div>
                         
                         <ReviewModal
@@ -340,92 +358,97 @@ const Reviews = ({ productoId }) => {
                 </div>
             </div>
             
-            {/* Contenido desplazable con sidebar */}
-            <div className="reviews-layout">
-                {/* Sidebar de filtros (para desktop) */}
-                {!isMobile && (
-                    <div 
-                        className="review-filter-sidebar-container" 
-                        ref={sidebarRef}
-                        style={{ 
-                            visibility: "hidden",
-                            display: "none",
-                            opacity: 0,
-                            position: "absolute",
-                            left: 0,
-                            top: 0,
-                            minHeight: '450px', // Altura mínima fija
-                            height: 'auto',    // Permitir crecer
-                            width: '280px'
-                        }}
-                    >
-                        <ReviewFilterSidebar
-                            isOpen={filterSidebarOpen}
-                            onClose={toggleFilterSidebar}
-                            ratingFilters={ratingFilters}
-                            onRatingFilterChange={handleRatingFilterChange}
-                            onApplyFilters={handleApplyFilters}
-                            onResetFilters={handleResetFilters}
-                            isMobile={false}
-                        />
-                    </div>
-                )}
-
-                {/* Modal de filtros (para mobile) */}
-                {isMobile && (
-                    <>
-                        <Backdrop
-                            open={filterSidebarOpen}
-                            onClick={() => setFilterSidebarOpen(false)}
-                            sx={{ zIndex: 1200 }}
-                        />
-                        <ReviewFilterSidebar
-                            isOpen={filterSidebarOpen}
-                            onClose={() => setFilterSidebarOpen(false)}
-                            ratingFilters={ratingFilters}
-                            onRatingFilterChange={handleRatingFilterChange}
-                            onApplyFilters={handleApplyFilters}
-                            onResetFilters={handleResetFilters}
-                            isMobile={true}
-                        />
-                    </>
-                )}
-
-                {/* Contenedor principal solo para la lista de reviews */}
-                <div 
-                    className="reviews-container" 
-                    ref={reviewsContainerRef}
-                    style={{
-                        transform: "translateX(0)",
-                        width: "100%"
-                    }}
-                >
-                    <div className="reviews-list">
-                        {filteredReviews.map((review) => (
-                            <ReviewItem key={review.id} review={review} />
-                        ))}
-                        
-                        {filteredReviews.length === 0 && Object.values(ratingFilters).some(Boolean) && (
-                            <p className="no-filtered-reviews">No hay reseñas que coincidan con los filtros seleccionados.</p>
-                        )}
-                    </div>
-
-                    {filteredReviews.length > 3 && (
-                        <div className="reviews-pagination">
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    borderRadius: "30px",
-                                    textTransform: "none",
-                                    backgroundColor: "#1C1B1F",
-                                    padding: "10px 20px",
-                                }}
-                            >
-                                Ver más reseñas
-                            </Button>
+            <div className="reviews-content-wrapper">
+                {/* Contenido desplazable con sidebar */}
+                <div className="reviews-layout">
+                    {/* Sidebar de filtros (para desktop) */}
+                    {!isMobile && (
+                        <div 
+                            className="review-filter-sidebar-container" 
+                            ref={sidebarRef}
+                            style={{ 
+                                visibility: "hidden",
+                                display: "none",
+                                opacity: 0,
+                                position: "absolute",
+                                left: 0,
+                                top: 0,
+                                minHeight: '450px', // Altura mínima fija
+                                height: 'auto',    // Permitir crecer
+                                width: '280px'
+                            }}
+                        >
+                            <ReviewFilterSidebar
+                                isOpen={filterSidebarOpen}
+                                onClose={toggleFilterSidebar}
+                                ratingFilters={ratingFilters}
+                                onRatingFilterChange={handleRatingFilterChange}
+                                onApplyFilters={handleApplyFilters}
+                                onResetFilters={handleResetFilters}
+                                isMobile={false}
+                            />
                         </div>
                     )}
+
+                    {/* Modal de filtros (para mobile) */}
+                    {isMobile && (
+                        <>
+                            <Backdrop
+                                open={filterSidebarOpen}
+                                onClick={() => setFilterSidebarOpen(false)}
+                                sx={{ zIndex: 1200 }}
+                            />
+                            <ReviewFilterSidebar
+                                isOpen={filterSidebarOpen}
+                                onClose={() => setFilterSidebarOpen(false)}
+                                ratingFilters={ratingFilters}
+                                onRatingFilterChange={handleRatingFilterChange}
+                                onApplyFilters={handleApplyFilters}
+                                onResetFilters={handleResetFilters}
+                                isMobile={true}
+                            />
+                        </>
+                    )}
+
+                    {/* Contenedor principal solo para la lista de reviews */}
+                    <div 
+                        className="reviews-container" 
+                        ref={reviewsContainerRef}
+                        style={{
+                            transform: "translateX(0)",
+                            width: "100%"
+                        }}
+                    >
+                        <div className="reviews-list">
+                            {/* Mostrar solo 3 reseñas o todas dependiendo del estado expandedReviews */}
+                            {(expandedReviews ? filteredReviews : filteredReviews.slice(0, 3)).map((review) => (
+                                <ReviewItem key={review.id} review={review} />
+                            ))}
+                            
+                            {filteredReviews.length === 0 && Object.values(ratingFilters).some(Boolean) && (
+                                <p className="no-filtered-reviews">No hay reseñas que coincidan con los filtros seleccionados.</p>
+                            )}
+                        </div>
+                    </div>
                 </div>
+                
+                {/* Botón Ver más reseñas - Ahora FUERA del contenedor que se desplaza */}
+                {filteredReviews.length > 3 && !expandedReviews && (
+                    <div className="reviews-pagination-fixed">
+                        <Button
+                            variant="contained"
+                            onClick={() => setExpandedReviews(true)}
+                            className="btn-black-outline"
+                            sx={{
+                                borderRadius: "30px",
+                                textTransform: "none",
+                                padding: "10px 20px",
+                            }}
+                        >
+                            Ver más reseñas
+                        </Button>
+                    </div>
+                )}
             </div>
         </section>
     );
