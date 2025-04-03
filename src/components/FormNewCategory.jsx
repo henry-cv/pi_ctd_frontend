@@ -76,6 +76,19 @@ const FormNewCategory = ({ isEditMode = false }) => {
     setSelectedImage(file); // Ya no es un array
   };
 
+  /* const handleImageSelected = (files) => {
+    console.log("files recibido:", files);
+
+    if (!files) {
+      setErrorFile("Debe seleccionar al menos una imagen válida.");
+      return;
+    }
+
+    // Si es un solo archivo, lo convertimos en un array
+    const normalizedFiles = Array.isArray(files) ? files : [files];
+    setErrorFile("");
+    setSelectedImage(normalizedFiles);
+  }; */
   // useEffect para buscar categoría por Id y cargarla en el formulario
   useEffect(() => {
     const fetchCategory = async () => {

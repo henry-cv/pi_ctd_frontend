@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { 
   Typography, 
   Box, 
@@ -22,11 +22,13 @@ import BookingModal from "../components/BookingModal";
 import ReservationService from "../services/ReservationService";
 import "../css/pages/ConfirmationPage.css";
 import { sendReservationConfirmation } from "../services/emailService";
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 
 const ConfirmationPage = () => {
   const { state: globalState } = useContextGlobal();
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
   
   // State for keeping reservation data
   const [userData, setUserData] = useState(null);
@@ -48,66 +50,75 @@ const ConfirmationPage = () => {
 
   // Load data from location state and/or sessionStorage
   useEffect(() => {
-    // Try to get data from location state first
-    const routeState = location.state || {};
-    
-    let formData = routeState.formData;
-    let reservation = routeState.reservation;
-    let activity = routeState.activity;
-    
-    console.log("Initial data from location state:", { formData, reservation, activity });
-    
-    // If data is missing from location state, try to get from sessionStorage
-    if (!formData) {
+    // Intentar obtener datos del estado de la ubicación primero
+    const loadData = () => {
       try {
-        const storedFormData = sessionStorage.getItem('formData');
-        if (storedFormData) {
-          formData = JSON.parse(storedFormData);
-          console.log("Loaded formData from sessionStorage:", formData);
+        setDataLoaded(false);
+        
+        // Intentar obtener datos del estado de la ruta primero
+        const routeState = location.state || {};
+        console.log("Estado de la ruta en ConfirmationPage:", routeState);
+        
+        let formData = routeState.formData;
+        let reservation = routeState.reservation;
+        let activity = routeState.activity;
+        
+        // Si falta algún dato del estado de la ruta, intentar obtenerlo de sessionStorage
+        if (!formData || !reservation || !activity) {
+          console.log("Datos incompletos en estado de ruta, intentando sessionStorage");
+          
+          try {
+            if (!formData) {
+              const storedFormData = sessionStorage.getItem('formData');
+              if (storedFormData) {
+                formData = JSON.parse(storedFormData);
+                console.log("Datos de formulario cargados de sessionStorage");
+              }
+            }
+            
+            if (!reservation) {
+              const storedReservation = sessionStorage.getItem('currentReservation');
+              if (storedReservation) {
+                reservation = JSON.parse(storedReservation);
+                console.log("Datos de reserva cargados de sessionStorage");
+              }
+            }
+            
+            if (!activity) {
+              const storedActivity = sessionStorage.getItem('theActivity');
+              if (storedActivity) {
+                activity = JSON.parse(storedActivity);
+                console.log("Datos de actividad cargados de sessionStorage");
+              }
+            }
+          } catch (error) {
+            console.error("Error al cargar datos de sessionStorage:", error);
+          }
         }
-      } catch (error) {
-        console.error("Error loading formData from sessionStorage:", error);
-      }
-    }
-    
-    if (!reservation) {
-      try {
-        const storedReservation = sessionStorage.getItem('currentReservation');
-        if (storedReservation) {
-          reservation = JSON.parse(storedReservation);
-          console.log("Loaded reservation from sessionStorage:", reservation);
+        
+        // Si aún falta algún dato, intentar obtenerlo del contexto global
+        if (!formData) formData = globalState.user;
+        if (!reservation && globalState.reservation?.length > 0) {
+          reservation = globalState.reservation[globalState.reservation.length - 1];
         }
+        if (!activity) activity = globalState.activity?.theActivity;
+        
+        // Actualizar el estado con los datos obtenidos
+        setUserData(formData);
+        setCurrentReservation(reservation);
+        setTheActivity(activity);
+        
+        // Marcar como datos cargados
+        setDataLoaded(true);
+        
+        console.log("Estado final después de cargar datos:", { formData, reservation, activity });
       } catch (error) {
-        console.error("Error loading reservation from sessionStorage:", error);
+        console.error("Error al cargar datos en ConfirmationPage:", error);
+        setDataLoaded(true); // Marcar como cargado para evitar un loop infinito
       }
-    }
+    };
     
-    if (!activity) {
-      try {
-        const storedActivity = sessionStorage.getItem('theActivity');
-        if (storedActivity) {
-          activity = JSON.parse(storedActivity);
-          console.log("Loaded activity from sessionStorage:", activity);
-        }
-      } catch (error) {
-        console.error("Error loading activity from sessionStorage:", error);
-      }
-    }
-    
-    // If still missing data, fall back to global context
-    if (!formData) formData = globalState.user;
-    if (!reservation && globalState.reservation?.length > 0) {
-      reservation = globalState.reservation[globalState.reservation.length - 1];
-    }
-    if (!activity) activity = globalState.activity?.theActivity;
-    
-    console.log("Final data after fallbacks:", { formData, reservation, activity });
-    
-    // Set the state with the data we have
-    setUserData(formData);
-    setCurrentReservation(reservation);
-    setTheActivity(activity);
-    setDataLoaded(true);
+    loadData();
   }, [location.state, globalState]);
 
   // Check if we have all necessary data
@@ -163,7 +174,7 @@ const ConfirmationPage = () => {
 
   // Event handlers
   const handlePreviousStep = () => {
-    navigate("/datos-personales", {
+    navigate(`/actividad/${id || theActivity?.id}/confirmarReserva/datos`, {
       state: {
         formData: userData,
         reservation: currentReservation,
@@ -267,7 +278,7 @@ const ConfirmationPage = () => {
         
         // Redirigir a página de éxito después de un breve retraso
         setTimeout(() => {
-          navigate("/reserva-exitosa", { 
+          navigate(`/actividad/${id || theActivity?.id}/confirmarReserva/exitosa`, { 
             state: { 
               reservationId: response.id,
               confirmationCode: response.codigoConfirmacion,
@@ -318,8 +329,7 @@ const ConfirmationPage = () => {
   };
 
   const handleEditData = () => {
-    // Pass the current form data back to the personal data page
-    navigate("/datos-personales", { 
+    navigate(`/actividad/${id || theActivity?.id}/confirmarReserva/datos`, { 
       state: { 
         formData: userData,
         reservation: currentReservation,
@@ -376,11 +386,8 @@ const ConfirmationPage = () => {
       <NavDash variant="home" />
       
       <div className="confirmation-container">
-        <div className="breadcrumbs">
-          <Typography variant="body2" color="textSecondary">
-            {globalState.breadcrumbs || "Inicio /Actividad/Tour en el centroAmurallado /Confirmar reserva"}
-          </Typography>
-        </div>
+      <BasicBreadcrumbs/>
+
 
         <h1 className="page-title">
           Detalles de tu reserva

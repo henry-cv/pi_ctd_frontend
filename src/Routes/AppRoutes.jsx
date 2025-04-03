@@ -101,26 +101,27 @@ const AppRoutes = () => {
       </Route>
       
       {/* Rutas de reserva */}
-      <Route path="/datos-personales" element={
+      {/* Rutas de reserva */}
+      <Route path="/actividad/:id/confirmarReserva/datos" element={
         <PrivateRoutes>
           <PersonalDataFormPage />
         </PrivateRoutes>
       } />
-      <Route path="/confirmar-reserva" element={
+      <Route path="/actividad/:id/confirmarReserva/confirmar" element={
         <PrivateRoutes>
           <ConfirmationPage />
         </PrivateRoutes>
       } />
-      <Route path="/reserva-exitosa" element={
+      <Route path="/actividad/:id/confirmarReserva/exitosa" element={
         <PrivateRoutes>
           <ReservationSuccessPage />
         </PrivateRoutes>
       } />
-      <Route path="/datos-reserva" element={
-        <PrivateRoutes>
-          <PersonalDataFormPage />
-        </PrivateRoutes>
-      } />
+
+      {/* Eliminar o mantener como redirecciones las rutas antiguas */}
+      <Route path="/datos-personales" element={<Navigate to="/actividad/:id/confirmarReserva/datos" replace />} />
+      <Route path="/confirmar-reserva" element={<Navigate to="/actividad/:id/confirmarReserva/confirmar" replace />} />
+      <Route path="/reserva-exitosa" element={<Navigate to="/actividad/:id/confirmarReserva/exitosa" replace />} />
       
       <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />
