@@ -74,12 +74,16 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
   // Nueva función para manejar las imágenes seleccionadas
   const handleImageSelected = (files) => {
-    if (!Array.isArray(files)) {
+    if (!files) {
       setErrorFile("Debe seleccionar al menos una imagen válida.");
       return;
     }
+
+    // 📌 Aseguramos que `files` sea un array, incluso si es solo 1 archivo
+    const selectedFiles = Array.isArray(files) ? files : [files];
+
     setErrorFile("");
-    setSelectedImage(files);
+    setSelectedImage(selectedFiles[0]); // Solo guardamos 1 imagen
   };
 
 
@@ -307,10 +311,8 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
         <ImageXUploader
           onImagesSelected={handleImageSelected}
-          onRemoveExistingImage={handleRemoveExistingImage}
-          existingImages={existingImage ? [existingImage] : []}
+          existingImages={[]}
           isEditMode={!!existingImage}
-          /* La doble negación obtiene un valor booleano de la variable */
           allowUpload={true}
           maxImages={1}
         />
