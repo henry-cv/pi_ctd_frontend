@@ -74,12 +74,17 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
   // Nueva función para manejar las imágenes seleccionadas
   const handleImageSelected = (files) => {
-    if (!Array.isArray(files)) {
-      setErrorFile("Debe seleccionar al menos una imagen válida.");
-      return;
+    console.log("files recibido:", files);
+
+    if (!files) {
+        setErrorFile("Debe seleccionar al menos una imagen válida.");
+        return;
     }
+
+    // Si es un solo archivo, lo convertimos en un array
+    const normalizedFiles = Array.isArray(files) ? files : [files];
     setErrorFile("");
-    setSelectedImage(files);
+    setSelectedImage(normalizedFiles);
   };
 
 
