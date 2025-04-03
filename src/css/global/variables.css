@@ -70,6 +70,7 @@
   --Background-W-300:var(--white-300);
   --Background-W-300-B-400:var(--white-300);
   --Blue-300-L-yellow-D: var(--blue-300);
+  --hover-g-black:var(--black-100)
 }
 
 /* EL cambio del tono de las variables en el modo dark */
@@ -88,4 +89,5 @@
   --Background-W-300:var(--black-700);
   --Background-W-300-B-400:var(--black-400);
   --Blue-300-L-yellow-D: var(--yellow-base);
+  --hover-g-black:var(--black)
 }

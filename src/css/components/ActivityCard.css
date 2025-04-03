@@ -20,6 +20,7 @@
 
 .card-height-reservation {
   max-height: 330px !important;
+  margin-top: 25px;
 }
 
 .card-height-reservation .activity-image-container {
