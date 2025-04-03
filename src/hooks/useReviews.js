@@ -245,15 +245,17 @@ export function useReviews(productoId) {
 	};
 
 	// Ordenar reseñas
-	const sortedReviews = Array.isArray(reviews)
-		? [...reviews].sort((a, b) => {
-				if (sortBy === "recent") {
-					return new Date(b.fechaCreacion) - new Date(a.fechaCreacion);
-				} else {
-					return b.puntuacion - a.puntuacion;
-				}
+	const sortedReviews = useMemo(() => {
+		return Array.isArray(reviews)
+		  ? [...reviews].sort((a, b) => {
+			  if (sortBy === "recent") {
+				return new Date(b.fechaCreacion) - new Date(a.fechaCreacion);
+			  } else {
+				return b.puntuacion - a.puntuacion;
+			  }
 			})
-		: [];
+		  : [];
+	  }, [reviews, sortBy]);
 
 	return {
 		reviews: sortedReviews,
