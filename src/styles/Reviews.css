@@ -328,296 +328,335 @@
 
 /* Layout con sidebar de filtros */
 .reviews-layout {
-    position: relative;
-    display: flex;
-    width: 100%;
-    overflow: visible; /* Cambiado de hidden para permitir crecimiento */
-    will-change: transform; /* Indica al navegador que optimice las transformaciones */
-    margin-top: 1rem; /* Espacio después de los controles fijos */
-    min-height: 450px; /* Consistencia con la sidebar */
-    margin-bottom: 0; /* Quitar margen inferior */
+	position: relative;
+	display: flex;
+	width: 100%;
+	overflow: visible; /* Cambiado de hidden para permitir crecimiento */
+	will-change: transform; /* Indica al navegador que optimice las transformaciones */
+	margin-top: 1rem; /* Espacio después de los controles fijos */
+	min-height: 450px; /* Consistencia con la sidebar */
+	margin-bottom: 0; /* Quitar margen inferior */
 }
 
 /* Contenedor principal de reviews */
 .reviews-container {
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    background-color: var(--BackgroundColor);
-    transform: translateX(0);
-    /* Eliminar transition para dejar que GSAP maneje todo */
-    will-change: transform; /* Optimizar rendimiento */
-    padding-top: 0; /* Ya no necesita padding superior */
-    min-height: 450px; /* Espacio adicional para compensa la altura mínima del sidebar */
-    margin-bottom: 0; /* Quitar margen inferior */
+	width: 100%;
+	position: relative;
+	z-index: 2;
+	background-color: var(--BackgroundColor);
+	transform: translateX(0);
+	/* Eliminar transition para dejar que GSAP maneje todo */
+	will-change: transform; /* Optimizar rendimiento */
+	padding-top: 0; /* Ya no necesita padding superior */
+	min-height: 450px; /* Espacio adicional para compensa la altura mínima del sidebar */
+	margin-bottom: 0; /* Quitar margen inferior */
 }
 
 .reviews-container h2 {
-    display: none;
+	display: none;
 }
 
 /* Sidebar de filtros */
 .review-filter-sidebar-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: auto;
-    min-height: 450px; /* Mismo valor que arriba */
-    width: 280px;
-    z-index: 1;
-    /* Sin transiciones CSS para evitar conflictos */
-    visibility: hidden;
-    display: none;
-    backface-visibility: hidden; /* Mejorar rendimiento */
-    will-change: opacity, transform;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: auto;
+	min-height: 450px; /* Mismo valor que arriba */
+	width: 280px;
+	z-index: 1;
+	/* Sin transiciones CSS para evitar conflictos */
+	visibility: hidden;
+	display: none;
+	backface-visibility: hidden; /* Mejorar rendimiento */
+	will-change: opacity, transform;
 }
 
 /* El sidebar en sí */
 .review-filter-sidebar {
-    position: fixed;
-    width: 280px;
-    min-height: 450px; /* Ajusta este valor según el tamaño con todas las opciones */
-    height: auto; /* Permitir crecer si hay más contenido */
-    background-color: #FFFFFF;
-    box-shadow: none; 
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: visible;
-    z-index: 1; /* Valor más bajo que el contenido principal */
-    /* Añadir borde derecho para delimitar secciones sin generar sombra */
-    border-right: 1px solid #E5E7EB;
-    will-change: opacity; /* Mejorar rendimiento */
+	position: fixed;
+	width: 280px;
+	min-height: 450px; /* Ajusta este valor según el tamaño con todas las opciones */
+	height: auto; /* Permitir crecer si hay más contenido */
+	background-color: #ffffff;
+	box-shadow: none;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	overflow-y: visible;
+	z-index: 1; /* Valor más bajo que el contenido principal */
+	/* Añadir borde derecho para delimitar secciones sin generar sombra */
+	border-right: 1px solid #e5e7eb;
+	will-change: opacity; /* Mejorar rendimiento */
 }
 
 /* Header del sidebar */
 .filter-sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
 }
 
 .filter-sidebar-header h3 {
-    font-family: var(--font-archivo);
-    font-size: 1.2rem;
-    color: var(--Font-Background);
-    margin: 0;
+	font-family: var(--font-archivo);
+	font-size: 1.2rem;
+	color: var(--Font-Background);
+	margin: 0;
 }
 
 .close-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--Font-Background);
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--Font-Background);
 }
 
 /* Secciones de filtros */
 .filter-section {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .filter-section h4 {
-    font-family: var(--font-archivo);
-    font-size: 1rem;
-    color: var(--Font-Background);
-    margin-bottom: 10px;
+	font-family: var(--font-archivo);
+	font-size: 1rem;
+	color: var(--Font-Background);
+	margin-bottom: 10px;
 }
 
 .rating-filters {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 .rating-label {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 /* Botones de acción */
 .filter-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
 }
 
 .filter-actions .MuiButton-root {
-    flex: 1;
-    padding: 8px 16px;
+	flex: 1;
+	padding: 8px 16px;
 }
 
 /* Mensaje cuando no hay reseñas filtradas */
 .no-filtered-reviews {
-    text-align: center;
-    padding: 20px;
-    color: var(--Font-Background);
-    font-family: var(--font-outfit);
+	text-align: center;
+	padding: 20px;
+	color: var(--Font-Background);
+	font-family: var(--font-outfit);
 }
 
 /* Cambio en el container de los filtros para alinear mejor */
 .reviews-filters-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 /* Mobile: versión modal del sidebar */
 .review-filter-sidebar.mobile {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1300;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1300;
+	transform: translateY(100%);
+	transition: transform 0.3s ease;
 }
 
 .review-filter-sidebar.mobile.open {
-    transform: translateY(0);
+	transform: translateY(0);
 }
 
 /* Media Queries */
 @media (max-width: 767px) {
-    .reviews-actions {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
+	.reviews-actions {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 15px;
+	}
 
-    .reviews-filters-container {
-        flex-direction: column;
-        width: 100%;
-    }
+	.reviews-filters-container {
+		flex-direction: column;
+		width: 100%;
+	}
 
-    .reviews-filters-container .MuiButton-root {
-        width: 100%;
-        margin-right: 0;
-    }
+	.reviews-filters-container .MuiButton-root {
+		width: 100%;
+		margin-right: 0;
+	}
 
-    .filter-actions {
-        padding: 0 20px 20px;
-    }
+	.filter-actions {
+		padding: 0 20px 20px;
+	}
 }
 
 /* Estilo para el contenedor de controles fijos */
 .reviews-controls-fixed {
-    margin-bottom: 2rem;
-    position: relative;
-    z-index: 100; /* Encima de otros elementos */
-    background-color: var(--BackgroundColor);
-    width: 100%;
+	margin-bottom: 2rem;
+	position: relative;
+	z-index: 100; /* Encima de otros elementos */
+	background-color: var(--BackgroundColor);
+	width: 100%;
 }
 
 /* Contenedor wrapper para todo el contenido de reseñas */
 .reviews-content-wrapper {
-    position: relative;
-    width: 100%;
+	position: relative;
+	width: 100%;
 }
 
 /* Estilo para el contenedor del botón fijo */
 .reviews-pagination-fixed {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 2rem;
-    padding-bottom: 2rem;
-    position: relative;
-    z-index: 5; /* Asegurar que esté por encima de otros elementos */
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: 2rem;
+	padding-bottom: 2rem;
+	position: relative;
+	z-index: 5; /* Asegurar que esté por encima de otros elementos */
 }
 
 /* Estrellas de calificación - estilo universal */
 .rating-filters .MuiRating-root .MuiRating-iconFilled {
-    color: #6749D9; /* Color azul fijo */
+	color: #6749d9; /* Color azul fijo */
 }
 
 .rating-filters .MuiRating-root .MuiRating-iconEmpty {
-    color: #6749D9;
-    opacity: 0.4;
+	color: #6749d9;
+	opacity: 0.4;
 }
 
 /* Botones en la sidebar - estilo universal */
 .filter-actions .MuiButton-outlined {
-    border-color: #6749D9;
-    color: #6749D9;
+	border-color: #6749d9;
+	color: #6749d9;
 }
 
 .filter-actions .MuiButton-contained {
-    background-color: #6749D9;
-    color: white;
+	background-color: #6749d9;
+	color: white;
 }
 
 .filter-actions .MuiButton-contained:hover {
-    background-color: #5438C0;
+	background-color: #5438c0;
 }
 
 /* Estilos para el botón de Sort - estilo universal */
 .reviews-filters .reviews-sort .MuiInputBase-root {
-    border: 2px solid white;
-    background-color: #6749D9;
+	border: 2px solid white;
+	background-color: #6749d9;
 }
 
 .reviews-filters .reviews-sort .MuiSelect-select,
 .reviews-filters .reviews-sort .MuiSvgIcon-root {
-    color: white;
-    font-weight: bold;
+	color: white;
+	font-weight: bold;
 }
 
 /* Estilos para botones de filtrar y ver más reseñas */
 .btn-black-outline {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border: 2px solid #FFFFFF !important;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8) !important;
+	background-color: #000000 !important;
+	color: #ffffff !important;
+	border: 2px solid #ffffff !important;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8) !important;
 }
 
 .btn-black-outline:hover {
-    background-color: #1a1a1a !important;
-    opacity: 0.95 !important;
+	background-color: #1a1a1a !important;
+	opacity: 0.95 !important;
 }
 
 /* Estilos para el texto con contorno en la sidebar */
 .sidebar-text-outline {
-    color: #FFFFFF;
-    text-shadow: 
-        -1px -1px 0 #000,  
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000;
+	color: #ffffff;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0
+		#000;
 }
 
 /* Estilos para las estrellas con contorno */
 .star-with-outline .MuiRating-iconFilled,
 .star-with-outline .MuiRating-iconEmpty {
-    filter: drop-shadow(0px 0px 1px #FFFFFF) drop-shadow(0px 0px 1px #FFFFFF);
-    color: #EEC52D !important; /* Color amarillo para las estrellas */
+	filter: drop-shadow(0px 0px 1px #ffffff) drop-shadow(0px 0px 1px #ffffff);
+	color: #eec52d !important; /* Color amarillo para las estrellas */
 }
 
 /* Botón Aplicar amarillo con contorno negro */
 .btn-yellow-outline {
-    background-color: #EEC52D !important;
-    color: #000000 !important;
-    border: 2px solid #000000 !important;
+	background-color: #eec52d !important;
+	color: #000000 !important;
+	border: 2px solid #000000 !important;
 }
 
 .btn-yellow-outline:hover {
-    background-color: #d9b429 !important;
+	background-color: #d9b429 !important;
 }
 
 /* Botón Limpiar negro con contorno blanco y letras blancas */
 .btn-black-white-outline {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border: 2px solid #FFFFFF !important;
+	background-color: #000000 !important;
+	color: #ffffff !important;
+	border: 2px solid #ffffff !important;
 }
 
 .btn-black-white-outline:hover {
-    background-color: #1a1a1a !important;
+	background-color: #1a1a1a !important;
 }
 
 /* Estilo para los checkboxes */
 .rating-filters .MuiCheckbox-root {
-    padding: 4px;
-    margin-right: 8px;
+	padding: 4px;
+	margin-right: 8px;
+}
+
+/* Ajustar el estilo para el sidebar en móvil */
+.review-filter-sidebar.mobile {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 50%; /* Ocupa la mitad de la pantalla */
+	max-height: 80vh;
+	transform: translateY(100%); /* Inicialmente fuera de la pantalla */
+	transition: transform 0.3s ease;
+	border-radius: 20px 20px 0 0; /* Esquinas superiores redondeadas */
+	box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+	z-index: 1250; /* Por encima del backdrop */
+	overflow-y: auto;
+	padding-bottom: 20px; /* Espacio extra para evitar que el contenido quede cortado */
+}
+
+/* Cuando está abierto, lo movemos a su posición */
+.review-filter-sidebar.mobile.open {
+	transform: translateY(0);
+}
+
+/* Ajustes adicionales para mejor experiencia en móvil */
+.review-filter-sidebar.mobile .filter-sidebar-header {
+	position: sticky;
+	top: 0;
+	background: inherit;
+	padding-top: 15px;
+	z-index: 2;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	padding-bottom: 10px;
+	margin-bottom: 15px;
+}
+
+.review-filter-sidebar.mobile .filter-actions {
+	position: sticky;
+	bottom: 0;
+	background: inherit;
+	padding: 15px 20px;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
