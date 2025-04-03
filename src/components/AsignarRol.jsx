@@ -106,7 +106,7 @@ const AsignarRol = () => {
         rol: nuevoRol
       };
 
-      console.log("Enviando payload:", payload);
+      // console.log("Enviando payload:", payload);
 
       // Obtenemos el token del estado global o localStorage
       const token = state.token || localStorage.getItem("token");
@@ -123,7 +123,7 @@ const AsignarRol = () => {
 
       // Leemos el texto de la respuesta una sola vez
       const responseText = await response.text();
-      console.log("Respuesta del servidor (texto):", responseText);
+      // console.log("Respuesta del servidor (texto):", responseText);
 
       // Intentamos parsear la respuesta como JSON
       let data;

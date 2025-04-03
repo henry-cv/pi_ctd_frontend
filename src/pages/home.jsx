@@ -52,7 +52,7 @@ const Home = () => {
         throw new Error("Error al obtener las actividades populares");
       }
       const data = await response.json();
-      console.log("Actividades populares obtenidas:", data);
+      // console.log("Actividades populares obtenidas:", data);
       setPopularActivities(data);
     } catch (error) {
       console.error("Error:", error.message);

@@ -37,16 +37,19 @@ const BookingDetail = () => {
   const [politics, setPolitics] = useState([]);
   const [copied, setCopied] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
+  const [isBooking, setIsBooking] = useState(false);
 
-  console.log(id, "id reserva");
-  console.log("las tab filter es :", state.userFiltersTabs.selectedFilters);
+  // console.log(id, "id reserva");
+  // console.log("las tab filter es :", state.userFiltersTabs.selectedFilters);
 
   const handleCloseModalBooking = () => {
     setOpenBooking(false);
   };
 
   const handleOpenModalBooking = () => {
+    setIsBooking(true)
     setOpenBooking(true);
+
   };
   useEffect(() => {
     const getBookings = async () => {
@@ -57,19 +60,14 @@ const BookingDetail = () => {
 
         const theActivity = { ...reservations.bookingData, ...reservations.disponibilityData, ...reservations.productData };
 
-        console.log("lo que le mandaresmo a la actividad ", theActivity);
+        // console.log("lo que le mandaresmo a la actividad ", theActivity);
 
         dispatch({
           type: "SET_ACTIVITY",
           payload: { theActivity },
         });
+
         
-
-        dispatch({
-          type: "SET_BOOKING",
-          payload: {  isBooking: true }
-        });
-
         if (reservations.bookingData && reservations.productData) {
           const { cantidadPersonas } = reservations.bookingData;
           const { tipoTarifa, valorTarifa } = reservations.productData;
@@ -184,17 +182,23 @@ const BookingDetail = () => {
                   open={openBooking}
                   handleClose={handleCloseModalBooking}
                   activityId={booking.productData.id}
+                  isBooking={isBooking}
+                  setIsBooking ={setIsBooking}
                 />
               </div>
               <p><FaTags /><span>Precio total:</span> <strong >{precioFinal} Usd</strong></p>
               <p><FaCalendarAlt /><strong>Fecha:</strong> {date}</p>
-              <p><FaTicket /> <strong>Cupos:</strong> {cupos} </p>
-              <p className="info-slots"> Esta actividad es de tipo <strong>
-                {booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ")}
-              </strong>
-                lo que significa que tu reserva cubre la entrada para
-                <strong>{booking.bookingData.cantidadPersonas}</strong>
-                personas</p>
+              <p><FaTicket /> <strong>Cupos:</strong> {booking.bookingData.cantidadPersonas} </p>
+              <p className="info-slots"> Esta actividad es 
+                {booking.productData.tipoTarifa === "POR_PERSONA" ?" por": " para"}
+                <strong>
+              { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
+              {cupos > 1  ? "s":""}
+              </strong> Tu reserva incluye la entrada para 
+              <strong>{booking.bookingData.cantidadPersonas}</strong>persona{cupos > 1  ? "s":""} , es decir, 
+                <strong>{cupos}</strong>
+                { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
+                {cupos > 1  ? "s":""}.</p>
 
             </div>
 

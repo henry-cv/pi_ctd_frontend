@@ -9,10 +9,10 @@ import { useParams, Link } from 'react-router-dom';
 import { useContextGlobal } from "../gContext/globalContext";
 
 const DashPolicies = ({ selectedPolicy, setSelectedPolicy }) => {
-  console.log("selectedPolicy: -->", selectedPolicy);
+  // console.log("selectedPolicy: -->", selectedPolicy);
 
   const [articulo, setArticulo] = useState(null);
-  console.log("articulo: -->", articulo);
+  // console.log("articulo: -->", articulo);
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef(null);
   const { article, subarticle } = useParams();

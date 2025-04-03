@@ -8,16 +8,22 @@ import { useNavigate } from "react-router-dom";
 import "../../css/pages/BookingsDetail.css";
 import "../../css/pages/dashboard.css";
 import BasicPagination from "../BasicPagination";
+import BookingFilterButtons from "./BookingFilterButtons";
+import {useMediaQuery,} from "@mui/material";
+import { formatFecha } from "../../constants/data/funtionFetchBookings";
 
 const BookingsConfirm = () => {
   const { state, dispatch } = useContextGlobal();
   const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const isTablet = useMediaQuery(() => "(max-width: 1024px)");
+  const isMobile = useMediaQuery(() => "(max-width: 480px)");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const bookingsPerPage = 6;
+  const bookingsPerPage = isTablet ? 4 : isMobile ? 3 : 6;
 
   let tipoReserva = "";
   switch (state.userFiltersTabs.selectedFilters) {
@@ -34,6 +40,16 @@ const BookingsConfirm = () => {
       tipoReserva = "disponibles";
   }
 
+  // Función para ir a Home
+  const handleGoHome = () => {
+    dispatch({
+      type: "SET_ACTIVE_TAB_FILTER",
+      payload: { activeTab: "edit-profile" },
+    });
+    navigate("/");
+  };
+
+  // Fetch bookings
   useEffect(() => {
     const getBookings = async () => {
       try {
@@ -47,8 +63,38 @@ const BookingsConfirm = () => {
       }
     };
     getBookings();
-  }, [state.token]);
+  }, [state.token, state.user]);
 
+  // Filter bookings based on status
+  useEffect(() => {
+    if (bookings.length > 0) {
+      const initialFiltered = bookings.filter((booking) => {
+        switch (state.userFiltersTabs.selectedFilters) {
+          case "confirm":
+            return booking.bookingData.estado === "CONFIRMADA";
+          case "cancel":
+            return booking.bookingData.estado === "CANCELADA";
+          case "complete":
+            return booking.bookingData.estado === "FINALIZADA";
+          default:
+            return true; 
+        }
+      });
+      
+      setFilteredBookings(initialFiltered);
+      // Reset to first page when filter changes
+      setCurrentPage(1);
+    }
+  }, [bookings, state.userFiltersTabs.selectedFilters]);
+
+  // Calculate pagination data
+  const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
+  const currentBookings = filteredBookings.slice(
+    (currentPage - 1) * bookingsPerPage,
+    currentPage * bookingsPerPage
+  );
+
+  // Render loading state
   if (loading) {
     return (
       <div className="user-booking-loading">
@@ -58,6 +104,7 @@ const BookingsConfirm = () => {
     );
   }
 
+  // Render error state
   if (error) {
     return (
       <div className="user-booking-loading">
@@ -67,35 +114,7 @@ const BookingsConfirm = () => {
     );
   }
 
-  const handleGoHome = () => {
-    dispatch({
-      type: "SET_ACTIVE_TAB_FILTER",
-      payload: { activeTab: "edit-profile" },
-    });
-    navigate("/");
-  };
-
-
-  const filteredBookings = bookings.filter((booking) => {
-    switch (state.userFiltersTabs.selectedFilters) {
-      case "confirm":
-        return booking.bookingData.estado === "CONFIRMADA";
-      case "cancel":
-        return booking.bookingData.estado === "CANCELADA";
-      case "complete":
-        return booking.bookingData.estado === "FINALIZADA";
-      default:
-        return true; 
-    }
-  });
-
-
-  const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
-  const currentBookings = filteredBookings.slice(
-    (currentPage - 1) * bookingsPerPage,
-    currentPage * bookingsPerPage
-  );
-
+  // Render empty state
   if (filteredBookings.length === 0) {
     return (
       <div className="user-favorites-empty">
@@ -106,8 +125,17 @@ const BookingsConfirm = () => {
     );
   }
 
+  // Render bookings
   return (
     <div className="user-bookings-container">
+      <div className="filter-controls-container" style={{ marginBottom: "20px", display: "flex", justifyContent: "flex-end" }}>
+        <BookingFilterButtons 
+          bookings={bookings} 
+          setFilteredBookings={setFilteredBookings}
+          originalFilter={state.userFiltersTabs.selectedFilters}
+        />
+      </div>
+      
       <div className="user-booking-grid">
         {currentBookings.map((booking) => {
           const { cantidadPersonas } = booking.bookingData;
@@ -122,7 +150,7 @@ const BookingsConfirm = () => {
               title={booking.productData.nombre}
               price={precioFinal}
               categories={booking.productData.categorias}
-              fechaReserva={booking.bookingData.disponibilidadProductoSalidaDto.fechaEvento}
+              fechaReserva={formatFecha(booking.bookingData.disponibilidadProductoSalidaDto.fechaEvento)}
               estado={booking.bookingData.estado.toLowerCase()}
             />
           );

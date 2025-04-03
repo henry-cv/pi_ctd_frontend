@@ -32,7 +32,7 @@ import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation  } from "react-router-dom";
 import AccessRequiredModal from "../components/AccessRequiredModal";
 
-const BookingModal = ({ open, handleClose, activityId }) => {
+const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) => {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(0);
   const [errorsBooking, setErrorsBooking] = useState({});
@@ -45,14 +45,11 @@ const BookingModal = ({ open, handleClose, activityId }) => {
     },
   ]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const location = useLocation();
+
   const [priceQuantity, setPriceQuantity] = useState(0);
   const { state, dispatch } = useContextGlobal(null);
   const { theActivity } = state.activity || {};
-  const openAfterAcces = state.urlRedirection;
 
-  console.log("el acces", openAfterAcces);
-  
 
   // Extraer valores necesarios theActivity 
   const nombre = theActivity?.nombre || "";
@@ -101,10 +98,6 @@ const BookingModal = ({ open, handleClose, activityId }) => {
       setAvailabilityMap(map);
     }
   }, [theActivity]);
-  
-console.log(openAfterAcces === location.pathname);
-
-
 
   const [openQuantity, setOpenQuantity] = useState(false);
   const [bookingDate, setBookingDate] = useState(null);
@@ -113,7 +106,7 @@ console.log(openAfterAcces === location.pathname);
   const [showDate, setShowDate] = useState(false);
   const [openAccess, setOpenAccess] = useState(false);
 
-
+  // console.log("la r change" ,isBooking)
   // Get availability for current selected date
   const getAvailabilityForDate = (date) => {
     if (!date) return 0;
@@ -148,6 +141,8 @@ console.log(openAfterAcces === location.pathname);
     valorTarifa,
     errorsBooking,
     setShowDate,
+    setIsBooking,
+    isBooking
   });
 
 
@@ -157,17 +152,19 @@ console.log(openAfterAcces === location.pathname);
     console.log("entré al acceso");
     
 		if (!state.token) {
-			console.log("el token no esta no esta logueado");
+			// console.log("el token no esta no esta logueado");
 			setOpenAccess(true);
 		} else {
-			console.log("usurio loggueado");
-			console.log(state.user.id);
+			// console.log("usurio loggueado");
+			// console.log(state.user.id);
 
 			BookingSubmit();
 		}
 	};
 
   
+		// console.log("la reserva existe",state.booking.isBooking);
+
   //submit por ahora quedó aqui 
   const BookingSubmit = () => {
 
@@ -244,8 +241,7 @@ console.log(openAfterAcces === location.pathname);
       <DialogContent>
         <Typography variant="body2">
           Esta actividad se reserva por{" "}
-          {tipoTarifa.toLowerCase().replace(/_/g, " ")}. Selecciona la fecha y
-          cuántos cupos deseas.
+          {tipoTarifa.toLowerCase().replace(/_/g, " ")}.
         </Typography>
 
         <Box className="select-date-slot">
@@ -321,8 +317,7 @@ console.log(openAfterAcces === location.pathname);
           resetCalendar={resetCalendar}
           setResetCalendar={setResetCalendar}
           availabilityMap={availabilityMap}
-
-
+          isBooking={isBooking}
         />
 
         <BookingQuantity
@@ -332,6 +327,7 @@ console.log(openAfterAcces === location.pathname);
           setQuantity={handleSelectQuantity}
           cupoDisponible={currentDateAvailability}
           tipoTarifa={tipoTarifa}
+          isBooking={isBooking}
         />
 
 <AccessRequiredModal open={openAccess} onClose={handleCloseAccess} />
@@ -394,7 +390,7 @@ console.log(openAfterAcces === location.pathname);
 
       <DialogActions className="Booking-principal-container">
         <ButtonBluePill
-          text="Reservar Ahora"
+          text={isBooking ? "Editar Reserva": "Reservar Ahora"}
           className="button-blue btn-save"
           type="submit"
           onClick={handleOpenAcess}

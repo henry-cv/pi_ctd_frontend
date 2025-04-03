@@ -289,7 +289,7 @@ const FormBasis = ({ isEditMode = false }) => {
             throw new Error(`Error al cargar la actividad: ${response.status}`);
           }
           const data = await response.json();
-          //console.log("Actividad cargada:", data);
+          // //console.log("Actividad cargada:", data);
 
           // Asignación de estados
           setTitulo(data.nombre || "");
@@ -363,7 +363,7 @@ const FormBasis = ({ isEditMode = false }) => {
           }
 
           const data = await response.json();
-          //console.log("Disponibilidad cargada: ", data);
+          // //console.log("Disponibilidad cargada: ", data);
           if (data.length === 0) return;
 
           if (data.length > 0) {

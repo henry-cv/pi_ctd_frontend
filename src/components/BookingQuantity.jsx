@@ -4,9 +4,11 @@ import { useContextGlobal } from "../gContext/globalContext";
 import  "../css/components/BookingQuantity.css"
 import ButtonBluePill from "./ButtonBluePill";
 
-function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,tipoTarifa}) {
+function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,tipoTarifa,isBooking}) {
 
   const isMobile = useMediaQuery("(max-width: 480px)");
+  const{state}= useContextGlobal();
+  // console.log("la cantidad es", state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados);
 
   useEffect(() => {
     if (!quantity) {
@@ -14,10 +16,18 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
     }
   }, [quantity]);
 
+  useEffect(() => {
+  
+    if (isBooking) {
+      const cuposReservados = state.activity?.theActivity?.disponibilidadProductoSalidaDto?.cuposReservados || 0;
+      setQuantity(cuposReservados);
+      setTempQuantity(cuposReservados);
+    }
+  }, [isBooking, state.theBooking?.isBooking]);
+
   const [tempQuantity, setTempQuantity] = useState(quantity);
-  const{state}= useContextGlobal();
-  // const {
-  //   theActivity: {tipoTarifa,} = {},} = state.activity || {};
+
+
 
   const handleApply = () => {
     console.log("Aplicando cantidad:", tempQuantity);  
@@ -25,17 +35,34 @@ function BookingQuantity({ open, onClose, quantity, setQuantity,cupoDisponible ,
     onClose(tempQuantity);  
   };
 
+  const slotsQuantityIncrement = ( tipoTarifa) => {
+      switch (tipoTarifa) {
+        case "POR_PERSONA":
+          return  1;
+        case "POR_PAREJA":
+          return  2 ;
+        case "POR_GRUPO_6":
+          return  6 ;
+        case "POR_GRUPO_10":
+          return 10 ;
+        default:
+          return "no es posible escoger los cupos";
+      }
+    };
+
   const handleDecreaseAndIncrease = (operation) => {
 
-    console.log(cupoDisponible);
-    
-
+      let addOrSustractQuantity = slotsQuantityIncrement(tipoTarifa)
+      
     if(operation === "add"){
-      setTempQuantity((prev) => Math.min(prev + 1, cupoDisponible));
+      setTempQuantity((prev) => Math.min(prev + addOrSustractQuantity, cupoDisponible));
     }else{
-      setTempQuantity((prev) => Math.max(0, prev - 1));}
+      setTempQuantity((prev) => Math.max(0, prev - addOrSustractQuantity));}
     
   };
+
+
+
   
 
   return (

@@ -11,6 +11,7 @@ import {
 	faArrowLeft,
 	faClock,
 	faCalendarCheck,
+	faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import * as FaIcons from "react-icons/fa";
 import * as Fa6Icons from "react-icons/fa6";
@@ -38,7 +39,9 @@ import ShareModal from "../components/ShareModal";
 import { handleGoWhatsApp } from "../constants/data/funtionFetchBookings";
 import { WhatsappIcon } from "react-share";
 import { normalizeDate } from "../constants/data/funtionsBookingCalendar"
-
+import { useReviews } from "../hooks/useReviews";
+import { separateDays } from "../constants/data/funtionsActivityDetail";
+import { formatFecha } from "../constants/data/funtionFetchBookings";
 // Define MUI icon mapping
 const muiIcons = {
 	FlashlightOnIcon: FlashlightOnIcon,
@@ -65,12 +68,16 @@ const ActivityDetail = () => {
 	const [disponibilidad, setDisponibilidad] = useState([]);
 	const [openShareModal, setOpenShareModal] = useState(false);
 	const [isPastDate, setIsPastDate] = useState(null);
-	console.log("el acces", state.urlRedirection );
+	const [isBooking, setIsBooking] = useState(false);
+	const { ratingStats } = useReviews(id);
+
+
+	const dateActivity = formatFecha(disponibilidad[0]?.fechaEvento)
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
 	//  console.log("La activity " + JSON.stringify(state.activity));
 
-	 console.log("el efecto ", isPastDate);
+	console.log("el efecto ", isPastDate);
 
 	useEffect(() => {
 		const fetchActivityDetails = async () => {
@@ -133,46 +140,46 @@ const ActivityDetail = () => {
 	}, [id]);
 
 
-useEffect(() => {
-	if (state.activity?.theActivity) {
-	  const today = normalizeDate(new Date());
-	  let theActivity = state.activity.theActivity;
-	  let isPastEvent = true;
-  
-	  Object.keys(theActivity)
-		.filter((key) => !isNaN(parseInt(key)))
-		.forEach((key) => {
-		  let eventDate = theActivity[key].fechaEvento;
-		  if (eventDate) {
-			eventDate = normalizeDate(new Date(eventDate));
-			if (eventDate > today) {
-			  isPastEvent = false;
-			  return;
-			}
-		  }
-		});
-	  
-	  if (isPastEvent) {
-		setIsPastDate("Esta actividad no cuenta con fechas disponibles");
-	  } else {
-		setIsPastDate("");
-	  }
-	}
-  }, [state.activity?.theActivity]);
-  
-  
-console.log(state.urlRedirection === location.pathname);
+	useEffect(() => {
+		if (state.activity?.theActivity) {
+			const today = normalizeDate(new Date());
+			let theActivity = state.activity.theActivity;
+			let isPastEvent = true;
 
-useEffect(() => {
-	if (state.urlRedirection === location.pathname) {
-	  console.log("Abrimos el modal de booking automáticamente");
-	  handleOpenModalBooking(); // Función que abre el modal
-	  dispatch({
-		type: "SET_URL_REDIRECTION",
-		payload: "",
-	  });
-	}
-  }, [state.urlRedirection]);
+			Object.keys(theActivity)
+				.filter((key) => !isNaN(parseInt(key)))
+				.forEach((key) => {
+					let eventDate = theActivity[key].fechaEvento;
+					if (eventDate) {
+						eventDate = normalizeDate(new Date(eventDate));
+						if (eventDate > today) {
+							isPastEvent = false;
+							return;
+						}
+					}
+				});
+
+			if (isPastEvent) {
+				setIsPastDate("Esta actividad no cuenta con fechas disponibles");
+			} else {
+				setIsPastDate("");
+			}
+		}
+	}, [state.activity?.theActivity]);
+
+
+	// console.log(state.urlRedirection === location.pathname);
+
+	useEffect(() => {
+		if (state.urlRedirection === location.pathname) {
+			//   console.log("Abrimos el modal de booking automáticamente");
+			handleOpenModalBooking(); // Función que abre el modal
+			dispatch({
+				type: "SET_URL_REDIRECTION",
+				payload: "",
+			});
+		}
+	}, [state.urlRedirection]);
 
 	// Detectar scroll para mostrar la card de reserva en móvil
 	useEffect(() => {
@@ -198,6 +205,7 @@ useEffect(() => {
 		return () => window.removeEventListener("resize", checkMobileView);
 	}, []);
 
+	const diasFormateados = activity?.diasDisponible ? separateDays(activity.diasDisponible) : [];
 
 
 	const handleOpenImageViewer = (index) => {
@@ -292,16 +300,13 @@ useEffect(() => {
 	};
 
 	const handleOpenModalBooking = (id) => {
-	
-			setOpenBooking(true);
-		
+		setIsBooking(false)
+		setOpenBooking(true);
 	};
 
 	const handleCloseModalBooking = () => {
 		setOpenBooking(false);
 	};
-
-	// const handleCloseAccess = () => setOpenAccess(false);
 
 	const handleOpenShareModal = () => {
 		setOpenShareModal(true);
@@ -311,7 +316,13 @@ useEffect(() => {
 		setOpenShareModal(false);
 	};
 
-	
+	const handleScrollToReviews = (e) => {
+		e.preventDefault();
+		const reviewsSection = document.getElementById('reviews');
+		if (reviewsSection) {
+			reviewsSection.scrollIntoView({ behavior: 'smooth' });
+		}
+	};
 
 	if (loading) {
 		return (
@@ -499,14 +510,14 @@ useEffect(() => {
 
 								<div className="rating-section">
 									<div className="stars-container">
-										{renderStarRating(activity.calificacion || 4.5)}
+										{renderStarRating(ratingStats.average || 0)}
 										<span className="rating-value">
-											({activity.calificacion || 4.5}/5)
+											({ratingStats.average ? ratingStats.average.toFixed(1) : '0'}/5)
 										</span>
 									</div>
-									<Link to="#reviews" className="reviews-link">
-										{formatReviewText(activity.numeroReseñas || 5)}
-									</Link>
+									<a href="#reviews" className="reviews-link" onClick={handleScrollToReviews}>
+										{formatReviewText(ratingStats.total || 0)}
+									</a>
 								</div>
 
 								<div className="description-section">
@@ -540,19 +551,66 @@ useEffect(() => {
 
 									<div className="experience-details">
 										<div className="detail-item">
-											<FontAwesomeIcon icon={faClock} className="detail-icon" />
+
 											<div>
-												<h3>Duración</h3>
-												<p>
-													<DurationInfo
-														tipoEvento={activity.tipoEvento}
-														horaInicio={activity.horaInicio}
-														horaFin={activity.horaFin}
-														diasDisponible={activity.diasDisponible}
-													/>
-												</p>
+												{activity.tipoEvento === "RECURRENTE" ?
+													<div className="detail-item">
+														<FontAwesomeIcon icon={faCalendarAlt} className="detail-icon" />
+														<div>
+															<h3>Días Disponibles</h3>
+															{diasFormateados.map((dia, index) => (
+																<p key={index}> *{dia.charAt(0).toUpperCase() + dia.slice(1).toLowerCase()}</p>
+															))}
+
+
+														</div>
+
+													</div>
+
+													:
+													<>
+														<div className="detail-item">
+															<FontAwesomeIcon icon={faCalendarAlt} className="detail-icon" />
+															<div>
+																<h3>Fecha Unica</h3>
+																<p>{dateActivity}  </p>
+															</div>
+														</div>
+
+													</>}
+
 											</div>
 										</div>
+										{activity.tipoEvento === "RECURRENTE" ?
+											<div className="detail-item">
+												<FontAwesomeIcon icon={faClock} className="detail-icon" />
+												<div>
+													<h3>Horario</h3>
+													<p>{activity.horaInicio.slice(0, 5) || "Horario no disponible"} - {activity.horaFin.slice(0, 5) || "Horario no disponible"}</p>
+												</div>
+											</div> :
+
+											<div className="detail-item">
+												<FontAwesomeIcon icon={faClock} className="detail-icon" />
+												<div>
+													<h3>Duración</h3>
+													<p>
+														<DurationInfo
+															tipoEvento={activity.tipoEvento}
+															horaInicio={activity.horaInicio}
+															horaFin={activity.horaFin}
+															diasDisponible={activity.diasDisponible}
+														/>
+													</p>
+
+												</div>
+
+											</div>
+
+
+										}
+
+
 
 										<div className="detail-item">
 											<FaGlobe className="detail-icon" />
@@ -604,7 +662,7 @@ useEffect(() => {
 							<div className="booking-column">
 								<div className="booking-card">
 									<div className="price-section">
-									<p style={{ color: "red" }}>{isPastDate}</p>
+										<p style={{ color: "red" }}>{isPastDate}</p>
 										<span className="price">${activity.valorTarifa || 0}</span>
 										<span className="price-type">
 											{activity.tipoTarifa === "POR_PERSONA"
@@ -628,8 +686,8 @@ useEffect(() => {
 										fullWidth={true}
 										url={`/reserva/${activity.id}`}
 										onClick={() => handleOpenModalBooking(activity.id)}
-										disabled={ isPastDate  ? true : false}
-										otherClass={isPastDate  ?" disiabled" : ""}
+										disabled={isPastDate ? true : false}
+										otherClass={isPastDate ? " disiabled" : ""}
 									/>
 								</div>
 							</div>
@@ -667,6 +725,8 @@ useEffect(() => {
 				open={openBooking}
 				handleClose={handleCloseModalBooking}
 				activityId={activity.id}
+				isBooking={isBooking}
+				setIsBooking={setIsBooking}
 			/>
 
 			{/* <AccessRequiredModal open={openAccess} onClose={handleCloseAccess} /> */}

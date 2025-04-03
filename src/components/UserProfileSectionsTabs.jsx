@@ -13,7 +13,7 @@ const UserProfileSectionsTabs = () => {
 
   //función para mandar el valor del tab activo y/o el filtro seleccionado
   const handleChange = (type, value) => {
-    console.log(type, value);
+    // console.log(type, value);
   
     if (type === "tab") {
       dispatch({
