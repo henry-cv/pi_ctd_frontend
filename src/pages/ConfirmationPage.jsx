@@ -324,10 +324,6 @@ const ConfirmationPage = () => {
     }
   };
 
-  const handleEditSelection = () => {
-    setIsBookingModalOpen(true);
-  };
-
   const handleEditData = () => {
     navigate(`/actividad/${id || theActivity?.id}/confirmarReserva/datos`, { 
       state: { 
@@ -350,27 +346,21 @@ const ConfirmationPage = () => {
   };
 
   // Get formatted date and time from reservation
-  const formatDate = () => {
-    if (currentReservation.fecha) {
-      return currentReservation.fecha;
-    }
-    
-    if (currentReservation.disponibilidadProductoSalidaDto?.fechaEvento) {
-      return new Date(currentReservation.disponibilidadProductoSalidaDto.fechaEvento).toLocaleDateString('es-ES', {
-        weekday: 'short',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-      });
-    }
-    
-    // Default date formatting
-    return "vie, 25 mar 2025";
+  const formatDate = (dateString) => {
+    if (!dateString) return "Fecha no disponible";
+  
+    const date = new Date(dateString);
+    return date.toLocaleDateString("es-ES", {
+      weekday: "long",  // "lunes"
+      day: "numeric",    // "13"
+      month: "long",     // "abril"
+      year: "numeric"    // "2025"
+    });
   };
   
   const formatTime = () => {
-    if (currentReservation.horario) {
-      return currentReservation.horario;
+    if (currentReservation.time) {
+      return currentReservation.time;
     }
     
     if (theActivity?.horaInicio && theActivity?.horaFin) {
@@ -424,7 +414,7 @@ const ConfirmationPage = () => {
               <h3 className="summary-title">Tu reserva</h3>
               
               <div className="reservation-date">
-                <p className="date-text">{formatDate()}</p>
+                <p className="date-text">{formatDate(currentReservation.date)}</p>
                 <p className="time-text">{formatTime()}</p>
               </div>
 
@@ -442,13 +432,6 @@ const ConfirmationPage = () => {
                   <span className="pricing-value">{currentReservation.cantidadPersonas || 1}</span>
                 </div>
               </div>
-
-              <button 
-                className="edit-button" 
-                onClick={handleEditSelection}
-              >
-                Editar mi selección
-              </button>
 
               <div className="reservation-divider"></div>
 
@@ -468,20 +451,14 @@ const ConfirmationPage = () => {
                     </span>
                     <span className="info-value">{userData?.email || ""}</span>
                   </div>
-                  <div className="info-row">
-                    <span className="info-label">
-                      <i className="phone-icon"></i> numero de contacto :
-                    </span>
-                    <span className="info-value">{userData?.telefono || ""}</span>
-                  </div>
                 </div>
-
                 <button 
                   className="edit-button" 
                   onClick={handleEditData}
                 >
                   Editar mis datos
                 </button>
+                
               </div>
             </div>
 

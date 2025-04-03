@@ -252,10 +252,11 @@ const PersonalDataFormPage = () => {
                   error={!!errors.email}
                   helperText={errors.email}
                   required
+                  disabled
                 />
               </div>
 
-              <div className="form-field phone-field">
+              {/* <div className="form-field phone-field">
                 <label htmlFor="telefono">Número de contacto</label>
                 <div className="phone-input-container">
                   <TextField
@@ -273,7 +274,7 @@ const PersonalDataFormPage = () => {
                     placeholder="0000000000"
                   />
                 </div>
-              </div>
+              </div> */}
 
               <div className="form-buttons">
                 <ButtonBluePill 

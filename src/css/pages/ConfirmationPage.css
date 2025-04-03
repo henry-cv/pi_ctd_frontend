@@ -136,9 +136,11 @@
 }
 
 .edit-button {
-  align-self: flex-end;
+  justify-content: end;
+  position: relative;
   background: none;
   border: none;
+  width: 100%;
   color: var(--blue-base);
   font-weight: 600;
   cursor: pointer;
