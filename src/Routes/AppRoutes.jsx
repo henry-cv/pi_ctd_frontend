@@ -119,6 +119,9 @@ const AppRoutes = () => {
       } />
 
       {/* Eliminar o mantener como redirecciones las rutas antiguas */}
+
+      <Route path="/actividad/:id/confirmarReserva" element={<Navigate to="/actividad/:id/confirmarReserva/datos" replace />} />
+
       <Route path="/datos-personales" element={<Navigate to="/actividad/:id/confirmarReserva/datos" replace />} />
       <Route path="/confirmar-reserva" element={<Navigate to="/actividad/:id/confirmarReserva/confirmar" replace />} />
       <Route path="/reserva-exitosa" element={<Navigate to="/actividad/:id/confirmarReserva/exitosa" replace />} />
