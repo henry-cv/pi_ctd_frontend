@@ -11,17 +11,88 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 25px;
-  justify-content: center;
+  justify-content: space-between;
+
  
 }
-.card-act{
-    margin: 15px;
-}
 
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
   .user-booking-grid{
-gap: 14px;
+    justify-content: center;
+    
+  
   }
 
+}
+
+
+@media (max-width: 960px) {
+  .user-booking-grid{
+    justify-content: center;
+
+  }
+
+}
+
+
+
+
+
+
+/* estilos de el boton filtrado */
+
+.booking-filter-dropdown {
+  position: relative;
+  max-width: 250px;
+  width: 100%;
+  z-index: 1000;
+  color: var(--Font-Background);
+  
+}
+
+.dropdown-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  width: 100%;
+  background:var(--Background-components);
+  border: 1px solid var(--Icons-gray);
+  border-radius: 25px;
+  cursor: pointer;
+  color: var(--Font-Background);
+  
+  
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background:var(--Background-components);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1001;
+  border-radius:15px;
+  margin-top: 2px;
+}
+
+.dropdown-option.active{
+  border-radius:15px ;
+  background: var(--hover-g-black) !important;
+}
+
+.dropdown-option:hover{
+  background: var(--hover-g-black);
+  border-radius:15px ;
+
+}
+
+.dropdown-option {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.dropdown-option.active {
+  background:var(--Background-components);
 }
