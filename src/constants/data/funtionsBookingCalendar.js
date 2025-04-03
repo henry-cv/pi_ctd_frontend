@@ -63,6 +63,8 @@ export const funtionsBookingCalendar = ({
 
   useEffect(() => {
     let fechaSeleccionada = null;
+
+    // el que pone en el calendario seleccionado la fecha y cupos elegidos para poder editar
   
     if (isBooking && state.activity?.theActivity?.disponibilidadProductoSalidaDto?.fechaEvento) {
       const fechaReserva = new Date(state.activity.theActivity.disponibilidadProductoSalidaDto.fechaEvento+"T00:00:00");
@@ -71,7 +73,7 @@ export const funtionsBookingCalendar = ({
 
       setBookingDate(fechaReserva);
     }
-
+   // el que pone en el calendario las fechas disponibles de evento fecha recurrente 
     if (!fechaSeleccionada && !isBooking && availability?.type === "dias" && fechas.length > 0) {
       const today = normalizeDate(new Date());
       
@@ -88,8 +90,10 @@ export const funtionsBookingCalendar = ({
         fechaSeleccionada = new Date(fechas[0]+"T00:00:00");
       }
     }
-    if (!fechaSeleccionada && !isBooking && availability?.type === "fecha" && availability?.fecha) {
-      fechaSeleccionada = new Date(availability.fecha+"T00:00:00");
+    
+    // el que pone en el calendario en la fecha excata cuando es fecha unica 
+    if (!fechaSeleccionada && !isBooking && availability?.type === "fecha" && availability?.data) {
+      fechaSeleccionada = new Date(availability.data+"T00:00:00");
       setBookingDate(fechaSeleccionada);
     }
 
