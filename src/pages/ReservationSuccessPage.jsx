@@ -3,11 +3,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../css/components/Step3ConfirmBooking.css";
 import ButtonGral from "../components/ButtonGral";
 import DescargaApp from "../components/DescargaApp";
-import { FaCalendar, FaMoneyBill, FaSearch } from 'react-icons/fa';
+import { FaCalendar, FaMoneyBill, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import NavDash from "../components/NavDash";
 import { Typography } from "@mui/material";
 import { useContextGlobal } from "../gContext/globalContext";
 import Footer from "../components/Footer";
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 
 const ReservationSuccessPage = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -20,9 +21,30 @@ const ReservationSuccessPage = () => {
   const [reservationData, setReservationData] = useState(null);
   const [confirmationCode, setConfirmationCode] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Format date from ISO to readable format
+  const formatDate = (dateString) => {
+    if (!dateString) return "Fecha no disponible";
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('es-ES', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return dateString;
+    }
+  };
   
   // Load data from location state or sessionStorage
   useEffect(() => {
+    setIsLoading(true);
+    
     // Check if there's state passed from previous page
     const routeState = location.state || {};
     console.log("ReservationSuccessPage - route state:", routeState);
@@ -57,7 +79,7 @@ const ReservationSuccessPage = () => {
     }
     
     if (confCode) setConfirmationCode(confCode);
-    if (email) setUserEmail(email);
+    if (email) setUserEmail(email || globalState.user?.email);
     
     // If we have no data at all, redirect to home
     if (!reservData && !confCode) {
@@ -67,7 +89,9 @@ const ReservationSuccessPage = () => {
         navigate('/');
       }, 2000);
     }
-  }, [location.state, navigate]);
+    
+    setIsLoading(false);
+  }, [location.state, navigate, globalState.user]);
 
   // Screen size monitoring
   useEffect(() => {
@@ -89,21 +113,67 @@ const ReservationSuccessPage = () => {
   const handleBackToHome = () => {
     navigate("/");
   };
+  
+  // Extract product data based on the available structure
+  const getProductData = () => {
+    if (!reservationData) return {
+      name: "Actividad",
+      image: "https://i.pinimg.com/736x/fc/e2/99/fce299e293cb34d9e1f565b3639c6926.jpg",
+      date: "Fecha no disponible",
+      price: "0"
+    };
+    
+    // Try different possible paths to get product data
+    const producto = 
+      (reservationData.disponibilidadProductoSalidaDto?.producto) || 
+      (reservationData.disponibilidadProductoSalidaDto?.productoId && globalState.activity?.theActivity) ||
+      {};
+    
+    const imagePath = 
+      producto.productoImagenesSalidaDto?.[0]?.rutaImagen || 
+      producto.imagenes?.[0]?.urlImagen ||
+      "https://i.pinimg.com/736x/fc/e2/99/fce299e293cb34d9e1f565b3639c6926.jpg";
+    
+    const dateInfo = formatDate(reservationData.disponibilidadProductoSalidaDto?.fechaEvento);
+    
+    const priceValue = 
+      producto.valorTarifa || 
+      producto.precio || 
+      "75";
+    
+    return {
+      name: producto.nombre || "Tour centro amurallado",
+      image: imagePath,
+      date: dateInfo,
+      price: priceValue
+    };
+  };
+  
+  // Get product data
+  const productData = getProductData();
+
+  if (isLoading) {
+    return (
+      <div className={`success-page-container ${globalState.theme ? "dark" : ""}`}>
+        <NavDash variant="home" />
+        <div className="container-step3" style={{ textAlign: 'center', padding: '50px 0' }}>
+          <div className="loading-spinner"></div>
+          <p>Cargando información de tu reserva...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`success-page-container ${globalState.theme ? "dark" : ""}`}>
       <NavDash variant="home" />
       
       <div className="container-step3">
-        <div className="breadcrumbs" style={{ marginBottom: "20px" }}>
-          <Typography variant="body2" color="textSecondary">
-            Inicio / Actividad / Tour en el centroAmurallado / Reserva exitosa
-          </Typography>
-        </div>
+        <BasicBreadcrumbs />
         
         <div className="columns-setp3">
           <section className="column-step3-right">
-            <h2 className="column-step3-tittle">Tu reserva ha sido confirmada</h2>
+            <h2 className="column-step3-tittle">¡Tu reserva ha sido confirmada!</h2>
 
             {isSmallScreen && (
               <div className="info-box">
@@ -119,23 +189,25 @@ const ReservationSuccessPage = () => {
             <section className="reservation-card">
               <div className="tour-info-container">
                 <img
-                  src={reservationData?.disponibilidadProductoSalidaDto?.producto?.imagenes?.[0]?.urlImagen || 
-                       "https://i.pinimg.com/736x/fc/e2/99/fce299e293cb34d9e1f565b3639c6926.jpg"}
-                  alt={reservationData?.disponibilidadProductoSalidaDto?.producto?.nombre || "Tour centro amurallado"}
+                  src={productData.image}
+                  alt={productData.name}
                   className="tour-image"
+                  onError={(e) => {
+                    e.target.src = "https://i.pinimg.com/736x/fc/e2/99/fce299e293cb34d9e1f565b3639c6926.jpg";
+                  }}
                 />
                 <div className="tour-details-info">
                   <div className="tour-info">
-                    <h3>{reservationData?.disponibilidadProductoSalidaDto?.producto?.nombre || "Tour centro amurallado"}</h3>
-                    <p><FaCalendar/> {reservationData?.disponibilidadProductoSalidaDto?.fechaEvento || "25 de marzo de 2026"}</p>
-                    <p><FaMoneyBill/> Precio total: {reservationData?.disponibilidadProductoSalidaDto?.producto?.precio || "75"} USD</p>
+                    <h3>{productData.name}</h3>
+                    <p><FaCalendar/> Fecha: {productData.date}</p>
+                    <p><FaMoneyBill/> Precio total: {productData.price} USD</p>
                   </div>
                 </div>
               </div>
 
               <ButtonGral
                 className="btn-info-tour"
-                text={"Ver o actualizar datos"}
+                text={"Ver mis reservas"}
                 color="blue"
                 onClick={handleViewReservations}
               />
