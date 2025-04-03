@@ -132,6 +132,7 @@ const FormBasis = ({ isEditMode = false }) => {
   }; */
   // Nueva función para manejar las imágenes seleccionadas
   const handleImagesSelected = (files) => {
+    console.log("images length: ", files.length);
     if (!Array.isArray(files)) {
       setErrorFile("Debe seleccionar al menos una imagen válida.");
       return;
@@ -477,7 +478,7 @@ const FormBasis = ({ isEditMode = false }) => {
       direccion: address,
       cuposTotales: parseInt(quota),
     };
-    //console.log("Datos a enviar:", JSON.stringify(productoData));
+    console.log("Datos a enviar:", JSON.stringify(productoData));
 
     // Agregar el objeto producto como una parte JSON
     formData.append(
@@ -490,8 +491,8 @@ const FormBasis = ({ isEditMode = false }) => {
       formData.append("imagenes", file);
     });
 
-    //console.log(productoData);
-    //console.log("Enviando datos al backend...");
+    console.log(productoData);
+    console.log("Enviando datos al backend...");
 
     try {
       const token = state.token || localStorage.getItem("token");
@@ -858,7 +859,9 @@ const FormBasis = ({ isEditMode = false }) => {
             <ImageXUploader
               onImagesSelected={handleImagesSelected}
               existingImages={existingImages ? [existingImages] : []}
-              isEditMode={!!isEditMode}
+              isEditMode={false}
+              allowUpload={true}
+              maxImages={5}
             />
             {errorFile && <FieldError message={errorFile} />}
             {selectedImages.length > 0 && (
