@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import "../css/components/BookingCalendar.css";
 import { useContextGlobal } from "../gContext/globalContext";
 import { es } from "date-fns/locale";
-import { funtionsBookingCalendar } from "../constants/data/funtionsBookingCalendar";
+import { funtionsBookingCalendar, normalizeDate } from "../constants/data/funtionsBookingCalendar";
 
 const BookingCalendar = ({
   anchorEl,
@@ -22,22 +22,17 @@ const BookingCalendar = ({
   isBooking = {}
 }) => {
   const isMobile = useMediaQuery("(max-width: 480px)");
-  const { state ,dispatch } = useContextGlobal();
+  const { state, dispatch } = useContextGlobal();
   const dateRangeRef = useRef(null);
-  const [theDateIsPast, setTheDateIsPast] = useState("")
+  const [theDateIsPast, setTheDateIsPast] = useState("");
 
-
- 
-
-  
   const {
     errors,
     getDayClass,
     handleDateSelection,
-    handleMonthChange, // Añadido aquí
+    handleMonthChange,
     fechas,
     primeraFechaValida,
-    
   } = funtionsBookingCalendar({
     dateRange,
     setDateRange,
@@ -51,14 +46,27 @@ const BookingCalendar = ({
     dateRangeRef,
     setTheDateIsPast,
     isBooking,
-
   });
-  useEffect(() => {
-    dispatch({ type: "SET_BOOKINGS_DATES", payload: { pastDate: theDateIsPast } })
-  }, [theDateIsPast]);
 
- 
-  // console.log(theDateIsPast)
+  // Use a separate effect for dispatch to prevent infinite loops
+  useEffect(() => {
+    if (theDateIsPast) {
+      dispatch({ type: "SET_BOOKINGS_DATES", payload: { pastDate: theDateIsPast } });
+    }
+  }, [theDateIsPast, dispatch]);
+
+  // Calculate the shown date safely to prevent Invalid Date errors
+  const getShownDate = () => {
+    if (bookingDate && !isNaN(bookingDate.getTime())) {
+      return bookingDate;
+    }
+    
+    if (availability?.type === "dias" && fechas.length > 0 && primeraFechaValida) {
+      return primeraFechaValida;
+    }
+    
+    return new Date();
+  };
 
   return (
     <Popover
@@ -75,33 +83,44 @@ const BookingCalendar = ({
       }}
     >
       <Box p={2} className={state.theme === "dark" ? "CardBooking-container" : ""}>
-      <DateRange
-        ref={dateRangeRef}
-        className={`${state.theme === "dark" ? "CardBooking-calendar" : ""} ${isMobile ? "mobile-calendar" : ""}`}
-        locale={es}
-        ranges={dateRange}
-        onChange={(ranges) => {
-          const selected = ranges.selection.startDate;
-          handleDateSelection(selected);
-          handleClose();
-        }}
-        onShownDateChange={(date) => handleMonthChange(date)}
-        shownDate={bookingDate ? new Date(bookingDate) : (availability?.type === "dias" && fechas.length > 0 ? new Date(primeraFechaValida) : new Date())}
-        months={1}
-        direction={isMobile ? "vertical" : "horizontal"}
-        showDateDisplay={false}
-        dayContentRenderer={(date) => (
-          <div className={getDayClass(date)}>{date.getDate()}</div>
-        )}
-      />
+        <DateRange
+          ref={dateRangeRef}
+          className={`${state.theme === "dark" ? "CardBooking-calendar" : ""} ${isMobile ? "mobile-calendar" : ""}`}
+          locale={es}
+          ranges={dateRange}
+          onChange={(ranges) => {
+            if (ranges.selection && ranges.selection.startDate) {
+              const selected = ranges.selection.startDate;
+              handleDateSelection(selected);
+              handleClose();
+            }
+          }}
+          onShownDateChange={(date) => {
+            if (date && !isNaN(date.getTime())) {
+              handleMonthChange(date);
+            }
+          }}
+          shownDate={getShownDate()}
+          months={1}
+          direction={isMobile ? "vertical" : "horizontal"}
+          showDateDisplay={false}
+          dayContentRenderer={(date) => {
+            if (date && !isNaN(date.getTime())) {
+              return <div className={getDayClass(date)}>{date.getDate()}</div>;
+            }
+            return <div>Invalid</div>;
+          }}
+        />
 
+        {/* Fixed DOM nesting issues by replacing p elements with div */}
         <Typography className={isMobile ? "mobile-calendar-legend" : "calendar-legend"}>
-          {errors && <p style={{ color: "red" }}>{errors}</p>}
-          <p className="legend-text">Estado de los días </p>
+          {errors && <div style={{ color: "red" }}>{errors}</div>}
+          <div className="legend-text">Estado de los días</div>
           <ul className="legend">
             <li className="legend-item">
               <span className="legend-color disabled"></span>
-              Disponible</li>
+              Disponible
+            </li>
             <li className="legend-item">
               <span className="legend-color full"></span>
               Cupo lleno

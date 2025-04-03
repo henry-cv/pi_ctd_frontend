@@ -144,9 +144,9 @@ const Home = () => {
           <div className="content-wrapper">
             <h2 className="section-title title_categories">
               Categorías
-              <Link to="/actividades" className="view-all-link">
+              {/* <Link to="/actividades" className="view-all-link">
                 Ver todas
-              </Link>
+              </Link> */}
             </h2>
             <div className="categories-grid">
               <Swiper

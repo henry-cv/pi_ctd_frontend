@@ -91,7 +91,6 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete, onUpdate }) => 
 CategoryRow.propTypes = {
   id: PropTypes.number.isRequired,
   nombre: PropTypes.string.isRequired,
-  descripcion: PropTypes.string.isRequired,
   imagenCategoriaUrl: PropTypes.string.isRequired,
   onDelete: PropTypes.func,
   onUpdate: PropTypes.func,
