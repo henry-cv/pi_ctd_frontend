@@ -23,11 +23,31 @@ const ReservationSuccessPage = () => {
   const [userEmail, setUserEmail] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   
-  // Format date from ISO to readable format
+  // Format date from ISO to readable format - with timezone fix
   const formatDate = (dateString) => {
     if (!dateString) return "Fecha no disponible";
     
     try {
+      // Fix for timezone issue - ensure date is treated as local time
+      // Split the date parts and create a local date to prevent timezone shifts
+      const parts = dateString.split('-');
+      if (parts.length === 3) {
+        // Create date using local time components (year, month-1, day)
+        const date = new Date(
+          parseInt(parts[0]), 
+          parseInt(parts[1]) - 1, // Month is 0-based in JavaScript
+          parseInt(parts[2])
+        );
+        
+        return date.toLocaleDateString('es-ES', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+      
+      // Fallback to regular parsing if format isn't as expected
       const date = new Date(dateString);
       return date.toLocaleDateString('es-ES', {
         weekday: 'long',
