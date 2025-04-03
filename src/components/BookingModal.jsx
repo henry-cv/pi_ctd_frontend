@@ -178,18 +178,6 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
         date: bookingDate,
         cuposReservados: quantity,
       };
-
-
-      Swal.fire({
-        icon: "success",
-        title: "Reserva exitosa",
-        text: "reserva exitosa mira toda la información en tus reservas",
-        timer: 2000,
-        showConfirmButton: false,
-        customClass: {
-          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
-        }
-      });
      
       dispatch({
         type: "SET_RESERVATION",
@@ -200,7 +188,7 @@ const BookingModal = ({ open, handleClose, activityId,isBooking,setIsBooking }) 
       handleClose();
       
       // Redireccionar a la página de confirmación de reserva
-      navigate(`/datos-personales`);
+      navigate(`/actividad/${id}/confirmarReserva/datos`);
     } else {
       Swal.fire({
         icon: "error",

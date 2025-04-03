@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { 
   Typography, 
   TextField, 
@@ -18,10 +18,12 @@ import ButtonBluePill from "../components/ButtonBluePill";
 import Footer from "../components/Footer";
 import "../css/pages/PersonalDataFormPage.css";
 import { RiH2 } from "react-icons/ri";
+import BasicBreadcrumbs from "../components/BasicBreadcrumbs";
 
 const PersonalDataFormPage = () => {
   const { state } = useContextGlobal();
   const navigate = useNavigate();
+  const { id } = useParams();
   const { theActivity } = state.activity || {};
   const { reservation } = state;
   const { user } = state;
@@ -56,7 +58,7 @@ const PersonalDataFormPage = () => {
       });
     }
   }, [user]);
-
+    
   // Manejadores de eventos
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +77,7 @@ const PersonalDataFormPage = () => {
   };
 
   const handlePreviousStep = () => {
-    navigate(`/actividad/${theActivity.id}`);
+    navigate(`/actividad/${id || theActivity?.id}`);
   };
 
   const validateForm = () => {
@@ -98,79 +100,55 @@ const PersonalDataFormPage = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  const prepareDataForNavigation = (data) => {
+    // Copia profunda y segura
+    const preparedData = JSON.parse(JSON.stringify(data));
+    return preparedData;
+  };
+  const handleNextStep = (e) => {
 
-  const handleNextStep = () => {
-    // Validate form before proceeding
+    if (e) e.preventDefault();
+
+    // Validar el formulario antes de continuar
     if (!validateForm()) {
       return;
     }
     
-    // Make sure we have valid data to pass
+    // Verificar que tenemos datos válidos para pasar
     if (!currentReservation || !theActivity) {
-      console.error("Missing reservation or activity data");
+      console.error("Faltan datos de reserva o actividad");
       alert("Error: No hay información de reserva disponible. Por favor, intenta nuevamente.");
       return;
     }
     
-    // Debug: Log the current reservation structure
-    console.log("Current reservation structure before enhancement:", JSON.stringify(currentReservation, null, 2));
+    // Preparar datos serializables para la navegación
+    const safeFormData = prepareDataForNavigation(formData);
+    const safeReservation = prepareDataForNavigation(currentReservation);
+    const safeActivity = prepareDataForNavigation(theActivity);
     
-    // Find disponibilidadId with extensive fallbacks
-    let disponibilidadId = currentReservation.disponibilidadId || 
-                          currentReservation.disponibilidadProductoId || 
-                          currentReservation.disponibilidad?.id ||
-                          currentReservation.disponibilidadProducto?.id;
-    
-    // If still not found, check for nested objects that might contain it
-    if (!disponibilidadId) {
-      Object.keys(currentReservation).forEach(key => {
-        if (typeof currentReservation[key] === 'object' && currentReservation[key] !== null) {
-          if (currentReservation[key].id && key.toLowerCase().includes('disponibilidad')) {
-            disponibilidadId = currentReservation[key].id;
-            console.log(`Found disponibilidadId in nested property ${key}.id:`, disponibilidadId);
-          }
-        }
-      });
-    }
-    
-    // For fallback/testing: If we have activity ID and still no disponibilidadId, create a placeholder
-    // In a production environment, you would want to redirect the user to select a date instead
-    if (!disponibilidadId && theActivity?.id) {
-      console.warn("No disponibilidadId found, creating a placeholder ID for development purposes");
-      disponibilidadId = parseInt(theActivity.id) * 1000 + Math.floor(Math.random() * 1000);
-    }
-    
-    // Ensure reservation has the proper structure expected by the backend
-    const enhancedReservation = {
-      ...currentReservation,
-      // Ensure we have the disponibilidadId under all possible property names for maximum compatibility
-      disponibilidadId: disponibilidadId,
-      disponibilidadProductoId: disponibilidadId,
-      cantidadPersonas: currentReservation.cantidadPersonas || 1,
-      // Add a flag to indicate this is for testing if applicable
-      testMode: !disponibilidadId || window.location.hostname === 'localhost'
-    };
-    
-    // Log data being passed for debugging
-    console.log("Navigating to confirmation with data:", {
-      formData,
-      enhancedReservation,
-      theActivity
+    // Log para depuración
+    console.log("Datos serializables para navegación:", { 
+      formData: safeFormData,
+      reservation: safeReservation,
+      activity: safeActivity
     });
     
-    // Store data in sessionStorage as a backup
-    sessionStorage.setItem('formData', JSON.stringify(formData));
-    sessionStorage.setItem('currentReservation', JSON.stringify(enhancedReservation));
-    sessionStorage.setItem('theActivity', JSON.stringify(theActivity));
+    // Almacenar los datos en sessionStorage como respaldo
+    try {
+      sessionStorage.setItem('formData', JSON.stringify(safeFormData));
+      sessionStorage.setItem('currentReservation', JSON.stringify(safeReservation));
+      sessionStorage.setItem('theActivity', JSON.stringify(safeActivity));
+    } catch (error) {
+      console.error("Error al guardar en sessionStorage:", error);
+    }
     
-    // Use React Router's state to pass data to the next page
-    navigate("/confirmar-reserva", { 
+    // Navegar a la página de confirmación
+    navigate(`/actividad/${id || theActivity.id}/confirmarReserva/confirmar`, { 
       state: { 
-        formData,
-        reservation: enhancedReservation,
-        activity: theActivity
-      },
-      replace: false // Ensure we're not replacing history
+        formData: safeFormData,
+        reservation: safeReservation,
+        activity: safeActivity
+      }
     });
   };
 
@@ -194,11 +172,7 @@ const PersonalDataFormPage = () => {
       <NavDash variant="home" />
       
       <div className="personal-data-container">
-        <div className="breadcrumbs">
-          <Typography variant="body2" color="textSecondary">
-            Inicio /Actividad/Tour en el centroAmurallado /Confirmar reserva / Tus datos
-          </Typography>
-        </div>
+        <BasicBreadcrumbs />
 
         <h1 className="page-title">
           Detalles de tu reserva
@@ -305,12 +279,14 @@ const PersonalDataFormPage = () => {
                 <ButtonBluePill 
                   text="Paso anterior: Elige tu actividad" 
                   className="button-yellow" 
-                  onClick={handlePreviousStep} 
+                  onClick={handlePreviousStep}
+                  type="button"
                 />
                 <ButtonBluePill 
                   text="Continuar con la reserva" 
                   className="button-blue" 
                   onClick={handleNextStep} 
+                  type="button"
                 />
               </div>
             </form>
