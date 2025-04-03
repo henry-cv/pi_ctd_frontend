@@ -9,7 +9,7 @@ import {
   faCalendarAlt,
   faClock,
 } from "@fortawesome/free-regular-svg-icons";
-import { FaMoneyCheck, FaSave } from "react-icons/fa";
+import { FaCalendarAlt, FaMoneyBill, FaMoneyCheck, FaSave } from "react-icons/fa";
 import "../css/components/ActivityCard.css";
 import DurationInfo from "./DurationInfo";
 import { Link } from "react-router-dom";
@@ -138,10 +138,11 @@ const ActivityCard = ({
 
           {state.userFiltersTabs.activeTab === "reservations"
             ? <>
-            <p className="booking-state">{estado}</p>
+          <p className={`booking-state ${estado === "cancelada" ? "cancel" : ""}`}>{estado}</p>
             <div className="booking-details-card">
-            <p>{fechaReserva}</p>
+            <p> <FaCalendarAlt/> {fechaReserva}</p>
             <span >
+              <FaMoneyBill/>
                ${price} Usd
                </span>
 

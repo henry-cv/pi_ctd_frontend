@@ -10,7 +10,7 @@ import "../../css/pages/dashboard.css";
 import BasicPagination from "../BasicPagination";
 import BookingFilterButtons from "./BookingFilterButtons";
 import {useMediaQuery,} from "@mui/material";
-
+import { formatFecha } from "../../constants/data/funtionFetchBookings";
 
 const BookingsConfirm = () => {
   const { state, dispatch } = useContextGlobal();
@@ -150,7 +150,7 @@ const BookingsConfirm = () => {
               title={booking.productData.nombre}
               price={precioFinal}
               categories={booking.productData.categorias}
-              fechaReserva={booking.bookingData.disponibilidadProductoSalidaDto.fechaEvento}
+              fechaReserva={formatFecha(booking.bookingData.disponibilidadProductoSalidaDto.fechaEvento)}
               estado={booking.bookingData.estado.toLowerCase()}
             />
           );

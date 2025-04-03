@@ -195,7 +195,7 @@ const BookingDetail = () => {
               { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
               {cupos > 1  ? "s":""}
               </strong> Tu reserva incluye la entrada para 
-              <strong>{booking.bookingData.cantidadPersonas}</strong>personas , es decir, 
+              <strong>{booking.bookingData.cantidadPersonas}</strong>persona{cupos > 1  ? "s":""} , es decir, 
                 <strong>{cupos}</strong>
                 { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
                 {cupos > 1  ? "s":""}.</p>
