@@ -134,7 +134,10 @@
   font-weight: 400;
   color: var(--gray-700);
 }
-
+.edit-button:hover {  
+  transition: none;
+  background: none;
+}
 .edit-button {
   justify-content: end;
   position: relative;
