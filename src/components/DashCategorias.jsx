@@ -1,12 +1,12 @@
 import "../css/pages/dashboard.css";
-//import FormNewCategory from "./FormNewCategory";
+
 import { useState, useEffect } from "react";
 import DashSearch from "./DashSearch";
 import ButtonGral from "./ButtonGral";
 import { FaCirclePlus } from "react-icons/fa6";
 import { LuListFilter } from "react-icons/lu";
 import CategoryRow from "./CategoryRow";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BasicPagination from "./BasicPagination";
 
 const DashCategorias = () => {
@@ -18,6 +18,7 @@ const DashCategorias = () => {
   const [categoriesPerPage] = useState(6);
   const [searchTerm, setSearchTerm] = useState(""); // Estado de búsqueda
 
+  const navigate = useNavigate();
   const lastCategory = currentPage * categoriesPerPage;
   const firstCategory = lastCategory - categoriesPerPage;
   const allPages = Math.ceil(filteredCategories.length / categoriesPerPage);
@@ -35,7 +36,7 @@ const DashCategorias = () => {
         }
         const data = await response.json();
         setCategories(data);
-        setFilteredCategories(data); // Inicialmente, las categorías filtradas son todas
+        setFilteredCategories(data.reverse()); // Inicialmente, las categorías filtradas son todas
       } catch (error) {
         console.error("Error cargando categorías:", error);
         setError(error.message);
@@ -67,11 +68,14 @@ const DashCategorias = () => {
       prev.filter((category) => category.id !== id)
     );
   };
-
+  const handleUpdate = (categoryId) => {
+    // Redirigir a la ruta de edición con el ID de la actividad
+    navigate(`/administrador/categorias/editarCategoria`, { state: { categoryId } });
+  };
   return (
     <div className="categories_container activities_container">
       <header className="header_categories header_activities">
-        <h2 className="dark_activities">Nueva Categoría</h2>
+        <h2 className="dark_activities">Mis Categorías</h2>
         <div className="categoryRight activitieRight">
           <div className="searchFilter">
             <DashSearch onSearch={handleSearch} />{" "}
@@ -88,13 +92,19 @@ const DashCategorias = () => {
           </Link>
         </div>
       </header>
-
+      <div className="table_activities table_categories">
+        <div className="left-cell" >
+          <span className="titleTable">Categoría</span>
+        </div>
+        <div className="right-cell">
+          <span className="titleTable">Acciones</span>
+        </div>
+      </div>
       {loading && <p>Cargando categorías...</p>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       {!loading && !error && currentCategories.length > 0
         ? currentCategories.map((category) => (
-          console.log(category),
           <CategoryRow
             key={category.id}
             id={category.id}
@@ -104,6 +114,7 @@ const DashCategorias = () => {
             }
             nombre={category.nombre}
             onDelete={handleDelete}
+            onUpdate={() => handleUpdate(category.id)}
           />
         ))
         : !loading &&

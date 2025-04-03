@@ -20,6 +20,15 @@ import EditActivitie from "../components/EditActivitie";
 import DashCharacteristics from "../components/DashCharacteristics";
 import AddCharacteristic from "../components/AddCharacteristic";
 import FilterProducts from "../pages/FilterProducts";
+import PolicyPage from "../components/PolicyPage";
+import Terms from "../pages/Terms";
+import DashPolicies from "../components/DashPolicies";
+import PersonalDataFormPage from "../pages/PersonalDataFormPage";
+import ConfirmationPage from "../pages/ConfirmationPage";
+import ReservationSuccessPage from "../pages/ReservationSuccessPage";
+import BookingDetail from "../pages/BookingDetail";
+import EditCategory from "../components/EditCategory";
+
 
 const AppRoutes = () => {
   return (
@@ -67,27 +76,59 @@ const AppRoutes = () => {
         />
         <Route path="categorias" element={<DashCategorias />} />
         <Route path="categorias/crearcategoria" element={<AddCategory />} />
+        <Route
+          path="/administrador/categorias/editarCategoria"
+          element={<EditCategory />}
+        />
         <Route path="ajustes" element={<DashAjustes />} />
-        <Route 
-          path="ajustes/asignar-rol" 
+        <Route
+          path="ajustes/asignar-rol"
           element={
             <PrivateRoutes adminOnly={true}>
               <AsignarRol />
             </PrivateRoutes>
-          } 
-          />
+          }
+        />
         <Route path="caracteristicas" element={<DashCharacteristics />} />
         <Route path="caracteristicas/crearcaracteristica" element={<AddCharacteristic />} />
-  
       </Route>
 
       {/* Otras rutas */}
       <Route path="/" element={<UserLayout />}>
         <Route path="/actividad/:id" element={<ActivityDetail />} />
         <Route path="/perfil" element={<UserProfile />} />
+        <Route path="/perfil/misreservas/:id" element={<BookingDetail />} />
       </Route>
+      
+      {/* Rutas de reserva */}
+      {/* Rutas de reserva */}
+      <Route path="/actividad/:id/confirmarReserva/datos" element={
+        <PrivateRoutes>
+          <PersonalDataFormPage />
+        </PrivateRoutes>
+      } />
+      <Route path="/actividad/:id/confirmarReserva/confirmar" element={
+        <PrivateRoutes>
+          <ConfirmationPage />
+        </PrivateRoutes>
+      } />
+      <Route path="/actividad/:id/confirmarReserva/exitosa" element={
+        <PrivateRoutes>
+          <ReservationSuccessPage />
+        </PrivateRoutes>
+      } />
 
+      {/* Eliminar o mantener como redirecciones las rutas antiguas */}
+      <Route path="/datos-personales" element={<Navigate to="/actividad/:id/confirmarReserva/datos" replace />} />
+      <Route path="/confirmar-reserva" element={<Navigate to="/actividad/:id/confirmarReserva/confirmar" replace />} />
+      <Route path="/reserva-exitosa" element={<Navigate to="/actividad/:id/confirmarReserva/exitosa" replace />} />
+      
+      <Route path="/terminosycondiciones" element={<Terms />} />
       <Route path="*" element={<ErrorPage />} />
+      {/* Ruta para políticas de uso */}
+      <Route path="/politicasdeuso" element={<PolicyPage />} >
+        <Route path="/politicasdeuso/:article/:subarticle?" element={<DashPolicies selectedPolicy={"pagos"} />} />
+      </Route>
     </Routes>
   );
 };

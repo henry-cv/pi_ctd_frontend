@@ -100,6 +100,9 @@ const FormEditUser = ({ setUserData })=> {
         text: "Por favor, completa correctamente todos los campos requeridos.",
         icon: "error",
         confirmButtonText: "OK",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
       return;
     }
@@ -173,6 +176,9 @@ const FormEditUser = ({ setUserData })=> {
         icon: "success",
         showConfirmButton: false,
         timer: 1800,
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
   
       setUserData(formData);
@@ -185,6 +191,9 @@ const FormEditUser = ({ setUserData })=> {
         text: "No se pudo actualizar el usuario. Inténtalo de nuevo.",
         icon: "error",
         confirmButtonText: "OK",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     }
   };
@@ -365,7 +374,7 @@ const FormEditUser = ({ setUserData })=> {
           </div> */}
         </div>
 
-        <div className="action-buttons">
+        <div className="action-buttons-profile">
           <button
             type="button"
             className={

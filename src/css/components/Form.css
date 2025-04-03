@@ -1,7 +1,3 @@
-:root {
-  --Font-Background: var(--black);
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -83,7 +79,9 @@ label {
   flex-direction: column;
   row-gap: 10px;
 }
-
+.phone-number span.dial-code{
+  background-color: var(--white);
+}
 .form-base>div.rates {
   align-items: center;
   display: flex;
@@ -148,6 +146,10 @@ label {
   display: flex;
   flex-direction: row;
   column-gap: 10px;
+}
+.form-base .container-name >h2{
+  color:var(--Font-Background);
+  margin: 1rem auto;
 }
 
 .container-images .existing-images {

@@ -1,8 +1,14 @@
 
 .swal2-popup {
     border-radius: 20px !important; 
-    color: var(--Font-Background) ;
   }
+
+  .swal2-dark {
+    border-radius: 20px !important; 
+    background-color: var(--black-400);
+    color: var(--white) ;
+  }
+  
   
 
   .custom-button, .swal2-cancel {

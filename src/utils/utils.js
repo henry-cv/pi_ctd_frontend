@@ -1,22 +1,19 @@
 /* ---------------------------------- texto --------------------------------- */
 export function validarTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  const regex = new RegExp(`^[a-záéíóúñ ]{4,${maximo}}$`, 'i');
+  const regex = new RegExp(`^[a-záéíóúñ. ]{4,${maximo}}$`, 'i');
   return regex.test(texto);
 }
 export function validarAreaTexto(texto, maximo) {
   texto = normalizarTexto(texto);
-  const regex = new RegExp(`^[\\wáéíóúñ *:,.•\n\r-]{4,${maximo}}$`, 'ig');
+  const regex = new RegExp(`^[\\wáéíóúñ *:;,.•\n\r-]{4,${maximo}}$`, 'ig');
   return regex.test(texto);
 }
 export function longitudPermitida(texto, maximo) {
   texto = normalizarTexto(texto);
   return texto.length <= maximo;
 }
-export function direccionMaxCaracteres(texto) {
-  texto = normalizarTexto(texto);
-  return texto.length <= 60;
-}
+
 export function normalizarTexto(texto) {
   // Agrega Capitalización a texto
   texto = texto.trim();
@@ -42,3 +39,7 @@ export function validarContrasenia(contrasenia) {
 export function compararContrasenias(contrasenia_1, contrasenia_2) {
   return contrasenia_1 === contrasenia_2;
 }
+export function validateCountryCode (countryCode){
+  const regex = /^\+[1-9]{1}[0-9]{1,2}$/;
+  return regex.test(countryCode);
+};

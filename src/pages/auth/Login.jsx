@@ -19,6 +19,7 @@ const Login = () => {
     password: "",
   };
 
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("El email no es válido")
@@ -27,6 +28,8 @@ const Login = () => {
   });
 
   const onSubmit = async (values) => {
+
+    
     try {
       const response = await axios.post("api/auth/login", values);
 
@@ -57,8 +60,20 @@ const Login = () => {
               text: "Bienvenido de nuevo",
               showConfirmButton: false,
               timer: 2000,
+              customClass: {
+                popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+              }
             }).then(() => {
-              navigate("/");
+              if(state.isAccessModal){
+                dispatch({ 
+                  type: "ORIGIN_ACCESS", 
+                  payload: false 
+              });
+                navigate(state.urlRedirection);
+              }else{
+                navigate("/");
+              }
+              
             });
           } catch (error) {
             console.error("Error al obtener los datos del usuario:", error);
@@ -67,6 +82,9 @@ const Login = () => {
               title: "Oops...",
               text: "Algo salió mal. Vuelve a intentarlo más tarde.",
               confirmButtonColor: "#D61B1B",
+              customClass: {
+                popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+              }
             });
           }
         };
@@ -81,6 +99,9 @@ const Login = () => {
         title: "Oops...",
         text: error.response.data.error || "Credenciales incorrectas",
         confirmButtonColor: "#D61B1B",
+        customClass: {
+          popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`, 
+        }
       });
     }
   };
@@ -90,6 +111,8 @@ const Login = () => {
     validationSchema,
     onSubmit,
   });
+
+
 
   return (
     <div className="container_login">

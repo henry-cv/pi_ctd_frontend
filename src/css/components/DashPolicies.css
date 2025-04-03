@@ -1,0 +1,94 @@
+.policies-container {
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+  display: flex;
+  flex-direction: column;
+  order: 2;
+  padding-top: 1rem;
+}
+
+.search-container {
+  border: solid 1px var(--black-100);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 16px;
+  padding: 6px 10px;
+}
+
+input.input-search {
+  border: none;
+  padding: 6px 10px;
+  width: 100%;
+}
+
+input.input-search.dark {
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+}
+
+input.input-search:focus,
+input.input-search:active {
+  border: none;
+  outline: none;
+}
+
+.anchor a:link,
+.anchor a:visited {
+  color: var(--black-400);
+}
+
+.anchor a:hover,
+.anchor a:focus {
+  color: var(--blue-hover);
+}
+
+.anchor a.dark,
+.anchor a.dark:link,
+.anchor a.dark:visited {
+  color: var(--Font-Background);
+}
+
+.anchor a.dark:hover,
+.anchor a.dark:focus {
+  color: var(--yellow-base);
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1280px) {
+  .policies-container {
+    width: min(60%, 700px);
+  }
+
+  .search-container {
+    width: 92%;
+    align-self: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .policies-container {
+    width: 80%;
+    align-self: center;
+  }
+
+  .search-container {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .policies-container {
+    width: 80%;
+    align-self: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .policies-container {
+    width: 90%;
+    align-self: center;
+  }
+}

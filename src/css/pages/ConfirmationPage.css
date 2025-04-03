@@ -1,0 +1,256 @@
+/* Mejoras en src/css/pages/ConfirmationPage.css */
+
+.confirmation-page {
+  min-height: 100vh;
+  background-color: var(--BackgroundColor);
+  color: var(--Font-Background);
+  display: flex;
+  flex-direction: column;
+}
+
+.confirmation-page.dark {
+  background-color: var(--BackgroundColor);
+}
+
+.confirmation-container {
+  padding-top: 120px;
+  padding-bottom: 50px;
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.breadcrumbs {
+  margin-bottom: 20px;
+  color: var(--Icons-gray);
+}
+
+.page-title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Main content layout */
+.confirmation-content {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 30px;
+  margin: 0 auto;
+}
+
+/* Reservation details section */
+.reservation-details {
+  background-color: var(--Background-components);
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-md);
+}
+
+.confirmation-page.dark .reservation-details {
+  background-color: var(--black-400);
+  border-color: var(--black-300);
+}
+
+.section-title {
+  color: var(--Font-Background);
+  font-family: var(--font-archivo);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  margin: 0;
+}
+
+.section-subtitle {
+  color: var(--gray-700);
+  font-family: var(--font-outfit);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25px;
+  margin: 0;
+}
+
+/* Reservation summary section */
+.reservation-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.summary-title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 0 10px 0;
+  color: var(--Font-Background);
+}
+
+.reservation-date {
+  margin-bottom: 15px;
+}
+
+.date-text {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 5px 0;
+  color: var(--Font-Background);
+}
+
+.time-text {
+  color: var(--gray-700);
+  margin: 0;
+}
+
+.reservation-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-row, .info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pricing-label, .info-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--Font-Background);
+}
+
+.pricing-value, .info-value {
+  font-weight: 400;
+  color: var(--gray-700);
+}
+
+.edit-button {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: var(--blue-base);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px;
+  text-decoration: none;
+  font-family: var(--font-outfit);
+}
+
+.confirmation-page.dark .edit-button {
+  color: var(--yellow-base);
+}
+
+.reservation-divider {
+  height: 1px;
+  background-color: var(--gray-200);
+  margin: 20px 0;
+}
+
+.reserved-by {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* Button container */
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.button-yellow,
+.button-blue {
+  flex: 1;
+}
+
+/* Summary container (right column) */
+.summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .confirmation-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .confirmation-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .reservation-details {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 630px) {
+  .confirmation-container {
+    padding-top: 80px;
+    padding-bottom: 120px; /* Extra space for floating buttons */
+  }
+  
+  .confirmation-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Reorder content for mobile */
+  .reservation-details {
+    order: 1;
+  }
+  
+  .summary-container {
+    order: 2;
+  }
+  
+  /* Fixed footer buttons */
+  .confirmation-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--Background-components);
+    padding: 15px 20px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    margin-top: 0;
+    flex-direction: column;
+  }
+  
+  .button-yellow, .button-blue {
+    width: 100%;
+  }
+  
+  .button-blue {
+    margin-top: 10px;
+  }
+  
+  /* Dark mode adjustments */
+  .confirmation-page.dark .confirmation-buttons {
+    background-color: var(--black-500);
+    color: white;
+  }
+}

@@ -3,13 +3,31 @@ import { reducer } from "../reducer/reducer";
 import axios from "axios";
 
 const initialState = {
+  // theme: localStorage.getItem("theme") || "",
   theme: "",
-  activeTab: "edit-profile",
+  userFiltersTabs:{
+    activeTab: "edit-profile",
+    selectedFilters: "confirm"
+  }
+  ,
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
   isAuthenticated: false,
   isLoading: true,
   usuarioRoles: null,
+  activity: null,
+  reservation: JSON.parse(localStorage.getItem("reservation")) || [],
+  booking:{ 
+    theBooking: JSON.parse(localStorage.getItem("booking")) || [], 
+    isBooking: false},
+    urlRedirection: localStorage.getItem("urlRedirection") || "",
+    isAccessModal: false,
+    bookingModals:{
+      pastDate:"",
+      callEffect: false,
+      isActiveModal:true,  
+    }
+  
 };
 
 export const ContextGlobal = createContext();
@@ -41,7 +59,7 @@ export const ContextProvider = ({ children }) => {
                 },
               });
               const userData = response.data;
-              console.log("Datos del usuario obtenidos:", userData);
+              // console.log("Datos del usuario obtenidos:", userData);
 
               dispatch({
                 type: "LOGIN_USER",
@@ -70,6 +88,18 @@ export const ContextProvider = ({ children }) => {
       dispatch({ type: "STOP_LOADING" });
     }
   }, []);
+
+  useEffect(() => {
+    if (state.reservation) {
+      localStorage.setItem("reservation", JSON.stringify(state.reservation));
+    }
+  }, [state.reservation]);
+
+  useEffect(() => {
+    if (state.theme) {
+      localStorage.setItem("theme", state.theme);
+    }
+  }, [state.theme]);
 
   return (
     <ContextGlobal.Provider value={{ state, dispatch }}>

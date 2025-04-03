@@ -1,0 +1,89 @@
+.container-step3 {
+    margin: auto;
+    padding: 4rem 1rem;
+    width: min(90%, 1142px);
+    color: var(--Font-Background);
+  }
+  .columns-setp3{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .column-step3-right{
+    width: 70%;
+  }
+
+  .reservation-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--Background-components);
+    padding: 25px 15px;
+    border-radius: 25px;
+    margin: 20px 0;
+    box-shadow: var(--shadow-md);
+    border: solid 1px var(--Icons-gray-opacity);
+  }
+
+  .tour-info-container {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .tour-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  .tour-image {
+    width: 110px;
+    height: 110px;
+    border-radius: 5px;
+    margin-right: 15px;
+  }
+
+
+  .btn-purple {
+    background: #4b66ea;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .info-box {
+    background: var(--Background-components);
+    border: solid 1px var(--Icons-gray-opacity);
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+  }
+
+  .other-options{
+    margin-top: 20px;
+  }
+  .other-options a {
+    color: var(--blue-L-Yellow-D);
+    text-decoration: none;
+  }
+
+  .column-step3-tittle {
+    color: var(--Font-Background);
+    padding: 15px 0;
+
+  }
+
+  .column-step3-right p{
+    padding: 8px 0;
+  }
+
+
+  @media (max-width: 768px) {
+    .columns-setp3{
+      flex-direction: column;
+    }
+    .column-step3-right{
+      width: 100%;
+    }
+  }

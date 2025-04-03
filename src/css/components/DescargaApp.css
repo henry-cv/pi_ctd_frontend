@@ -1,0 +1,130 @@
+.layout-main {
+    position: absolute; 
+    background-image: url('/patrones_body/BannerApp.webp');
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center;
+    clip-path: inset(0% 0% 0% 0% round 25px);
+    width: 1050px;
+    height: 450px;
+    gap: 30px;
+    padding: 112px 225px;
+    
+  }
+
+  .title {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 42px;
+    color: var(--white);
+    text-align: center;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    color: var(--white);
+    text-align: center;
+    margin: 0;
+  }
+
+  .description {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    color: var(--white);
+    text-align: center;
+    margin: 0;
+  }
+
+  .highlight {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    color: var(--white);
+    text-align: center;
+  }
+ 
+  .download-button {
+    width: 174px;
+    height: 53px;
+    border-radius: 72px;
+    padding: 14px 25px;
+    background-color: #eec52d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .download-button a {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1;
+    color: #101828;
+    text-decoration: none;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 1024px){
+  .layout-main{
+    width: 95%;
+    height: 350px;
+  }
+
+}
+
+@media (max-width: 768px){
+  .layout-main{
+    background-image: url('/public/reserve_background_MD.webp');
+    width: 95%;
+    height: 467px !important;
+    padding: 110px 115px;
+  }
+
+}
+
+
+@media (max-width: 768px){
+  .layout-main{
+    background-image: url('/public/reserve_background_SM.webp');
+    width: 95%;
+    height: 440px ;
+    padding: 89px 36px;
+  }
+
+
+
+}
+
+.force-mobile {
+  position: static !important;
+  background-image: url('/public/reserve_background_SM.webp');
+  width:  100% !important;
+  max-width: 450px;
+  height: 420px !important;
+  padding: 89px 36px;
+}
+
+.position {
+  position: static !important;
+  width: 100% !important;
+  margin-top: 20px;
+ 
+}
+
+
+
+

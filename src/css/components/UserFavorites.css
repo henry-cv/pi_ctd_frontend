@@ -1,0 +1,116 @@
+.user-favorites-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .user-favorites-container h2 {
+    margin-bottom: 24px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .user-favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(335px, 1fr));
+    gap: 24px;
+    justify-content: center;
+  }
+  
+  /* Asegurarse de que las tarjetas tengan el ancho adecuado */
+  .user-favorites-grid .activity-link {
+    display: block;
+    width: 100%;
+  }
+  
+  .user-favorites-grid .activity-card {
+    width: 100% !important;
+    max-width: 335px;
+    margin: 0 auto;
+  }
+  
+  .user-favorites-loading,
+  .user-favorites-error,
+  .user-favorites-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .user-favorites-loading .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .user-favorites-error {
+    color: #e74c3c;
+  }
+  
+  .user-favorites-error button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .user-favorites-empty {
+    color: #7f8c8d;
+  }
+  
+  .user-favorites-empty h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  
+  .user-favorites-empty p {
+    max-width: 500px;
+    margin-bottom: 20px;
+  }
+  
+  .explore-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .explore-link:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .user-favorites-grid {
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .user-favorites-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .user-favorites-grid .activity-card {
+      max-width: 100%;
+    }
+  }

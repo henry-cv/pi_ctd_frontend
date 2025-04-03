@@ -21,7 +21,7 @@ export default function AccountMenu() {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
-  console.log("usuarios", user);
+  // console.log("usuarios", user);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

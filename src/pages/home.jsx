@@ -14,6 +14,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+import DescargaApp from "../components/DescargaApp";
+import InfoReservaBannerHome from "../components/InfoReservaBannerHome";
 
 const Home = () => {
   // Agregamos el estado global
@@ -50,7 +52,7 @@ const Home = () => {
         throw new Error("Error al obtener las actividades populares");
       }
       const data = await response.json();
-      console.log("Actividades populares obtenidas:", data);
+      // console.log("Actividades populares obtenidas:", data);
       setPopularActivities(data);
     } catch (error) {
       console.error("Error:", error.message);
@@ -148,6 +150,7 @@ const Home = () => {
             </h2>
             <div className="categories-grid">
               <Swiper
+              className="category-swiper"
                 modules={[Navigation, Pagination]}
                 slidesPerView={5}
                 spaceBetween={20}
@@ -203,48 +206,19 @@ const Home = () => {
         </section>
 
         {/* Nueva sección con fondo especial */}
+
+     
+        
+
         <section className="special-banner-section">
-          <div className="content-wrapper">
-            <picture>
-              <source
-                media="(max-width: 768px)"
-                srcSet={
-                  state.theme === "dark"
-                    ? "/patrones_body/adsbanner_body_mobile.webp"
-                    : "/patrones_body/adsbanner_body_mobile_lightMode.webp"
-                }
-              />
-              <source
-                media="(min-width: 769px)"
-                srcSet={
-                  state.theme === "dark"
-                    ? "/patrones_body/adsbanner_body.webp"
-                    : "/patrones_body/adsbanner_body_lightMode.webp"
-                }
-              />
-              <img
-                src={
-                  state.theme === "dark"
-                    ? "/patrones_body/adsbanner_body.webp"
-                    : "/patrones_body/adsbanner_body_lightMode.webp"
-                }
-                alt="Banner promocional"
-                className="banner-image"
-              />
-            </picture>
-          </div>
+        <InfoReservaBannerHome/>
+
+
         </section>
 
         <section className="second-banner-section">
-          <div className="content-wrapper">
-            <picture>
-              <img
-                src="/patrones_body/BannerApp.webp"
-                alt="Banner secundario"
-                className="second-banner-image"
-              />
-            </picture>
-          </div>
+        <DescargaApp />
+
         </section>
       </main>
       <Footer />

@@ -1,47 +1,70 @@
-import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import Pagination from "@mui/material/Pagination";
+// src/pages/FilterProducts.jsx
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import "../css/pages/FilterProducts.css";
 import NavDash from "../components/NavDash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faPlus, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
-import {
-  faMap,
-  faCalendarAlt,
-  faClock,
-} from "@fortawesome/free-regular-svg-icons";
-import DurationInfo from "../components/DurationInfo";
+import FilterHeader from "../components/FilterHeader";
+import FilterSidebar from "../components/FilterSidebar";
+import ProductsGrid from "../components/ProductsGrid";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useActivitiesData } from "../hooks/useActivitiesData";
+import { loadSingleDateAvailabilities, checkAvailabilityInRange } from "../services/availabilityService";
+import dayjs from "dayjs";
+import 'dayjs/locale/es';
 
-// MUI Components
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Rating from "@mui/material/Rating";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+// Configurar dayjs
+dayjs.locale('es');
+
+// Asegurar que el caché global está configurado
+if (!window.apiCache) {
+  window.apiCache = {
+    categories: null,
+    products: null,
+    suggestions: {},
+    lastApiCall: {},
+    minCallInterval: 500,
+    noResultsTerms: new Set(),
+    activePromises: {}
+  };
+}
 
 const FilterProducts = () => {
   const [searchParams] = useSearchParams();
-  const [activities, setActivities] = useState([]);
-  const [filteredActivities, setFilteredActivities] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sortType, setSortType] = useState("relevance");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 8;
-  const navigate = useNavigate();
-  const [isLoggedIn] = useState(false);
+  const searchTermFromURL = searchParams.get("searchTerm") || "";
+  const categoryParam = searchParams.get("categoria");
+  const initialCategories = categoryParam ? categoryParam.split(",") : [];
   
-  // Nuevos estados para filtros adicionales
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null);
+  // MUI theme
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#3E10DA",
+      },
+      secondary: {
+        main: "#EEC52D",
+      },
+    },
+  });
+
+  // Get data from custom hook
+  const {
+    activities,
+    categories,
+    searchOptions,
+    loading: dataLoading,
+    dataLoaded,
+    fetchSearchSuggestions,
+  } = useActivitiesData(searchTermFromURL);
+
+  // Estado para guardar datos de disponibilidad
+  const [availabilityData, setAvailabilityData] = useState({});
+  const [loadingAvailability, setLoadingAvailability] = useState(false);
+
+  // Filter state management
+  const [selectedCategories, setSelectedCategories] = useState(initialCategories);
+  const [sortType, setSortType] = useState("relevance");
+  const [searchTerm, setSearchTerm] = useState(searchTermFromURL);
+  const [dateRange, setDateRange] = useState([null, null]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [ratingFilters, setRatingFilters] = useState({
     five: false,
@@ -59,278 +82,171 @@ const FilterProducts = () => {
     spanish: false,
     english: false,
   });
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   
-  // Para autocompletado
-  const [searchOptions, setSearchOptions] = useState([]);
+  // Estado para las actividades filtradas
+  const [filteredActivities, setFilteredActivities] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [filterLoading, setFilterLoading] = useState(false);
 
-  // Tema personalizado para componentes MUI
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#3E10DA',
-      },
-      secondary: {
-        main: '#EEC52D',
-      },
-    },
-  });
-  
-  // Cargar categorías
+  // Cargar datos de disponibilidad para actividades de fecha única
   useEffect(() => {
-    const fetchCategories = async () => {
+    const loadAvailability = async () => {
+      if (!activities || activities.length === 0) return;
+      
+      const singleDateActivities = activities.filter(act => act.tipoEvento === 'FECHA_UNICA');
+      
+      if (singleDateActivities.length === 0) return;
+      
+      setLoadingAvailability(true);
+      
       try {
-        const response = await fetch("/api/categoria/listar");
-        if (!response.ok) {
-          throw new Error("Error al obtener categorías");
-        }
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  // Cargar actividades (solo al inicio)
-  useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/producto/listar");
-        if (!response.ok) {
-          throw new Error("Error al obtener actividades");
-        }
-        const data = await response.json();
-        setActivities(data);
+        console.log(`Cargando disponibilidad para ${singleDateActivities.length} actividades de fecha única...`);
+        const availabilityResults = await loadSingleDateAvailabilities(singleDateActivities);
         
-        // Crear opciones para el autocompletado
-        const options = [];
-        data.forEach(activity => {
-          if (activity.nombre) options.push({ label: activity.nombre, type: 'nombre' });
-          if (activity.ubicacion) {
-            const parts = activity.ubicacion.split(', ');
-            if (parts.length > 1) {
-              options.push({ label: parts[0], type: 'ciudad' });
-              options.push({ label: parts[1], type: 'pais' });
-            } else {
-              options.push({ label: activity.ubicacion, type: 'ubicacion' });
-            }
-          }
+        // Convertir a un objeto indexado por id de actividad
+        const availabilityMap = {};
+        availabilityResults.forEach(({ activity, availability }) => {
+          availabilityMap[activity.id] = availability;
         });
         
-        // Eliminar duplicados
-        const uniqueOptions = Array.from(new Set(options.map(opt => opt.label)))
-          .map(label => options.find(opt => opt.label === label));
-        
-        setSearchOptions(uniqueOptions);
+        setAvailabilityData(availabilityMap);
+        console.log("Disponibilidad cargada:", availabilityMap);
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error al cargar datos de disponibilidad:", error);
       } finally {
-        setLoading(false);
+        setLoadingAvailability(false);
       }
     };
-
-    fetchActivities();
-  }, []);
-
-  // Efecto para manejar parámetros de URL
-  useEffect(() => {
-    const categoryParam = searchParams.get("categoria");
-    if (categoryParam) {
-      const categoriesFromUrl = categoryParam.split(",");
-      setSelectedCategories(categoriesFromUrl);
-    }
-  }, [searchParams]);
-
-  // Aplicar filtros cuando cambian las selecciones
-  useEffect(() => {
-    if (activities.length > 0) {
-      applyFilters();
-    }
-  }, [
-    activities, 
-    selectedCategories, 
-    sortType, 
-    searchTerm, 
-    selectedDate, 
-    priceRange, 
-    ratingFilters, 
-    durationFilters, 
-    languageFilters
-  ]);
-
-  // Función para aplicar filtros
-  const applyFilters = () => {
-    let filtered = [...activities];
     
-    // Filtrar por término de búsqueda
-    if (searchTerm) {
-      filtered = filtered.filter(item => 
-        item.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        item.ubicacion?.toLowerCase().includes(searchTerm.toLowerCase())
+    loadAvailability();
+  }, [activities]);
+
+  // Función para aplicar todos los filtros
+  const applyFilters = useCallback(async () => {
+    console.log("Aplicando filtros...");
+    setFilterLoading(true);
+    
+    let result = [...activities];
+    console.log(`Total de actividades: ${result.length}`);
+    
+    // Filtrar por búsqueda
+    if (searchTerm && searchTerm.trim().length > 0) {
+      const term = searchTerm.trim().toLowerCase();
+      result = result.filter(activity => 
+        activity.nombre.toLowerCase().includes(term) ||
+        (activity.descripcion && activity.descripcion.toLowerCase().includes(term))
       );
-    }
-    
-    // Filtrar por fecha (si se implementa en el backend)
-    if (selectedDate) {
-      // Implementar lógica para filtrar por fecha cuando esté disponible
+      console.log(`Después de filtrado por término "${term}": ${result.length}`);
     }
     
     // Filtrar por categorías
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(item => {
-        // Si es un array de categorías
-        if (Array.isArray(item.categorias)) {
-          return item.categorias.some(cat => selectedCategories.includes(cat.nombre));
-        }
-        // Si es una sola categoría en formato objeto
-        else if (item.categoria && item.categoria.nombre) {
-          return selectedCategories.includes(item.categoria.nombre);
-        }
-        // Si es una categoría en formato string
-        else if (typeof item.categoria === 'string') {
-          return selectedCategories.includes(item.categoria);
-        }
-        return false;
+      result = result.filter(activity => {
+        if (!activity.categorias) return false;
+        return activity.categorias.some(cat => 
+          selectedCategories.includes(cat.nombre)
+        );
       });
+      console.log(`Después de filtrado por categorías: ${result.length}`);
     }
     
-    // Filtrar por rango de precio
-    filtered = filtered.filter(item => 
-      item.valorTarifa >= priceRange[0] && item.valorTarifa <= priceRange[1]
+    // Filtrar por rango de fechas
+    if (dateRange[0] && dateRange[1]) {
+      console.log("Filtrando por fechas:", dateRange[0].format('YYYY-MM-DD'), "a", dateRange[1].format('YYYY-MM-DD'));
+      
+      // Para cada actividad, verificar disponibilidad en rango
+      const availabilityPromises = result.map(activity => 
+        checkAvailabilityInRange(
+          activity, 
+          dateRange, 
+          activity.tipoEvento === 'FECHA_UNICA' ? availabilityData[activity.id] : null
+        )
+      );
+      
+      const availabilityResults = await Promise.all(availabilityPromises);
+      
+      // Filtrar actividades basado en resultados de disponibilidad
+      result = result.filter((_, index) => availabilityResults[index]);
+      
+      console.log(`Después de filtrado por fechas: ${result.length}`);
+    }
+    
+    // Filtrar por precio
+    result = result.filter(
+      (item) =>
+        item.valorTarifa >= priceRange[0] && item.valorTarifa <= priceRange[1]
     );
+    console.log(`Después de filtrado por precio: ${result.length}`);
     
-    // Filtrar por calificación
-    const hasRatingFilter = ratingFilters.five || ratingFilters.four || ratingFilters.three;
-
-    if (hasRatingFilter) {
-      filtered = filtered.filter(item => {
-        // Usar 4.5 como valor por defecto ya que es el rating hardcodeado actual
-        const rating = item.puntuacion || 4.5;
-        
-        return (ratingFilters.five && rating >= 5) || 
-               (ratingFilters.four && rating >= 4 && rating < 5) ||
-               (ratingFilters.three && rating >= 3 && rating < 4);
-      });
-    }
+    // Aplicar otros filtros...
     
-    // Filtrar por duración
-    const hasDurationFilter = Object.values(durationFilters).some(Boolean);
-    
-    if (hasDurationFilter) {
-      filtered = filtered.filter(item => {
-        let duration = 0;
-        
-        // Calcular duración en horas basado en horaInicio y horaFin
-        if (item.horaInicio && item.horaFin) {
-          const start = new Date(`2000-01-01T${item.horaInicio}`);
-          const end = new Date(`2000-01-01T${item.horaFin}`);
-          duration = (end - start) / (1000 * 60 * 60); // en horas
-          
-          if (end < start) {
-            duration += 24; // Si termina al día siguiente
-          }
-        }
-        
-        return (durationFilters.upToOneHour && duration <= 1) ||
-               (durationFilters.oneToFourHours && duration > 1 && duration <= 4) ||
-               (durationFilters.fourHoursToOneDay && duration > 4 && duration <= 24) ||
-               (durationFilters.oneDayToThreeDays && duration > 24 && duration <= 72) ||
-               (durationFilters.moreThanThreeDays && duration > 72);
-      });
-    }
-    
-    // Filtrar por idioma (si está disponible)
-    const hasLanguageFilter = languageFilters.spanish || languageFilters.english;
-
-    if (hasLanguageFilter && activities.some(item => item.idioma)) {
-      filtered = filtered.filter(item => {
-        if (!item.idioma) return false;
-        
-        const idioma = item.idioma.toLowerCase(); // Normalizar el idioma a minúsculas
-        return (languageFilters.spanish && 
-                (idioma === 'español' || idioma === 'espanol' || idioma === 'spanish')) ||
-               (languageFilters.english && 
-                (idioma === 'inglés' || idioma === 'ingles' || idioma === 'english'));
-      });
-    }
-    
-    // Aplicar ordenamiento
+    // Ordenar resultados
     switch (sortType) {
       case "highPrice":
-        filtered.sort((a, b) => b.valorTarifa - a.valorTarifa);
+        result.sort((a, b) => b.valorTarifa - a.valorTarifa);
         break;
       case "lowPrice":
-        filtered.sort((a, b) => a.valorTarifa - b.valorTarifa);
+        result.sort((a, b) => a.valorTarifa - b.valorTarifa);
         break;
       case "relevance":
       default:
-        filtered.sort((a, b) => (b.puntuacion || 0) - (a.puntuacion || 0));
+        result.sort((a, b) => (b.puntuacion || 0) - (a.puntuacion || 0));
         break;
     }
     
-    setFilteredActivities(filtered);
-    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
-    setCurrentPage(1);
-  };
+    // Actualizar estado
+    setFilteredActivities(result);
+    setTotalPages(Math.max(1, Math.ceil(result.length / itemsPerPage)));
+    setFilterLoading(false);
+  }, [activities, searchTerm, selectedCategories, dateRange, priceRange, ratingFilters, durationFilters, languageFilters, sortType, itemsPerPage, availabilityData]);
   
-  // Manejar cambio de página
+  // Aplicar filtros cuando cambian los datos o los criterios de filtrado
+  useEffect(() => {
+    if (activities.length > 0) {
+      applyFilters();
+    }
+  }, [activities, searchTerm, selectedCategories, dateRange, priceRange, ratingFilters, durationFilters, languageFilters, sortType, applyFilters, availabilityData]);
+
+  // Handle page change
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  
-  // Manejar cambio de ordenamiento
-  const handleSortChange = (e) => {
-    setSortType(e.target.value);
-  };
-  
-  // Remover categoría seleccionada
-  const removeCategory = (category) => {
-    setSelectedCategories(prev => 
-      prev.filter(cat => cat !== category)
-    );
-  };
-  
-  // Toggle categoría
-  const toggleCategory = (categoryName) => {
-    if (selectedCategories.includes(categoryName)) {
-      removeCategory(categoryName);
-    } else {
-      setSelectedCategories(prev => [...prev, categoryName]);
+
+  // Handle search change with debouncing
+  const handleSearchChange = (event, newValue) => {
+    if (searchTerm === newValue) return;
+    setSearchTerm(newValue);
+    
+    if (newValue && newValue.trim().length >= 2) {
+      fetchSearchSuggestions(newValue);
     }
   };
 
-  // Manejar cambio en filtro de calificación
-  const handleRatingFilterChange = (filter) => {
-    setRatingFilters(prev => ({
-      ...prev,
-      [filter]: !prev[filter]
-    }));
+  // Toggle category selection
+  const toggleCategory = (categoryName) => {
+    setSelectedCategories((prev) =>
+      prev.includes(categoryName)
+        ? prev.filter((cat) => cat !== categoryName)
+        : [...prev, categoryName]
+    );
   };
 
-  // Manejar cambio en filtro de duración
-  const handleDurationFilterChange = (filter) => {
-    setDurationFilters(prev => ({
-      ...prev,
-      [filter]: !prev[filter]
-    }));
+  // Remove a single category
+  const removeCategory = (categoryName) => {
+    setSelectedCategories((prev) =>
+      prev.filter((cat) => cat !== categoryName)
+    );
   };
 
-  // Manejar cambio en filtro de idioma
-  const handleLanguageFilterChange = (filter) => {
-    setLanguageFilters(prev => ({
-      ...prev,
-      [filter]: !prev[filter]
-    }));
-  };
-
-  // Función para restablecer todos los filtros a sus valores iniciales
+  // Reset all filters
   const handleResetFilters = () => {
-    setSearchTerm('');
-    setSelectedDate(null);
+    setSearchTerm("");
+    setDateRange([null, null]);
     setPriceRange([0, 10000]);
     setRatingFilters({
       five: false,
@@ -353,361 +269,86 @@ const FilterProducts = () => {
     setCurrentPage(1);
   };
 
-  // Calcular actividades para la página actual
+  // Calculate activities for current page
   const currentActivities = filteredActivities.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Imagen por defecto en caso de error o sin imagen
-  const defaultImage = "/activitie.webp";
-  const handleImageError = (e) => {
-    e.target.src = defaultImage;
-  };
-  
+  // Debug para fechas
+  useEffect(() => {
+    if (dateRange[0] && dateRange[1]) {
+      console.log("Rango de fechas actualizado:", 
+        dateRange[0].format('YYYY-MM-DD'), 
+        "a", 
+        dateRange[1].format('YYYY-MM-DD')
+      );
+    }
+  }, [dateRange]);
+
   return (
     <ThemeProvider theme={theme}>
       <div className="filter-products-page">
         <header className="header-filter">
-          <NavDash variant="standard" isLoggedIn={isLoggedIn} />
+          <NavDash variant="standard" isLoggedIn={false} />
         </header>
-        
+
         <div className="filter-container">
-          <div className="filter-header">
-            <h1 className="results-title">
-              {filteredActivities.length} resultados de 
-              {selectedCategories.length > 0 ? (
-                <div className="selected-categories">
-                  {selectedCategories.map(cat => (
-                    <span key={cat} className="category-tag">
-                      {cat} <button onClick={() => removeCategory(cat)}>×</button>
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                " todas las categorías"
-              )}
-            </h1>
-            <div className="sort-container">
-              <select value={sortType} onChange={handleSortChange} className="sort-select">
-                <option value="relevance">Más relevantes</option>
-                <option value="highPrice">Mayor precio</option>
-                <option value="lowPrice">Menor precio</option>
-              </select>
-            </div>
-          </div>
-          
+          <FilterHeader 
+            filteredActivities={filteredActivities}
+            selectedCategories={selectedCategories}
+            removeCategory={removeCategory}
+            sortType={sortType}
+            setSortType={setSortType}
+          />
+
           <div className="filter-content">
-            <div className="filter-sidebar">
-              <div className="filter-header-section">
-                <h3>Filtrar por</h3>
-                <button 
-                  className="reset-filters-btn" 
-                  onClick={handleResetFilters}
-                >
-                  Limpiar
-                </button>
-              </div>
-              
-              {/* Campo de búsqueda */}
-              <div className="filter-section">
-                <h4>Búsqueda</h4>
-                <Autocomplete
-                  freeSolo
-                  id="search-autocomplete"
-                  options={searchOptions}
-                  getOptionLabel={(option) => typeof option === 'string' ? option : option.label}
-                  onChange={(event, value) => setSearchTerm(value ? (typeof value === 'string' ? value : value.label) : '')}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder="Buscar actividades"
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      InputProps={{
-                        ...params.InputProps,
-                        startAdornment: (
-                          <FontAwesomeIcon icon={faSearch} style={{ marginRight: 8, color: '#3E10DA' }} />
-                        )
-                      }}
-                    />
-                  )}
-                  className="search-field"
-                />
-              </div>
-              
-              {/* Campo de fecha */}
-              <div className="filter-section">
-                <h4>Fecha</h4>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Seleccionar fecha"
-                    value={selectedDate}
-                    onChange={(newDate) => setSelectedDate(newDate)}
-                    renderInput={(params) => <TextField {...params} size="small" fullWidth />}
-                    className="date-picker"
-                  />
-                </LocalizationProvider>
-              </div>
-              
-              {/* Campo de categorías */}
-              <div className="filter-section">
-                <h4>Categorías</h4>
-                <div className="category-bubbles">
-                  {categories.map(category => (
-                    <div 
-                      key={category.id}
-                      className={`category-bubble ${selectedCategories.includes(category.nombre) ? 'selected' : ''}`}
-                      onClick={() => toggleCategory(category.nombre)}
-                    >
-                      {category.nombre}
-                      {selectedCategories.includes(category.nombre) ? (
-                        <FontAwesomeIcon icon={faTimes} className="category-icon" />
-                      ) : (
-                        <FontAwesomeIcon icon={faPlus} className="category-icon" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Campo de rango de precio */}
-              <div className="filter-section">
-                <h4>Precio</h4>
-                <Box className="price-slider-container">
-                  <Slider
-                    value={priceRange}
-                    onChange={(event, newValue) => setPriceRange(newValue)}
-                    valueLabelDisplay="auto"
-                    min={0}
-                    max={10000}
-                    step={100}
-                    color="primary"
-                  />
-                  <div className="price-range-labels">
-                    <span>${priceRange[0]}</span>
-                    <span>${priceRange[1]}</span>
-                  </div>
-                </Box>
-              </div>
-              
-              {/* Campo de calificación */}
-              <div className="filter-section">
-                <h4>Calificación</h4>
-                <div className="rating-filters">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={ratingFilters.five}
-                        onChange={() => handleRatingFilterChange('five')}
-                        name="five-stars"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <div className="rating-label">
-                        <Rating value={5} readOnly size="small" />
-                      </div>
-                    }
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={ratingFilters.four}
-                        onChange={() => handleRatingFilterChange('four')}
-                        name="four-stars"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <div className="rating-label">
-                        <Rating value={4} readOnly size="small" />
-                      </div>
-                    }
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={ratingFilters.three}
-                        onChange={() => handleRatingFilterChange('three')}
-                        name="three-stars"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <div className="rating-label">
-                        <Rating value={3} readOnly size="small" />
-                      </div>
-                    }
-                  />
-                </div>
-              </div>
-              
-              {/* Campo de duración */}
-              <div className="filter-section">
-                <h4>Duración</h4>
-                <div className="duration-filters">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.upToOneHour}
-                        onChange={() => handleDurationFilterChange('upToOneHour')}
-                        name="up-to-one-hour"
-                        color="primary"
-                      />
-                    }
-                    label="Hasta 1 hora"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.oneToFourHours}
-                        onChange={() => handleDurationFilterChange('oneToFourHours')}
-                        name="one-to-four-hours"
-                        color="primary"
-                      />
-                    }
-                    label="1 a 4 horas"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.fourHoursToOneDay}
-                        onChange={() => handleDurationFilterChange('fourHoursToOneDay')}
-                        name="four-hours-to-one-day"
-                        color="primary"
-                      />
-                    }
-                    label="4 horas a 1 día"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.oneDayToThreeDays}
-                        onChange={() => handleDurationFilterChange('oneDayToThreeDays')}
-                        name="one-day-to-three-days"
-                        color="primary"
-                      />
-                    }
-                    label="1 día a 3 días"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={durationFilters.moreThanThreeDays}
-                        onChange={() => handleDurationFilterChange('moreThanThreeDays')}
-                        name="more-than-three-days"
-                        color="primary"
-                      />
-                    }
-                    label="+3 días"
-                  />
-                </div>
-              </div>
-              
-              {/* Campo de idioma */}
-              <div className="filter-section">
-                <h4>Idioma</h4>
-                <div className="language-filters">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={languageFilters.spanish}
-                        onChange={() => handleLanguageFilterChange('spanish')}
-                        name="spanish"
-                        color="primary"
-                      />
-                    }
-                    label="Español"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={languageFilters.english}
-                        onChange={() => handleLanguageFilterChange('english')}
-                        name="english"
-                        color="primary"
-                      />
-                    }
-                    label="Inglés"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* Contenido principal (actividades) */}
-            <div className="products-grid">
-              {/* El resto del código de actividades permanece igual */}
-              {loading ? (
-                <p className="loading-message">Cargando actividades...</p>
-              ) : currentActivities.length > 0 ? (
-                <div className="activities-container">
-                  {currentActivities.map(activity => (
-                    <div key={activity.id} className="activity-card-container" onClick={() => navigate(`/actividad/${activity.id}`)}>
-                      {/* Contenido de las cards (mantiene el mismo) */}
-                      <div className="activity-card">
-                        <div className="activity-image-container">
-                          <img 
-                            src={activity.productoImagenesSalidaDto?.[0]?.rutaImagen ||
-                              "/activitie.webp"} 
-                            alt={activity.nombre} 
-                            className="activity-image"
-                            onError={handleImageError}
-                          />
-                        </div>
-                        <div className="activity-content">
-                          <h3 className="activity-title">{activity.nombre}</h3>
-                          <div className="activity-details">
-                            <span className="activity-location">
-                              <FontAwesomeIcon icon={faMap} />
-                              {activity.ubicacion || 'Ubicación no disponible'}
-                            </span>
-                            <span className="activity-duration">
-                              {activity.tipoEvento === "FECHA_UNICA" ? (
-                                <FontAwesomeIcon icon={faClock} />
-                              ) : (
-                                <FontAwesomeIcon icon={faCalendarAlt} />
-                              )}
-                              <DurationInfo
-                                tipoEvento={activity.tipoEvento}
-                                horaInicio={activity.horaInicio}
-                                horaFin={activity.horaFin}
-                                diasDisponible={activity.diasDisponible}
-                              />
-                            </span>
-                          </div>
-                          <div className="activity-footer">
-                            <span className="activity-price">${activity.valorTarifa}</span>
-                            <span className="activity-rating">
-                              <FontAwesomeIcon icon={faStar} />
-                              {activity.puntuacion || 4.5}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="no-results">No se encontraron actividades con los filtros seleccionados.</p>
-              )}
-              
-              {/* Paginación */}
-              {filteredActivities.length > itemsPerPage && (
-                <div className="pagination-container">
-                  <Pagination 
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    color="primary"
-                    size="large"
-                    shape="circular"
-                    className="custom-pagination"
-                  />
-                </div>
-              )}
-            </div>
+            <FilterSidebar
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+              searchOptions={searchOptions}
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              categories={categories}
+              selectedCategories={selectedCategories}
+              toggleCategory={toggleCategory}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              ratingFilters={ratingFilters}
+              handleRatingFilterChange={(filterName) => {
+                setRatingFilters(prev => ({
+                  ...prev,
+                  [filterName]: !prev[filterName]
+                }));
+              }}
+              durationFilters={durationFilters}
+              handleDurationFilterChange={(filterName) => {
+                setDurationFilters(prev => ({
+                  ...prev,
+                  [filterName]: !prev[filterName]
+                }));
+              }}
+              languageFilters={languageFilters}
+              handleLanguageFilterChange={(filterName) => {
+                setLanguageFilters(prev => ({
+                  ...prev,
+                  [filterName]: !prev[filterName]
+                }));
+              }}
+              handleResetFilters={handleResetFilters}
+            />
+
+            <ProductsGrid
+              loading={dataLoading || filterLoading || loadingAvailability}
+              dataLoaded={dataLoaded}
+              currentActivities={currentActivities}
+              filteredActivities={filteredActivities}
+              itemsPerPage={itemsPerPage}
+              totalPages={totalPages}
+              currentPage={currentPage}
+              handlePageChange={handlePageChange}
+              searchTerm={searchTerm}
+            />
           </div>
         </div>
       </div>

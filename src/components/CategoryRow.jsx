@@ -2,12 +2,31 @@ import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import PropTypes from 'prop-types';
 import { useContextGlobal } from "../gContext/globalContext";
+import Swal from "sweetalert2";
+import "../css/components/DeleteUSer.css"
 
-const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
+const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete, onUpdate }) => {
   const { state } = useContextGlobal();
   //console.log(`Imagen: ${imagenCategoriaUrl}`);
+
   const handleDelete = async () => {
-    if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
+
+    const result = await Swal.fire({
+      title: "¿Deseas eliminar esta categoría?",
+      text: "Esta acción no se puede deshacer. La categoría se eliminará permanentemente.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      customClass: {
+        popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+        confirmButton: "custom-button",
+        cancelButton: "swal2-cancel",
+      }
+    });
+
+
+    if (result.isConfirmed) {
       try {
         const token = state.token || localStorage.getItem("token");
 
@@ -20,10 +39,32 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
         if (!response.ok) {
           throw new Error(`Error al eliminar: ${response.status}`);
         }
+
+        Swal.fire({
+          title: "¡Categoría eliminada!",
+          text: "La categoría ha sido eliminada exitosamente.",
+          icon: "success",
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          customClass: {
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+          }
+        });
+
         onDelete && onDelete(id);
       } catch (error) {
         console.error("Error eliminando la categoría:", error);
-        alert("Error eliminando la categoría");
+        Swal.fire({
+          title: "Error",
+          text: `Ocurrió un problema al eliminar la categoría: ${error.message}`,
+          icon: "error",
+          timer: 4000,
+          showConfirmButton: false,
+          customClass: {
+            popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
+          }
+        });
       }
     }
   };
@@ -36,7 +77,7 @@ const CategoryRow = ({ id, nombre, imagenCategoriaUrl, onDelete }) => {
         <p>{nombre}</p>
       </div>
       <div className="btn_action">
-        <button className="btn_blueAction">
+        <button className="btn_blueAction" onClick={onUpdate} >
           <FaEdit size={"1.2rem"} />
         </button>
         <button className="btn_redAction" onClick={handleDelete}>
@@ -52,6 +93,7 @@ CategoryRow.propTypes = {
   nombre: PropTypes.string.isRequired,
   descripcion: PropTypes.string.isRequired,
   imagenCategoriaUrl: PropTypes.string.isRequired,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onUpdate: PropTypes.func,
 };
 export default CategoryRow
