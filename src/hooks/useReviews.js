@@ -20,33 +20,93 @@ export function useReviews(productoId) {
 	const { state } = useContextGlobal();
 	const [canReview, setCanReview] = useState(false);
 	const [reservaId, setReservaId] = useState(null);
+	// Nuevo estado para rastrear si el usuario ya dejó una reseña
+	const [userHasReviewed, setUserHasReviewed] = useState(false);
 
-	// Cargar reseñas
+	// Un solo efecto para cargar reseñas y verificar si el usuario puede dejar reseña
 	useEffect(() => {
-		const fetchReviews = async () => {
-			try {
-				console.log(`Obteniendo reseñas para actividad ID: ${productoId}`);
-				setLoading(true);
-				const response = await fetch(`/api/reserva/resenas/${productoId}`);
-				console.log(`Respuesta API status: ${response.status}`);
+		const loadData = async () => {
+			setLoading(true);
 
-				if (!response.ok) {
-					throw new Error(`Error al obtener reseñas: ${response.status}`);
+			try {
+				// Paso 1: Cargar las reseñas
+				console.log(`Obteniendo reseñas para actividad ID: ${productoId}`);
+				const reviewsResponse = await fetch(`/api/reserva/resenas/${productoId}`);
+				console.log(`Respuesta API status: ${reviewsResponse.status}`);
+
+				let yaDejoResena = false;
+
+				if (reviewsResponse.ok) {
+					const data = await reviewsResponse.json();
+					console.log("Datos recibidos de la API:", data);
+
+					if (data && data.resenas) {
+						const transformedReviews = transformReviewsData(data.resenas);
+						setReviews(transformedReviews);
+						setRatingStats(calculateStats(data));
+
+						// Verificar si el usuario actual ya dejó una reseña
+						if (state.user) {
+							const userFullName = `${state.user.nombre} ${state.user.apellido}`.trim();
+							console.log("Nombre completo del usuario actual:", userFullName);
+
+							yaDejoResena = data.resenas.some(review => {
+								const matches = review.nombreUsuario &&
+									review.nombreUsuario.toLowerCase().includes(state.user.nombre.toLowerCase());
+
+								if (matches) {
+									console.log("¡Coincidencia encontrada! Este usuario ya dejó una reseña");
+								}
+
+								return matches;
+							});
+
+							setUserHasReviewed(yaDejoResena);
+							console.log(`¿Usuario ya dejó reseña para producto ${productoId}?: ${yaDejoResena}`);
+						}
+					} else {
+						setReviews([]);
+						resetStats();
+					}
 				}
 
-				const data = await response.json();
-				console.log("Datos recibidos de la API:", data);
+				// Paso 2: Si el usuario no ha dejado reseña, verificar si tiene reserva
+				if (state.user && !yaDejoResena) {
+					const token = localStorage.getItem("token");
+					if (!token) {
+						console.error("No hay token disponible para verificar reservas");
+						return;
+					}
 
-				if (data && data.resenas) {
-					const transformedReviews = transformReviewsData(data.resenas);
-					setReviews(transformedReviews);
-					setRatingStats(calculateStats(data));
+					const reservasResponse = await fetch(`/api/reserva/usuario/${state.user.email}`, {
+						headers: { Authorization: `Bearer ${token}` }
+					});
+
+					console.log(`Verificando reservas: status ${reservasResponse.status}`);
+
+					if (reservasResponse.ok) {
+						const reservas = await reservasResponse.json();
+						console.log("Reservas del usuario:", reservas);
+
+						const { tieneReserva, reservaEncontrada } = verificarReservaProducto(reservas, productoId);
+
+						if (reservaEncontrada) {
+							console.log(`Reserva encontrada para dejar reseña: ID ${reservaEncontrada.id}`);
+							setReservaId(reservaEncontrada.id);
+						}
+
+						setCanReview(tieneReserva && !yaDejoResena);
+						console.log(`¿Usuario puede dejar reseña para producto ${productoId}?: ${tieneReserva && !yaDejoResena}`);
+					}
 				} else {
-					setReviews([]);
-					resetStats();
+					// Si ya dejó reseña, no puede dejar otra
+					if (yaDejoResena) {
+						console.log("Usuario ya dejó reseña, deshabilitando botón");
+						setCanReview(false);
+					}
 				}
 			} catch (error) {
-				console.error("Error al cargar reseñas:", error);
+				console.error("Error al cargar datos:", error);
 				setError(error.message);
 			} finally {
 				setLoading(false);
@@ -54,67 +114,8 @@ export function useReviews(productoId) {
 		};
 
 		if (productoId) {
-			fetchReviews();
+			loadData();
 		}
-	}, [productoId]);
-
-	// Verificar si el usuario puede dejar reseña
-	useEffect(() => {
-		const checkUserCanReview = async () => {
-			if (!state.user || !productoId) return;
-
-			try {
-				const token = localStorage.getItem("token");
-				if (!token) {
-					console.error("No hay token disponible para verificar reservas");
-					return;
-				}
-
-				const response = await fetch(
-					`/api/reserva/usuario/${state.user.email}`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					},
-				);
-
-				console.log(`Verificando reservas: status ${response.status}`);
-
-				if (response.ok) {
-					const reservas = await response.json();
-					console.log("Reservas del usuario:", reservas);
-
-					const { tieneReserva, reservaEncontrada } = verificarReservaProducto(
-						reservas,
-						productoId,
-					);
-
-					if (reservaEncontrada) {
-						console.log(
-							`Reserva encontrada para dejar reseña: ID ${reservaEncontrada.id}`,
-						);
-						setReservaId(reservaEncontrada.id);
-					}
-
-					console.log(
-						`¿Usuario puede dejar reseña para producto ${productoId}?: ${tieneReserva}`,
-					);
-					setCanReview(tieneReserva);
-				} else {
-					console.error(
-						`Error ${response.status}: No se pudo obtener las reservas del usuario`,
-					);
-				}
-			} catch (error) {
-				console.error(
-					"Error al verificar si el usuario puede dejar reseña:",
-					error,
-				);
-			}
-		};
-
-		checkUserCanReview();
 	}, [productoId, state.user]);
 
 	// Enviar una nueva reseña
@@ -265,5 +266,6 @@ export function useReviews(productoId) {
 		reservaId,
 		submitReview,
 		reloadReviews,
+		userHasReviewed, // Exponer el nuevo estado
 	};
 }

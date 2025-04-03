@@ -10,10 +10,24 @@ export function useReviewForm(submitReviewFn, reservaId) {
 	const [submitError, setSubmitError] = useState(null);
 
 	const handleOpenModal = (canReview, user) => {
-		if (!canReview || !user) {
-			alert("Solo puedes escribir una reseña si has reservado esta actividad.");
+		if (!user) {
+			alert("Debes iniciar sesión para escribir una reseña.");
 			return;
 		}
+
+		if (!canReview) {
+			if (user) {
+				alert(
+					"No puedes escribir una reseña porque ya has dejado una opinión o no has reservado esta actividad.",
+				);
+			} else {
+				alert(
+					"Solo puedes escribir una reseña si has reservado esta actividad.",
+				);
+			}
+			return;
+		}
+
 		setIsModalOpen(true);
 	};
 

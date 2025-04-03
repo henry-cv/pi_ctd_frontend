@@ -309,6 +309,15 @@
 	color: white;
 }
 
+/* Mensaje informativo de reseña */
+.review-info-message {
+	font-size: 0.85rem;
+	color: #616161;
+	margin-top: 0.5rem;
+	text-align: center;
+	font-style: italic;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
 	.review-modal {
