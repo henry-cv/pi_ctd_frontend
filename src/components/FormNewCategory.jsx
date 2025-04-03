@@ -12,23 +12,17 @@ import { useContextGlobal } from "../gContext/globalContext";
 import PropTypes from "prop-types";
 
 const FormNewCategory = ({ isEditMode = false }) => {
-
   const location = useLocation();
   const categoryId = location.state?.categoryId || null;
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const [category, setCategory] = useState("");
   const [errorCategory, setErrorCategory] = useState("");
-
   const [description, setDescription] = useState("");
   const [errorDescription, setErrorDescription] = useState("");
-
-  const [selectedImage, setSelectedImage] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [existingImage, setExistingImage] = useState("");
   const [deleteExistingImage, setDeleteExistingImage] = useState(false);
-
   const [errorFile, setErrorFile] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { state } = useContextGlobal();
@@ -63,7 +57,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
     setDeleteExistingImage(isChecked);
     if (isChecked) {
       setExistingImage(""); // Oculta la imagen actual
-      setSelectedImage([]); // Limpia imágenes anteriores
+      setSelectedImage(null); // Limpia imágenes anteriores
     }
   };
 
@@ -73,21 +67,28 @@ const FormNewCategory = ({ isEditMode = false }) => {
   };
 
   // Nueva función para manejar las imágenes seleccionadas
-  const handleImageSelected = (files) => {
+  const handleImageSelected = (file) => {
+    if (!file) {
+      setErrorFile("Debe seleccionar una imagen válida.");
+      return;
+    }
+    setErrorFile("");
+    setSelectedImage(file); // Ya no es un array
+  };
+
+  /* const handleImageSelected = (files) => {
     console.log("files recibido:", files);
 
     if (!files) {
-        setErrorFile("Debe seleccionar al menos una imagen válida.");
-        return;
+      setErrorFile("Debe seleccionar al menos una imagen válida.");
+      return;
     }
 
     // Si es un solo archivo, lo convertimos en un array
     const normalizedFiles = Array.isArray(files) ? files : [files];
     setErrorFile("");
     setSelectedImage(normalizedFiles);
-  };
-
-
+  }; */
   // useEffect para buscar categoría por Id y cargarla en el formulario
   useEffect(() => {
     const fetchCategory = async () => {
@@ -96,7 +97,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
         try {
           const response = await fetch(`/api/categoria/${categoryId}`);
           if (!response.ok) {
-            throw new Error(`Error al cargar la actividad: ${response.status}`);
+            throw new Error(`Error al cargar la categoría: ${response.status}`);
           }
           const data = await response.json();
           // console.log("Categoría cargada:", data);
@@ -110,7 +111,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
           console.error("Error cargando categoría:", error);
           Swal.fire({
             title: "Error",
-            text: "No se pudo cargar la categoría. Por favor, inténtalo nuevamente.",
+            text: "No se pudo cargar la categoría.",
             icon: "error",
             customClass: {
               popup: `swal2-popup ${state.theme ? "swal2-dark" : ""}`,
@@ -124,7 +125,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
     };
 
     fetchCategory();
-  }, [categoryId]); // Eliminada la dependencia innecesaria `navigate`
+  }, [categoryId, navigate]); // Eliminada la dependencia innecesaria `navigate`
 
 
   //Manejador del Evento Submit del Formulario
@@ -152,9 +153,8 @@ const FormNewCategory = ({ isEditMode = false }) => {
       showErrorAlert("Por favor, ingresa los datos correctamente en el formulario antes de enviar.");
       return;
     }
-
-    if (!isEditMode && selectedImage.length === 0) {
-      showErrorAlert("Falta imagen", "Debe seleccionar al menos una imagen para la nueva categoría.");
+    if (!isEditMode && !selectedImage) {
+      showErrorAlert("Falta imagen", "Debe seleccionar una imagen para la nueva categoría.");
       return;
     }
 
@@ -168,7 +168,6 @@ const FormNewCategory = ({ isEditMode = false }) => {
     const categoryData = {
       nombre: category,
       descripcion: description
-
     };
     console.log("Datos a enviar:", JSON.stringify(categoryData));
 
@@ -187,19 +186,18 @@ const FormNewCategory = ({ isEditMode = false }) => {
     if (isEditMode && deleteExistingImage) {
       // Si el formulario está en modo editar y el usuario ha seleccionado el checkbox para reemplazar la imagen existente
       // Solo agregar la nueva imagen seleccionada
-      selectedImage.forEach((file) => {
-        formData.append("imagenCategoria", file);
-      });
+      if (selectedImage !== null) {
+        formData.append("imagenCategoria", selectedImage);
+      }
+
       // Agregar un campo adicional para indicar que se desea reemplazar la imagen existente
       formData.append("replaceExistingImage", "true");
       // Agregar la clave de la imagen existente
       formData.append("existingImageKey", existingImage);
-    } else {
+    } else if (selectedImage) {
       // Si no se desea reemplazar la imagen existente o el formulario no está en modo editar
       // Agregar cada imagen seleccionada
-      selectedImage.forEach((file) => {
-        formData.append("imagenCategoria", file);
-      });
+      formData.append("imagenCategoria", selectedImage);
     }
 
     console.log(`--->${categoryData}<---`)
@@ -229,7 +227,6 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
       const data = await response.json();
       console.log("Respuesta del servidor:", data);
-      //alert("Categoría creada correctamente");
 
       //Agregada para Sweet Alert 2
       Swal.fire({
@@ -248,7 +245,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
       // Limpiar formulario después de un envío exitoso
       setCategory("");
       setDescription("");
-      setSelectedImage([]);
+      setSelectedImage(null);
 
     } catch (error) {
       console.error("Error:", error.message);
@@ -294,7 +291,7 @@ const FormNewCategory = ({ isEditMode = false }) => {
         {errorDescription && <FieldError message={errorDescription} />}
       </div>
       <div className="container-images">
-        <label>Imágenes:</label>
+        <label>Imágen:</label>
         {/* <ImageUploader onImagesSelected={handleImagesSelected} /> */}
         {existingImage && isEditMode && (
           <div>
@@ -312,17 +309,13 @@ const FormNewCategory = ({ isEditMode = false }) => {
 
         <ImageXUploader
           onImagesSelected={handleImageSelected}
-          onRemoveExistingImage={handleRemoveExistingImage}
-          existingImages={existingImage ? [existingImage] : []}
-          isEditMode={!!existingImage}
-          /* La doble negación obtiene un valor booleano de la variable */
-          allowUpload={true}
+          isEditMode={false}
           maxImages={1}
         />
         {errorFile && <FieldError message={errorFile} />}
-        {selectedImage.length === 1 && (
+        {selectedImage && (
           <p className="selected-count">
-            {selectedImage.length} imagen seleccionada
+            imágen seleccionada
           </p>
         )}
       </div>
