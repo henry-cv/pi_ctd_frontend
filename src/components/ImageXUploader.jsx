@@ -26,6 +26,16 @@ const ImageXUploader = ({
     }));
     setImages(remoteImages);
   }, [existingImages]); */
+  useEffect(() => {
+    if (isEditMode && existingImages) {
+      const remoteImages = existingImages.map((url) => ({
+        file: null,
+        preview: url,
+        isRemote: true,
+      }));
+      setImages(remoteImages);
+    }
+  }, [existingImages, isEditMode]);
 
   const validateImage = (file) => {
     const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
