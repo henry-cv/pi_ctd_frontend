@@ -67,7 +67,7 @@ const BookingDetail = () => {
           payload: { theActivity },
         });
 
-        
+
         if (reservations.bookingData && reservations.productData) {
           const { cantidadPersonas } = reservations.bookingData;
           const { tipoTarifa, valorTarifa } = reservations.productData;
@@ -176,7 +176,7 @@ const BookingDetail = () => {
             <div>
               <div className="bookingDetail-tittle-button">
                 <h4>Datos de la reservación</h4>
-                <ButtonGral text="Modificar" color="blue" icon={<FaEdit />}
+                {/* <ButtonGral text="Modificar" color="blue" icon={<FaEdit />}
                   onClick={() => handleOpenModalBooking()} />
                 <BookingModal
                   open={openBooking}
@@ -184,18 +184,18 @@ const BookingDetail = () => {
                   activityId={booking.productData.id}
                   isBooking={isBooking}
                   setIsBooking ={setIsBooking}
-                />
+                /> */}
               </div>
               <p><FaTags /><span>Precio total:</span> <strong >{precioFinal} Usd</strong></p>
               <p><FaCalendarAlt /><strong>Fecha:</strong> {date}</p>
               <p><FaTicket /> <strong>Cupos:</strong> {booking.bookingData.cantidadPersonas} </p>
-              <p className="info-slots"> Esta actividad es 
+              <p className="info-slots"> Esta actividad es
                 {booking.productData.tipoTarifa === "POR_PERSONA" ?" por": " para"}
                 <strong>
               { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
               {cupos > 1  ? "s":""}
-              </strong> Tu reserva incluye la entrada para 
-              <strong>{booking.bookingData.cantidadPersonas}</strong>persona{cupos > 1  ? "s":""} , es decir, 
+              </strong> Tu reserva incluye la entrada para
+              <strong>{booking.bookingData.cantidadPersonas}</strong>persona{cupos > 1  ? "s":""} , es decir,
                 <strong>{cupos}</strong>
                 { booking.productData.tipoTarifa.toLowerCase().replace(/_/g, " ").replace(/\bpor\b\s?/g, "") }
                 {cupos > 1  ? "s":""}.</p>
