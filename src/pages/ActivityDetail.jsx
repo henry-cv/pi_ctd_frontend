@@ -150,8 +150,10 @@ const ActivityDetail = () => {
 				.filter((key) => !isNaN(parseInt(key)))
 				.forEach((key) => {
 					let eventDate = theActivity[key].fechaEvento;
+				
 					if (eventDate) {
-						eventDate = normalizeDate(new Date(eventDate));
+						eventDate = normalizeDate(new Date(eventDate + "T00:00:00"));
+						
 						if (eventDate > today) {
 							isPastEvent = false;
 							return;
