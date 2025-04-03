@@ -23,6 +23,8 @@
   margin-top: 25px;
 }
 
+
+
 .card-height-reservation .activity-image-container {
   height: 65% !important;
 }
@@ -149,3 +151,34 @@
   font-size: 14px;
   transition: all 0.3s ease-in-out;
 }
+
+
+@media (max-width: 1280px) {
+  .card-height-reservation {
+    margin: 25px 25px 0 25px;
+  }
+  
+}
+
+@media (max-width: 960px) {
+  .card-height-reservation {
+    margin: 25px 15px 0 0px;
+  }
+
+
+}
+
+@media (max-width: 870px) {
+  .card-height-reservation {
+    margin: 25px 8px 0 8px;
+  }
+  .card-container-fluid {
+    width: 300px !important;
+  }
+  
+  .card-container-fluid {
+    width: 280px !important;
+  }
+
+}
+

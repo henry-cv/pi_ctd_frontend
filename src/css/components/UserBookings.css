@@ -12,26 +12,28 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 15px;
+
  
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
   .user-booking-grid{
     justify-content: center;
+    
   
   }
 
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .user-booking-grid{
     justify-content: center;
 
   }
 
 }
+
 
 
 

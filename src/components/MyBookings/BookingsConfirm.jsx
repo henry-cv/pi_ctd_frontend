@@ -9,6 +9,7 @@ import "../../css/pages/BookingsDetail.css";
 import "../../css/pages/dashboard.css";
 import BasicPagination from "../BasicPagination";
 import BookingFilterButtons from "./BookingFilterButtons";
+import {useMediaQuery,} from "@mui/material";
 
 
 const BookingsConfirm = () => {
@@ -18,9 +19,11 @@ const BookingsConfirm = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const isTablet = useMediaQuery(() => "(max-width: 1024px)");
+  const isMobile = useMediaQuery(() => "(max-width: 480px)");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const bookingsPerPage = 6;
+  const bookingsPerPage = isTablet ? 4 : isMobile ? 3 : 6;
 
   let tipoReserva = "";
   switch (state.userFiltersTabs.selectedFilters) {
