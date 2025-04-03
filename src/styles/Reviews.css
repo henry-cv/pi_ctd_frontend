@@ -14,7 +14,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	margin-bottom: 2rem;
+	margin-bottom: 0;
 }
 
 .rating-summary {
@@ -324,4 +324,185 @@
 		width: 95%;
 		padding: 1.5rem;
 	}
+}
+
+/* Layout con sidebar de filtros */
+.reviews-layout {
+    position: relative;
+    display: flex;
+    width: 100%;
+    overflow: visible; /* Cambiado de hidden para permitir crecimiento */
+    will-change: transform; /* Indica al navegador que optimice las transformaciones */
+    margin-top: 1rem; /* Espacio después de los controles fijos */
+    min-height: 450px; /* Consistencia con la sidebar */
+}
+
+/* Contenedor principal de reviews */
+.reviews-container {
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    background-color: var(--BackgroundColor);
+    transform: translateX(0);
+    /* Eliminar transition para dejar que GSAP maneje todo */
+    will-change: transform; /* Optimizar rendimiento */
+    padding-top: 0; /* Ya no necesita padding superior */
+    min-height: 450px; /* Espacio adicional para compensa la altura mínima del sidebar */
+}
+
+.reviews-container h2 {
+    display: none;
+}
+
+/* Sidebar de filtros */
+.review-filter-sidebar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto;
+    min-height: 450px; /* Mismo valor que arriba */
+    width: 280px;
+    z-index: 1;
+    /* Sin transiciones CSS para evitar conflictos */
+    visibility: hidden;
+    display: none;
+    backface-visibility: hidden; /* Mejorar rendimiento */
+    will-change: opacity, transform;
+}
+
+/* El sidebar en sí */
+.review-filter-sidebar {
+    position: fixed;
+    width: 280px;
+    /* Altura fija mínima para evitar redimensionamiento */
+    min-height: 450px; /* Ajusta este valor según el tamaño con todas las opciones */
+    height: auto; /* Permitir crecer si hay más contenido */
+    background-color: var(--Background-components);
+    /* Eliminar sombra para que se integre visualmente */
+    box-shadow: none; 
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Eliminar scroll interno */
+    overflow-y: visible;
+    z-index: 1; /* Valor más bajo que el contenido principal */
+    /* Añadir borde derecho para delimitar secciones sin generar sombra */
+    border-right: 1px solid var(--gray-300);
+    will-change: opacity; /* Mejorar rendimiento */
+}
+
+/* Header del sidebar */
+.filter-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-sidebar-header h3 {
+    font-family: var(--font-archivo);
+    font-size: 1.2rem;
+    color: var(--Font-Background);
+    margin: 0;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--Font-Background);
+}
+
+/* Secciones de filtros */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h4 {
+    font-family: var(--font-archivo);
+    font-size: 1rem;
+    color: var(--Font-Background);
+    margin-bottom: 10px;
+}
+
+.rating-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rating-label {
+    display: flex;
+    align-items: center;
+}
+
+/* Botones de acción */
+.filter-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    padding-top: 20px;
+}
+
+/* Mensaje cuando no hay reseñas filtradas */
+.no-filtered-reviews {
+    text-align: center;
+    padding: 20px;
+    color: var(--Font-Background);
+    font-family: var(--font-outfit);
+}
+
+/* Cambio en el container de los filtros para alinear mejor */
+.reviews-filters-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Mobile: versión modal del sidebar */
+.review-filter-sidebar.mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1300;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.review-filter-sidebar.mobile.open {
+    transform: translateY(0);
+}
+
+/* Media Queries */
+@media (max-width: 767px) {
+    .reviews-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .reviews-filters-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .reviews-filters-container .MuiButton-root {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .filter-actions {
+        padding: 0 20px 20px;
+    }
+}
+
+/* Estilo para el contenedor de controles fijos */
+.reviews-controls-fixed {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 100; /* Encima de otros elementos */
+    background-color: var(--BackgroundColor);
+    width: 100%;
 }
