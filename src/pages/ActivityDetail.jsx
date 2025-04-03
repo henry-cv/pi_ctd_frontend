@@ -38,6 +38,7 @@ import ShareModal from "../components/ShareModal";
 import { handleGoWhatsApp } from "../constants/data/funtionFetchBookings";
 import { WhatsappIcon } from "react-share";
 import { normalizeDate } from "../constants/data/funtionsBookingCalendar"
+import { useReviews } from "../hooks/useReviews";
 
 // Define MUI icon mapping
 const muiIcons = {
@@ -66,6 +67,7 @@ const ActivityDetail = () => {
 	const [openShareModal, setOpenShareModal] = useState(false);
 	const [isPastDate, setIsPastDate] = useState(null);
 	const [isBooking, setIsBooking] = useState(false);
+	const { ratingStats } = useReviews(id);
 	// console.log("el acces", state.urlRedirection );
 
 	// console.log("La reserva: " + JSON.stringify(state.reservation));
@@ -309,7 +311,13 @@ useEffect(() => {
 		setOpenShareModal(false);
 	};
 
-	
+	const handleScrollToReviews = (e) => {
+        e.preventDefault();
+        const reviewsSection = document.getElementById('reviews');
+        if (reviewsSection) {
+            reviewsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
 	if (loading) {
 		return (
@@ -497,14 +505,14 @@ useEffect(() => {
 
 								<div className="rating-section">
 									<div className="stars-container">
-										{renderStarRating(activity.calificacion || 4.5)}
+										{renderStarRating(ratingStats.average || 0)}
 										<span className="rating-value">
-											({activity.calificacion || 4.5}/5)
+											({ratingStats.average ? ratingStats.average.toFixed(1) : '0'}/5)
 										</span>
 									</div>
-									<Link to="#reviews" className="reviews-link">
-										{formatReviewText(activity.numeroReseñas || 5)}
-									</Link>
+									<a href="#reviews" className="reviews-link" onClick={handleScrollToReviews}>
+										{formatReviewText(ratingStats.total || 0)}
+									</a>
 								</div>
 
 								<div className="description-section">

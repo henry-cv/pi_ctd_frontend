@@ -127,7 +127,7 @@ const Reviews = ({ productoId }) => {
 
 	// Caso con reseñas
 	return (
-		<section className="reviews-section">
+			<section id="reviews" className="reviews-section">
 			<h2>Reseñas</h2>
 
 			<div className="reviews-header">

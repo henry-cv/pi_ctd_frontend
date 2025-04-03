@@ -1,7 +1,9 @@
 // src/components/ActivityCard.jsx
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import {
   faMap,
   faCalendarAlt,
@@ -11,7 +13,6 @@ import { FaMoneyCheck, FaSave } from "react-icons/fa";
 import "../css/components/ActivityCard.css";
 import DurationInfo from "./DurationInfo";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import FavoriteButton from "./FavoriteButton";
 import { useContextGlobal } from "../gContext/globalContext";
 
@@ -31,6 +32,35 @@ const ActivityCard = ({
   fechaReserva,
   estado,
 }) => {
+  // Estado para almacenar la calificación real obtenida de la API
+  const [realRating, setRealRating] = useState(rating || 0);
+  
+  // Efecto para cargar la calificación real desde la API
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const response = await fetch(`/api/reserva/resenas/${id}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data && typeof data.promedioPuntuacion === 'number') {
+            setRealRating(data.promedioPuntuacion);
+          } else {
+            setRealRating(0); // Si no hay calificación, mostrar 0
+          }
+        }
+      } catch (error) {
+        console.error("Error al cargar calificación:", error);
+        // Si falla la carga, usamos el valor por defecto o 0
+        setRealRating(rating || 0);
+      }
+    };
+    
+    // Solo cargar calificación si estamos en la vista normal (no en reservas)
+    if (id && !estado) {
+      fetchRating();
+    }
+  }, [id, rating, estado]);
+
   // Imagen por defecto en caso de error o sin imagen
   const [extraCategories, setExtraCategories] = useState(false);
   const hasExtracategories = categories?.length > 1;
@@ -143,8 +173,11 @@ const ActivityCard = ({
               <div className="activity-footer">
                 <span className="activity-price">${price} </span>
                 <span className="activity-rating">
-                  <FontAwesomeIcon icon={faStar} />
-                  {rating}
+                  <FontAwesomeIcon 
+                    icon={realRating > 0 ? faStarSolid : faStarRegular} 
+                    className={realRating > 0 ? "star-filled" : "star-empty"} 
+                  />
+                  {realRating > 0 ? realRating.toFixed(1) : "0"}
                 </span>
               </div>
             </>}
