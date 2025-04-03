@@ -1,110 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { Stack, Button, Select, MenuItem } from "@mui/material";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import CustomRating from "./CustomRating";
-import CustomAvatar from "./CustomAvatar";
+import React from "react";
+import { Button } from "@mui/material";
 import "../styles/Reviews.css";
+import { useContextGlobal } from "../gContext/globalContext";
+import ReviewModal from "./ReviewModal";
+import ReviewStats from "./ReviewStats";
+import ReviewItem from "./ReviewItem";
+import ReviewFilters from "./ReviewFilters";
+import { useReviews } from "../hooks/useReviews";
+import { useReviewForm } from "../hooks/useReviewForm";
 
 const Reviews = ({ productoId }) => {
-	const [sortBy, setSortBy] = useState("recent");
-	const [reviews, setReviews] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [ratingStats, setRatingStats] = useState({
-		average: 0,
-		total: 0,
-		distribution: [
-			{ stars: 5, count: 0 },
-			{ stars: 4, count: 0 },
-			{ stars: 3, count: 0 },
-			{ stars: 2, count: 0 },
-			{ stars: 1, count: 0 },
-		],
-	});
+	const { state } = useContextGlobal();
 
-	useEffect(() => {
-		const fetchReviews = async () => {
-			try {
-				console.log(`Obteniendo reseñas para actividad ID: ${productoId}`);
-				setLoading(true);
-				const response = await fetch(`/api/reserva/resenas/${productoId}`);
+	// Usar los hooks personalizados
+	const {
+		reviews: sortedReviews,
+		loading,
+		error,
+		ratingStats,
+		sortBy,
+		setSortBy,
+		canReview,
+		reservaId,
+		submitReview,
+	} = useReviews(productoId);
 
-				console.log(`Respuesta API status: ${response.status}`);
-				if (!response.ok) {
-					throw new Error(`Error al obtener reseñas: ${response.status}`);
-				}
+	const {
+		isModalOpen,
+		newReview,
+		isSubmitting,
+		submitError,
+		handleOpenModal,
+		handleCloseModal,
+		handleReviewChange,
+		handleRatingChange,
+		handleSubmitReview,
+	} = useReviewForm(submitReview, reservaId);
 
-				const data = await response.json();
-				console.log("Datos recibidos de la API:", data);
-
-				// Extraer el array de reseñas y adaptarlo al formato esperado
-				const reviewsArray = Array.isArray(data.resenas)
-					? data.resenas.map((r) => ({
-							id: r.id || Math.random().toString(36).substring(2, 9), // Generar ID si no existe
-							usuario: {
-								nombre: r.nombreUsuario || "Usuario",
-								avatarUrl: r.avatarUrl,
-							},
-							puntuacion: r.puntuacion,
-							comentario: r.resena,
-							fechaCreacion: r.fechaResena,
-						}))
-					: [];
-
-				console.log("Reviews array después de transformar:", reviewsArray);
-				setReviews(reviewsArray);
-
-				// Calcular estadísticas de calificación usando los datos adaptados
-				if (reviewsArray.length > 0) {
-					const total = reviewsArray.length;
-					// También podríamos usar directamente data.promedioPuntuacion y data.totalResenas
-					// si queremos confiar en los cálculos del backend
-					const sum = reviewsArray.reduce(
-						(acc, review) => acc + review.puntuacion,
-						0,
-					);
-					const average = Math.round((sum / total) * 10) / 10;
-
-					const distribution = [5, 4, 3, 2, 1].map((stars) => ({
-						stars,
-						count: reviewsArray.filter(
-							(review) => Math.floor(review.puntuacion) === stars,
-						).length,
-					}));
-
-					setRatingStats({
-						average,
-						total,
-						distribution,
-					});
-				}
-			} catch (error) {
-				console.error("Error al cargar reseñas:", error);
-				setError(error.message);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		if (productoId) {
-			fetchReviews();
-		} else {
-			console.warn("No se proporcionó un ID de producto para obtener reseñas");
-		}
-	}, [productoId]);
-
-	// Ordenar reseñas según el criterio seleccionado - Protegemos contra valores no iterables
-	const sortedReviews = Array.isArray(reviews)
-		? [...reviews].sort((a, b) => {
-				if (sortBy === "recent") {
-					return new Date(b.fechaCreacion) - new Date(a.fechaCreacion);
-				} else {
-					// relevante
-					return b.puntuacion - a.puntuacion;
-				}
-			})
-		: [];
-
+	// Estados de carga y error
 	if (loading) {
 		return (
 			<section className="reviews-section">
@@ -123,125 +56,106 @@ const Reviews = ({ productoId }) => {
 		);
 	}
 
-	if (!reviews || !reviews.length || reviews.length === 0) {
+	// Caso sin reseñas
+	if (!sortedReviews || !sortedReviews.length) {
 		return (
 			<section className="reviews-section">
 				<h2>Reseñas</h2>
 				<p className="no-reviews-message">
 					Esta actividad no cuenta con opiniones disponibles.
 				</p>
+
+				<div className="reviews-actions" style={{ marginTop: "20px" }}>
+					<Button
+						variant="contained"
+						color="primary"
+						fullWidth
+						onClick={() => handleOpenModal(canReview, state.user)}
+						disabled={!canReview || !state.user}
+						sx={{
+							borderRadius: "30px",
+							textTransform: "none",
+							backgroundColor: "#6749D9",
+							padding: "10px 20px",
+							"&.Mui-disabled": {
+								backgroundColor: "#9E9E9E",
+								color: "white",
+							},
+						}}
+					>
+						Escribir una opinión
+					</Button>
+
+					<ReviewModal
+						open={isModalOpen}
+						onClose={handleCloseModal}
+						userData={state.user}
+						review={newReview}
+						onReviewChange={handleReviewChange}
+						onRatingChange={handleRatingChange}
+						onSubmit={handleSubmitReview}
+						isSubmitting={isSubmitting}
+						error={submitError}
+						reservaId={reservaId}
+					/>
+				</div>
 			</section>
 		);
 	}
 
+	// Caso con reseñas
 	return (
 		<section className="reviews-section">
 			<h2>Reseñas</h2>
 
 			<div className="reviews-header">
-				<div className="rating-summary">
-					<div className="average-rating">
-						<span className="rating-number">{ratingStats.average}/5</span>
-						<CustomRating value={ratingStats.average} readOnly />
-						<span className="total-reviews">{ratingStats.total} reseñas</span>
-					</div>
-
-					<div className="rating-bars">
-						{ratingStats.distribution.map(({ stars, count }) => (
-							<div key={stars} className="rating-bar-row">
-								<span>{stars}★</span>
-								<div className="rating-bar">
-									<div
-										className="rating-bar-fill"
-										style={{ width: `${(count / ratingStats.total) * 100}%` }}
-									/>
-								</div>
-								<span>{count}</span>
-							</div>
-						))}
-					</div>
-				</div>
+				<ReviewStats stats={ratingStats} />
 
 				<div className="reviews-actions">
 					<Button
 						variant="contained"
 						color="primary"
 						fullWidth
+						onClick={() => handleOpenModal(canReview, state.user)}
+						disabled={!canReview || !state.user}
 						sx={{
 							borderRadius: "30px",
 							textTransform: "none",
 							backgroundColor: "#6749D9",
 							padding: "10px 20px",
+							"&.Mui-disabled": {
+								backgroundColor: "#9E9E9E",
+								color: "white",
+							},
 						}}
 					>
 						Escribir una opinión
 					</Button>
 
-					<div className="reviews-filters">
-						<div className="reviews-sort">
-							<Select
-								value={sortBy}
-								onChange={(e) => setSortBy(e.target.value)}
-								size="small"
-								sx={{
-									borderRadius: "30px",
-									minWidth: "150px",
-									height: "40px",
-									"& .MuiOutlinedInput-notchedOutline": {
-										borderRadius: "30px",
-									},
-								}}
-							>
-								<MenuItem value="relevant">Más Relevantes</MenuItem>
-								<MenuItem value="recent">Más Recientes</MenuItem>
-							</Select>
-						</div>
+					<ReviewModal
+						open={isModalOpen}
+						onClose={handleCloseModal}
+						userData={state.user}
+						review={newReview}
+						onReviewChange={handleReviewChange}
+						onRatingChange={handleRatingChange}
+						onSubmit={handleSubmitReview}
+						isSubmitting={isSubmitting}
+						error={submitError}
+						reservaId={reservaId}
+					/>
 
-						<Button
-							variant="contained"
-							startIcon={<FilterAltIcon />}
-							sx={{
-								borderRadius: "30px",
-								textTransform: "none",
-								backgroundColor: "#1C1B1F",
-								height: "40px",
-								padding: "8px 16px",
-							}}
-						>
-							Filtrar
-						</Button>
-					</div>
+					<ReviewFilters sortBy={sortBy} onSortChange={setSortBy} />
 				</div>
 			</div>
 
 			<div className="reviews-list">
 				{sortedReviews.map((review) => (
-					<div key={review.id} className="review-card">
-						<div className="review-header">
-							<Stack direction="row" spacing={2} alignItems="flex-start">
-								<CustomAvatar
-									src={review.usuario?.avatarUrl || "/default-avatar.png"}
-									alt={review.usuario?.nombre || "Usuario"}
-								/>
-								<div className="user-info">
-									<CustomRating value={review.puntuacion} readOnly />
-									<div className="user-details">
-										<span className="user-name">
-											{review.usuario?.nombre || "Usuario"}
-										</span>
-										<span className="review-date">
-											{new Date(review.fechaCreacion).toLocaleDateString()}
-										</span>
-									</div>
-									<p className="review-comment">{review.comentario}</p>
-								</div>
-							</Stack>
-						</div>
-					</div>
+					<ReviewItem key={review.id} review={review} />
 				))}
 			</div>
 
-			{reviews.length > 3 && (
+			{sortedReviews.length > 3 && (
 				<div className="reviews-pagination">
 					<Button
 						variant="contained"
