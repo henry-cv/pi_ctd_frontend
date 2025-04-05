@@ -6,5 +6,5 @@
 </div>
 
 <div align="center" style="margin-top: 40px;">
-  <img src="./public/UXUI.webp" alt="GoBook UX/UI Design" width="100%" style="max-width: 100%;">
+  <img src="./public/UXUI.svg" alt="GoBook UX/UI Design" width="100%" style="max-width: 100%;">
 </div>
