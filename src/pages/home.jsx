@@ -16,14 +16,14 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import DescargaApp from "../components/DescargaApp";
 import InfoReservaBannerHome from "../components/InfoReservaBannerHome";
+import TestInteractivo from "../components/TestInteractivo"; // ✅ Importación
 
 const Home = () => {
-  // Agregamos el estado global
   const { state } = useContextGlobal();
   const [isLoggedIn] = useState(false);
   const [activities, setActivities] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [popularActivities, setPopularActivities] = useState([]); // Nuevo estado
+  const [popularActivities, setPopularActivities] = useState([]);
 
   const carouselImages = [
     "/bkgd_slider1.webp",
@@ -34,12 +34,9 @@ const Home = () => {
   const fetchActivities = async () => {
     try {
       const response = await fetch("/api/producto/listaAleatoria");
-      if (!response.ok) {
-        throw new Error("Error al obtener las actividades");
-      }
+      if (!response.ok) throw new Error("Error al obtener las actividades");
       const data = await response.json();
-      console.log("Actividades obtenidas:", data);
-      setActivities(data); // 🔹 Guardamos las actividades en el estado
+      setActivities(data);
     } catch (error) {
       console.error("Error:", error.message);
     }
@@ -48,11 +45,8 @@ const Home = () => {
   const fetchPopularActivities = async () => {
     try {
       const response = await fetch("/api/producto/listaAleatoria");
-      if (!response.ok) {
-        throw new Error("Error al obtener las actividades populares");
-      }
+      if (!response.ok) throw new Error("Error al obtener las actividades populares");
       const data = await response.json();
-      // console.log("Actividades populares obtenidas:", data);
       setPopularActivities(data);
     } catch (error) {
       console.error("Error:", error.message);
@@ -62,11 +56,8 @@ const Home = () => {
   const fetchCategories = async () => {
     try {
       const response = await fetch("/api/categoria/listar");
-      if (!response.ok) {
-        throw new Error(`Error al obtener categorías: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`Error al obtener categorías: ${response.status}`);
       const data = await response.json();
-      console.log("Categorías obtenidas:", data);
       setCategories(data);
     } catch (error) {
       console.error("Error cargando categorías:", error);
@@ -140,17 +131,17 @@ const Home = () => {
       </section>
 
       <main className="main-content">
+        {/* ✅ Sección para TestInteractivo centrada */}
+        <div className="content-wrapper">
+          <TestInteractivo />
+        </div>
+
         <section className="categories-section">
           <div className="content-wrapper">
-            <h2 className="section-title title_categories">
-              Categorías
-              {/* <Link to="/actividades" className="view-all-link">
-                Ver todas
-              </Link> */}
-            </h2>
+            <h2 className="section-title title_categories">Categorías</h2>
             <div className="categories-grid">
               <Swiper
-              className="category-swiper"
+                className="category-swiper"
                 modules={[Navigation, Pagination]}
                 slidesPerView={5}
                 spaceBetween={20}
@@ -191,7 +182,6 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Nueva sección de actividades populares */}
         <section className="activities-section popular-section">
           <div className="content-wrapper wrapper-mobile-card">
             <h2 className="section-title">Los más populares</h2>
@@ -205,22 +195,15 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Nueva sección con fondo especial */}
-
-     
-        
-
         <section className="special-banner-section">
-        <InfoReservaBannerHome/>
-
-
+          <InfoReservaBannerHome />
         </section>
 
         <section className="second-banner-section">
-        <DescargaApp />
-
+          <DescargaApp />
         </section>
       </main>
+
       <Footer />
     </div>
   );
