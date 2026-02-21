@@ -52,7 +52,7 @@
     "react-share": "^5.2.2",
     "react-tooltip": "^5.28.0",
     "sweetalert2": "^11.6.13",
-    "swiper": "^11.2.4",
+    "swiper": "^12.1.2",
     "vite": "^6.1.0",
     "yup": "^1.6.1"
   },
