@@ -51,7 +51,7 @@
     "react-select": "^5.10.0",
     "react-share": "^5.2.2",
     "react-tooltip": "^5.28.0",
-    "sweetalert2": "^11.6.13",
+    "sweetalert2": "^11.22.4",
     "swiper": "^12.1.2",
     "vite": "^6.4.2",
     "yup": "^1.6.1"
