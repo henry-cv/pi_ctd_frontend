@@ -53,14 +53,14 @@
     "react-tooltip": "^5.28.0",
     "sweetalert2": "^11.22.4",
     "swiper": "^12.1.2",
-    "vite": "^6.4.2",
+    "vite": "^8.1.5",
     "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.0.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.19.0",
     "eslint-plugin-react": "^7.37.4",
@@ -69,6 +69,6 @@
     "globals": "^15.14.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.0.9",
-    "vite": "^6.4.2"
+    "vite": "^8.1.5"
   }
 }
